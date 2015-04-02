@@ -52,9 +52,8 @@
             var view = new window.app.views.ExpressionView(expr);
 
             var hb = app.service('html').builder();
-            hb.element('div', { class: 'result'}, view.getHtml());
+            hb.element('div', { class: 'result', html: view.getHtml() });
             outputDiv.appendChild(hb.toHtmlElement());
-
 
             cmdArgs.commandHandled = true;
         });
@@ -73,7 +72,6 @@
                     hb.element('li', c.name + " — " + c.description);
                 });
             }});
-
 
 
             outputDiv.appendChild(hb.toHtmlElement());

@@ -4,9 +4,20 @@
         this.sb = [];
     }
 
-    HtmlBuilder.prototype.element = function(tagName, arg) {
-        var attrs = typeof arg == "object" ? arg : { html: arg},
-            elementContent = attrs.html || '';
+    HtmlBuilder.prototype.element = function(tagName, arg1, arg2) {
+        var attrs, elementContent;
+
+        if(typeof arg1 == "object") {
+            attrs = arg1;
+        }
+        else if(typeof arg1 == "string") {
+            attrs = { html: arg1 };
+        }
+        else {
+            attrs = {};
+        }
+
+        elementContent = attrs.html || arg2;
 
         this.sb.push('<' + tagName + ' ' + getAttributesStr(attrs) + ">");
 
