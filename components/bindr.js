@@ -60,7 +60,7 @@
         element.bindr = {}; // will be used later
     };
 
-    bindr.bindView = function(viewElement, model) {
+    bindr.attachView = function(viewElement, model) {
         var elements = viewElement.querySelectorAll('[data-bindr]'),
             count = elements.length,
             i =0, el;
@@ -74,21 +74,34 @@
 
     bindr.bindControllers = function (rootViewElement, controllers) {
         var elements = rootViewElement.querySelectorAll('[data-controller]'),
-            i = 0, l = elements.length, name, ctrl;
+            i = 0, l = elements.length, name, ctrl, attached;
 
         for(;i<l;i++){
-            name = elements[i].getAttribute('data-controller');
+            var element = elements[i];
+            name = element.getAttribute('data-controller');
             ctrl = controllers[name];
+            attached = [];
 
             if(ctrl == null) {
                 console.warn(nam + ' controller wasn\'t found');
                 continue;
             }
 
-            ctrl.bindView(elements[i]);
-            console.log(name + ' Controller: view bound');
+            ctrl.attachView(element);
+            attached.push(ctrl);
+
+            console.log(name + ' Controller: view attached');
+
+            if(typeof ctrl.detachView != "function") {
+                continue;
+            }
+
+            element.addEventListener('DOMNodeRemoved', function () {
+                ctrl.detachView();
+                console.log(name + ' Controller: view detached');
+            });
         }
-    }
+    };
 
     function bindInput(model, intput, propertyName) {
         intput.addEventListener('keyup', function(e){

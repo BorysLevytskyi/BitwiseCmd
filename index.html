@@ -9,7 +9,6 @@
     <script type="text/javascript" src="components/commandr.js"></script>
     <script type="text/javascript" src="components/should.js"></script>
     <script type="text/javascript" src="components/html.js"></script>
-    <script type="text/javascript" src="components/controlr.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/bitwise/calc.js"></script>
@@ -26,6 +25,14 @@
 <body id="rootView">
 <input id="in" type="text" data-controller="expressionInputCtrl"/>
 <div id="out" type="text" data-controller="resultViewCtrl"></div>
+
+<div id="victim">
+    <div data-controller="test">
+        i'm a victim!
+    </div>
+</div>
+<div><button onclick="document.getElementById('victim').innerHTML = ''">Remove Victim</button></div>
+
 
 <div id="output">
 
@@ -64,6 +71,7 @@
                 { name: 'help', description: 'Displays help'},
                 { name: 'clear', description: 'Clears console'}
             ];
+
             var helpView = new app.views.HelpView(commands);
 
             resultView.insert(helpView.getViewElement());
@@ -92,7 +100,6 @@
         });
 
         app.bootstrap(document.getElementById('rootView'));
-
     })();
 
 </script>

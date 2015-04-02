@@ -1,6 +1,7 @@
 (function(app){
+
     app.controller('expressionInputCtrl', {
-        bindView: function (viewElement) {
+        attachView: function (viewElement) {
             var dispatcher = app.service('dispatcher');
             viewElement.addEventListener('keyup', function (args) {
                 if (args.keyCode != 13) {
@@ -15,8 +16,11 @@
     });
 
     app.service('resultView', {
-       bindView: function(viewElement) {
+       attachView: function(viewElement) {
            this.viewElement = viewElement;
+       },
+       detachView: function() {
+           this.viewElement == null;
        },
        clear: function (){
            this.viewElement.innerHTML = '';
