@@ -1,3 +1,4 @@
+// Expression View
 (function(app) {
 
     var formatter = app.service('formatter');
@@ -41,6 +42,7 @@
 
 })(window.app);
 
+// Help View
 (function(app){
     function HelpView(commands) {
         this.commands = commands;
@@ -55,7 +57,6 @@
             });});
         return hb.toHtmlElement();
     };
-
 
     app.views.HelpView = HelpView;
 

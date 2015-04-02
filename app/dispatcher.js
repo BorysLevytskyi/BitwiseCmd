@@ -10,8 +10,7 @@
             for(i=0; i<handlers.length; i++){
                 result = handlers[i](cmd);
 
-                if(result != null)
-                {
+                if(result != null) {
                     this
                 }
 
