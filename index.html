@@ -6,12 +6,13 @@
     <title></title>
 
     <script type="text/javascript" src="js/components/bindr.js"></script>
-    <script type="text/javascript" src="js/components/core.js"></script>
+    <script type="text/javascript" src="js/components/commandr.js"></script>
+    <script type="text/javascript" src="js/components/should.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/components/html.js"></script>
-    <script type="text/javascript" src="js/components/calc.js"></script>
-    <script type="text/javascript" src="js/components/expression.js"></script>
-    <script type="text/javascript" src="js/components/formatter.js"></script>
+    <script type="text/javascript" src="js/calc.js"></script>
+    <script type="text/javascript" src="js/expression.js"></script>
+    <script type="text/javascript" src="js/formatter.js"></script>
 
     <script type="text/javascript" src="js/views.js"></script>
     <script type="text/javascript" src="js/expressionInputCtrl.js"></script>
@@ -41,7 +42,7 @@
 
         expressionInputCtrl.bind(document.getElementById('in'), model);
 
-        app.command('calculateExpression').subscribe(function() {
+        app.command('calculateExpression', function() {
             var expr = expression.parse(model.expression);
 
             if(expr == null) {

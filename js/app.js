@@ -1,11 +1,11 @@
-(function (should, bindr) {
+(function (should, commandr) {
 
     var app = {};
 
     app.views = {};
     var servicesContainer = {};
     var controllersContainer = {};
-    var events = {};
+    var commands = {};
 
     function resolveOrInject(name, inst, container, entityName) {
         var resolved;
@@ -33,30 +33,22 @@
         return resolveOrInject(name, inst, controllersContainer, "controller");
     };
 
-    app.command = function(name) {
-        var evt = events[name];
-        if(evt == null) {
-            evt = events[name] = new Command(name);
+    app.command = function(name, handler) {
+        var cmd = commands[name];
+
+        if(cmd == null) {
+            cmd = commands[name] = new commandr.Command(name);
         }
-        return evt;
+
+        if(typeof handler == "function") {
+            cmd.subscribe(handler);
+        }
+
+        return cmd;
     };
 
     window.app = app;
 
-    function Command(name) {
-        this.name = name;
-        this.handlers = [];
-    }
 
-    Command.prototype.fire = function (arg) {
-        for(var i=0; i<1; i++) {
-            this.handlers[i](arg);
-        }
-    };
 
-    Command.prototype.subscribe = function (handler) {
-        this.handlers.push(handler);
-        // TODO: unsubcribe
-    }
-
-})(window.should);
+})(window.should, window.commandr);
