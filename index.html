@@ -15,7 +15,7 @@
     <script type="text/javascript" src="app/bitwise/expression.js"></script>
     <script type="text/javascript" src="app/bitwise/formatter.js"></script>
 
-    <script type="text/javascript" src="app/views.js"></script>
+    <script type="text/javascript" src="app/views/views.js"></script>
     <script type="text/javascript" src="app/inputCtrl.js"></script>
 
     <script type="text/javascript" src="app/bootstrap.js"></script>
@@ -49,11 +49,8 @@
                 return;
             }
 
-            var view = new window.app.views.ExpressionView(expr);
-
-            var hb = app.service('html').builder();
-            hb.element('div', { class: 'result', html: view.getHtml() });
-            outputDiv.appendChild(hb.toHtmlElement());
+            var expressionView = new window.app.views.ExpressionView(expr);
+            outputDiv.appendChild(expressionView.getViewElement());
 
             cmdArgs.commandHandled = true;
         });
@@ -65,16 +62,9 @@
             }
 
             var commands = [{ name: 'help', description: 'Displays help'}];
+            var helpView = new app.views.HelpView(commands)
+            outputDiv.appendChild(helpView.getViewElement());
 
-            var hb = html.builder();
-            hb.element('ul', { class: 'result', html: function() {
-                commands.forEach(function(c) {
-                    hb.element('li', c.name + " — " + c.description);
-                });
-            }});
-
-
-            outputDiv.appendChild(hb.toHtmlElement());
             cmdArgs.commandHandled = true;
         });
 
