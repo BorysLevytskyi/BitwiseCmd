@@ -72,6 +72,24 @@
 
     };
 
+    bindr.bindControllers = function (rootViewElement, controllers) {
+        var elements = rootViewElement.querySelectorAll('[data-controller]'),
+            i = 0, l = elements.length, name, ctrl;
+
+        for(;i<l;i++){
+            name = elements[i].getAttribute('data-controller');
+            ctrl = controllers[name];
+
+            if(ctrl == null) {
+                console.warn(nam + ' controller wasn\'t found');
+                continue;
+            }
+
+            ctrl.bindView(elements[i]);
+            console.log(name + ' Controller: view bound');
+        }
+    }
+
     function bindInput(model, intput, propertyName) {
         intput.addEventListener('keyup', function(e){
             model[propertyName] = e.srcElement.value;

@@ -9,6 +9,7 @@
     }
 
     Command.prototype.execute = function (cmdArgs) {
+        cmdArgs = cmdArgs || {};
         cmdArgs.commandHandled = false;
 
         for(var i=0; i<this.executionHandlers.length; i++) {

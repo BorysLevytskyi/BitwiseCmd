@@ -1,23 +1,13 @@
-(function (should, commandr) {
+(function (should, commandr, bindr) {
 
-    var app = {};
-
-    app.views = {};
-
-    app.view = function (element, model) {
-        var viewElement = element;
-        if(typeof element == 'string') {
-            viewElement = document.querySelectorAll(element)[0];
-        }
-
-        should.notBeNull(element);
-
-        bindr.bindView(viewElement, model);
+    var app = {
+        views: {}
     };
 
     var servicesContainer = {};
     var controllersContainer = {};
-    var commands = {};
+    var commandHandlers = {};
+    var runObservers = [];
 
     function resolveOrInject(name, inst, container, entityName) {
         var resolved;
@@ -46,10 +36,10 @@
     };
 
     app.command = function(name, handler) {
-        var cmd = commands[name];
+        var cmd = commandHandlers[name];
 
         if(cmd == null) {
-            cmd = commands[name] = new commandr.Command(name);
+            cmd = commandHandlers[name] = new commandr.Command(name);
         }
 
         if(typeof handler == "function") {
@@ -59,8 +49,21 @@
         return cmd;
     };
 
+    app.run = function(observer) {
+        runObservers.push(observer);
+    };
+
+    app.bootstrap = function(rootViewElement) {
+        invokeRunObservers();
+        bindr.bindControllers(rootViewElement, controllersContainer);
+    };
+
+    function invokeRunObservers() {
+        runObservers.forEach(function(o){ o(); });
+    }
+
     window.app = app;
 
 
 
-})(window.should, window.commandr);
+})(window.should, window.commandr, window.bindr);

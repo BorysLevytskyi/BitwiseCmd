@@ -1,21 +1,11 @@
 (function(app){
-    var handlers = [];
 
     var dispatcher = {
-        handler: function(handler) {
-            handlers.push(handler);
-        },
-        dispatch: function(cmd) {
-            var i, result;
-            for(i=0; i<handlers.length; i++){
-                result = handlers[i](cmd);
-
-                if(result != null) {
-                    this
-                }
-
-            }
-        },
-
+        dispatch: function(input) {
+            app.command('dispatchInput').execute({input:input});
+        }
     };
+
+    app.service('dispatcher', dispatcher);
+
 })(window.app);

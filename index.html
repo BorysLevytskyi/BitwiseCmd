@@ -9,22 +9,23 @@
     <script type="text/javascript" src="components/commandr.js"></script>
     <script type="text/javascript" src="components/should.js"></script>
     <script type="text/javascript" src="components/html.js"></script>
+    <script type="text/javascript" src="components/controlr.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/bitwise/calc.js"></script>
     <script type="text/javascript" src="app/bitwise/expression.js"></script>
     <script type="text/javascript" src="app/bitwise/formatter.js"></script>
 
-    <script type="text/javascript" src="app/views/views.js"></script>
-    <script type="text/javascript" src="app/inputCtrl.js"></script>
-
-    <script type="text/javascript" src="app/bootstrap.js"></script>
+    <script type="text/javascript" src="app/views.js"></script>
+    <script type="text/javascript" src="app/dispatcher.js"></script>
+    <script type="text/javascript" src="app/controllers.js"></script>
+    <script type="text/javascript" src="app/services.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
 </head>
-<body id="view">
-<input id="in" type="text" data-bindr="expression"/>
-<div id="out" type="text" data-bindr="expression"></div>
+<body id="rootView">
+<input id="in" type="text" data-controller="expressionInputCtrl"/>
+<div id="out" type="text" data-controller="resultViewCtrl"></div>
 
 <div id="output">
 
@@ -35,23 +36,20 @@
     (function(){
         var app = window.app;
         var expression = app.service('expression');
-        var expressionInputCtrl = app.controller('expressionInputCtrl');
-        var outputDiv = document.getElementById('output');
-        var html = app.service('html');
 
-        app.controller('expressionInputCtrl').bind(document.getElementById('in'));
+        var html = app.service('html');
+        var resultView = app.service('resultView');
 
         // Expression
         app.command('dispatchInput', function(cmdArgs) {
 
             var expr = expression.parse(cmdArgs.input);
-
             if(expr == null) {
                 return;
             }
 
             var expressionView = new window.app.views.ExpressionView(expr);
-            outputDiv.appendChild(expressionView.getViewElement());
+            resultView.insert(expressionView.getViewElement());
 
             cmdArgs.commandHandled = true;
         });
@@ -62,10 +60,23 @@
                 return;
             }
 
-            var commands = [{ name: 'help', description: 'Displays help'}];
+            var commands = [
+                { name: 'help', description: 'Displays help'},
+                { name: 'clear', description: 'Clears console'}
+            ];
+            var helpView = new app.views.HelpView(commands);
 
-            var helpView = new app.views.HelpView(commands)
-            outputDiv.appendChild(helpView.getViewElement());
+            resultView.insert(helpView.getViewElement());
+            cmdArgs.commandHandled = true;
+        });
+
+        // Clear
+        app.command('dispatchInput', function(cmdArgs){
+            if(cmdArgs.input.toLowerCase() !== 'clear') {
+                return;
+            }
+
+            resultView.clear();
 
             cmdArgs.commandHandled = true;
         });
@@ -75,9 +86,12 @@
             var hb = html.builder();
             hb.element('div', { class: "result error", html: "Unknown expression: " + cmdArgs.input });
 
-            outputDiv.appendChild(hb.toHtmlElement());
+            resultView.insert(hb.toHtmlElement());
+
             cmdArgs.commandHandled = true;
         });
+
+        app.bootstrap(document.getElementById('rootView'));
 
     })();
 

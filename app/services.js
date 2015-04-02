@@ -4,6 +4,6 @@
         builder: function () {
             return new HtmlBuilder();
         }
-    })
+    });
 
 })(window.app, window.HtmlBuilder);

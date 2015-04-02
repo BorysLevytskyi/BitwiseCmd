@@ -1,4 +1,4 @@
-(function(bitwise) {
+(function() {
    var twoOperandsRegex = /^(\d+)(<<|>>|\||\&|\^)(\d+)$/;
 
     app.service('expression', {
@@ -7,8 +7,6 @@
             if(matches == null) {
                 return null;
             }
-
-            console.log(matches);
 
             return {
                 string:matches[0],
