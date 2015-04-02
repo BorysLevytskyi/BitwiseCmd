@@ -1,0 +1,4 @@
+.expression .label { font-weight:  bold; padding-right: 5px }
+.expression .one { color: #6d9ad3 }
+.expression .zero { color: #70d351 }
+.expression .result td { border-top: solid 1px }
