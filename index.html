@@ -5,23 +5,26 @@
 
     <title></title>
 
-    <script type="text/javascript" src="js/components/bindr.js"></script>
-    <script type="text/javascript" src="js/components/commandr.js"></script>
-    <script type="text/javascript" src="js/components/should.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/components/html.js"></script>
-    <script type="text/javascript" src="js/calc.js"></script>
-    <script type="text/javascript" src="js/expression.js"></script>
-    <script type="text/javascript" src="js/formatter.js"></script>
+    <script type="text/javascript" src="components/bindr.js"></script>
+    <script type="text/javascript" src="components/commandr.js"></script>
+    <script type="text/javascript" src="components/should.js"></script>
+    <script type="text/javascript" src="components/html.js"></script>
 
-    <script type="text/javascript" src="js/views.js"></script>
-    <script type="text/javascript" src="js/expressionInputCtrl.js"></script>
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/bitwise/calc.js"></script>
+    <script type="text/javascript" src="app/bitwise/expression.js"></script>
+    <script type="text/javascript" src="app/bitwise/formatter.js"></script>
+
+    <script type="text/javascript" src="app/views.js"></script>
+    <script type="text/javascript" src="app/inputCtrl.js"></script>
+
+    <script type="text/javascript" src="app/bootstrap.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
 </head>
-<body>
-<input id="in" type="text"/>
-<div id="out" type="text"></div>
+<body id="view">
+<input id="in" type="text" data-bindr="expression"/>
+<div id="out" type="text" data-bindr="expression"></div>
 
 <div id="output">
 
@@ -31,33 +34,59 @@
 
     (function(){
         var app = window.app;
-        var bindr = window.bindr;
         var expression = app.service('expression');
         var expressionInputCtrl = app.controller('expressionInputCtrl');
         var outputDiv = document.getElementById('output');
-        var model = bindr.model({'expression': ''});
+        var html = app.service('html');
 
-        bindr.bindElement(model, document.getElementById('in'), 'expression');
-        bindr.bindElement(model, document.getElementById('out'), 'expression');
+        app.controller('expressionInputCtrl').bind(document.getElementById('in'));
 
-        expressionInputCtrl.bind(document.getElementById('in'), model);
+        app.command('dispatchInput', function(cmdArgs) {
 
-        app.command('calculateExpression', function() {
-            var expr = expression.parse(model.expression);
+            var expr = expression.parse(cmdArgs.input);
 
             if(expr == null) {
-                alert('incorrect expression');
                 return;
             }
 
             var view = new window.app.views.ExpressionView(expr);
 
-            var result = document.createElement('div');
-            result.innerHTML = view.getHtml();
+            var hb = app.service('html').builder();
+            hb.element('div', { class: 'result'}, view.getHtml());
+            outputDiv.appendChild(hb.toHtmlElement());
 
-            outputDiv.appendChild(result);
 
-            model.expression = '';
+            cmdArgs.commandHandled = true;
+        });
+
+        // Help
+        app.command('dispatchInput', function(cmdArgs){
+            if(cmdArgs.input.toLowerCase() !== 'help') {
+                return;
+            }
+
+            var commands = [{ name: 'help', description: 'Displays help'}];
+
+            var hb = html.builder();
+            hb.element('ul', { class: 'result', html: function() {
+                commands.forEach(function(c) {
+                    hb.element('li', c.name + " — " + c.description);
+                });
+            }});
+
+
+
+            outputDiv.appendChild(hb.toHtmlElement());
+            cmdArgs.commandHandled = true;
+        });
+
+        // Unknown Expression
+        app.command('dispatchInput', function(cmdArgs){
+            var hb = html.builder();
+            hb.element('div', { class: "result error", html: "Unknown expression: " + cmdArgs.input });
+
+            outputDiv.appendChild(hb.toHtmlElement());
+            cmdArgs.commandHandled = true;
         });
 
     })();

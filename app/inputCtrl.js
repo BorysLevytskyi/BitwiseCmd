@@ -4,7 +4,8 @@
 
             if(args.keyCode == 13) {
             // Enter
-                app.command('calculateExpression').fire();
+                app.command('dispatchInput').execute({ input: args.srcElement.value });
+                args.srcElement.value = '';
             }
 
             console.log(args)

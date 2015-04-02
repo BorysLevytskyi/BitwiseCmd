@@ -19,7 +19,7 @@
     };
 
     bindr.Model = function() {
-        this.handlers = [];
+        this.executionHandlers = [];
     };
 
     bindr.Model.createGetter = function (propertyName){
@@ -36,16 +36,16 @@
     };
 
     bindr.Model.prototype.observe = function (handler){
-        this.handlers.push(handler);
+        this.executionHandlers.push(handler);
     };
 
     bindr.Model.prototype.notifyPropertyChanged = function(propertyName, value){
-        this.handlers.forEach(function(h){
+        this.executionHandlers.forEach(function(h){
             h(propertyName, value);
         });
     };
 
-    bindr.bindElement = function(model, element, propertyName) {
+    bindr.bindElement = function(element, model, propertyName) {
         if(element.bindr != null) {
             return;
         }
@@ -58,6 +58,18 @@
         }
 
         element.bindr = {}; // will be used later
+    };
+
+    bindr.bindView = function(viewElement, model) {
+        var elements = viewElement.querySelectorAll('[data-bindr]'),
+            count = elements.length,
+            i =0, el;
+
+        for(;i<count; i++){
+            el = elements[i];
+            this.bindElement(el, model, el.getAttribute('data-bindr'))
+        }
+
     };
 
     function bindInput(model, intput, propertyName) {

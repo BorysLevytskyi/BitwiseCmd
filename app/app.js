@@ -3,6 +3,18 @@
     var app = {};
 
     app.views = {};
+
+    app.view = function (element, model) {
+        var viewElement = element;
+        if(typeof element == 'string') {
+            viewElement = document.querySelectorAll(element)[0];
+        }
+
+        should.notBeNull(element);
+
+        bindr.bindView(viewElement, model);
+    };
+
     var servicesContainer = {};
     var controllersContainer = {};
     var commands = {};

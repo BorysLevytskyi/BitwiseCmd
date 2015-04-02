@@ -2,3 +2,9 @@
 .expression .one { color: #6d9ad3 }
 .expression .zero { color: #70d351 }
 .expression .result td { border-top: solid 1px }
+
+.error { color: maroon; }
+
+.result { margin: 10px;}
+
+#view { padding: 10px}
