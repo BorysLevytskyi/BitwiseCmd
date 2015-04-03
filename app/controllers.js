@@ -21,18 +21,19 @@
            this.viewElement = viewElement;
        },
        detachView: function() {
-           this.viewElement == null;
+           this.viewElement = null;
        },
        clear: function (){
            this.viewElement.innerHTML = '';
        },
        insert: function (htmlElement) {
-           if(this.viewElement.childNodes.length == 0) {
-               this.viewElement.appendChild(htmlElement);
+           var vw = this.viewElement;
+           if(vw.childNodes.length == 0) {
+               vw.appendChild(htmlElement);
            }
            else
            {
-               this.viewElement.appendChild(htmlElement);
+               vw.insertBefore(htmlElement, vw.childNodes[0]);
            }
        }
     });
