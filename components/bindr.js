@@ -72,25 +72,25 @@
 
     };
 
-    bindr.bindControllers = function (rootViewElement, controllers) {
+    bindr.bindControllers = function (rootViewElement, container) {
         var elements = rootViewElement.querySelectorAll('[data-controller]'),
-            i = 0, l = elements.length, name, ctrl, attached;
+            i = 0, l = elements.length, ctrlName, ctrl, attached;
 
         for(;i<l;i++){
             var element = elements[i];
-            name = element.getAttribute('data-controller');
-            ctrl = controllers[name];
+            ctrlName = element.getAttribute('data-controller');
+            ctrl = container.resolve(ctrlName);
             attached = [];
 
             if(ctrl == null) {
-                console.warn(nam + ' controller wasn\'t found');
+                console.warn(ctrlName + ' controller wasn\'t found');
                 continue;
             }
 
             ctrl.attachView(element);
             attached.push(ctrl);
 
-            console.log(name + ' Controller: view attached');
+            console.log(ctrlName + ' Controller: view attached');
 
             if(typeof ctrl.detachView != "function") {
                 continue;
@@ -98,7 +98,7 @@
 
             element.addEventListener('DOMNodeRemoved', function () {
                 ctrl.detachView();
-                console.log(name + ' Controller: view detached');
+                console.log(ctrlName + ' Controller: view detached');
             });
         }
     };

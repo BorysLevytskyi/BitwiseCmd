@@ -1,15 +1,16 @@
 (function(app){
 
     app.controller('expressionInputCtrl', {
+        $dispatcher:null,
         attachView: function (viewElement) {
-            var dispatcher = app.service('dispatcher');
+
             viewElement.addEventListener('keyup', function (args) {
                 if (args.keyCode != 13) {
                     return;
                 }
 
                 // Enter
-                dispatcher.dispatch(args.srcElement.value);
+                this.$dispatcher.dispatch(args.srcElement.value);
                 args.srcElement.value = '';
             });
         }

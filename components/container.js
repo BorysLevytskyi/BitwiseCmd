@@ -9,6 +9,7 @@
         if(reg == null) {
             reg = this.store[name] = { instance: inst };
         }
+        console.log(name + ' component registered');
         return reg;
     };
 

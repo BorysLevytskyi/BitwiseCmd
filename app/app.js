@@ -11,31 +11,17 @@
 
     app.di = new Container();
 
-    function resolveOrInject(name, inst, container, entityName) {
-        var resolved;
-
-        should.beString(name);
-
-        if (inst != null) {
-            container[name] = inst;
-            console.log(name + " " + entityName + "  registered");
-            resolved = inst;
-        }
-        else {
-            resolved = container[name];
-            should.check(resolved != null, name + " " + entityName + " wasn't found");
+    app.component = function(name, inst) {
+        if(arguments.length == 1) {
+            return this.di.resolve(name);
         }
 
-        return resolved;
-    }
-
-    app.service = function(name, inst) {
-        return resolveOrInject(name, inst, servicesContainer, "service");
+        this.di.register(name, inst);
     };
 
-    app.controller = function(name, inst) {
-        return resolveOrInject(name, inst, controllersContainer, "controller");
-    };
+    app.service = app.component;
+
+    app.controller = app.component;
 
     app.command = function(name, handler) {
         var cmd = commandHandlers[name];
@@ -57,7 +43,7 @@
 
     app.bootstrap = function(rootViewElement) {
         invokeRunObservers();
-        bindr.bindControllers(rootViewElement, controllersContainer);
+        bindr.bindControllers(rootViewElement, app.di);
     };
 
     function invokeRunObservers() {
