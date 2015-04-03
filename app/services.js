@@ -1,14 +1,6 @@
 (function(app, HtmlBuilder){
 
-    app.component('html', {
-        builder: function () {
-            return new HtmlBuilder();
-        },
-
-        element: function(template, model) {
-            return HtmlBuilder.createElement(template, model);
-        }
-    });
+    app.component('html', HtmlBuilder);
 /*
     var template = {
         compile: function (template) {

@@ -1,47 +1,15 @@
 (function(){
 
-    function HtmlBuilder() {
-        this.sb = [];
-    }
+    var HtmlBuilder = {};
 
-    HtmlBuilder.prototype.element = function(tagName, arg1, arg2) {
-        var attrs, elementContent;
-
-        if(typeof arg1 == "object") {
-            attrs = arg1;
-        }
-        else if(typeof arg1 == "string") {
-            attrs = { html: arg1 };
-        }
-        else {
-            attrs = {};
-        }
-
-        elementContent = attrs.html || arg2;
-
-        this.sb.push('<' + tagName + ' ' + getAttributesStr(attrs) + ">");
-
-        if(typeof elementContent == 'function')   {
-            elementContent();
-        } else if (elementContent != null) {
-            this.sb.push(elementContent.toString());
-        }
-
-        this.sb.push('</' + tagName + '>');
+    HtmlBuilder.element = function(template, model) {
+        var el = document.createElement('div');
+        el.innerHTML = HtmlBuilder.template(template, model);
+        return el.children[0];
     };
 
-    HtmlBuilder.prototype.toString = function () {
-        return this.sb.join('\r\n');
-    };
-
-    HtmlBuilder.prototype.toHtmlElement = function (){
-        return HtmlBuilder.createElement(this.toString());
-    };
-
-    HtmlBuilder.createElement = function(template, model) {
-
-        should.beString(template, "template")
-
+    HtmlBuilder.template = function(template, model) {
+        should.beString(template, "template");
         var regex = /(?:{([^}]+)})/g, html;
 
         if(model == null){
@@ -52,9 +20,7 @@
             });
         }
 
-        var el = document.createElement('div');
-        el.innerHTML = html;
-        return el.children[0];
+        return html;
     };
 
     function getAttributesStr(attr) {
@@ -72,14 +38,16 @@
         return str.join(' ');
     }
 
-    HtmlBuilder.escapeHtml = function(html) {
-            if(html == null) {
-                return html;
+    HtmlBuilder.escapeHtml = function(obj) {
+            if(obj == null) {
+                return obj;
             }
 
-            should.beString(html);
+            if(typeof obj != 'string') {
+                obj = obj.toString();
+            }
 
-            return html
+            return obj
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")

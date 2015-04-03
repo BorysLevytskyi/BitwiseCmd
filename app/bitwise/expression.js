@@ -30,7 +30,7 @@
         var m = new app.models.BitwiseOperation();
         m.operand1 = o1;
         m.operand2 = o2;
-        m.sing = matches[2];
+        m.sign = matches[2];
         m.string = matches.input;
         m.result = eval(matches.input);
 

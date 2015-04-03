@@ -40,12 +40,28 @@
 
 <script id="helpView" type="text/template">
     <div class="help">
-        <ul>
-            <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
-            <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
-            <li><code>clear</code> — clear output pane</li>
-            <li><code>help</code> — display this help</li>
-        </ul>
+        <p class="section">
+            <strong>Supported Commands</strong>
+            <ul>
+                <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
+                <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
+                <li><code>clear</code> — clear output pane</li>
+                <li><code>help</code> — display this help</li>
+            </ul>
+        </p>
+
+
+        <p class="section">
+            <strong>Supportd Bitwise Operations</strong>
+           <ul>
+                <li><code>&</code> — bitwise AND</li>
+                <li><code>|</code> — bitwise inclusive OR</li>
+                <li><code>^</code> — bitwise exclusive XOR</li>
+                <li><code><<</code> — left shift</li>
+                <li><code>>></code> — right shift</li>
+                <li><code>~</code> — bitwise NOT (one's complement) (unary)</li>
+             </ul>
+        </p>
 
         <p style="font-style: italic">
             <strong>Tip:</strong> Use Up and Down keys to navigate trough executed commands.
@@ -59,6 +75,41 @@
         <div class="content"></div>
     </div>
 </script>
+
+<script id="shiftExpressionView" type="text/template">
+    <table class="expression">
+        <tr>
+            <td class="label">{operand1}</td>
+            <td class="bin">{operand1Binary}</td>
+        </tr>
+        <tr>
+            <td class="label">{operand1}{sign}{operand2}</td>
+            <td class="bin">{resultBinary}</td>
+        </tr>
+    </table>
+</script>
+
+<script id="binaryExpressionView" type="text/template">
+    <table class="expression">
+        <tr>
+            <td></td>
+            <td class="label">{operand1}</td>
+            <td class="bin">{operand1Binary}</td>
+        </tr>
+        <tr>
+            <td>{sign}</td>
+            <td class="label">{operand2}</td>
+            <td class="bin">{operand2Binary}</td>
+        </tr>
+        <tr>
+            <td>=</td>
+            <td class="label">{result}</td>
+            <td class="bin">{resultBinary}</td>
+        </tr>
+    </table>
+</script>
+
+
 
 <script type="text/javascript">
 
@@ -83,7 +134,8 @@
         app.debugMode = true;
 
         dispatcher.dispatch('help');
-        dispatcher.dispatch('3 ^ 4');
+        dispatcher.dispatch('3 << 4');
+        dispatcher.dispatch('233 | 322');
 
     })();
 

@@ -4,58 +4,49 @@
     var formatter = app.component('formatter');
     var calc = app.component('calc');
 
+
     app.modelView(app.models.BitwiseOperation, {
         $html:null,
-        renderView: function(model) {
-            return renderCalculableExpression(model, this.$html.builder());
+        $calc:null,
+        renderView: function(expr) {
+            var maxLen = this.$calc.maxNumberOfBits([expr.operand1, expr.operand2, expr.result]);
+            var $html = app.component('html');
+
+            expr.operand1Binary = formatter.toBinaryString(expr.operand1, maxLen);
+            expr.operand2Binary = formatter.toBinaryString(expr.operand2, maxLen);
+            expr.resultBinary = formatter.toBinaryString(expr.result, maxLen);
+
+            var templateId = /<<|>>/.test(expr.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
+
+            var html = document.getElementById(templateId).innerHTML;
+            return $html.element(html, expr);
         }
     });
 
     app.modelView(app.models.BitwiseNumbers, {
         $html:null,
+        $calc:null,
         renderView: function(model) {
-            return renderListOfNumbers(model.numbers, this.$html.builder());
+            var maxLen = this.$calc.maxNumberOfBits(model.numbers);
+            var table = this.$html.element('<table class="expression"></table>');
+
+            model.numbers.forEach(function(o){
+
+                var row = table.insertRow();
+                var decCell = row.insertCell();
+
+                decCell.className = 'label';
+
+                var binCell = row.insertCell();
+                binCell.className = 'bin';
+
+                decCell.innerText = o;
+                binCell.innerText = formatter.toBinaryString(o, maxLen);
+            });
+
+            return table;
         }
     });
-
-    function renderCalculableExpression(expr, hb) {
-        var maxLen = calc.maxNumberOfBits([expr.operand1, expr.operand2, expr.result]);
-
-        hb.element('table', { class: "expression", cellspacing: "0"}, function () {
-            buildRow(hb, expr.operand1, formatter.toBinaryString(expr.operand1, maxLen));
-            buildRow(hb, expr.operand2, formatter.toBinaryString(expr.operand2, maxLen));
-            buildRow(hb, expr.result, formatter.toBinaryString(expr.result, maxLen), { class: 'result'});
-        });
-
-        return hb.toHtmlElement();
-    }
-
-    function renderListOfNumbers(numbers, hb) {
-        var maxLen = calc.maxNumberOfBits(numbers);
-
-        hb.element('table', { class: "expression", cellspacing: "0"}, function () {
-            numbers.forEach(function(o){
-                buildRow(hb, o, formatter.toBinaryString(o, maxLen));
-            });
-        });
-
-        return hb.toHtmlElement();
-    }
-
-    function buildRow(hb, label, binaryStr, attrs) {
-        hb.element('tr', attrs, function() {
-            hb.element('td', { class: "label"}, label);
-            appendBinaryColumns(hb, binaryStr);
-        });
-    }
-
-    function appendBinaryColumns(hb, binaryStr) {
-        var css;
-        for(var i=0;i<binaryStr.length;i++) {
-            css = binaryStr[i] == '1' ? 'one' : 'zero';
-            hb.element('td', { class: css }, binaryStr[i]);
-        }
-    }
 
     app.modelView(app.models.HelpResult, {
         $html: null,

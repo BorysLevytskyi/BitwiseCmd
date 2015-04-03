@@ -6,16 +6,15 @@ code { font-size: 1.2em; font-weight: bold; }
 .expressionInput { width: 500px; padding: 3px; border: solid 1px lightgray; }
 
 .result { margin: 10px 10px 20px; }
-.result .input { font-style: italic; margin-bottom: 10px;
-}
+.result .input { font-style: italic; margin-bottom: 10px; }
 .result .content { padding-left: 10px}
 .result .cur { color: lightgray; margin-right: 5px }
 
 .expression .label { font-weight:  bold; padding-right: 5px }
+.expression .bin { letter-spacing: 3px; }
 .expression .one { color: #6d9ad3 }
 .expression .zero { color: #70d351 }
 .expression .result td { border-top: dotted 1px gray; }
-.expression td { padding: 3px; }
 .expression { font-size: 1.5em; font-family: monospace }
 
 .help { padding: 10px; background: #e0e0e0; }
