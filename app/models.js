@@ -19,9 +19,9 @@
         this.commands = commands;
     }
 
-    function DisplayResult (input, payload) {
+    function DisplayResult (input, content) {
         this.input = input;
-        this.payload = payload;
+        this.content = content;
     }
 
     app.models.BitwiseOperation = BitwiseOperation;

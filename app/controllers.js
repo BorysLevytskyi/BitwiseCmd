@@ -26,7 +26,6 @@
             });
 
             this.viewElement.addEventListener('keydown', function(args){
-                console.log(args.keyCode);
                 if(args.keyCode == 38) {
 
                     if (self.history.length > self.historyIndex) { // up

@@ -82,12 +82,12 @@
         renderView: function(model) {
             var resultView = this.$html.element(
                 '<div class="result">' +
-                    '<div class="input">{input}</div>' +
-                    '<div class="payload"></div>' +
+                    '<div class="input"><span class="cur">&gt;</span>{input}</div>' +
+                    '<div class="content"></div>' +
                 '</div>', model);
 
-            var payloadView = app.buildViewFor(model.payload);
-            resultView.childNodes[1].appendChild(payloadView);
+            var contentView = app.buildViewFor(model.content);
+            resultView.childNodes[1].appendChild(contentView);
             return resultView;
         }
     });

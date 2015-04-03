@@ -16,7 +16,7 @@
 
             matches = numbersList.exec(string);
             if(matches != null) {
-                return createListOfNumbersExpression(matches)
+                return createListOfNumbersExpression(string)
             }
 
         }
@@ -37,14 +37,16 @@
         return m;
     }
 
-    function createListOfNumbersExpression(matches) {
-        var numbers = [], i=0;
+    function createListOfNumbersExpression(input) {
+        var numbers = [];
+        input.split(' ').forEach(function(n){
+            if(n.trim().length > 0) {
+                numbers.push(parseInt(n));
+            }
 
-        for(;i<matches.length; i++) {
-            numbers.push(parseInt(matches[i], 10));
-        }
+        });
 
-        return app.models.BitwiseNumbers(numbers);
+        return new app.models.BitwiseNumbers(numbers);
     }
 
 })(window.app);

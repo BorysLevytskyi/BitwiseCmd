@@ -3,8 +3,10 @@ body { font-family: Verdana; font-size: 0.8em }
 .expressionInput { width: 500px; padding: 3px; border: solid 1px lightgray; }
 
 .result { margin: 10px 10px 20px; }
-.result .input { font-style: italic; margin-bottom: 10px; }
-.result .payload { padding-left: 10px}
+.result .input { font-style: italic; margin-bottom: 10px;
+}
+.result .content { padding-left: 10px}
+.result .cur { color: lightgray; margin-right: 5px }
 
 .expression .label { font-weight:  bold; padding-right: 5px }
 .expression .one { color: #6d9ad3 }
