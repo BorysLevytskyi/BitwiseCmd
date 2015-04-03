@@ -3,7 +3,6 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .links { float: right; position: absolute; right: 10px; top: 10px; }
 
-
 .expressionInput { width: 500px; padding: 3px; border: solid 1px lightgray; }
 
 .result { margin: 10px 10px 20px; }
@@ -17,7 +16,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .expression .zero { color: #70d351 }
 .expression .result td { border-top: dotted 1px gray; }
 .expression td { padding: 3px; }
-.expression { font-size: 1.2em; }
+.expression { font-size: 1.5em; font-family: monospace }
 
 .help { padding: 10px; background: #e0e0e0; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
