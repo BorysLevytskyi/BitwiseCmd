@@ -39,6 +39,9 @@
     };
 
     HtmlBuilder.createElement = function(template, model) {
+
+        should.beString(template, "template")
+
         var regex = /(?:{([^}]+)})/g, html;
 
         if(model == null){
@@ -70,6 +73,12 @@
     }
 
     HtmlBuilder.escapeHtml = function(html) {
+            if(html == null) {
+                return html;
+            }
+
+            should.beString(html);
+
             return html
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")

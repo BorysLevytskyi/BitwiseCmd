@@ -7,6 +7,7 @@
 
     <script type="text/javascript" src="components/bindr.js"></script>
     <script type="text/javascript" src="components/commandr.js"></script>
+    <script type="text/javascript" src="components/is.js"></script>
     <script type="text/javascript" src="components/should.js"></script>
     <script type="text/javascript" src="components/htmlBuilder.js"></script>
     <script type="text/javascript" src="components/container.js"></script>
@@ -38,58 +39,24 @@
 
     (function(){
         var app = window.app;
-        var html = app.service('html');
-        var resultView = app.service('resultView');
+        var dispatcher = app.get('dispatcher');
 
-        // Expression
-        app.command('dispatchInput', {
-            $expression: null,
-            $resultView: null,
-            execute:function(cmdArgs) {
-
-                var expr = this.$expression.parse(cmdArgs.input);
-                if(expr == null) {
-                    return;
-                }
-
-                this.$resultView.display(cmdArgs.input, expr);
-
-                cmdArgs.commandHandled = true;
-            }
-        });
-
-        // Help
-        app.command('dispatchInput', function(cmdArgs){
-            if(cmdArgs.input.toLowerCase() !== 'help') {
-                return;
-            }
-
+        dispatcher.command('help', function() {
             var commands = [
+                { name: '1>>2', description: 'Displays result of expression'},
                 { name: 'help', description: 'Displays help'},
                 { name: 'clear', description: 'Clears console'}
             ];
 
-            var model = new app.models.HelpResult(commands);
-
-            resultView.display(cmdArgs.input, model);
-            cmdArgs.commandHandled = true;
+            return new app.models.HelpResult(commands);
         });
 
-        // Clear
-        app.command('dispatchInput', function(cmdArgs){
-            if(cmdArgs.input.toLowerCase() !== 'clear') {
-                return;
-            }
-
-            resultView.clear();
-
-            cmdArgs.commandHandled = true;
-        });
-
-        // Unknown Expression
-        app.command('dispatchInput', function(cmdArgs){
-            cmdArgs.commandHandled = true;
-            resultView.display(cmdArgs.input, new app.models.ErrorResult("Unknown expression: " + cmdArgs.input))
+        dispatcher.command({
+           $expression:null,
+           canHandle: function(input) { return this.$expression.canParse(input); },
+           handle: function(input) {
+               return this.$expression.parse(input);
+           }
         });
 
         app.bootstrap(document.getElementById('rootView'));

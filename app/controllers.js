@@ -1,4 +1,4 @@
-(function(app){
+(function(app, is){
 
     app.controller('expressionInputCtrl', {
         $dispatcher:null,
@@ -25,9 +25,8 @@
        onViewAttached: function(el) {
            var r = 1;
        },
-       display: function (input, model) {
-           var result = new app.models.DisplayResult(input, model);
-           var view = app.buildViewFor(result);
+       display: function ( model) {
+           var view = app.buildViewFor(model);
 
            var vw = this.viewElement;
            if(vw.childNodes.length == 0) {
@@ -41,4 +40,4 @@
 
     app.controller('resultViewCtrl', app.service('resultView'));
 
-})(window.app);
+})(window.app, window.is);

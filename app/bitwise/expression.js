@@ -1,8 +1,11 @@
 (function() {
-    var twoOperandsRegex = /^(\d+)(<<|>>|\||\&|\^)(\d+)$/;
+    var twoOperandsRegex = /^(\d+)\s*(<<|>>|\||\&|\^)\s*(\d+)$/;
     var numbersList = /^((\d*)+\s?)+$/;
 
     app.service('expression', {
+        canParse: function(string) {
+          return twoOperandsRegex.test(string) || numbersList.test(string);
+        },
         parse: function(string) {
             var trimmed = string.replace(/^\s+|\s+$/, '');
             var matches = twoOperandsRegex.exec(trimmed);
