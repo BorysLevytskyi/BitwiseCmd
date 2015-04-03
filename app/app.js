@@ -1,4 +1,4 @@
-(function (should, commandr, bindr) {
+(function (should, commandr, bindr, Container) {
 
     var app = {
         views: {}
@@ -8,6 +8,8 @@
     var controllersContainer = {};
     var commandHandlers = {};
     var runObservers = [];
+
+    app.di = new Container();
 
     function resolveOrInject(name, inst, container, entityName) {
         var resolved;
@@ -66,4 +68,4 @@
 
 
 
-})(window.should, window.commandr, window.bindr);
+})(window.should, window.commandr, window.bindr, window.Container);
