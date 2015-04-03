@@ -2,9 +2,9 @@
 
     app.controller('expressionInputCtrl', {
         $dispatcher:null,
-        attachView: function (viewElement) {
+        onViewAttached: function () {
             var d = this.$dispatcher;
-            viewElement.addEventListener('keyup', function (args) {
+            this.viewElement.addEventListener('keyup', function (args) {
                 if (args.keyCode != 13) {
                     return;
                 }
@@ -17,12 +17,6 @@
     });
 
     app.service('resultView', {
-       attachView: function(viewElement) {
-           this.viewElement = viewElement;
-       },
-       detachView: function() {
-           this.viewElement = null;
-       },
        clear: function (){
            this.viewElement.innerHTML = '';
        },

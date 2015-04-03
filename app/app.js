@@ -4,8 +4,6 @@
         views: {}
     };
 
-    var servicesContainer = {};
-    var controllersContainer = {};
     var commandHandlers = {};
     var runObservers = [];
 
@@ -19,9 +17,16 @@
         this.di.register(name, inst);
     };
 
+    app.get = function(name) {
+        return this.di.resolve(name);
+    };
+
     app.service = app.component;
 
-    app.controller = app.component;
+    app.controller = function(name, inst) {
+        this.addControllerMixin(inst);
+        this.di.register(name, inst);
+    };
 
     app.command = function(name, handler) {
         var cmd = commandHandlers[name];
@@ -52,6 +57,25 @@
 
     window.app = app;
 
+    app.addControllerMixin = function (component) {
+        component.attachView = function(viewElement) {
+
+            this.viewElement = viewElement;
+
+            if(typeof component.onViewAttached == 'function') {
+                component.onViewAttached(viewElement);
+            }
+        };
+
+        component.detachView = function() {
+
+            this.viewElement = null;
+
+            if(typeof component.onViewDetached == 'function') {
+                component.onViewDetached(viewElement);
+            }
+        };
+    }
 
 
 })(window.should, window.commandr, window.bindr, window.Container);
