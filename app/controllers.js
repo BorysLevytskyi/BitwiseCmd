@@ -25,8 +25,7 @@
            if(vw.childNodes.length == 0) {
                vw.appendChild(htmlElement);
            }
-           else
-           {
+           else {
                vw.insertBefore(htmlElement, vw.childNodes[0]);
            }
        }

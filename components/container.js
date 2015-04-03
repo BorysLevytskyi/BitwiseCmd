@@ -31,7 +31,7 @@
 
     Container.prototype.resolveProperties = function (instance) {
         for(var property in instance) {
-            if(property[0] == '$') {
+            if(property[0] == '$' && instance[property] == null) {
                 var name = property.substr(1, property.length - 1);
                 instance[property] = this.resolve(name);
 
