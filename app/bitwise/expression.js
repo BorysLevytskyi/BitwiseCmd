@@ -24,15 +24,14 @@
         var o1 = parseInt(matches[1], 10);
         var o2 = parseInt(matches[3], 10);
 
-        return {
-            string: matches.input,
-            operand1: o1,
-            sign: matches[2],
-            operand2: o2,
-            calculate: function() {
-                return eval(this.string);
-            }
-        }
+        var m = new app.models.BitwiseOperation();
+        m.operand1 = o1;
+        m.operand2 = o2;
+        m.sing = matches[2];
+        m.string = matches.input;
+        m.result = eval(matches.input);
+
+        return m;
     }
 
     function createListOfNumbersExpression(matches) {
@@ -42,10 +41,7 @@
             numbers.push(parseInt(matches[i], 10));
         }
 
-        return {
-            string:matches.input,
-            operands: numbers
-        }
+        return app.models.BitwiseNumbers(numbers);
     }
 
 })(window.app);

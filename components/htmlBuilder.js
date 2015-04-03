@@ -35,8 +35,12 @@
     };
 
     HtmlBuilder.prototype.toHtmlElement = function (){
+        return HtmlBuilder.createElement(this.toString());
+    };
+
+    HtmlBuilder.createElement = function(html) {
         var el = document.createElement('div');
-        el.innerHTML = this.toString();
+        el.innerHTML = html;
         return el.children[0];
     };
 

@@ -72,40 +72,6 @@
 
     };
 
-    bindr.bindControllers = function (rootViewElement, container) {
-        var elements = rootViewElement.querySelectorAll('[data-controller]'),
-            i = 0, l = elements.length, ctrlName, ctrl, attached;
-
-        for(;i<l;i++){
-            var element = elements[i];
-            ctrlName = element.getAttribute('data-controller');
-            ctrl = container.resolve(ctrlName);
-            attached = [];
-
-            if(ctrl == null) {
-                console.warn(ctrlName + ' controller wasn\'t found');
-                continue;
-            }
-
-            ctrl.attachView(element);
-            attached.push(ctrl);
-
-            console.log(ctrlName + ' Controller: view attached');
-
-            if(typeof ctrl.detachView != "function") {
-                continue;
-            }
-
-            element.addEventListener('DOMNodeRemoved', function (evt) {
-                if(element === evt.target) {
-                    ctrl.detachView();
-                }
-
-                console.log(ctrlName + ' Controller: view detached');
-            });
-        }
-    };
-
     function bindInput(model, intput, propertyName) {
         intput.addEventListener('keyup', function(e){
             model[propertyName] = e.srcElement.value;

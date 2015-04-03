@@ -8,15 +8,19 @@
     <script type="text/javascript" src="components/bindr.js"></script>
     <script type="text/javascript" src="components/commandr.js"></script>
     <script type="text/javascript" src="components/should.js"></script>
-    <script type="text/javascript" src="components/html.js"></script>
+    <script type="text/javascript" src="components/htmlBuilder.js"></script>
     <script type="text/javascript" src="components/container.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="components/controllersFeature.js"></script>
+    <script type="text/javascript" src="components/modelViewsFeature.js"></script>
     <script type="text/javascript" src="app/bitwise/calc.js"></script>
     <script type="text/javascript" src="app/bitwise/expression.js"></script>
     <script type="text/javascript" src="app/bitwise/formatter.js"></script>
 
+    <script type="text/javascript" src="app/models.js"></script>
     <script type="text/javascript" src="app/views.js"></script>
+
     <script type="text/javascript" src="app/dispatcher.js"></script>
     <script type="text/javascript" src="app/controllers.js"></script>
     <script type="text/javascript" src="app/services.js"></script>
@@ -50,8 +54,7 @@
                     return;
                 }
 
-                var expressionView = new window.app.views.ExpressionView(expr);
-                this.$resultView.insert(expressionView.render());
+                this.$resultView.display(expr);
 
                 cmdArgs.commandHandled = true;
             }
@@ -68,9 +71,9 @@
                 { name: 'clear', description: 'Clears console'}
             ];
 
-            var helpView = new app.views.HelpView(commands);
+            var model = new app.models.HelpResult(commands);
 
-            resultView.insert(helpView.render());
+            resultView.display(model);
             cmdArgs.commandHandled = true;
         });
 
@@ -90,12 +93,13 @@
             var hb = html.builder();
             hb.element('div', { class: "result error", html: "Unknown expression: " + cmdArgs.input });
 
-            resultView.insert(hb.toHtmlElement());
+            resultView.display(hb.toHtmlElement());
 
             cmdArgs.commandHandled = true;
         });
 
         app.bootstrap(document.getElementById('rootView'));
+
     })();
 
 </script>

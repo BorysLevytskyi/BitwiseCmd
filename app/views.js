@@ -4,42 +4,37 @@
     var formatter = app.service('formatter');
     var calc = app.service('calc');
 
-    function ExpressionView(expression) {
-        this.expression = expression;
-    }
-
-    ExpressionView.prototype.render = function () {
-           var expr = this.expression,
-               hb = app.service('html').builder();
-
-        console.log('Rendering expression: ', expr)
-
-        if(typeof expr.calculate == "function") {
-            return renderCalculableExpression(expr, hb);
-        } else {
-            return renderListOfNumbers(expr, hb);
+    app.modelView(app.models.BitwiseOperation, {
+        $html:null,
+        renderView: function(model) {
+            return renderCalculableExpression(model, this.$html.builder());
         }
+    });
 
-    };
+    app.modelView(app.models.BitwiseNumbers, {
+        $html:null,
+        renderView: function(model) {
+            return renderListOfNumbers(model.numbers, this.$html.builder());
+        }
+    });
 
     function renderCalculableExpression(expr, hb) {
-        var result = expr.calculate(),
-            maxLen = calc.maxNumberOfBits([expr.operand1, expr.operand2, result]);
+        var maxLen = calc.maxNumberOfBits([expr.operand1, expr.operand2, expr.result]);
 
         hb.element('table', { class: "expression", cellspacing: "0"}, function () {
             buildRow(hb, expr.operand1, formatter.toBinaryString(expr.operand1, maxLen));
             buildRow(hb, expr.operand2, formatter.toBinaryString(expr.operand2, maxLen));
-            buildRow(hb, expr.string, formatter.toBinaryString(result, maxLen), { class: 'result'});
+            buildRow(hb, expr.result, formatter.toBinaryString(expr.result, maxLen), { class: 'result'});
         });
 
         return hb.toHtmlElement();
     }
 
-    function renderListOfNumbers(expr, hb) {
-        var maxLen = calc.maxNumberOfBits(expr.operands);
+    function renderListOfNumbers(numbers, hb) {
+        var maxLen = calc.maxNumberOfBits(numbers);
 
         hb.element('table', { class: "expression", cellspacing: "0"}, function () {
-            expr.operands.forEach(function(o){
+            numbers.forEach(function(o){
                 buildRow(hb, o, formatter.toBinaryString(o, maxLen));
             });
         });
@@ -62,27 +57,18 @@
         }
     }
 
-    app.views.ExpressionView = ExpressionView;
-
-})(window.app);
-
-// Help View
-(function(app){
-    function HelpView(commands) {
-        this.commands = commands;
-    }
-
-    HelpView.prototype.render = function() {
-        var hb = app.service('html').builder();
-        var commands = this.commands;
-        hb.element('ul', { class: 'result' }, function() {
-            commands.forEach(function(c) {
-                hb.element('li', c.name + " — " + c.description);
-            });});
-        return hb.toHtmlElement();
-    };
-
-    app.views.HelpView = HelpView;
+    app.modelView(app.models.HelpResult, {
+        $html: null,
+        renderView: function(model) {
+            var hb = this.$html.builder();
+            var commands = model.commands;
+            hb.element('ul', { class: 'result' }, function() {
+                commands.forEach(function(c) {
+                    hb.element('li', c.name + " — " + c.description);
+                });});
+            return hb.toHtmlElement();
+        }
+    });
 
 })(window.app);
 

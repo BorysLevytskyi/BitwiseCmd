@@ -20,7 +20,11 @@
        clear: function (){
            this.viewElement.innerHTML = '';
        },
-       insert: function (htmlElement) {
+       display: function (htmlElement) {
+           if(typeof htmlElement.tagName == "undefined") {
+                htmlElement = app.buildViewFor(htmlElement);
+           }
+
            var vw = this.viewElement;
            if(vw.childNodes.length == 0) {
                vw.appendChild(htmlElement);
