@@ -39,6 +39,17 @@
             cmd.subscribe(handler);
         }
 
+        if (typeof handler == "object") {
+
+            if(typeof handler.execute != "function"){
+                console.warn('Given handler is an object, but doesn\'t have "execute" function');
+                return cmd;
+            }
+
+            this.di.resolveProperties(handler);
+            cmd.subscribe(handler.execute.bind(handler));
+        }
+
         return cmd;
     };
 
@@ -54,8 +65,6 @@
     function invokeRunObservers() {
         runObservers.forEach(function(o){ o(); });
     }
-
-    window.app = app;
 
     app.addControllerMixin = function (component) {
         component.attachView = function(viewElement) {
@@ -77,5 +86,6 @@
         };
     }
 
+    window.app = app;
 
 })(window.should, window.commandr, window.bindr, window.Container);

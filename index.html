@@ -36,23 +36,25 @@
 
     (function(){
         var app = window.app;
-        var expression = app.service('expression');
-
         var html = app.service('html');
         var resultView = app.service('resultView');
 
         // Expression
-        app.command('dispatchInput', function(cmdArgs) {
+        app.command('dispatchInput', {
+            $expression: null,
+            $resultView: null,
+            execute:function(cmdArgs) {
 
-            var expr = expression.parse(cmdArgs.input);
-            if(expr == null) {
-                return;
+                var expr = this.$expression.parse(cmdArgs.input);
+                if(expr == null) {
+                    return;
+                }
+
+                var expressionView = new window.app.views.ExpressionView(expr);
+                this.$resultView.insert(expressionView.render());
+
+                cmdArgs.commandHandled = true;
             }
-
-            var expressionView = new window.app.views.ExpressionView(expr);
-            resultView.insert(expressionView.render());
-
-            cmdArgs.commandHandled = true;
         });
 
         // Help
@@ -92,18 +94,6 @@
 
             cmdArgs.commandHandled = true;
         });
-
-        app.di.register("ts", {
-            $html:null,
-            doStuff: function() {
-                console.log(this.$html);
-            }
-        });
-
-        app.di.register('html', { he: 23});
-
-        var t = app.di.resolve('ts');
-        t.doStuff();
 
         app.bootstrap(document.getElementById('rootView'));
     })();

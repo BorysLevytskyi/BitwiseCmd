@@ -1,7 +1,6 @@
 (function(should){
     function Container(store) {
         this.store = {};
-        this.resolved = {};
     }
 
     Container.prototype.register = function(name, inst) {
@@ -13,10 +12,11 @@
         return reg;
     };
 
+    // TODO: Check for circular - dependencies
     Container.prototype.resolve = function(name) {
         var reg = this.store[name];
         if(reg == null) {
-            throw new Error(''); // TODO: wrote
+            throw new Error(name + ' component is not registered');
         }
 
         if(reg.resolved == null) {
@@ -34,6 +34,10 @@
             if(property[0] == '$') {
                 var name = property.substr(1, property.length - 1);
                 instance[property] = this.resolve(name);
+
+                if(instance[property] == null) {
+                    console.log('"' + property + '" property couldn\'t be resolved')
+                }
             }
         }
     };
