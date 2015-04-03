@@ -82,8 +82,8 @@
             <td class="label">{operand1}</td>
             <td class="bin">{operand1Binary}</td>
         </tr>
-        <tr>
-            <td class="label">{operand1}{sign}{operand2}</td>
+        <tr class="result">
+            <td class="label">{operand1}{sign}{operand2}={result}</td>
             <td class="bin">{resultBinary}</td>
         </tr>
     </table>
@@ -101,7 +101,7 @@
             <td class="label">{operand2}</td>
             <td class="bin">{operand2Binary}</td>
         </tr>
-        <tr>
+        <tr class="result">
             <td>=</td>
             <td class="label">{result}</td>
             <td class="bin">{resultBinary}</td>
@@ -134,6 +134,7 @@
         app.debugMode = true;
 
         dispatcher.dispatch('help');
+        dispatcher.dispatch('1 2 3 4 5 6 7 8');
         dispatcher.dispatch('3 << 4');
         dispatcher.dispatch('233 | 322');
 

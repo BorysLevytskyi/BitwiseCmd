@@ -10,7 +10,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .result .content { padding-left: 10px}
 .result .cur { color: lightgray; margin-right: 5px }
 
-.expression .label { font-weight:  bold; padding-right: 5px }
+.expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
 .expression .bin { letter-spacing: 3px; }
 .expression .one { color: #6d9ad3 }
 .expression .zero { color: #70d351 }

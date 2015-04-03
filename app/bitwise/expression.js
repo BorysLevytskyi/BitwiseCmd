@@ -48,5 +48,4 @@
 
         return new app.models.BitwiseNumbers(numbers);
     }
-
 })(window.app);
