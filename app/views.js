@@ -10,9 +10,21 @@
 
     ExpressionView.prototype.render = function () {
            var expr = this.expression,
-               hb = app.service('html').builder(),
-               result = expr.result(),
-               maxLen = calc.maxNumberOfBits(expr.operand1, expr.operand2, result);
+               hb = app.service('html').builder();
+
+        console.log('Rendering expression: ', expr)
+
+        if(typeof expr.calculate == "function") {
+            return renderCalculableExpression(expr, hb);
+        } else {
+            return renderListOfNumbers(expr, hb);
+        }
+
+    };
+
+    function renderCalculableExpression(expr, hb) {
+        var result = expr.calculate(),
+            maxLen = calc.maxNumberOfBits([expr.operand1, expr.operand2, result]);
 
         hb.element('table', { class: "expression", cellspacing: "0"}, function () {
             buildRow(hb, expr.operand1, formatter.toBinaryString(expr.operand1, maxLen));
@@ -21,7 +33,19 @@
         });
 
         return hb.toHtmlElement();
-    };
+    }
+
+    function renderListOfNumbers(expr, hb) {
+        var maxLen = calc.maxNumberOfBits(expr.operands);
+
+        hb.element('table', { class: "expression", cellspacing: "0"}, function () {
+            expr.operands.forEach(function(o){
+                buildRow(hb, o, formatter.toBinaryString(o, maxLen));
+            });
+        });
+
+        return hb.toHtmlElement();
+    }
 
     function buildRow(hb, label, binaryStr, attrs) {
         hb.element('tr', attrs, function() {

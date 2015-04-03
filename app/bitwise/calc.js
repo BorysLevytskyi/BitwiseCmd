@@ -6,12 +6,12 @@
         return Math.floor(Math.log(num) / Math.log(2)) + 1;
     };
 
-    calc.maxNumberOfBits = function () {
+    calc.maxNumberOfBits = function (arr) {
 
         var counts = [], num;
-        for(var i=0;i<arguments.length; i++)
+        for(var i=0;i<arr.length; i++)
         {
-            num = arguments[i];
+            num = arr[i];
             counts.push(this.numberOfBits(num));
         }
 

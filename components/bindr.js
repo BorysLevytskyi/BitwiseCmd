@@ -96,8 +96,11 @@
                 continue;
             }
 
-            element.addEventListener('DOMNodeRemoved', function () {
-                ctrl.detachView();
+            element.addEventListener('DOMNodeRemoved', function (evt) {
+                if(element === evt.target) {
+                    ctrl.detachView();
+                }
+
                 console.log(ctrlName + ' Controller: view detached');
             });
         }
