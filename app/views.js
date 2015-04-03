@@ -1,8 +1,8 @@
 // Expression View
 (function(app) {
 
-    var formatter = app.service('formatter');
-    var calc = app.service('calc');
+    var formatter = app.component('formatter');
+    var calc = app.component('calc');
 
     app.modelView(app.models.BitwiseOperation, {
         $html:null,

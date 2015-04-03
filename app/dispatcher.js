@@ -4,14 +4,13 @@
 
     var dispatcher = {
         $resultView:null,
-        debug:true,
         dispatch: function(rawInput) {
             var input = rawInput.trim();
             var handler = this.findHandler(input);
 
             if(handler != null) {
 
-                if(this.debug) {
+                if(app.debugMode) {
                     this.invokeHandler(input, handler);
                 } else {
                     try {
@@ -83,6 +82,6 @@
        app.get('resultView').clear();
     });
 
-    app.service('dispatcher', dispatcher);
+    app.component('dispatcher', dispatcher);
 
 })(window.app, window.is);

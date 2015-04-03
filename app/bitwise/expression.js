@@ -2,7 +2,7 @@
     var twoOperandsRegex = /^(\d+)\s*(<<|>>|\||\&|\^)\s*(\d+)$/;
     var numbersList = /^((\d*)+\s?)+$/;
 
-    app.service('expression', {
+    app.component('expression', {
         canParse: function(string) {
           return twoOperandsRegex.test(string) || numbersList.test(string);
         },

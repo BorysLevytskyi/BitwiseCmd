@@ -1,6 +1,6 @@
 (function(should, app){
 
-    app.service("formatter", {
+    app.component("formatter", {
         toBinaryString: function(num, totalLength) {
 
             var binaryStr = num.toString(2),

@@ -1,6 +1,6 @@
 (function(app, HtmlBuilder){
 
-    app.service('html', {
+    app.component('html', {
         builder: function () {
             return new HtmlBuilder();
         },

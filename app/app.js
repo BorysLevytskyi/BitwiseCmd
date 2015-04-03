@@ -1,8 +1,9 @@
-(function (should, commandr, bindr, Container) {
+(function (should, Container) {
 
     var app = {
         views: {},
-        models: {}
+        models: {},
+        debugMode: false
     };
 
     var commandHandlers = {};
@@ -22,35 +23,6 @@
         return this.di.resolve(name);
     };
 
-    app.service = app.component;
-
-
-    // TODO: introduce command feature
-    app.command = function(name, handler) {
-        var cmd = commandHandlers[name];
-
-        if(cmd == null) {
-            cmd = commandHandlers[name] = new commandr.Command(name);
-        }
-
-        if(typeof handler == "function") {
-            cmd.subscribe(handler);
-        }
-
-        if (typeof handler == "object") {
-
-            if(typeof handler.execute != "function"){
-                console.warn('Given handler is an object, but doesn\'t have "execute" function');
-                return cmd;
-            }
-
-            this.di.resolveProperties(handler);
-            cmd.subscribe(handler.execute.bind(handler));
-        }
-
-        return cmd;
-    };
-
     app.run = function(observer) {
         runObservers.push(observer);
     };
@@ -66,5 +38,4 @@
 
     window.app = app;
 
-
-})(window.should, window.commandr, window.bindr, window.Container);
+})(window.should, window.Container);
