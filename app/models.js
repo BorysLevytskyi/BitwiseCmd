@@ -19,9 +19,15 @@
         this.commands = commands;
     }
 
+    function DisplayResult (input, payload) {
+        this.input = input;
+        this.payload = payload;
+    }
+
     app.models.BitwiseOperation = BitwiseOperation;
     app.models.BitwiseNumbers = BitwiseNumbers;
     app.models.ErrorResult = ErrorResult;
     app.models.HelpResult = HelpResult;
+    app.models.DisplayResult = DisplayResult;
 
 })(window.app);

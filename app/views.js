@@ -62,11 +62,33 @@
         renderView: function(model) {
             var hb = this.$html.builder();
             var commands = model.commands;
-            hb.element('ul', { class: 'result' }, function() {
+            hb.element('ul', { class: 'help' }, function() {
                 commands.forEach(function(c) {
                     hb.element('li', c.name + " — " + c.description);
                 });});
             return hb.toHtmlElement();
+        }
+    });
+
+    app.modelView(app.models.ErrorResult, {
+        $html: null,
+        renderView: function(model) {
+            return this.$html.element('<div class="error">{message}</div>', model);
+        }
+    });
+
+    app.modelView(app.models.DisplayResult, {
+        $html: null,
+        renderView: function(model) {
+            var resultView = this.$html.element(
+                '<div class="result">' +
+                    '<div class="input">{input}</div>' +
+                    '<div class="payload"></div>' +
+                '</div>', model);
+
+            var payloadView = app.buildViewFor(model.payload);
+            resultView.childNodes[1].appendChild(payloadView);
+            return resultView;
         }
     });
 

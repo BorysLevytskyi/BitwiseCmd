@@ -4,12 +4,12 @@
         builder: function () {
             return new HtmlBuilder();
         },
-        view: function (tml, model) {
-            var func = template.compile(tml);
-            return HtmlBuilder.createElement(func(model));
+
+        element: function(template, model) {
+            return HtmlBuilder.createElement(template, model);
         }
     });
-
+/*
     var template = {
         compile: function (template) {
             var regex = /(?:{([^}]+)})/g;
@@ -44,4 +44,5 @@
     function normalize(str) {
         return str.replace(/(\r|\n)+/g, '').replace("'", "\\\'");
     }
+ */
 })(window.app, window.HtmlBuilder);

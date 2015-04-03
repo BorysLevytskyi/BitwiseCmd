@@ -22,18 +22,16 @@
     <script type="text/javascript" src="app/views.js"></script>
 
     <script type="text/javascript" src="app/dispatcher.js"></script>
-    <script type="text/javascript" src="app/controllers.js"></script>
     <script type="text/javascript" src="app/services.js"></script>
-
+    <script type="text/javascript" src="app/controllers.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
 </head>
 <body id="rootView">
-<input id="in" type="text" data-controller="expressionInputCtrl"/>
-<div id="out" type="text" data-controller="resultViewCtrl"></div>
 
+<h2>Bitwise Operations Visualised</h2>
+<input id="in" type="text" class="expressionInput" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' for the "/>
 
-<div id="output">
-
+<div id="output" data-controller="resultView">
 </div>
 
 <script type="text/javascript">
@@ -54,7 +52,7 @@
                     return;
                 }
 
-                this.$resultView.display(expr);
+                this.$resultView.display(cmdArgs.input, expr);
 
                 cmdArgs.commandHandled = true;
             }
@@ -73,7 +71,7 @@
 
             var model = new app.models.HelpResult(commands);
 
-            resultView.display(model);
+            resultView.display(cmdArgs.input, model);
             cmdArgs.commandHandled = true;
         });
 
@@ -90,12 +88,8 @@
 
         // Unknown Expression
         app.command('dispatchInput', function(cmdArgs){
-            var hb = html.builder();
-            hb.element('div', { class: "result error", html: "Unknown expression: " + cmdArgs.input });
-
-            resultView.display(hb.toHtmlElement());
-
             cmdArgs.commandHandled = true;
+            resultView.display(cmdArgs.input, new app.models.ErrorResult("Unknown expression: " + cmdArgs.input))
         });
 
         app.bootstrap(document.getElementById('rootView'));

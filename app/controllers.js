@@ -4,6 +4,7 @@
         $dispatcher:null,
         onViewAttached: function () {
             var d = this.$dispatcher;
+            this.viewElement.focus();
             this.viewElement.addEventListener('keyup', function (args) {
                 if (args.keyCode != 13) {
                     return;
@@ -17,20 +18,23 @@
     });
 
     app.service('resultView', {
+       $html: null,
        clear: function (){
            this.viewElement.innerHTML = '';
        },
-       display: function (htmlElement) {
-           if(typeof htmlElement.tagName == "undefined") {
-                htmlElement = app.buildViewFor(htmlElement);
-           }
+       onViewAttached: function(el) {
+           var r = 1;
+       },
+       display: function (input, model) {
+           var result = new app.models.DisplayResult(input, model);
+           var view = app.buildViewFor(result);
 
            var vw = this.viewElement;
            if(vw.childNodes.length == 0) {
-               vw.appendChild(htmlElement);
+               vw.appendChild(view);
            }
            else {
-               vw.insertBefore(htmlElement, vw.childNodes[0]);
+               vw.insertBefore(view, vw.childNodes[0]);
            }
        }
     });

@@ -38,7 +38,17 @@
         return HtmlBuilder.createElement(this.toString());
     };
 
-    HtmlBuilder.createElement = function(html) {
+    HtmlBuilder.createElement = function(template, model) {
+        var regex = /(?:{([^}]+)})/g, html;
+
+        if(model == null){
+            html = template;
+        } else {
+            html =  template.replace(regex, function(m, g1) {
+                return HtmlBuilder.escapeHtml(model[g1]);
+            });
+        }
+
         var el = document.createElement('div');
         el.innerHTML = html;
         return el.children[0];
@@ -53,11 +63,20 @@
         for(var key in attr) {
             if(key == 'html')
                 continue;
-            str.push(key + '="' + attr[key] + '"');
+            str.push(key + '="' + HtmlBuilder.escapeHtml(attr[key]) + '"');
         }
 
         return str.join(' ');
     }
+
+    HtmlBuilder.escapeHtml = function(html) {
+            return html
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    };
 
     window.HtmlBuilder = HtmlBuilder;
 
