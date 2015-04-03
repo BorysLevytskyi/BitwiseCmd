@@ -17,9 +17,11 @@
             expr.resultBinary = formatter.toBinaryString(expr.result, maxLen);
 
             var templateId = /<<|>>/.test(expr.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
-
             var html = document.getElementById(templateId).innerHTML;
-            return $html.element(html, expr);
+            var el =  $html.element(html, expr);
+
+            colorizeBits(el);
+            return el;
         }
     });
 
@@ -44,6 +46,7 @@
                 binCell.innerText = formatter.toBinaryString(o, maxLen);
             });
 
+            colorizeBits(table);
             return table;
         }
     });
@@ -73,6 +76,16 @@
             return resultView;
         }
     });
+
+    function colorizeBits(container) {
+        var list = container.querySelectorAll('.bin');
+        Array.prototype.forEach.call(list, function(el){
+            var bin = el.innerText;
+            el.innerHTML = bin
+                .replace(/0/g, '<span class="zero">0</span>')
+                .replace(/1/g, '<span class="one">1</span>');
+        });
+    }
 
 })(window.app);
 
