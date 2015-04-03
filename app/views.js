@@ -9,7 +9,7 @@
         $html:null,
         $calc:null,
         renderView: function(expr) {
-            var maxLen = this.$calc.maxNumberOfBits([expr.operand1, expr.operand2, expr.result]);
+            var maxLen = getBinaryLength([expr.operand1, expr.operand2, expr.result]);
             var $html = app.component('html');
 
             expr.operand1Binary = formatter.toBinaryString(expr.operand1, maxLen);
@@ -29,8 +29,14 @@
         $html:null,
         $calc:null,
         renderView: function(model) {
-            var maxLen = this.$calc.maxNumberOfBits(model.numbers);
+            var maxLen = getBinaryLength(model.numbers);
             var table = this.$html.element('<table class="expression"></table>');
+
+            if(app.emphasizeBytes) {
+                if(maxLen % 8 != 0) {
+                    maxLen += Math.floor(maxLen / 8) + 8;
+                }
+            }
 
             model.numbers.forEach(function(o){
 
@@ -77,11 +83,26 @@
         }
     });
 
+    function getBinaryLength(arr) {
+        var bits = calc.maxNumberOfBits(arr);
+        if(app.emphasizeBytes && bits % 8 != 0) {
+            if(bits < 8) {
+                return 8;
+            }
+
+            var n = bits - (bits % 8);
+            return n + 8;
+        }
+        return bits;
+    }
+
     function colorizeBits(container) {
         var list = container.querySelectorAll('.bin');
         Array.prototype.forEach.call(list, function(el){
             var bin = el.innerText;
+
             el.innerHTML = bin
+                .replace(/(\d{8})/g, '<span class="byte">$1</span>')
                 .replace(/0/g, '<span class="zero">0</span>')
                 .replace(/1/g, '<span class="one">1</span>');
         });

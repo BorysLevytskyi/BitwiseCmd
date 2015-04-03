@@ -18,4 +18,5 @@
         var str = func.toString();
         return str.substr(8, str.indexOf('(') - 8).trim();
     }
+
 })(window.app, window.is);

@@ -74,4 +74,14 @@
     app.component('resultView', resultViewController);
     app.controller('resultViewCtrl', resultViewController);
 
+    app.controller('configPanelCtrl', {
+        onViewAttached: function (){
+            var chk = this.viewElement.querySelector('#displayBytes');
+            chk.checked = app.emphasizeBytes;
+            chk.addEventListener('change', function(evt){
+                app.emphasizeBytes = evt.srcElement.checked === true;
+            })
+        }
+    });
+
 })(window.app, window.is);

@@ -34,6 +34,12 @@
 </div>
 
 <input id="in" type="text" class="expressionInput" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
+<div data-controller="configPanelCtrl">
+    <label>
+        <input id="displayBytes" type="checkbox">
+        Emphasize Bytes
+    </label>
+</div>
 
 <div id="output" data-controller="resultView">
 </div>
@@ -128,14 +134,13 @@
            }
         });
 
+        app.emphasizeBytes = true; // TODO: Make into model
+
         app.bootstrap(document.getElementById('rootView'));
 
         app.debugMode = true;
 
         dispatcher.dispatch('help');
-        dispatcher.dispatch('1 2 3 4 5 6 7 8');
-        dispatcher.dispatch('3 << 4');
-        dispatcher.dispatch('233 | 322');
 
     })();
 
