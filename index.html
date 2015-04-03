@@ -50,7 +50,7 @@
             }
 
             var expressionView = new window.app.views.ExpressionView(expr);
-            resultView.insert(expressionView.getViewElement());
+            resultView.insert(expressionView.render());
 
             cmdArgs.commandHandled = true;
         });
@@ -68,7 +68,7 @@
 
             var helpView = new app.views.HelpView(commands);
 
-            resultView.insert(helpView.getViewElement());
+            resultView.insert(helpView.render());
             cmdArgs.commandHandled = true;
         });
 

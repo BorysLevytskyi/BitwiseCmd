@@ -25,6 +25,7 @@
             reg.resolved = inst;
         }
 
+        console.log(name + ' resolved', reg.resolved);
         return reg.resolved;
     };
 

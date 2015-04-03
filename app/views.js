@@ -8,7 +8,7 @@
         this.expression = expression;
     }
 
-    ExpressionView.prototype.getViewElement = function () {
+    ExpressionView.prototype.render = function () {
            var expr = this.expression,
                hb = app.service('html').builder(),
                result = expr.result(),
@@ -48,7 +48,7 @@
         this.commands = commands;
     }
 
-    HelpView.prototype.getViewElement = function() {
+    HelpView.prototype.render = function() {
         var hb = app.service('html').builder();
         var commands = this.commands;
         hb.element('ul', { class: 'result' }, function() {

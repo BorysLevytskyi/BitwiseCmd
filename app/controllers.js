@@ -3,14 +3,14 @@
     app.controller('expressionInputCtrl', {
         $dispatcher:null,
         attachView: function (viewElement) {
-
+            var d = this.$dispatcher;
             viewElement.addEventListener('keyup', function (args) {
                 if (args.keyCode != 13) {
                     return;
                 }
 
                 // Enter
-                this.$dispatcher.dispatch(args.srcElement.value);
+                d.dispatch(args.srcElement.value);
                 args.srcElement.value = '';
             });
         }
