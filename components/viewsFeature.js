@@ -1,4 +1,4 @@
-(function(app){
+(function(app, is){
     app.modelView = function (modelCtor, builder) {
         var name = getKey(modelCtor);
         app.di.register(name, builder);
@@ -18,4 +18,4 @@
         var str = func.toString();
         return str.substr(8, str.indexOf('(') - 8).trim();
     }
-})(window.app);
+})(window.app, window.is);

@@ -12,7 +12,7 @@
 
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="components/controllersFeature.js"></script>
-    <script type="text/javascript" src="components/modelViewsFeature.js"></script>
+    <script type="text/javascript" src="components/viewsFeature.js"></script>
     <script type="text/javascript" src="app/bitwise/calc.js"></script>
     <script type="text/javascript" src="app/bitwise/expression.js"></script>
     <script type="text/javascript" src="app/bitwise/formatter.js"></script>
@@ -28,10 +28,37 @@
 <body id="rootView">
 
 <h2>Bitwise Operations Visualised</h2>
+
+<div class="links">
+    <a href="https://github.com/BorisLevitskiy/BitwiseCmd">App on GitHub</a>
+</div>
+
 <input id="in" type="text" class="expressionInput" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
 
 <div id="output" data-controller="resultView">
 </div>
+
+<script id="helpView" type="text/template">
+    <div class="help">
+        <ul>
+            <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
+            <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
+            <li><code>clear</code> — clear output pane</li>
+            <li><code>help</code> — display this help</li>
+        </ul>
+
+        <p style="font-style: italic">
+            <strong>Tip:</strong> Use Up and Down keys to navigate trough executed commands.
+        </p>
+    </div>
+</script>
+
+<script id="resultView" type="text/template">
+    <div class="result">
+        <div class="input"><span class="cur">&gt;</span>{input}</div>
+        <div class="content"></div>
+    </div>
+</script>
 
 <script type="text/javascript">
 
@@ -40,13 +67,7 @@
         var dispatcher = app.get('dispatcher');
 
         dispatcher.command('help', function() {
-            var commands = [
-                { name: '1>>2', description: 'Displays result of expression'},
-                { name: 'help', description: 'Displays help'},
-                { name: 'clear', description: 'Clears console'}
-            ];
-
-            return new app.models.HelpResult(commands);
+            return new app.models.HelpResult();
         });
 
         dispatcher.command({
@@ -59,9 +80,16 @@
 
         app.bootstrap(document.getElementById('rootView'));
 
+        app.debugMode = true;
+
+        dispatcher.dispatch('help');
+        dispatcher.dispatch('3 ^ 4');
+
     })();
 
 </script>
+
+
 
 </body>
 </html>

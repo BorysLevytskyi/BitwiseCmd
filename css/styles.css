@@ -1,4 +1,8 @@
 body { font-family: Verdana; font-size: 0.8em }
+code { font-size: 1.2em; font-weight: bold; }
+
+.links { float: right; position: absolute; right: 10px; top: 10px; }
+
 
 .expressionInput { width: 500px; padding: 3px; border: solid 1px lightgray; }
 
@@ -14,6 +18,9 @@ body { font-family: Verdana; font-size: 0.8em }
 .expression .result td { border-top: dotted 1px gray; }
 .expression td { padding: 3px; }
 .expression { font-size: 1.2em; }
+
+.help { padding: 10px; background: #e0e0e0; }
+.help ul { list-style-type: none; margin: 0; padding: 0;  }
 
 .error { color: maroon; }
 

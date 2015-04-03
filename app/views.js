@@ -60,13 +60,8 @@
     app.modelView(app.models.HelpResult, {
         $html: null,
         renderView: function(model) {
-            var hb = this.$html.builder();
-            var commands = model.commands;
-            hb.element('ul', { class: 'help' }, function() {
-                commands.forEach(function(c) {
-                    hb.element('li', c.name + " — " + c.description);
-                });});
-            return hb.toHtmlElement();
+            var template = document.getElementById('helpView').innerHTML;
+            return this.$html.element(template);
         }
     });
 
@@ -80,14 +75,10 @@
     app.modelView(app.models.DisplayResult, {
         $html: null,
         renderView: function(model) {
-            var resultView = this.$html.element(
-                '<div class="result">' +
-                    '<div class="input"><span class="cur">&gt;</span>{input}</div>' +
-                    '<div class="content"></div>' +
-                '</div>', model);
-
+            var resultView = this.$html.element(document.getElementById('resultView').innerHTML, model);
             var contentView = app.buildViewFor(model.content);
-            resultView.childNodes[1].appendChild(contentView);
+
+            resultView.querySelector('.content').appendChild(contentView);
             return resultView;
         }
     });
