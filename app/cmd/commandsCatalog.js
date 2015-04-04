@@ -8,7 +8,7 @@ app.run(function() {
             return new app.models.HelpResult();
         },
         'clear': function() {
-            app.controller('resultViewCtrl').clear();
+            app.controller('cmdController').clear();
         },
         'em': function() {
             var cfg = app.get('cmdConfig');

@@ -4,13 +4,12 @@ app.compose(function() {
     app.set('dispatcher', function() {
         var handlers = [];
         var is = app.get('is');
-        var resultView = app.controller('resultViewCtrl');
+        var cmdController = app.controller('cmdController');
 
         return {
             dispatch: function(rawInput) {
                 var input = rawInput.trim();
                 var handler = this.findHandler(input);
-
 
                 if(handler != null) {
 
@@ -77,12 +76,12 @@ app.compose(function() {
                 var cmdResult = handler.handle(input);
                 if(cmdResult != null) {
                     var r = new app.models.DisplayResult(input, cmdResult);
-                    resultView.display(r);
+                    cmdController.display(r);
                 }
             },
             displayCommandError: function (input, message) {
                 var error = new app.models.ErrorResult(message);
-                resultView.display(new app.models.DisplayResult(input, error));
+                cmdController.display(new app.models.DisplayResult(input, error));
             }
         };
     });

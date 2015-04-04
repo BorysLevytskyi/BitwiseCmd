@@ -53,7 +53,7 @@ app.compose(function() {
         }
     });
 
-    app.controller('resultViewCtrl', function() {
+    app.controller('cmdController', function() {
         var html = app.get('html');
 
         return {
