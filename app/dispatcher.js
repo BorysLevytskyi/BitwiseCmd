@@ -1,5 +1,5 @@
 app.compose(function() {
-    app.component('dispatcher', function() {
+    app.set('dispatcher', function() {
         var handlers = [];
         var is = app.get('is');
         var resultView = app.controller('resultViewCtrl');
