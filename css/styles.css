@@ -21,7 +21,8 @@ code { font-size: 1.2em; font-weight: bold; }
 .help { padding: 10px; background: #e0e0e0; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
 
-.configPnl .indicator { font-size: 0.7em; background: darkblue; color: white; padding: 2px; }
+.configPnl .indicator { font-size: 0.7em; background: gray; color: white; padding: 2px; }
+.configPnl .on { background: darkblue; }
 
 .error { color: maroon; }
 

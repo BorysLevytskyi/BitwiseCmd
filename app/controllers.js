@@ -86,7 +86,13 @@ app.compose(function() {
         },
         update: function (cfg) {
             var emIndicator = this.viewElement.querySelector('#emphasizeBytes');
-            emIndicator.style.display = cfg.emphasizeBytes ? '' : 'none';
+            var reg = /\son/g;
+
+            if(cfg.emphasizeBytes) {
+                emIndicator.classList.add("on");
+            } else {
+                emIndicator.classList.remove("on");
+            }
         }
     });
 
