@@ -60,9 +60,6 @@ app.compose(function() {
             clear: function (){
                 this.viewElement.innerHTML = '';
             },
-            onViewAttached: function(el) {
-                var r = 1;
-            },
             display: function ( model) {
                 var view = app.buildViewFor(model);
 
