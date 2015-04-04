@@ -45,7 +45,6 @@ app.compose(function() {
                     return;
                 }
 
-                app.di.resolveProperties(h);
                 handlers.push(h);
             },
             createHandler: function(cmd, handler) {

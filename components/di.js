@@ -3,7 +3,7 @@
 (function(is){
     function Container(store) {
         this.store = {};
-        this.resolutionPath = [];
+        this.resolutionStack = [];
     }
 
     Container.prototype.register = function(name, def) {
@@ -25,14 +25,17 @@
     };
 
     Container.prototype.resolve = function(name) {
+        return resolveInternal.call(this, name);
+    };
 
-        if(contains(this.resolutionPath, name)) {
-            throw new Error("Failed to resolve service: " + name + ". Circular reference: " + this.resolutionPath.join(' < '));
+    function resolveInternal(name) {
+        if(contains(this.resolutionStack, name)) {
+            throw new Error("Failed to resolve service: " + name + ". Circular reference: " + this.resolutionStack.join(' < '));
         }
 
-        this.resolutionPath.unshift(name);
+        this.resolutionStack.unshift(name);
 
-        console.log('resolution path:' + this.resolutionPath.join(' < '));
+        console.log('\tresolution path:' + this.resolutionStack.join(' < '));
 
         var reg = this.store[name];
         if(reg == null) {
@@ -43,35 +46,13 @@
             reg.createInstance();
         }
 
-        this.resolutionPath.shift(name);
+        this.resolutionStack.shift();
+
+        console.log('\tresolution path:' + this.resolutionStack.join(' < '));
 
         return reg.resolved;
-    };
+    }
 
-    Container.prototype.resolveProperties = function (instance) {
-        for(var prop in instance) {
-            if(!instance.hasOwnProperty(prop)) {
-                continue;
-            }
-
-            if(prop[0] == '$' && instance[prop] == null) {
-                var key = prop.substr(1, prop.length - 1);
-                instance[prop] = this.resolve(key);
-
-                if(instance[prop] == null) {
-                    console.log('"' + prop + '" property couldn\'t be resolved')
-                }
-            }
-        }
-    };
-
-    Container.prototype.resolveMany = function (arr) {
-        var resolved = [], i = 0;
-        for(;i<0;i++) {
-            resolved.push(this.resolve(arr[i]));
-        }
-        return resolved;
-    };
 
     function Registration(definition) {
           this.def = definition;
@@ -81,13 +62,7 @@
     Registration.prototype.createInstance = function() {
         var def = this.def;
         if(typeof def == "function") {
-
-            if(is.array(def.inject)) {
-                this.resolved = def.apply(window, this.resolveMany(def.inject))
-            }
-            else {
-                this.resolved = def();
-            }
+            this.resolved = def();
         }
         else {
             // this.resolveProperties(inst);
