@@ -55,28 +55,32 @@
 
 <script data-template="helpResultTpl" type="text/template">
     <div class="help">
-        <p class="section">
-            <strong>Supported Commands</strong>
-            <ul>
-                <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
-                <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
-                <li><code>clear</code> — clear output pane</li>
-                <li><code>help</code> — display this help</li>
-                <li><code>em</code> — Turn On/Off Emphasize Bytes</li>
-            </ul>
-        </p>
-
-
-        <p class="section">
-            <strong>Supported Bitwise Operations</strong>
-           <ul>
-                <li><code>&</code> — bitwise AND</li>
-                <li><code>|</code> — bitwise inclusive OR</li>
-                <li><code>^</code> — bitwise exclusive XOR</li>
-                <li><code><<</code> — left shift</li>
-                <li><code>>></code> — right shift</li>
-             </ul>
-        </p>
+        <div style="overflow: hidden">
+            <div style="float: left; margin-right: 20px">
+                <p class="section">
+                    <strong>Supported Commands</strong>
+                <ul>
+                    <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
+                    <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
+                    <li><code>clear</code> — clear output pane</li>
+                    <li><code>help</code> — display this help</li>
+                    <li><code>em</code> — Turn On/Off Emphasize Bytes</li>
+                </ul>
+                </p>
+            </div>
+            <div class="float:left">
+                <p class="section">
+                    <strong>Supported Bitwise Operations</strong>
+                <ul>
+                    <li><code>&</code> — bitwise AND</li>
+                    <li><code>|</code> — bitwise inclusive OR</li>
+                    <li><code>^</code> — bitwise exclusive XOR</li>
+                    <li><code><<</code> — left shift</li>
+                    <li><code>>></code> — right shift</li>
+                </ul>
+                </p>
+            </div>
+        </div>
 
         <p style="font-style: italic">
             <strong>Tip:</strong> Use Up and Down keys to navigate trough executed commands.
