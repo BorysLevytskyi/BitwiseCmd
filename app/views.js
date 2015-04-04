@@ -69,7 +69,6 @@ app.compose(function () {
         renderView: function(model) {
             var resultView = app.template('resultView').render(model);
             var contentView = app.buildViewFor(model.content);
-
             resultView.querySelector('.content').appendChild(contentView);
             return resultView;
         }

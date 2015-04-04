@@ -1,19 +1,13 @@
 (function(){
     var bindr = {};
 
-  bindr.bindElement = function(element, model, propertyName) {
-        if(element.bindr != null) {
-            return;
-        }
+    bindr.bindChildren = function(container, model) {
+         var elements = container.querySelectorAll('[data-bind]');
+         Array.prototype.call(elements, function(el){
+         });
+    };
 
-        if(element.tagName == "INPUT") {
-            bindInput(model, element, propertyName);
-        }
-        else {
-            bindHtmlElement(model, element, propertyName);
-        }
-
-        element.bindr = {}; // will be used later
+    bindr.bind = function(element, model, propertyName) {
     };
 
     bindr.attachView = function(viewElement, model) {
@@ -28,25 +22,47 @@
 
     };
 
+
     function bindInput(model, intput, propertyName) {
-        intput.addEventListener('keyup', function(e){
-            model[propertyName] = e.srcElement.value;
+        bindTextInput(intput, model, propertyName);
+    }
+
+    function bindCheckBox(element, model, propertyName) {
+        element.checked = model[propertyName];
+
+        element.addEventListener('changed', function (e) {
+            model[propertyName] = e.srcElement.checked == true;
         });
 
-        model.observe(function(property, value){
-            if(window.event && window.event.srcElement == intput) {
+        model.observe(propertyName, function (property, value) {
+            if (window.event && window.event.srcElement == element) {
                 return;
             }
 
-            intput.value = value;
+            element.checked = value;
+        });
+    }
+
+
+    function bindTextInput(input, model, propertyName) {
+        input.value = model[propertyName];
+
+        input.addEventListener('keyup', function (e) {
+            model[propertyName] = e.srcElement.value;
+        });
+
+        model.observe(propertyName, function (property, value) {
+            if (window.event && window.event.srcElement == input) {
+                return;
+            }
+
+            input.value = value;
         });
     }
 
     function bindHtmlElement(model, el, propertyName) {
-        model.observe(function(propery, value){
-            if(propery == propertyName) {
-                el.innerHTML = value;
-            }
+        model.observe(propertyName, function(propery, value){
+            el.innerHTML = value;
         });
     }
 

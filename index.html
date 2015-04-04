@@ -12,6 +12,7 @@
     <script type="text/javascript" src="core/appShell.js"></script>
     <script type="text/javascript" src="core/htmlBuilder.js"></script>
     <script type="text/javascript" src="core/observable.js"></script>
+    <script type="text/javascript" src="core/bindr.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
 
@@ -39,12 +40,12 @@
     <a href="https://github.com/BorisLevitskiy/BitwiseCmd">App on GitHub</a>
 </div>
 
-<input id="in" type="text" class="expressionInput" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
-<div data-controller="configPanelCtrl">
-    <label>
-        <input id="displayBytes" type="checkbox">
-        Emphasize Bytes
-    </label>
+<div>
+    <input id="in" type="text" class="expressionInput" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
+
+    <span data-controller="configPanelCtrl" class="configPnl">
+         <span id="emphasizeBytes" class="indicator">Emphasize Bytes<span>
+    </span>
 </div>
 
 <div id="output" data-controller="resultViewCtrl">
@@ -59,6 +60,7 @@
                 <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
                 <li><code>clear</code> — clear output pane</li>
                 <li><code>help</code> — display this help</li>
+                <li><code>em</code> — Turn On/Off Emphasize Bytes</li>
             </ul>
         </p>
 

@@ -1,4 +1,6 @@
 (function(core){
+    var is = core.is;
+
     function ObservableObject () {
         this.executionHandlers = [];
     }
@@ -33,9 +35,25 @@
         }
     };
 
-    ObservableObject.prototype.observe = function (handler){
+    ObservableObject.prototype.observe = function (property, handler){
+        var func;
+        if(is.aFunction(property)) {
+            func = property;
+        }
+        else if(is.string(property) && is.aFunction(handler)) {
+            func = function (p, v) {
+                if(p === property) {
+                    handler(p, v)
+                }
+            }
+        }
+        else {
+            console.warn('Unsupported set of arguments: ', arguments);
+            return;
+        }
+
         var handlers = this.executionHandlers;
-        var index = handlers.push(handler);
+        var index = handlers.push(func);
         return function () { handlers.splice(1, index); }
     };
 

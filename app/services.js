@@ -2,7 +2,8 @@
 
     app.set('html', core.HtmlBuilder);
     app.set('is', core.is);
-    app.set('should', core.should)
+    app.set('should', core.should);
+    app.set('bindr', core.bindr);
 /*
     var template = {
         compile: function (template) {

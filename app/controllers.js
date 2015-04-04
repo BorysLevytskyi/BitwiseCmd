@@ -79,11 +79,15 @@ app.compose(function() {
 
     app.controller('configPanelCtrl', {
         onViewAttached: function (){
-            var chk = this.viewElement.querySelector('#displayBytes');
-            chk.checked = app.emphasizeBytes;
-            chk.addEventListener('change', function(evt){
-                app.emphasizeBytes = evt.srcElement.checked === true;
-            })
+            var self = this;
+            self.update();
+            app.cmdConfig.observe(function(){
+                self.update();
+            });
+        },
+        update: function () {
+            var emIndicator = this.viewElement.querySelector('#emphasizeBytes');
+            emIndicator.style.display = app.cmdConfig.emphasizeBytes ? '' : 'none';
         }
     });
 

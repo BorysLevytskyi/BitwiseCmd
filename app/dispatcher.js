@@ -83,6 +83,10 @@ app.compose(function() {
             app.controller('resultViewCtrl').clear();
         });
 
+        dispatcher.command('em', function() {
+            app.cmdConfig.emphasizeBytes = !app.cmdConfig.emphasizeBytes;
+        });
+
         return dispatcher;
     });
 });
