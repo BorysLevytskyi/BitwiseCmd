@@ -1,7 +1,7 @@
 (function(app, HtmlBuilder){
 
-    app.component('html', HtmlBuilder);
-    app.component('is', is);
+    app.set('html', HtmlBuilder);
+    app.set('is', is);
 /*
     var template = {
         compile: function (template) {

@@ -1,7 +1,7 @@
 app.compose(function() {
 
     app.controller('expressionInputCtrl', function (){
-        var dispatcher = app.component('dispatcher');
+        var dispatcher = app.get('dispatcher');
 
         return {
             onViewAttached: function () {
@@ -54,7 +54,7 @@ app.compose(function() {
     });
 
     app.controller('resultViewCtrl', function() {
-        var html = app.component('html');
+        var html = app.get('html');
 
         var resultViewController = {
             $html: null,

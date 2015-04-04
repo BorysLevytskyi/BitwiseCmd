@@ -5,10 +5,11 @@
 
     <title></title>
 
-    <script type="text/javascript" src="components/is.js"></script>
-    <script type="text/javascript" src="components/should.js"></script>
+    <script type="text/javascript" src="core/is.js"></script>
+    <script type="text/javascript" src="core/should.js"></script>
+    <script type="text/javascript" src="core/di.js"></script>
+    <script type="text/javascript" src="core/appShell.js"></script>
     <script type="text/javascript" src="components/htmlBuilder.js"></script>
-    <script type="text/javascript" src="components/di.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
 
@@ -146,7 +147,9 @@
     });
 
     app.bootstrap(document.getElementById('rootView'));
-    app.component('dispatcher').dispatch('help');
+    app.get('dispatcher').dispatch('help');
+    app.get('dispatcher').dispatch('1|2');
+    app.get('dispatcher').dispatch('1 2');
 
 </script>
 </body>

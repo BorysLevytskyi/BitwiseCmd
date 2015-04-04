@@ -1,7 +1,7 @@
 app.compose(function() {
     app.component('dispatcher', function() {
         var handlers = [];
-        var is = app.component('is');
+        var is = app.get('is');
         var resultView = app.controller('resultViewCtrl');
 
         var dispatcher = {

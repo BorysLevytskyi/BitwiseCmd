@@ -1,27 +1,31 @@
 (function(should, app){
 
-    app.component("formatter", {
-        toBinaryString: function(num, totalLength) {
+   app.compose(function() {
 
-            var binaryStr = num.toString(2),
-                formatted = [],
-                i;
+       app.set("formatter", {
+           toBinaryString: function(num, totalLength) {
 
-            if(totalLength != null) {
-                should.bePositiveInteger(totalLength);
-            }
+               var binaryStr = num.toString(2),
+                   formatted = [],
+                   i;
 
-            for(i = 0; i<binaryStr.length; i++) {
-                formatted.push(binaryStr[i]);
-            }
+               if(totalLength != null) {
+                   should.bePositiveInteger(totalLength);
+               }
 
-            while(totalLength > formatted.length) {
-                formatted.unshift('0');
-            }
+               for(i = 0; i<binaryStr.length; i++) {
+                   formatted.push(binaryStr[i]);
+               }
 
-            return formatted.join('');
-        }
-    });
+               while(totalLength > formatted.length) {
+                   formatted.unshift('0');
+               }
+
+               return formatted.join('');
+           }
+       });
+   })
+
 
 })(window.should, window.app);
 

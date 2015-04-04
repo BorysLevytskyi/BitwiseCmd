@@ -1,54 +1,16 @@
-(function (should, Container) {
+(function (should, Container, AppShell) {
 
-    var app = {
-        views: {},
-        models: {},
-        debugMode: false
-    };
+    var di = new Container();
+    var app = new AppShell(di);
 
-    var appModules = [];
-    var runObservers = [];
-
-    app.di = new Container();
-
-    app.component = function(name, inst) {
-        if(arguments.length == 1) {
-            return this.di.resolve(name);
-        }
-
-        this.di.register(name, inst);
-    };
-
-    app.get = function(name) {
-        return this.di.resolve(name);
-    };
-
-    app.compose = function (module) {
-        appModules.push(module);
-    };
-
-    app.run = function(observer) {
-        runObservers.push(observer);
-    };
+    app.debugMode = false;
 
     app.bootstrap = function(rootViewElement) {
         this.rootViewElement = rootViewElement;
-        initializeModules();
-        invokeRunObservers();
+        this.initialize();
     };
 
-    function initializeModules() {
-        appModules.forEach(function(m) {
-            if(is.aFunction(m)) {
-                m();
-            }
-        });
-    }
-
-    function invokeRunObservers() {
-        runObservers.forEach(function(o){ o(); });
-    }
 
     window.app = app;
 
-})(window.should, window.Container);
+})(window.should, window.Container, window.AppShell);

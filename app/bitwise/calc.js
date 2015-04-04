@@ -1,5 +1,5 @@
 (function(app, should){
-    app.component('calc', {
+    app.set('calc', {
 
         numberOfBits: function (num) {
             should.bePositiveInteger(num);

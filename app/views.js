@@ -1,9 +1,9 @@
 // Expression View
 app.compose(function () {
 
-    var formatter = app.component('formatter');
-    var calc = app.component('calc');
-    var html = app.component('html');
+    var formatter = app.get('formatter');
+    var calc = app.get('calc');
+    var html = app.get('html');
 
     app.modelView(app.models.BitwiseOperation, {
         renderView: function(expr) {
