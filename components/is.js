@@ -22,6 +22,10 @@
 
         htmlElement: function(obj) {
             return obj instanceof HtmlElement;
+        },
+
+        array: function(obj) {
+            return obj instanceof Array;
         }
     };
 })();

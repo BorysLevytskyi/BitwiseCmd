@@ -1,6 +1,7 @@
 (function(app, HtmlBuilder){
 
     app.component('html', HtmlBuilder);
+    app.component('is', is);
 /*
     var template = {
         compile: function (template) {
@@ -37,4 +38,4 @@
         return str.replace(/(\r|\n)+/g, '').replace("'", "\\\'");
     }
  */
-})(window.app, window.HtmlBuilder);
+})(window.app, window.HtmlBuilder, window.is);

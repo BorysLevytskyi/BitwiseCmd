@@ -1,26 +1,40 @@
-(function(app) {
+(function(app, should, Container) {
 
-    app.controller = function(name, inst) {
-        addControllerMixin(inst);
-        this.di.register(name, inst);
+    var controllerDi = app.di; // TODO: Compbine
+
+    app.controller = function(name, instOrFactory) {
+
+        should.beString(name, "name");
+
+        if(instOrFactory == null) {
+            return controllerDi.resolve(name);
+        }
+
+        var reg = new Container.Registration(instOrFactory);
+
+        reg.onFirstTimeResolve = function (inst) {
+            addControllerMixin(inst);
+        };
+
+        controllerDi.register(name, reg);
     };
 
-    function addControllerMixin(component) {
-        component.attachView = function(viewElement) {
+    function addControllerMixin(ctrl) {
+        ctrl.attachView = function(viewElement) {
 
             this.viewElement = viewElement;
 
-            if(typeof component.onViewAttached == 'function') {
-                component.onViewAttached(viewElement);
+            if(typeof ctrl.onViewAttached == 'function') {
+                ctrl.onViewAttached(viewElement);
             }
         };
 
-        component.detachView = function() {
+        ctrl.detachView = function() {
 
             this.viewElement = null;
 
-            if(typeof component.onViewDetached == 'function') {
-                component.onViewDetached(viewElement);
+            if(typeof ctrl.onViewDetached == 'function') {
+                ctrl.onViewDetached(viewElement);
             }
         };
     }
@@ -29,7 +43,7 @@
         attachControllers(app.rootViewElement, app.di);
     });
 
-    function attachControllers(rootViewElement, di) {
+    function attachControllers(rootViewElement) {
         var elements = rootViewElement.querySelectorAll('[data-controller]'),
             i = 0, l = elements.length,
             ctrlName,
@@ -38,7 +52,7 @@
         for(;i<l;i++){
             element = elements[i];
             ctrlName = element.getAttribute('data-controller');
-            ctrl = di.resolve(ctrlName);
+            ctrl = app.controller(ctrlName);
 
             if(ctrl == null) {
                 console.warn(ctrlName + ' controller wasn\'t found');
@@ -64,4 +78,9 @@
         }
     }
 
-})(window.app);
+    function isController(obj) {
+        return obj.componentType == 'controller';
+
+    }
+
+})(window.app, window.should, window.Container);

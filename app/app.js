@@ -6,7 +6,7 @@
         debugMode: false
     };
 
-    var commandHandlers = {};
+    var appModules = [];
     var runObservers = [];
 
     app.di = new Container();
@@ -23,14 +23,27 @@
         return this.di.resolve(name);
     };
 
+    app.compose = function (module) {
+        appModules.push(module);
+    };
+
     app.run = function(observer) {
         runObservers.push(observer);
     };
 
     app.bootstrap = function(rootViewElement) {
         this.rootViewElement = rootViewElement;
+        initializeModules();
         invokeRunObservers();
     };
+
+    function initializeModules() {
+        appModules.forEach(function(m) {
+            if(is.aFunction(m)) {
+                m();
+            }
+        });
+    }
 
     function invokeRunObservers() {
         runObservers.forEach(function(o){ o(); });

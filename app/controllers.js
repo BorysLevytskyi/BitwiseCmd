@@ -1,78 +1,85 @@
-(function(app, is){
+app.compose(function() {
 
-    app.controller('expressionInputCtrl', {
-        $dispatcher:null,
-        onViewAttached: function () {
-            var d = this.$dispatcher;
+    app.controller('expressionInputCtrl', function (){
+        var dispatcher = app.component('dispatcher');
 
-            var self = this;
-            self.history =[];
-            self.historyIndex = 0;
+        return {
+            onViewAttached: function () {
+                var d = dispatcher;
 
-            this.viewElement.focus();
-
-            this.viewElement.addEventListener('keyup', function (args) {
-                var inpt = args.srcElement;
-
-                if (args.keyCode != 13) {
-                    return;
-                }
-
-                // Enter
-                d.dispatch(inpt.value);
-                self.history.unshift(inpt.value);
+                var self = this;
+                self.history =[];
                 self.historyIndex = 0;
-                inpt.value = '';
-            });
 
-            this.viewElement.addEventListener('keydown', function(args){
-                if(args.keyCode == 38) {
+                this.viewElement.focus();
 
-                    if (self.history.length > self.historyIndex) { // up
-                        args.srcElement.value = self.history[self.historyIndex++];
+                this.viewElement.addEventListener('keyup', function (args) {
+                    var inpt = args.srcElement;
 
+                    if (args.keyCode != 13) {
+                        return;
                     }
 
-                    args.preventDefault();
-                    return;
-                }
+                    // Enter
+                    d.dispatch(inpt.value);
+                    self.history.unshift(inpt.value);
+                    self.historyIndex = 0;
+                    inpt.value = '';
+                });
 
-                if(args.keyCode == 40) {
+                this.viewElement.addEventListener('keydown', function(args){
+                    if(args.keyCode == 38) {
 
-                    if(self.historyIndex > 0) { // up
-                        args.srcElement.value = self.history[--self.historyIndex];
+                        if (self.history.length > self.historyIndex) { // up
+                            args.srcElement.value = self.history[self.historyIndex++];
+
+                        }
+
+                        args.preventDefault();
+                        return;
                     }
 
-                    args.preventDefault();
-                    return;
-                }
-            })
+                    if(args.keyCode == 40) {
+
+                        if(self.historyIndex > 0) { // up
+                            args.srcElement.value = self.history[--self.historyIndex];
+                        }
+
+                        args.preventDefault();
+                        return;
+                    }
+                })
+            }
         }
     });
 
-    var resultViewController = {
-        $html: null,
-        clear: function (){
-            this.viewElement.innerHTML = '';
-        },
-        onViewAttached: function(el) {
-            var r = 1;
-        },
-        display: function ( model) {
-            var view = app.buildViewFor(model);
+    app.controller('resultViewCtrl', function() {
+        var html = app.component('html');
 
-            var vw = this.viewElement;
-            if(vw.childNodes.length == 0) {
-                vw.appendChild(view);
-            }
-            else {
-                vw.insertBefore(view, vw.childNodes[0]);
-            }
-        }
-    };
+        var resultViewController = {
+            $html: null,
+            clear: function (){
+                this.viewElement.innerHTML = '';
+            },
+            onViewAttached: function(el) {
+                var r = 1;
+            },
+            display: function ( model) {
+                var view = app.buildViewFor(model);
 
-    app.component('resultView', resultViewController);
-    app.controller('resultViewCtrl', resultViewController);
+                var vw = this.viewElement;
+                if(vw.childNodes.length == 0) {
+                    vw.appendChild(view);
+                }
+                else {
+                    vw.insertBefore(view, vw.childNodes[0]);
+                }
+            }
+        };
+
+
+        return resultViewController;
+    });
 
     app.controller('configPanelCtrl', {
         onViewAttached: function (){
@@ -84,4 +91,6 @@
         }
     });
 
-})(window.app, window.is);
+});
+
+

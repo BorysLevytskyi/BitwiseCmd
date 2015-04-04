@@ -41,7 +41,7 @@
     </label>
 </div>
 
-<div id="output" data-controller="resultView">
+<div id="output" data-controller="resultViewCtrl">
 </div>
 
 <script id="helpView" type="text/template">
@@ -118,35 +118,33 @@
 
 <script type="text/javascript">
 
-    (function(){
-        var app = window.app;
+    var app = window.app;
+
+    app.run(function(){
+
         var dispatcher = app.get('dispatcher');
 
         dispatcher.command('help', function() {
             return new app.models.HelpResult();
         });
 
+        // TODO: Make as function
         dispatcher.command({
            $expression:null,
-           canHandle: function(input) { return this.$expression.canParse(input); },
+           canHandle: function(input) { return app.get('expression').canParse(input); },
            handle: function(input) {
-               return this.$expression.parse(input);
+               return app.get('expression').parse(input);
            }
         });
 
         app.emphasizeBytes = true; // TODO: Make into model
-
-        app.bootstrap(document.getElementById('rootView'));
-
         app.debugMode = true;
 
-        dispatcher.dispatch('help');
+    });
 
-    })();
+    app.bootstrap(document.getElementById('rootView'));
+    app.component('dispatcher').dispatch('help');
 
 </script>
-
-
-
 </body>
 </html>

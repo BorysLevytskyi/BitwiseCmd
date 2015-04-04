@@ -1,24 +1,21 @@
 // Expression View
-(function(app) {
+app.compose(function () {
 
     var formatter = app.component('formatter');
     var calc = app.component('calc');
-
+    var html = app.component('html');
 
     app.modelView(app.models.BitwiseOperation, {
-        $html:null,
-        $calc:null,
         renderView: function(expr) {
             var maxLen = getBinaryLength([expr.operand1, expr.operand2, expr.result]);
-            var $html = app.component('html');
 
             expr.operand1Binary = formatter.toBinaryString(expr.operand1, maxLen);
             expr.operand2Binary = formatter.toBinaryString(expr.operand2, maxLen);
             expr.resultBinary = formatter.toBinaryString(expr.result, maxLen);
 
             var templateId = /<<|>>/.test(expr.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
-            var html = document.getElementById(templateId).innerHTML;
-            var el =  $html.element(html, expr);
+            var htmlTpl = document.getElementById(templateId).innerHTML;
+            var el = html.element(htmlTpl, expr);
 
             colorizeBits(el);
             return el;
@@ -26,11 +23,9 @@
     });
 
     app.modelView(app.models.BitwiseNumbers, {
-        $html:null,
-        $calc:null,
         renderView: function(model) {
             var maxLen = getBinaryLength(model.numbers);
-            var table = this.$html.element('<table class="expression"></table>');
+            var table = html.element('<table class="expression"></table>');
 
             if(app.emphasizeBytes) {
                 if(maxLen % 8 != 0) {
@@ -58,24 +53,21 @@
     });
 
     app.modelView(app.models.HelpResult, {
-        $html: null,
         renderView: function(model) {
             var template = document.getElementById('helpView').innerHTML;
-            return this.$html.element(template);
+            return html.element(template);
         }
     });
 
     app.modelView(app.models.ErrorResult, {
-        $html: null,
         renderView: function(model) {
-            return this.$html.element('<div class="error">{message}</div>', model);
+            return html.element('<div class="error">{message}</div>', model);
         }
     });
 
     app.modelView(app.models.DisplayResult, {
-        $html: null,
         renderView: function(model) {
-            var resultView = this.$html.element(document.getElementById('resultView').innerHTML, model);
+            var resultView = html.element(document.getElementById('resultView').innerHTML, model);
             var contentView = app.buildViewFor(model.content);
 
             resultView.querySelector('.content').appendChild(contentView);
@@ -107,6 +99,5 @@
                 .replace(/1/g, '<span class="one">1</span>');
         });
     }
-
-})(window.app);
+});
 
