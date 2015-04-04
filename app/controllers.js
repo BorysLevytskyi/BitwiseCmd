@@ -56,8 +56,7 @@ app.compose(function() {
     app.controller('resultViewCtrl', function() {
         var html = app.get('html');
 
-        var resultViewController = {
-            $html: null,
+        return {
             clear: function (){
                 this.viewElement.innerHTML = '';
             },
@@ -76,9 +75,6 @@ app.compose(function() {
                 }
             }
         };
-
-
-        return resultViewController;
     });
 
     app.controller('configPanelCtrl', {

@@ -1,4 +1,5 @@
-(function(app, should){
+app.compose(function() {
+    var should = app.get('should')
     app.set('calc', {
 
         numberOfBits: function (num) {
@@ -18,4 +19,4 @@
         }
     });
 
-})(window.app, window.should);
+});

@@ -1,10 +1,10 @@
-(function() {
+app.compose(function(){
     var twoOperandsRegex = /^(\d+)\s*(<<|>>|\||\&|\^)\s*(\d+)$/;
     var numbersList = /^((\d*)+\s?)+$/;
 
     app.set('expression', {
         canParse: function(string) {
-          return twoOperandsRegex.test(string) || numbersList.test(string);
+            return twoOperandsRegex.test(string) || numbersList.test(string);
         },
         parse: function(string) {
             var trimmed = string.replace(/^\s+|\s+$/, '');
@@ -48,4 +48,4 @@
 
         return new app.models.BitwiseNumbers(numbers);
     }
-})(window.app);
+});

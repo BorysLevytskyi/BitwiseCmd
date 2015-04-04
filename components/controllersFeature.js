@@ -1,22 +1,20 @@
-(function(app, should, Container) {
+(function(app, core) {
 
-    var controllerDi = app.di; // TODO: Compbine
+    var should = core.should;
 
     app.controller = function(name, instOrFactory) {
-
         should.beString(name, "name");
-
         if(instOrFactory == null) {
-            return controllerDi.resolve(name);
+            return this.get(name);
         }
 
-        var reg = new Container.Registration(instOrFactory);
+        var reg = new core.Container.Registration(instOrFactory);
 
         reg.onFirstTimeResolve = function (inst) {
             addControllerMixin(inst);
         };
 
-        controllerDi.register(name, reg);
+        this.set(name, reg);
     };
 
     app.run(function(){
@@ -78,4 +76,4 @@
         }
     }
 
-})(window.app, window.should, window.Container);
+})(window.app, window.core);

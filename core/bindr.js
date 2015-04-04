@@ -50,5 +50,5 @@
         });
     }
 
-    window.bindr = bindr;
+    window.core.bindr = bindr;
 })();

@@ -1,7 +1,8 @@
-(function(app, HtmlBuilder){
+(function(app, core){
 
-    app.set('html', HtmlBuilder);
-    app.set('is', is);
+    app.set('html', core.HtmlBuilder);
+    app.set('is', core.is);
+    app.set('should', core.should)
 /*
     var template = {
         compile: function (template) {
@@ -38,4 +39,4 @@
         return str.replace(/(\r|\n)+/g, '').replace("'", "\\\'");
     }
  */
-})(window.app, window.HtmlBuilder, window.is);
+})(window.app, window.core);

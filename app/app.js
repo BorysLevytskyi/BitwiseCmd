@@ -1,7 +1,7 @@
-(function (should, Container, AppShell) {
+(function (core) {
 
-    var di = new Container();
-    var app = new AppShell(di);
+    var di = new core.Container();
+    var app = new core.AppShell(di);
 
     app.debugMode = false;
 
@@ -13,4 +13,4 @@
 
     window.app = app;
 
-})(window.should, window.Container, window.AppShell);
+})(window.core);

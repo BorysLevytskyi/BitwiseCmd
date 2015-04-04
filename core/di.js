@@ -1,6 +1,9 @@
 // Problems: no check for the circular references
 
-(function(is){
+(function(core){
+
+    var is = core.is;
+
     function Container(store) {
         this.store = {};
         this.resolutionStack = [];
@@ -20,7 +23,7 @@
             this.store[name] = reg;
         }
 
-        console.log(name + ' component registered');
+        console.log('[' + name + '] component registered');
         return reg;
     };
 
@@ -87,5 +90,5 @@
         return false;
     }
 
-    window.Container = Container;
-})(window.is);
+    core.Container = Container;
+})(window.core);

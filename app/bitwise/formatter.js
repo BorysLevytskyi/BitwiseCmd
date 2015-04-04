@@ -1,7 +1,7 @@
 (function(should, app){
 
    app.compose(function() {
-
+       var should = app.get('should');
        app.set("formatter", {
            toBinaryString: function(num, totalLength) {
 

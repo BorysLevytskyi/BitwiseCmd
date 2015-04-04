@@ -32,5 +32,5 @@
         functions.forEach(function(o){ o(); });
     }
 
-    window.AppShell = AppShell;
+    window.core.AppShell = AppShell;
 })();

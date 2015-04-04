@@ -1,4 +1,7 @@
-(function(app){
+(function(app, core){
+
+    var should = core.should;
+
     function Command(name) {
         this.name = name;
         this.executionHandlers = [];
@@ -49,4 +52,5 @@
     };
 
     window.commandr = commandr;
-})(window.app);
+
+})(window.app, window.core);

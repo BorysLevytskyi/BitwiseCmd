@@ -1,5 +1,5 @@
 (function(){
-    window.should = {
+    window.core.should = {
         beNumber: function (num, name) {
             this.check(typeof num == "number" && !isNaN(num), num + " is not a number");
             this.check(isFinite(num), num + "is an infinite number")

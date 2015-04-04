@@ -47,5 +47,5 @@
         });
     };
 
-    window.observable = observable;
+    window.core.observable = observable;
 });

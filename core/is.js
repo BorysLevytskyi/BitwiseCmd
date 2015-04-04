@@ -1,5 +1,5 @@
 (function(){
-    window.is = {
+    window.core.is = {
         plainObject: function(obj) {
             return typeof obj == "object" && obj instanceof Object;
         },

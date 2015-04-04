@@ -1,6 +1,7 @@
-(function(){
+(function(core){
 
     var HtmlBuilder = {};
+    var should = core.should;
 
     HtmlBuilder.element = function(template, model) {
         var el = document.createElement('div');
@@ -55,6 +56,6 @@
                 .replace(/'/g, "&#039;");
     };
 
-    window.HtmlBuilder = HtmlBuilder;
+    core.HtmlBuilder = HtmlBuilder;
 
-})();
+})(window.core);
