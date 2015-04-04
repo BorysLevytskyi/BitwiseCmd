@@ -1,7 +1,12 @@
 (function (core) {
 
     var di = new core.Container();
+
     var app = new core.AppShell(di);
+
+    app.cmdConfig = core.ObservableObject.create({
+        emphasizeBytes: true
+    });
 
     app.debugMode = false;
 
