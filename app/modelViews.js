@@ -5,6 +5,7 @@ app.compose(function () {
     var formatter = app.get('formatter');
     var calc = app.get('calc');
     var html = app.get('html');
+    var cmdConfig = app.get('cmdConfig');
 
     app.modelView(app.models.BitwiseOperation, {
         renderView: function(expr) {
@@ -27,12 +28,6 @@ app.compose(function () {
         renderView: function(model) {
             var maxLen = getBinaryLength(model.numbers);
             var table = html.element('<table class="expression"></table>');
-
-            if(app.emphasizeBytes) {
-                if(maxLen % 8 != 0) {
-                    maxLen += Math.floor(maxLen / 8) + 8;
-                }
-            }
 
             model.numbers.forEach(function(o){
 
@@ -77,7 +72,7 @@ app.compose(function () {
 
     function getBinaryLength(arr) {
         var bits = calc.maxNumberOfBits(arr);
-        if(app.emphasizeBytes && bits % 8 != 0) {
+        if(cmdConfig.emphasizeBytes && bits % 8 != 0) {
             if(bits < 8) {
                 return 8;
             }
