@@ -1,4 +1,4 @@
-body { font-family: Verdana; font-size: 0.8em }
+body { font-family: Verdana; font-size: 0.8em; padding: 20px 100px 0px 100px; margin: 0  }
 code { font-size: 1.2em; font-weight: bold; }
 
 .links { float: right; position: absolute; right: 10px; top: 10px; }
@@ -22,7 +22,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
 .help p { margin-top: 0 }
 
-.configPnl .indicator { font-size: 0.7em; background: gray; color: white; padding: 2px; }
+.configPnl .indicator { font-size: 0.7em; background: gray; color: white; padding: 2px 5px; }
 .configPnl .on { background: darkblue; }
 
 .error { color: maroon; }
