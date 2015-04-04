@@ -1,4 +1,5 @@
 app.compose(function() {
+    "use strict";
 
     app.controller('expressionInputCtrl', function (){
         var dispatcher = app.get('dispatcher');

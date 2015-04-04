@@ -1,4 +1,5 @@
 (function(app) {
+    "use strict";
 
     function Template(html) {
         this.html = html;

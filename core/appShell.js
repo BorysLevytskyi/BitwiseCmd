@@ -1,5 +1,6 @@
 (function() {
-
+    "use strict";
+    
     function AppShell(diContainer) {
         this.models = {};
         this.di = diContainer;

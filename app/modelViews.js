@@ -1,5 +1,6 @@
 // Expression View
 app.compose(function () {
+    "use strict";
 
     var formatter = app.get('formatter');
     var calc = app.get('calc');

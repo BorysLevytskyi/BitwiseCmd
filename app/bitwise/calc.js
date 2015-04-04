@@ -1,4 +1,6 @@
 app.compose(function() {
+    "use strict";
+
     var should = app.get('should')
     app.set('calc', {
 

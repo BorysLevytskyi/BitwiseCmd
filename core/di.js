@@ -1,7 +1,6 @@
-// Problems: no check for the circular references
-
 (function(core){
-
+    
+    "use strict";
     var is = core.is;
 
     function Container(store) {

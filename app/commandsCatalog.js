@@ -1,4 +1,5 @@
 app.run(function() {
+    "use strict";
 
     var dispatcher = app.get('dispatcher');
 

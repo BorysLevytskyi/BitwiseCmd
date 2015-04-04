@@ -1,4 +1,6 @@
 (function(){
+    "use strict";
+    
     window.core.should = {
         beNumber: function (num, name) {
             this.check(typeof num == "number" && !isNaN(num), num + " is not a number");

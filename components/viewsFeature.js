@@ -1,4 +1,6 @@
 (function(app, is){
+    "use strict";
+
     app.modelView = function (modelCtor, builder) {
         var name = getKey(modelCtor);
         app.di.register(name, builder);

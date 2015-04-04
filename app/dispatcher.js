@@ -1,4 +1,6 @@
 app.compose(function() {
+    "use strict";
+
     app.set('dispatcher', function() {
         var handlers = [];
         var is = app.get('is');

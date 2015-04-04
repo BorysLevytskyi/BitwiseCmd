@@ -1,4 +1,6 @@
 (function(){
+    "use strict";
+    
     var bindr = {};
 
     bindr.bindChildren = function(container, model) {

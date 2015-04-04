@@ -1,4 +1,5 @@
 (function(app, core) {
+    "use strict";
 
     var should = core.should;
 

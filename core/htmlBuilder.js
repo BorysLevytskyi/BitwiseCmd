@@ -1,4 +1,5 @@
 (function(core){
+    "use strict";
 
     var HtmlBuilder = {};
     var should = core.should;

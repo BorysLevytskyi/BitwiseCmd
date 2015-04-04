@@ -1,4 +1,6 @@
-app.compose(function(){
+app.compose(function() {
+    "use strict";
+
     var twoOperandsRegex = /^(\d+)\s*(<<|>>|\||\&|\^)\s*(\d+)$/;
     var numbersList = /^((\d*)+\s?)+$/;
 

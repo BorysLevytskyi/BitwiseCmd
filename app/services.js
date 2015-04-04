@@ -1,4 +1,5 @@
 (function(app, core){
+    "use strict";
 
     app.set('html', core.HtmlBuilder);
     app.set('is', core.is);

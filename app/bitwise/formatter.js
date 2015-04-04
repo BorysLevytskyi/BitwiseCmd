@@ -1,32 +1,27 @@
-(function(should, app){
+app.compose(function() {
+    "use strict";
 
-   app.compose(function() {
-       var should = app.get('should');
-       app.set("formatter", {
-           toBinaryString: function(num, totalLength) {
+    var should = app.get('should');
+    app.set("formatter", {
+        toBinaryString: function(num, totalLength) {
 
-               var binaryStr = num.toString(2),
-                   formatted = [],
-                   i;
+            var binaryStr = num.toString(2),
+                formatted = [],
+                i;
 
-               if(totalLength != null) {
-                   should.bePositiveInteger(totalLength);
-               }
+            if(totalLength != null) {
+                should.bePositiveInteger(totalLength);
+            }
 
-               for(i = 0; i<binaryStr.length; i++) {
-                   formatted.push(binaryStr[i]);
-               }
+            for(i = 0; i<binaryStr.length; i++) {
+                formatted.push(binaryStr[i]);
+            }
 
-               while(totalLength > formatted.length) {
-                   formatted.unshift('0');
-               }
+            while(totalLength > formatted.length) {
+                formatted.unshift('0');
+            }
 
-               return formatted.join('');
-           }
-       });
-   })
-
-
-})(window.should, window.app);
-
-
+            return formatted.join('');
+        }
+    });
+})

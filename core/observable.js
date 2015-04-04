@@ -1,4 +1,5 @@
 (function(core){
+    "use strict";
     var is = core.is;
 
     function ObservableObject () {

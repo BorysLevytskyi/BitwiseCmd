@@ -1,4 +1,6 @@
 (function(){
+    "use strict";
+    
     window.core.is = {
         plainObject: function(obj) {
             return typeof obj == "object" && obj instanceof Object;
