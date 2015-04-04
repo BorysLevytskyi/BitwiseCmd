@@ -25,10 +25,8 @@ app.compose(function() {
                     }
                 }
                 else {
-                    this.displayCommandError(input, "Unknown expression: " + input.trim());
+                    this.displayCommandError(input, "Unsupported expression: " + input.trim());
                 }
-
-                // app.command('dispatchInput').execute({input:input});
             },
             commands: function(catalog) {
                 for(var key in catalog) {
