@@ -14,9 +14,9 @@ app.compose(function () {
             expr.resultBinary = formatter.toBinaryString(expr.result, maxLen);
 
             var templateId = /<<|>>/.test(expr.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
-            var htmlTpl = document.getElementById(templateId).innerHTML;
-            var el = html.element(htmlTpl, expr);
+            var template = app.template(templateId)
 
+            var el = template.render(expr);
             colorizeBits(el);
             return el;
         }
@@ -54,8 +54,8 @@ app.compose(function () {
 
     app.modelView(app.models.HelpResult, {
         renderView: function(model) {
-            var template = document.getElementById('helpView').innerHTML;
-            return html.element(template);
+            var template = app.template('helpResultTpl');
+            return template.render();
         }
     });
 
@@ -67,7 +67,7 @@ app.compose(function () {
 
     app.modelView(app.models.DisplayResult, {
         renderView: function(model) {
-            var resultView = html.element(document.getElementById('resultView').innerHTML, model);
+            var resultView = app.template('resultView').render(model);
             var contentView = app.buildViewFor(model.content);
 
             resultView.querySelector('.content').appendChild(contentView);

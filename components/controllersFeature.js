@@ -19,6 +19,10 @@
         controllerDi.register(name, reg);
     };
 
+    app.run(function(){
+        attachControllers(app.rootViewElement, app.di);
+    });
+
     function addControllerMixin(ctrl) {
         ctrl.attachView = function(viewElement) {
 
@@ -38,10 +42,6 @@
             }
         };
     }
-
-    app.run(function(){
-        attachControllers(app.rootViewElement, app.di);
-    });
 
     function attachControllers(rootViewElement) {
         var elements = rootViewElement.querySelectorAll('[data-controller]'),
@@ -76,11 +76,6 @@
                 console.log(ctrlName + ' Controller: view detached');
             });
         }
-    }
-
-    function isController(obj) {
-        return obj.componentType == 'controller';
-
     }
 
 })(window.app, window.should, window.Container);

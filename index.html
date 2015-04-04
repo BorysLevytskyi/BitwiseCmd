@@ -11,8 +11,11 @@
     <script type="text/javascript" src="components/di.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
+
     <script type="text/javascript" src="components/controllersFeature.js"></script>
     <script type="text/javascript" src="components/viewsFeature.js"></script>
+    <script type="text/javascript" src="components/templatesFeature.js"></script>
+
     <script type="text/javascript" src="app/bitwise/calc.js"></script>
     <script type="text/javascript" src="app/bitwise/expression.js"></script>
     <script type="text/javascript" src="app/bitwise/formatter.js"></script>
@@ -44,7 +47,7 @@
 <div id="output" data-controller="resultViewCtrl">
 </div>
 
-<script id="helpView" type="text/template">
+<script data-template="helpResultTpl" type="text/template">
     <div class="help">
         <p class="section">
             <strong>Supported Commands</strong>
@@ -74,14 +77,14 @@
     </div>
 </script>
 
-<script id="resultView" type="text/template">
+<script data-template="resultView" type="text/template">
     <div class="result">
         <div class="input"><span class="cur">&gt;</span>{input}</div>
         <div class="content"></div>
     </div>
 </script>
 
-<script id="shiftExpressionView" type="text/template">
+<script data-template="shiftExpressionView" type="text/template">
     <table class="expression">
         <tr>
             <td class="label">{operand1}</td>
@@ -94,7 +97,7 @@
     </table>
 </script>
 
-<script id="binaryExpressionView" type="text/template">
+<script data-template="binaryExpressionView" type="text/template">
     <table class="expression">
         <tr>
             <td></td>
