@@ -2,11 +2,13 @@
     var is = core.is;
 
     function ObservableObject () {
-        this.executionHandlers = [];
+        this.$store = {};
+        this.$executionHandlers = [];
     }
 
     ObservableObject.create = function(definition){
         var obj = new ObservableObject();
+
         for(var property in definition){
             if(!definition.hasOwnProperty(property)){
                 continue;
@@ -19,18 +21,19 @@
 
             obj[property] = definition[property];
         }
-        return obj;
+
+        return Object.seal(obj);
     };
 
-    ObservableObject.createGetter = function (propertyName){
+    ObservableObject.createGetter = function (propertyName, store){
         return function(){
-            return this["_" + propertyName];
+            return this.$store[propertyName];
         }
     };
 
-    ObservableObject.createSetter = function(propertyName){
+    ObservableObject.createSetter = function(propertyName, store){
         return function(value){
-            this["_" + propertyName] = value;
+            this.$store[propertyName] = value;
             this.notifyPropertyChanged(propertyName, value);
         }
     };
@@ -52,16 +55,25 @@
             return;
         }
 
-        var handlers = this.executionHandlers;
+        var handlers = this.$executionHandlers;
         var index = handlers.push(func);
         return function () { handlers.splice(1, index); }
     };
 
     ObservableObject.prototype.notifyPropertyChanged = function(propertyName, value){
-        this.executionHandlers.forEach(function(h){
+        this.$executionHandlers.forEach(function(h){
             h(propertyName, value);
         });
     };
 
+    ObservableObject.prototype.store = function() {
+        return this.$store;
+    };
+
+    ObservableObject.prototype.keys = function() {
+        return Object.keys(this.$store);
+    };
+
     core.ObservableObject = ObservableObject;
+
 })(window.core);

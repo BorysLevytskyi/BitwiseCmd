@@ -11,7 +11,7 @@ app.run(function() {
         },
         'em': function() {
             var cfg = app.get('cmdConfig');
-            cfg.emphasizeBytes = !cfg.cmdConfig.emphasizeBytes;
+            cfg.emphasizeBytes = !cfg.emphasizeBytes;
         }
     });
 

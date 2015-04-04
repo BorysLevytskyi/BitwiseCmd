@@ -38,7 +38,7 @@
 
         this.resolutionStack.unshift(name);
 
-        console.log('\tresolution path:' + this.resolutionStack.join(' < '));
+        // console.log('\tresolution path:' + this.resolutionStack.join(' < '));
 
         var reg = this.store[name];
         if(reg == null) {
@@ -51,7 +51,7 @@
 
         this.resolutionStack.shift();
 
-        console.log('\tresolution path:' + this.resolutionStack.join(' < '));
+        // console.log('\tresolution path:' + this.resolutionStack.join(' < '));
 
         return reg.resolved;
     }
