@@ -44,7 +44,7 @@
     </div>
 
     <div>
-        <input id="in" type="text" class="expressionInput" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
+        <input id="in" type="text" class="expressionInput mono" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
 
         <span data-controller="configPanelCtrl" class="configPnl">
              <span id="emphasizeBytes" class="indicator on"><strong>em:</strong> Emphasize Bytes</span>
@@ -92,7 +92,7 @@
 
 <script data-template="resultView" type="text/template">
     <div class="result">
-        <div class="input"><span class="cur">&gt;</span>{input}</div>
+        <div class="input mono"><span class="cur">&gt;</span>{input}</div>
         <div class="content"></div>
     </div>
 </script>
