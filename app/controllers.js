@@ -17,7 +17,7 @@ app.compose(function() {
                 this.viewElement.addEventListener('keyup', function (args) {
                     var inpt = args.srcElement;
 
-                    if (args.keyCode != 13) {
+                    if (args.keyCode != 13 || inpt.value.trim().length == 0) {
                         return;
                     }
 
