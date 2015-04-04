@@ -18,8 +18,9 @@ code { font-size: 1.2em; font-weight: bold; }
 .expression .result td { border-top: dotted 1px gray; }
 .expression { font-size: 1.5em; font-family: monospace }
 
-.help { padding: 10px; background: #e0e0e0; }
+.help { padding: 10px; background: #f8f8f8; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
+.help p { margin-top: 0 }
 
 .configPnl .indicator { font-size: 0.7em; background: gray; color: white; padding: 2px; }
 .configPnl .on { background: darkblue; }
