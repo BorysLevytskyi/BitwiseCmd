@@ -57,7 +57,7 @@ app.compose(function() {
         var html = app.get('html');
 
         return {
-            clear: function (){
+            clear: function () {
                 this.viewElement.innerHTML = '';
             },
             display: function ( model) {
