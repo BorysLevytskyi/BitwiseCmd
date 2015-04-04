@@ -30,6 +30,8 @@
     <script type="text/javascript" src="app/dispatcher.js"></script>
     <script type="text/javascript" src="app/services.js"></script>
     <script type="text/javascript" src="app/controllers.js"></script>
+    <script type="text/javascript" src="app/commandsCatalog.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
 </head>
 <body id="rootView">
@@ -44,7 +46,7 @@
     <input id="in" type="text" class="expressionInput" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
 
     <span data-controller="configPanelCtrl" class="configPnl">
-         <span id="emphasizeBytes" class="indicator">Emphasize Bytes<span>
+         <span id="emphasizeBytes" class="indicator">Emphasize Bytes</span>
     </span>
 </div>
 
@@ -127,30 +129,8 @@
 <script type="text/javascript">
 
     var app = window.app;
-
-    app.run(function(){
-
-        var dispatcher = app.get('dispatcher');
-
-        dispatcher.command('help', function() {
-            return new app.models.HelpResult();
-        });
-
-        // TODO: Make as function
-        dispatcher.command({
-           $expression:null,
-           canHandle: function(input) { return app.get('expression').canParse(input); },
-           handle: function(input) {
-               return app.get('expression').parse(input);
-           }
-        });
-
-        app.emphasizeBytes = true; // TODO: Make into model
-        app.debugMode = true;
-
-    });
-
     app.bootstrap(document.getElementById('rootView'));
+
     app.get('dispatcher').dispatch('help');
     app.get('dispatcher').dispatch('1|2');
     app.get('dispatcher').dispatch('1 2');

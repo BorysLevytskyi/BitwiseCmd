@@ -4,7 +4,7 @@ app.compose(function() {
         var is = app.get('is');
         var resultView = app.controller('resultViewCtrl');
 
-        var dispatcher = {
+        return {
             dispatch: function(rawInput) {
                 var input = rawInput.trim();
                 var handler = this.findHandler(input);
@@ -27,6 +27,13 @@ app.compose(function() {
                 }
 
                 // app.command('dispatchInput').execute({input:input});
+            },
+            commands: function(catalog) {
+                for(var key in catalog) {
+                    if(catalog.hasOwnProperty(key)) {
+                        this.command(key, catalog[key]);
+                    }
+                }
             },
             command: function(cmd, handler) {
                 var h = this.createHandler(cmd, handler);
@@ -59,7 +66,7 @@ app.compose(function() {
                 return null;
             },
             findHandler: function (input) {
-                var i= 0, h;
+                var i= 0;
                 for(i;i<handlers.length; i++) {
                     if(handlers[i].canHandle(input)) {
                         return handlers[i];
@@ -78,15 +85,5 @@ app.compose(function() {
                 resultView.display(new app.models.DisplayResult(input, error));
             }
         };
-
-        dispatcher.command('clear', function() {
-            app.controller('resultViewCtrl').clear();
-        });
-
-        dispatcher.command('em', function() {
-            app.cmdConfig.emphasizeBytes = !app.cmdConfig.emphasizeBytes;
-        });
-
-        return dispatcher;
     });
 });

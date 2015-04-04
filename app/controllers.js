@@ -46,7 +46,6 @@ app.compose(function() {
                         }
 
                         args.preventDefault();
-                        return;
                     }
                 })
             }
@@ -77,14 +76,16 @@ app.compose(function() {
     app.controller('configPanelCtrl', {
         onViewAttached: function (){
             var self = this;
-            self.update();
-            app.cmdConfig.observe(function(){
-                self.update();
+            var cfg = app.get('cmdConfig');
+            self.update(cfg);
+
+            cfg.observe(function(){
+                self.update(cfg);
             });
         },
-        update: function () {
+        update: function (cfg) {
             var emIndicator = this.viewElement.querySelector('#emphasizeBytes');
-            emIndicator.style.display = app.cmdConfig.emphasizeBytes ? '' : 'none';
+            emIndicator.style.display = cfg.emphasizeBytes ? '' : 'none';
         }
     });
 
