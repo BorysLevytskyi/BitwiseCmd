@@ -30,9 +30,7 @@ code { font-size: 1.2em; font-weight: bold; }
 
 /* Light */
 .light .one { color: black; }
-.light .help {  background: #f8f8f8 }
 /* Dark */
 .dark { background: black; color: white;}
-.dark .help {  background: #222 }
 .dark .expressionInput { background: black; color: white; }
 .dark a, .dark a:visited { color: white; }
