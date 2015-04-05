@@ -9,22 +9,21 @@ app.compose(function() {
         return {
             execute: function(rawInput) {
                 var input = rawInput.trim().toLowerCase();
-                var handler = this.findHandler(input);
+                var handler = findHandler(input);
 
                 if(handler != null) {
-
                     if(app.debugMode) {
-                        this.invokeHandler(input, handler);
+                        invokeHandler(input, handler);
                     } else {
                         try {
-                            this.invokeHandler(input, handler);
+                            invokeHandler(input, handler);
                         } catch (e) {
-                            this.displayCommandError(input, "Error: " + e);
+                            displayCommandError(input, "Error: " + e);
                         }
                     }
                 }
                 else {
-                    this.displayCommandError(input, "Unsupported expression: " + input.trim());
+                    displayCommandError(input, "Unsupported expression: " + input.trim());
                 }
             },
             commands: function(catalog) {
@@ -35,7 +34,7 @@ app.compose(function() {
                 }
             },
             command: function(cmd, handler) {
-                var h = this.createHandler(cmd, handler);
+                var h = createHandler(cmd, handler);
                 if(h == null){
                     console.warn('unexpected set of arguments: ', Array.prototype.splice.call(arguments));
                     return;
@@ -53,39 +52,43 @@ app.compose(function() {
 
                 handlers.push(h);
             },
-            createHandler: function(cmd, handler) {
-                if(is.plainObject(cmd)) {
-                    return cmd;
-                }
-
-                if(is.string(cmd)) {
-                    return { canHandle: function (input) { return input === cmd; }, handle: handler };
-                }
-
-                return null;
-            },
-            findHandler: function (input) {
-                var i= 0;
-                for(i;i<handlers.length; i++) {
-                    if(handlers[i].canHandle(input)) {
-                        return handlers[i];
-                    }
-                }
-            },
-            invokeHandler: function (input, handler) {
-                var cmdResult = handler.handle(input);
-                if(cmdResult != null) {
-                    var r = new app.models.DisplayResult(input, cmdResult);
-                    cmdController.display(r);
-                }
-            },
-            displayCommandError: function (input, message) {
-                var error = new app.models.ErrorResult(message);
-                cmdController.display(new app.models.DisplayResult(input, error));
-            },
             clear: function() {
                 cmdController.clear();
             }
         };
+
+        function displayCommandError(input, message) {
+            var error = new app.models.ErrorResult(message);
+            cmdController.display(new app.models.DisplayResult(input, error));
+        }
+
+        function invokeHandler (input, handler) {
+            var cmdResult = handler.handle(input);
+            if(cmdResult != null) {
+                var r = new app.models.DisplayResult(input, cmdResult);
+                cmdController.display(r);
+            }
+        }
+
+        function createHandler (cmd, handler) {
+            if(is.plainObject(cmd)) {
+                return cmd;
+            }
+
+            if(is.string(cmd)) {
+                return { canHandle: function (input) { return input === cmd; }, handle: handler };
+            }
+
+            return null;
+        }
+
+        function findHandler (input) {
+            var i= 0;
+            for(i;i<handlers.length; i++) {
+                if(handlers[i].canHandle(input)) {
+                    return handlers[i];
+                }
+            }
+        }
     });
 });
