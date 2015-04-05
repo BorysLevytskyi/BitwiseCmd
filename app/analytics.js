@@ -1,5 +1,5 @@
 app.compose(function(){
-    var trackedDomains = { 'bitwisecmd.com': 'UA-61569164-1', 'borislevitskiy.github.io/bitwisecmd/': 'UA-61569164-1'  };
+    var trackedDomains = { 'bitwisecmd.com': 'UA-61569164-1', 'borislevitskiy.github.io': 'UA-61569164-1'  };
 
     var host = window.location.host.toLowerCase();
 
