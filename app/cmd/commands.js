@@ -8,12 +8,12 @@ app.run(function() {
 
     cmd.commands({
         'help': function() {
-            var helpResult = document.querySelector('.result .help');
+            var helpResult = document.querySelector('.result .helpResultTpl');
             if(helpResult != null) {
-                moveHelpResultUp(helpResult);
-                 return;
+                moveResultUp(helpResult);
+                return;
             }
-            return new app.models.HelpResult();
+            return new app.models.ViewResult('helpResultTpl');
         },
         'clear': function() {
             cmd.clear();
@@ -26,6 +26,14 @@ app.run(function() {
         },
         light: function () {
             shell.setLightTheme();
+        },
+        about: function() {
+            var aboutResult = document.querySelector('.result .aboutTpl');
+            if(aboutResult != null) {
+                moveResultUp(aboutResult);
+                return;
+            }
+            return new app.models.ViewResult('aboutTpl');
         }
     });
 
@@ -37,7 +45,7 @@ app.run(function() {
         }
     });
 
-    function moveHelpResultUp(helpResult) {
+    function moveResultUp(helpResult) {
         var container = helpResult.parentNode.parentNode;
         if(container.parentNode.firstChild != container) {
 

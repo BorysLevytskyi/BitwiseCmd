@@ -16,8 +16,8 @@
         this.message = message;
     }
 
-    function HelpResult (commands) {
-        this.commands = commands;
+    function ViewResult (template) {
+        this.template = template;
     }
 
     function DisplayResult (input, content) {
@@ -28,7 +28,7 @@
     app.models.BitwiseOperation = BitwiseOperation;
     app.models.BitwiseNumbers = BitwiseNumbers;
     app.models.ErrorResult = ErrorResult;
-    app.models.HelpResult = HelpResult;
+    app.models.ViewResult = ViewResult;
     app.models.DisplayResult = DisplayResult;
 
 })(window.app);

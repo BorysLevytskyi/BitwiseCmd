@@ -12,7 +12,6 @@
     <script type="text/javascript" src="core/appShell.js"></script>
     <script type="text/javascript" src="core/htmlBuilder.js"></script>
     <script type="text/javascript" src="core/observable.js"></script>
-    <script type="text/javascript" src="core/bindr.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
 
@@ -45,7 +44,7 @@
     </div>
 
     <div>
-        <input id="in" type="text" class="expressionInput mono" data-controller="expressionInputCtrl" placeholder="> type expression like '1>>2' or 'help' "/>
+        <input id="in" type="text" class="expressionInput mono" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
 
         <span data-controller="configPanelCtrl" class="configPnl">
              <span id="emphasizeBytes" class="indicator on"><strong>em:</strong> Emphasize Bytes</span>
@@ -57,7 +56,7 @@
 </div>
 
 <script data-template="helpResultTpl" type="text/template">
-    <div class="help">
+    <div class="help helpResultTpl">
         <div style="overflow: hidden">
             <div style="float: left; margin-right: 20px">
                 <p class="section">
@@ -67,9 +66,10 @@
                     <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
                     <li><code>clear</code> — clear output pane</li>
                     <li><code>help</code> — display this help</li>
-                    <li><code>em</code> — Turn On/Off Emphasize Bytes</li>
-                    <li><code>dark</code> — Set Dark theme</li>
-                    <li><code>light</code> — Set Light theme</li>
+                    <li><code>em</code> — turn On/Off Emphasize Bytes</li>
+                    <li><code>dark</code> — set Dark theme</li>
+                    <li><code>light</code> — set Light theme</li>
+                    <li><code>about</code> — about the app</li>
                 </ul>
                 </p>
             </div>
@@ -90,6 +90,13 @@
         <p style="font-style: italic">
             <strong>Tip:</strong> Use Up and Down keys to navigate trough executed commands.
         </p>
+    </div>
+</script>
+
+<script data-template="aboutTpl" type="text/template">
+    <div class="aboutTpl">
+        <p>Created by Borys Levytskyi</p>
+        <p><a href="https://github.com/BorisLevitskiy/BitwiseCmd">App on <strong>GitHub</strong></a></p>
     </div>
 </script>
 

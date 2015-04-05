@@ -35,3 +35,4 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark { background: black; color: white;}
 .dark .help {  background: #222 }
 .dark .expressionInput { background: black; color: white; }
+.dark a, .dark a:visited { color: white; }

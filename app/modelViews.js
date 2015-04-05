@@ -48,9 +48,9 @@ app.compose(function () {
         }
     });
 
-    app.modelView(app.models.HelpResult, {
+    app.modelView(app.models.ViewResult, {
         renderView: function(model) {
-            var template = app.template('helpResultTpl');
+            var template = app.template(model.template);
             return template.render();
         }
     });

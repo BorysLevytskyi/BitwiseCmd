@@ -20,7 +20,6 @@ app.compose(function() {
             if(matches != null) {
                 return createListOfNumbersExpression(string)
             }
-
         }
     });
 
