@@ -19,7 +19,7 @@
     };
 
     app.run(function(){
-        attachControllers(app.rootViewElement, app.di);
+        attachControllers(app.get('rootView'), app.di);
     });
 
     function addControllerMixin(ctrl) {

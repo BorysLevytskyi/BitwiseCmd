@@ -13,12 +13,11 @@ code { font-size: 1.2em; font-weight: bold; }
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
 .expression .bin { letter-spacing: 3px; }
 .expression .byte { margin: 0 3px; }
-.expression .one { color: black }
 .expression .zero { color: #848586 }
 .expression .result td { border-top: dotted 1px gray; }
 .expression { font-size: 1.5em; font-family: monospace }
 
-.help { padding: 10px; background: #f8f8f8; }
+.help { padding: 10px; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
 .help p { margin-top: 0 }
 
@@ -28,3 +27,11 @@ code { font-size: 1.2em; font-weight: bold; }
 .error { color: maroon; }
 
 #view { padding: 10px}
+
+/* Light */
+.light .one { color: black; }
+.light .help {  background: #f8f8f8 }
+/* Dark */
+.dark { background: black; color: white;}
+.dark .help {  background: #222 }
+.dark .expressionInput { background: black; color: white; }

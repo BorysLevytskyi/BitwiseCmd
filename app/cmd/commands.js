@@ -3,6 +3,8 @@ app.run(function() {
 
     var cmd = app.get('cmd');
     var cmdConfig = app.get('cmdConfig');
+    var rootView = app.get('rootView');
+    var shell = app.get('shell');
 
     cmd.commands({
         'help': function() {
@@ -18,6 +20,12 @@ app.run(function() {
         },
         'em': function() {
             cmdConfig.emphasizeBytes = !cmdConfig.emphasizeBytes;
+        },
+        'dark': function() {
+            shell.setDarkTheme();
+        },
+        light: function () {
+            shell.setLightTheme();
         }
     });
 

@@ -13,6 +13,7 @@
 
     app.bootstrap = function(rootViewElement) {
         this.rootViewElement = rootViewElement;
+        this.set('rootView', rootViewElement)
         this.initialize();
     };
 

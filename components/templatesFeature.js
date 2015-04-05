@@ -19,7 +19,7 @@
     }
 
     app.run(function() {
-        readTemplates(app.rootViewElement);
+        readTemplates(app.get('rootView'));
     })
 
     function readTemplates(containerEl) {

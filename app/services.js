@@ -32,6 +32,20 @@
         }
     });
 
+    app.set('shell', function(){
+        var rootView = app.get('rootView');
+
+        return {
+            setDarkTheme: function() {
+                rootView.classList.remove('light');
+                rootView.classList.add('dark');
+            },
+            setLightTheme: function() {
+                rootView.classList.remove('dark');
+                rootView.classList.add('light');
+            }
+        }
+    });
 /*
     var template = {
         compile: function (template) {
