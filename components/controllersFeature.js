@@ -60,7 +60,7 @@
 
             ctrl.attachView(element);
 
-            console.log(ctrlName + ' Controller: view attached');
+            // console.log(ctrlName + ' Controller: view attached');
 
             if(typeof ctrl.detachView != "function") {
                 continue;
@@ -72,7 +72,7 @@
                     ctrl.detachView();
                 }
 
-                console.log(ctrlName + ' Controller: view detached');
+                // console.log(ctrlName + ' Controller: view detached');
             });
         }
     }

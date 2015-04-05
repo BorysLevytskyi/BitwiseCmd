@@ -22,7 +22,7 @@
             this.store[name] = reg;
         }
 
-        console.log('[' + name + '] component registered');
+        // console.log('[' + name + '] component registered');
         return reg;
     };
 
