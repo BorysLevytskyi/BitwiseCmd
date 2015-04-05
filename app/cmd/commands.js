@@ -2,6 +2,7 @@ app.run(function() {
     "use strict";
 
     var cmd = app.get('cmd');
+    var cmdConfig = app.get('cmdConfig');
 
     cmd.commands({
         'help': function() {
@@ -13,11 +14,10 @@ app.run(function() {
             return new app.models.HelpResult();
         },
         'clear': function() {
-            app.controller('cmdController').clear();
+            cmd.clear();
         },
         'em': function() {
-            var cfg = app.get('cmdConfig');
-            cfg.emphasizeBytes = !cfg.emphasizeBytes;
+            cmdConfig.emphasizeBytes = !cmdConfig.emphasizeBytes;
         }
     });
 

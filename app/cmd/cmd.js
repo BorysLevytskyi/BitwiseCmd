@@ -8,7 +8,7 @@ app.compose(function() {
 
         return {
             execute: function(rawInput) {
-                var input = rawInput.trim();
+                var input = rawInput.trim().toLowerCase();
                 var handler = this.findHandler(input);
 
                 if(handler != null) {
@@ -82,6 +82,9 @@ app.compose(function() {
             displayCommandError: function (input, message) {
                 var error = new app.models.ErrorResult(message);
                 cmdController.display(new app.models.DisplayResult(input, error));
+            },
+            clear: function() {
+                cmdController.clear();
             }
         };
     });
