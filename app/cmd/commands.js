@@ -1,9 +1,9 @@
 app.run(function() {
     "use strict";
 
-    var dispatcher = app.get('dispatcher');
+    var cmd = app.get('cmd');
 
-    dispatcher.commands({
+    cmd.commands({
         'help': function() {
             var helpResult = document.querySelector('.result .help');
             if(helpResult != null) {
@@ -22,7 +22,7 @@ app.run(function() {
     });
 
     // TODO: Make as function
-    dispatcher.command({
+    cmd.command({
         canHandle: function(input) { return app.get('expression').canParse(input); },
         handle: function(input) {
             return app.get('expression').parse(input);

@@ -2,12 +2,10 @@ app.compose(function() {
     "use strict";
 
     app.controller('expressionInputCtrl', function (){
-        var dispatcher = app.get('dispatcher');
+        var cmd = app.get('cmd');
 
         return {
             onViewAttached: function () {
-                var d = dispatcher;
-
                 var self = this;
                 self.history =[];
                 self.historyIndex = 0;
@@ -22,7 +20,7 @@ app.compose(function() {
                     }
 
                     // Enter
-                    d.dispatch(inpt.value);
+                    cmd.execute(inpt.value);
                     self.history.unshift(inpt.value);
                     self.historyIndex = 0;
                     inpt.value = '';

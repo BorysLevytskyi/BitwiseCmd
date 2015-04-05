@@ -1,13 +1,13 @@
 app.compose(function() {
     "use strict";
 
-    app.set('dispatcher', function() {
+    app.set('cmd', function() {
         var handlers = [];
         var is = app.get('is');
         var cmdController = app.controller('cmdController');
 
         return {
-            dispatch: function(rawInput) {
+            execute: function(rawInput) {
                 var input = rawInput.trim();
                 var handler = this.findHandler(input);
 
