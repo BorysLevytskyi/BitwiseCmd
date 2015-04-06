@@ -39,8 +39,8 @@ app.compose(function () {
                 var binCell = row.insertCell();
                 binCell.className = 'bin';
 
-                decCell.innerText = o;
-                binCell.innerText = formatter.toBinaryString(o, maxLen);
+                decCell.textContent = o;
+                binCell.textContent = formatter.toBinaryString(o, maxLen);
             });
 
             colorizeBits(table);
@@ -86,7 +86,7 @@ app.compose(function () {
     function colorizeBits(container) {
         var list = container.querySelectorAll('.bin');
         Array.prototype.forEach.call(list, function(el){
-            var bin = el.innerText;
+            var bin = el.textContent;
 
             el.innerHTML = bin
                 .replace(/(\d{8})/g, '<span class="byte">$1</span>')

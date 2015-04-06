@@ -33,11 +33,11 @@
         element.checked = model[propertyName];
 
         element.addEventListener('changed', function (e) {
-            model[propertyName] = e.srcElement.checked == true;
+            model[propertyName] = e.target.checked == true;
         });
 
         model.observe(propertyName, function (property, value) {
-            if (window.event && window.event.srcElement == element) {
+            if (window.event && window.event.target == element) {
                 return;
             }
 
@@ -50,11 +50,11 @@
         input.value = model[propertyName];
 
         input.addEventListener('keyup', function (e) {
-            model[propertyName] = e.srcElement.value;
+            model[propertyName] = e.target.value;
         });
 
         model.observe(propertyName, function (property, value) {
-            if (window.event && window.event.srcElement == input) {
+            if (window.event && window.event.target == input) {
                 return;
             }
 
