@@ -13,7 +13,7 @@ app.compose(function() {
                 this.viewElement.focus();
 
                 this.viewElement.addEventListener('keyup', function (args) {
-                    var inpt = args.srcElement;
+                    var inpt = args.target;
 
                     if (args.keyCode != 13 || inpt.value.trim().length == 0) {
                         return;
@@ -30,7 +30,7 @@ app.compose(function() {
                     if(args.keyCode == 38) {
 
                         if (self.history.length > self.historyIndex) { // up
-                            args.srcElement.value = self.history[self.historyIndex++];
+                            args.target.value = self.history[self.historyIndex++];
 
                         }
 
@@ -41,7 +41,7 @@ app.compose(function() {
                     if(args.keyCode == 40) {
 
                         if(self.historyIndex > 0) { // up
-                            args.srcElement.value = self.history[--self.historyIndex];
+                            args.target.value = self.history[--self.historyIndex];
                         }
 
                         args.preventDefault();
