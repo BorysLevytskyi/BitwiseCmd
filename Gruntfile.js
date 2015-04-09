@@ -11,13 +11,26 @@ module.exports = function(grunt) {
         src: 'src/**/*.js',
         dest: 'build/bitwisecmd.min.js'
       }
+    },
+    cssmin: {
+      options: {
+        shorthandCompacting: false,
+        roundingPrecision: -1
+      },
+      target: {
+        files: {
+          'build/css/styles.css': ['src/css/styles.css']
+        }
+      }
     }
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('default', ['uglify','cssmin']);
 
 };

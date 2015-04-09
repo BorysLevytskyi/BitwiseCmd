@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/BorysLevytskyi/BitwiseCmd",
   "devDependencies": {
+    "grunt-contrib-cssmin": "^0.12.2",
     "grunt-contrib-uglify": "^0.9.1"
   }
 }
