@@ -52,7 +52,8 @@ module.exports = function(grunt) {
                   'build/index.html' : ['build/index.html']
               }
           }
-      }
+      },
+      clean: ['/build']
   });
 
   // Load the plugin that provides the "uglify" task.
@@ -60,6 +61,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-processhtml');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+
 
 
 
