@@ -1,0 +1,22 @@
+{
+  "name": "BitwiseCmd",
+  "version": "1.0.0",
+  "description": "Bitwise Operations Console",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BorysLevytskyi/BitwiseCmd.git"
+  },
+  "author": "Borys Levytskyi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BorysLevytskyi/BitwiseCmd/issues"
+  },
+  "homepage": "https://github.com/BorysLevytskyi/BitwiseCmd",
+  "devDependencies": {
+    "grunt-contrib-uglify": "^0.9.1"
+  }
+}
