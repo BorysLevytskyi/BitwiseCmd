@@ -8,8 +8,23 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'src/**/*.js',
-        dest: 'build/js/bitwisecmd.min.js'
+          files: {
+              'build/js/bitwisecmd.js': [
+                  'src/js/core/core.js',
+                  'src/js/core/is.js',
+                  'src/js/core/should.js',
+                  'src/js/core/di.js',
+                  'src/js/core/appShell.js',
+                  'src/js/core/htmlBuilder.js',
+                  'src/js/core/observable.js',
+
+                  'src/js/app.js',
+
+                  // TODO: Make components to put their extensions to AppShell instead of app
+                  'src/js/components/*.*',
+                  'src/js/app/**/*.*'
+              ]
+          }
       }
     },
     cssmin: {
