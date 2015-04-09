@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: 'src/**/*.js',
-        dest: 'build/bitwisecmd.min.js'
+        dest: 'build/js/bitwisecmd.min.js'
       }
     },
     cssmin: {
@@ -22,15 +22,24 @@ module.exports = function(grunt) {
           'build/css/styles.css': ['src/css/styles.css']
         }
       }
-    }
+    },
+      copy: {
+          files: {
+              src: 'src/*.*',
+              dest: 'build/',
+              flatten: true,
+              expand: true
+          }
+      }
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify','cssmin']);
+  grunt.registerTask('default', ['uglify','cssmin','copy']);
 
 };
