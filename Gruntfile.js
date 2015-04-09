@@ -39,12 +39,20 @@ module.exports = function(grunt) {
       }
     },
       copy: {
-          files: {
-              src: 'src/*.*',
-              dest: 'build/',
-              flatten: true,
-              expand: true
+          main: {
+              files: [{
+                  src: 'src/*.*',
+                  dest: 'build/',
+                  flatten: true,
+                  expand: true
+              }, {
+                  src: 'src/js/analytics.js',
+                  dest:'build/js/',
+                  flatten: true,
+                  expand: true
+              }]
           }
+
       },
       processhtml: {
           build: {
@@ -53,7 +61,7 @@ module.exports = function(grunt) {
               }
           }
       },
-      clean: ['/build']
+      clean: ['build/**']
   });
 
   // Load the plugin that provides the "uglify" task.
