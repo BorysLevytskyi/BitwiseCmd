@@ -30,6 +30,13 @@ module.exports = function(grunt) {
               flatten: true,
               expand: true
           }
+      },
+      processhtml: {
+          build: {
+              files: {
+                  'build/index.html' : ['build/index.html']
+              }
+          }
       }
   });
 
@@ -37,9 +44,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-processhtml');
 
 
-  // Default task(s).
-  grunt.registerTask('default', ['uglify','cssmin','copy']);
+
+    // Default task(s).
+  grunt.registerTask('default', ['uglify','cssmin','copy', 'processhtml']);
 
 };
