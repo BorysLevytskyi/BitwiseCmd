@@ -21,6 +21,9 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-cssmin": "^0.12.2",
     "grunt-contrib-uglify": "^0.9.1",
-    "grunt-processhtml": "^0.3.7"
+    "grunt-processhtml": "^0.3.7",
+    "jasmine": "^2.2.1",
+    "karma": "^0.12.31",
+    "karma-jasmine": "^0.2.2"
   }
 }
