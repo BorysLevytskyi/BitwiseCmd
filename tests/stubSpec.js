@@ -1,8 +1,6 @@
-describe("App test", function() {
+describe("A for app", function() {
     var app = window.app;
-
-    it("shouldn't be null", function() {
-        console.log(app);
-        expect(app.constructor).notBeNull();
+    it("may there be app", function() {
+        expect(app).not.toBe(null);
     });
 });
