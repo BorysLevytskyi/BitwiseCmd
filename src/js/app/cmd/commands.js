@@ -4,7 +4,6 @@ app.run(function() {
     var cmd = app.get('cmd');
     var cmdConfig = app.get('cmdConfig');
     var rootView = app.get('rootView');
-    var shell = app.get('shell');
 
     cmd.commands({
         'help': function() {
@@ -22,10 +21,10 @@ app.run(function() {
             cmdConfig.emphasizeBytes = !cmdConfig.emphasizeBytes;
         },
         'dark': function() {
-            shell.setDarkTheme();
+            cmdConfig.theme = 'dark';
         },
         light: function () {
-            shell.setLightTheme();
+            cmdConfig.theme = 'light';
         },
         about: function() {
             var aboutResult = document.querySelector('.result .aboutTpl');

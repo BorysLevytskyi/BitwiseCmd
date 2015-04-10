@@ -6,7 +6,8 @@
     var app = new core.AppShell(di);
 
     app.set('cmdConfig', core.ObservableObject.create({
-        emphasizeBytes: true
+        emphasizeBytes: true,
+        theme: 'dark'
     }));
 
     app.debugMode = false;

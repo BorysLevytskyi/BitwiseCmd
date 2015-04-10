@@ -47,7 +47,7 @@
         else if(is.string(property) && is.aFunction(handler)) {
             func = function (p, v) {
                 if(p === property) {
-                    handler(p, v)
+                    handler(v)
                 }
             }
         }
