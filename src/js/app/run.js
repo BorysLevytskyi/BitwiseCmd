@@ -41,3 +41,13 @@ app.run(function() {
         }
     }
 });
+
+// Cmd controls
+app.run(function () {
+    var controls = app.get('rootView').querySelectorAll('[data-cmd]');
+    Array.prototype.forEach.call(controls, function(el) {
+        el.addEventListener('click', function(e) {
+            app.get('cmd').execute(e.target.getAttribute('data-cmd'));
+        });
+    });
+});

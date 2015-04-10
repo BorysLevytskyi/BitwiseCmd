@@ -53,6 +53,7 @@ app.compose(function() {
 
     app.controller('cmdController', function() {
         var html = app.get('html');
+        var rootView = app.get('rootView');
 
         return {
             clear: function () {
