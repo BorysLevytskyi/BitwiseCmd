@@ -26,7 +26,7 @@
         <input id="in" type="text" class="expressionInput mono" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
 
         <span data-controller="configPanelCtrl" class="configPnl">
-             <span id="emphasizeBytes" class="indicator on"><strong>em:</strong> Emphasize Bytes</span>
+             <span id="emphasizeBytes" data-cmd="em" class="indicator on" title="Emphasize Bytes">[em]</span>
         </span>
     </div>
 </header>
@@ -125,7 +125,7 @@
 
     var app = window.app;
     app.bootstrap(document.getElementById('rootView'));
-    
+
     var cmd = app.get('cmd');
 
     cmd.execute('help');
