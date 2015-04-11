@@ -7,7 +7,8 @@
 
     app.set('cmdConfig', core.ObservableObject.create({
         emphasizeBytes: true,
-        theme: 'dark'
+        theme: 'dark',
+        mode: 'dec'
     }));
 
     app.debugMode = false;

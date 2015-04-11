@@ -2,27 +2,38 @@ app.set("formatter", function() {
     "use strict";
 
     var should = app.get('should');
+    var is = app.get('is');
 
     return {
-        toBinaryString: function(num, totalLength) {
+        formatString: function(num, mode) {
+            mode = mode || "bin";
 
-            var binaryStr = num.toString(2),
-                formatted = [],
-                i;
+            var convertedString = num.toString(getBase(mode));
+            return convertedString;
 
-            if(totalLength != null) {
-                should.bePositiveInteger(totalLength);
+        },
+        padLeft: function (str, length, symbol) {
+            var sb = Array.prototype.slice.call(str), symbol = symbol || "0";
+
+            if(length == null) {
+                return str;
             }
 
-            for(i = 0; i<binaryStr.length; i++) {
-                formatted.push(binaryStr[i]);
+            while(length > sb.length) {
+                sb.unshift(symbol);
             }
 
-            while(totalLength > formatted.length) {
-                formatted.unshift('0');
-            }
+            return sb.join('');
+        }
+    };
 
-            return formatted.join('');
+
+
+    function getBase(mode) {
+        switch (mode){
+            case 'bin': return 2;
+            case 'hex': return 16;
+            case 'dec': return 10;
         }
     }
 });

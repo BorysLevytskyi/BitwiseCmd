@@ -1,9 +1,10 @@
 (function(){
     "use strict";
-    
+    var is = window.core.is;
+
     window.core.should = {
         beNumber: function (num, name) {
-            this.check(typeof num == "number" && !isNaN(num), num + " is not a number");
+            this.check(is.number(num), num + " is not a number");
             this.check(isFinite(num), append(name, "is an infinite number"));
         },
 

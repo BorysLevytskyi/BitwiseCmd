@@ -28,6 +28,10 @@
 
         array: function(obj) {
             return obj instanceof Array;
+        },
+
+        number: function(num) {
+            return typeof num == "number" && !isNaN(num)
         }
     };
 })();

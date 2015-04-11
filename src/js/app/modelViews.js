@@ -14,9 +14,9 @@ app.compose(function () {
 
             var model = Object.create(expr);
             model.result = result;
-            model.operand1Binary = formatter.toBinaryString(expr.operand1, maxLen);
-            model.operand2Binary = formatter.toBinaryString(expr.operand2, maxLen);
-            model.resultBinary = formatter.toBinaryString(result, maxLen);
+            model.operand1Binary = formatter.padLeft(formatter.formatString(expr.operand1), maxLen);
+            model.operand2Binary = formatter.padLeft(formatter.formatString(expr.operand2), maxLen);
+            model.resultBinary = formatter.padLeft(formatter.formatString(result), maxLen);
 
             var templateId = /<<|>>/.test(model.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
             var template = app.template(templateId)
@@ -43,7 +43,7 @@ app.compose(function () {
                 binCell.className = 'bin';
 
                 decCell.textContent = o;
-                binCell.textContent = formatter.toBinaryString(o, maxLen);
+                binCell.textContent = formatter.formatString(o, maxLen);
             });
 
             colorizeBits(table);
