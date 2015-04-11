@@ -28,15 +28,16 @@ code { font-size: 1.2em; font-weight: bold; }
 /* Light */
 .light { background: rgb(250, 250, 250); }
 .light .one { color: black; }
-.light .zero { color: rgb(105, 106, 107); }
+.light .zero { color: #888; }
 .light .indicator { color: #ddd; }
 .light .on { color: #121212; }
 
 /* Dark */
 .dark { background: #121212; color: white;}
-.dark .expressionInput { background: black; color: white; }
+.dark .expressionInput { background: #121212; color: white; }
 .dark a, .dark a:visited { color: white; }
 .dark .indicator { color: #555; }
 .dark .on { color: white; }
+.dark .zero { color: #999;}
 
 
