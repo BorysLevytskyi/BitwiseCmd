@@ -74,6 +74,8 @@
         if(is.aFunction(this.onFirstTimeResolve)){
             this.onFirstTimeResolve(this.resolved);
         }
+
+        console.log('resolved:', this.name);
     };
 
     Container.Registration = Registration;

@@ -9,16 +9,19 @@ app.compose(function () {
 
     app.modelView(app.models.BitwiseOperation, {
         renderView: function(expr) {
-            var maxLen = getBinaryLength([expr.operand1, expr.operand2, expr.result]);
+            var result = calc.calcExpression(expr);
+            var maxLen = getBinaryLength([expr.operand1, expr.operand2, result]);
 
-            expr.operand1Binary = formatter.toBinaryString(expr.operand1, maxLen);
-            expr.operand2Binary = formatter.toBinaryString(expr.operand2, maxLen);
-            expr.resultBinary = formatter.toBinaryString(expr.result, maxLen);
+            var model = Object.create(expr);
+            model.result = result;
+            model.operand1Binary = formatter.toBinaryString(expr.operand1, maxLen);
+            model.operand2Binary = formatter.toBinaryString(expr.operand2, maxLen);
+            model.resultBinary = formatter.toBinaryString(result, maxLen);
 
-            var templateId = /<<|>>/.test(expr.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
+            var templateId = /<<|>>/.test(model.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
             var template = app.template(templateId)
 
-            var el = template.render(expr);
+            var el = template.render(model);
             colorizeBits(el);
             return el;
         }

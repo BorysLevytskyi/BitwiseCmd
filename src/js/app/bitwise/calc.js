@@ -2,6 +2,7 @@ app.compose(function() {
     "use strict";
 
     var should = app.get('should')
+
     app.set('calc', {
 
         numberOfBits: function (num) {
@@ -18,7 +19,10 @@ app.compose(function() {
             }
 
             return Math.max.apply(null, counts);
+        },
+
+        calcExpression: function (expr) {
+            return eval(expr.string);
         }
     });
-
 });

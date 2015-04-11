@@ -1,10 +1,10 @@
-app.compose(function() {
+app.set('expression', function() {
     "use strict";
 
     var twoOperandsRegex = /^(\d+)\s*(<<|>>|\||\&|\^)\s*(\d+)$/;
     var numbersList = /^((\d*)+\s?)+$/;
 
-    app.set('expression', {
+    return {
         canParse: function(string) {
             return twoOperandsRegex.test(string) || numbersList.test(string);
         },
@@ -21,7 +21,7 @@ app.compose(function() {
                 return createListOfNumbersExpression(string)
             }
         }
-    });
+    };
 
     function createCalculableExpression(matches) {
 
@@ -33,7 +33,7 @@ app.compose(function() {
         m.operand2 = o2;
         m.sign = matches[2];
         m.string = matches.input;
-        m.result = eval(matches.input);
+        //m.result = eval(matches.input);
 
         return m;
     }
