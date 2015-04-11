@@ -15,6 +15,8 @@ code { font-size: 1.2em; font-weight: bold; }
 .expression .byte { margin: 0 3px; }
 .expression .result td { border-top: dotted 1px gray; }
 .expression { font-size: 1.5em; font-family: monospace }
+.expression .prefix { font-weight: normal; display: none; font-size: 0.9em }
+.hex .prefix { display: inline; }
 
 .help { padding: 10px; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
@@ -31,6 +33,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .zero { color: #888; }
 .light .indicator { color: #ddd; }
 .light .on { color: #121212; }
+.light .prefix { color: #888}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -39,5 +42,6 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .indicator { color: #555; }
 .dark .on { color: white; }
 .dark .zero { color: #999;}
+.dark .prefix { color: #999}
 
 

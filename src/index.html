@@ -118,11 +118,11 @@
 <script data-template="shiftExpressionView" type="text/template">
     <table class="expression">
         <tr>
-            <td class="label">{operand1}</td>
+            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}</td>
             <td class="bin">{operand1Binary}</td>
         </tr>
         <tr class="result">
-            <td class="label">{operand1}{sign}{operand2}={result}</td>
+            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}{sign}<span class="prefix">0x</span>{operand2}=<span class="prefix">0x</span>{resultStr}</td>
             <td class="bin">{resultBinary}</td>
         </tr>
     </table>
@@ -132,17 +132,17 @@
     <table class="expression">
         <tr>
             <td></td>
-            <td class="label">{operand1Str}</td>
+            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}</td>
             <td class="bin">{operand1Binary}</td>
         </tr>
         <tr>
             <td>{sign}</td>
-            <td class="label">{operand2Str}</td>
+            <td class="label {mode}"><span class="prefix">0x</span>{operand2Str}</td>
             <td class="bin">{operand2Binary}</td>
         </tr>
         <tr class="result">
             <td>=</td>
-            <td class="label">{resultStr}</td>
+            <td class="label {mode}"><span class="prefix">0x</span>{resultStr}</td>
             <td class="bin">{resultBinary}</td>
         </tr>
     </table>

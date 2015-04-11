@@ -13,7 +13,7 @@ app.compose(function () {
             var maxLen = getBinaryLength([expr.operand1, expr.operand2, result]);
 
             var model = Object.create(expr);
-
+            model.mode = cmdConfig.mode;
             model.resultStr = formatter.formatString(result, cmdConfig.mode);
             model.operand1Str = formatter.formatString(expr.operand1, cmdConfig.mode);
             model.operand2Str = formatter.formatString(expr.operand2, cmdConfig.mode);
@@ -24,7 +24,7 @@ app.compose(function () {
             console.log(model);
 
             var templateId = /<<|>>/.test(model.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
-            var template = app.template(templateId)
+            var template = app.template(templateId);
 
             var el = template.render(model);
             colorizeBits(el);
@@ -35,19 +35,20 @@ app.compose(function () {
     app.modelView(app.models.BitwiseNumbers, {
         renderView: function(model) {
             var maxLen = getBinaryLength(model.numbers);
-            var table = html.element('<table class="expression"></table>');
+            var table = html.element('<table class="expression {mode}"></table>');
 
             model.numbers.forEach(function(n){
 
                 var row = table.insertRow();
                 var decCell = row.insertCell();
 
-                decCell.className = 'label';
+                decCell.classList.add('label');
+                decCell.classList.add(cmdConfig.mode);
 
                 var binCell = row.insertCell();
                 binCell.className = 'bin';
 
-                decCell.textContent = formatter.formatString(n, cmdConfig.mode);
+                decCell.innerHTML = html.template('<span class="prefix">0x</span>{n}', { n: formatter.formatString(n, cmdConfig.mode) });
                 binCell.textContent = formatter.padLeft(formatter.formatString(n), maxLen);
             });
 
