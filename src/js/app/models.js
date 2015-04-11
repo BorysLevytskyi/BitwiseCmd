@@ -8,8 +8,13 @@
         return eval(this.string);
     };
 
-    function BitwiseNumbers(numbers) {
-        this.numbers = numbers;
+    function BitwiseNumbers(operands) {
+        this.operands = operands;
+        var numbers = this.numbers = [];
+
+        operands.forEach(function (o) {
+           numbers.push(o.value);
+        });
     }
 
     function ErrorResult(message) {

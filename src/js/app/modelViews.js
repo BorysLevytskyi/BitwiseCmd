@@ -6,32 +6,18 @@ app.compose(function () {
     var calc = app.get('calc');
     var html = app.get('html');
     var cmdConfig = app.get('cmdConfig');
+    var expression = app.get('expression');
 
     app.modelView(app.models.BitwiseOperation, {
         renderView: function(expr) {
-            var result = calc.calcExpression(expr);
-            var maxLen = getBinaryLength([expr.operand1.value, expr.operand2.value, result]);
+            var result = expression.createOperand(calc.calcExpression(expr), getResultMode([expr.operand1, expr.operand2]));
+            var maxLen = getBinaryLength([expr.operand1.value, expr.operand2.value, result.value]);
 
             var model = Object.create(expr);
-
-            var otherMode = cmdConfig.mode == 'dec' ? 'hex' : 'dec';
-
-            model.mode = cmdConfig.mode;
-            model.otherMode = otherMode;
-
-            model.operand1Str = expr.operand1[cmdConfig.mode];
+            model.result = result;
             model.operand1Binary = formatter.padLeft(expr.operand1.bin, maxLen);
-            model.operand1Other = formatter.padLeft(expr.operand1[otherMode]);
-
-            model.operand2Str = expr.operand2[cmdConfig.mode];
             model.operand2Binary = formatter.padLeft(expr.operand2.bin, maxLen);
-            model.operand2Other = expr.operand2[otherMode];
-
-            model.resultStr = formatter.formatString(result, cmdConfig.mode);
-            model.resultBinary = formatter.padLeft(formatter.formatString(result, cmdConfig.mode), maxLen);
-            model.resultOther = formatter.formatString(result, otherMode);
-
-            console.log(model);
+            model.resultBinary = formatter.padLeft(model.result.bin, maxLen);
 
             var templateId = /<<|>>/.test(model.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
             var template = app.template(templateId);
@@ -48,7 +34,7 @@ app.compose(function () {
             var table = html.element('<table class="expression {mode}"></table>');
             var otherMode = cmdConfig.mode == 'dec' ? 'hex' : 'dec';
 
-            model.numbers.forEach(function(n){
+            model.operands.forEach(function(n){
 
                 var row = table.insertRow();
                 var decCell = row.insertCell();
@@ -59,12 +45,12 @@ app.compose(function () {
                 var binCell = row.insertCell();
                 binCell.className = 'bin';
 
-                decCell.innerHTML = html.template('<span class="prefix">0x</span>{n}', { n: formatter.formatString(n, cmdConfig.mode) });
-                binCell.textContent = formatter.padLeft(formatter.formatString(n), maxLen);
+                decCell.textContent = n.input;
+                binCell.textContent = formatter.padLeft(n.bin, maxLen);
 
                 var otherCell = row.insertCell();
-                otherCell.className = 'other ' + otherMode;
-                otherCell.innerHTML = html.template('<span class="prefix">0x</span>{n}', { n: formatter.formatString(n, otherMode) });
+                otherCell.className = 'other';
+                otherCell.textContent = n.other;
             });
 
             colorizeBits(table);
@@ -117,6 +103,16 @@ app.compose(function () {
                 .replace(/0/g, '<span class="zero">0</span>')
                 .replace(/1/g, '<span class="one">1</span>');
         });
+    }
+
+    function getResultMode(operands) {
+        for(var i=0; i<operands.length; i++) {
+            if(operands[i].kind == 'hex') {
+                return 'hex';
+            }
+        }
+
+        return 'dec';
     }
 });
 

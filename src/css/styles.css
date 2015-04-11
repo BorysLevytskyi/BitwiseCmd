@@ -16,6 +16,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .expression .result td { border-top: dotted 1px gray; }
 .expression { font-size: 1.5em; font-family: monospace }
 .expression .prefix { font-weight: normal; display: none; font-size: 0.9em }
+.expression .other { font-size: 0.9em}
 
 .hex .prefix { display: inline; }
 
@@ -36,6 +37,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .indicator { color: #ddd; }
 .light .on { color: #121212; }
 .light .prefix { color: #888}
+.light  .other { font-size: 0.9em}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -45,5 +47,6 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .on { color: white; }
 .dark .zero { color: #999;}
 .dark .prefix { color: #999}
+.dark  .other { color: #444;}
 
 

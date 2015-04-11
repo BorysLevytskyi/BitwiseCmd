@@ -115,40 +115,40 @@
     </div>
 </script>
 
-<script data-template="shiftExpressionView" type="text/template">
+<script data-template="shiftExpressionView" data-compiled="" type="text/template">
     <table class="expression">
         <tr>
-            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}</td>
-            <td class="bin">{operand1Binary}</td>
-            <td class="other {otherMode}"><span class="prefix">0x</span>{operand1Other}</td>
+            <td class="label">{m.operand1.input}</td>
+            <td class="bin">{m.operand1Binary}</td>
+            <td class="other">{m.operand1.other}</td>
         </tr>
         <tr class="result">
-            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}{sign}<span class="prefix">0x</span>{operand2Str}=<span class="prefix">0x</span>{resultStr}</td>
-            <td class="bin">{resultBinary}</td>
-            <td class="other {otherMode}">{resultOther}</td>
+            <td class="label">{m.string.replace(/\s/g,'')}={m.result.input}</td>
+            <td class="bin">{m.resultBinary}</td>
+            <td class="other">{m.result.other}</td>
         </tr>
     </table>
 </script>
 
-<script data-template="binaryExpressionView" type="text/template">
+<script data-template="binaryExpressionView" data-compiled="" type="text/template">
     <table class="expression">
         <tr>
             <td></td>
-            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}</td>
-            <td class="bin">{operand1Binary}</td>
-            <td class="other {otherMode}"><span class="prefix">0x</span>{operand1Other}</td>
+            <td class="label">{m.operand1.input}</td>
+            <td class="bin">{m.operand1Binary}</td>
+            <td class="other">{m.operand1.other}</td>
         </tr>
         <tr>
-            <td>{sign}</td>
-            <td class="label {mode}"><span class="prefix">0x</span>{operand2Str}</td>
-            <td class="bin">{operand2Binary}</td>
-            <td class="other {otherMode}"><span class="prefix">0x</span>{operand2Other}</td>
+            <td>{m.sign}</td>
+            <td class="label">{m.operand2.input}</td>
+            <td class="bin">{m.operand2Binary}</td>
+            <td class="other">{m.operand2.other}</td>
         </tr>
         <tr class="result">
             <td>=</td>
-            <td class="label {mode}"><span class="prefix">0x</span>{resultStr}</td>
-            <td class="bin">{resultBinary}</td>
-            <td class="other {otherMode}"><span class="prefix">0x</span>{resultOther}</td>
+            <td class="label">{m.result.input}</td>
+            <td class="bin">{m.resultBinary}</td>
+            <td class="other">{m.result.other}</td>
         </tr>
     </table>
 </script>
@@ -170,6 +170,7 @@
     else {
 
         cmd.execute('1|2');
+        cmd.execute('1<<0x2a');
         cmd.execute('2 4 8 16 32');
     }
     
