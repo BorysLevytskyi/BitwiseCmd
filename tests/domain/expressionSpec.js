@@ -75,12 +75,12 @@ describe('operands', function() {
         expect(hexOperand.kind).toBe('hex');
         expect(hexOperand.dec).toBe('16');
         expect(hexOperand.bin).toBe('10000');
-        expect(hexOperand.hex).toBe('10');
+        expect(hexOperand.hex).toBe('0x10');
 
         expect(decOperand.kind).toBe('dec');
         expect(decOperand.dec).toBe('10');
         expect(decOperand.bin).toBe('1010');
-        expect(decOperand.hex).toBe('a');
+        expect(decOperand.hex).toBe('0xa');
     });
 
 });

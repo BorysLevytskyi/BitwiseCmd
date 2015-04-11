@@ -5,10 +5,10 @@ app.set("formatter", function() {
     var is = app.get('is');
 
     return {
-        formatString: function(num, mode) {
-            mode = mode || "bin";
+        formatString: function(num, kind) {
+            kind = kind || "bin";
 
-            var convertedString = num.toString(getBase(mode));
+            var convertedString = num.toString(getBase(kind));
             return convertedString;
 
         },
@@ -27,8 +27,8 @@ app.set("formatter", function() {
         }
     };
 
-    function getBase(mode) {
-        switch (mode){
+    function getBase(kind) {
+        switch (kind){
             case 'bin': return 2;
             case 'hex': return 16;
             case 'dec': return 10;

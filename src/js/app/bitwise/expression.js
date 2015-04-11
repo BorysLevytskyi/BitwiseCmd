@@ -5,23 +5,21 @@ app.set('expression', function() {
     var listRegex = /^((\d+|0x[\d,a-f]+)\s?)+$/
 
     return {
-        canParse: function(string, mode) {
+        canParse: function(string) {
             return exprRegex.test(string) || listRegex.test(string);
         },
-        parse: function(string, mode) {
-            mode = (mode || 'dec');
-
+        parse: function(string) {
             var trimmed = string.replace(/^\s+|\s+$/, '');
-            var base = getBase(mode);
+
             var matches = exprRegex.exec(trimmed);
 
             if(matches != null) {
-                return createCalculableExpression(matches, base);
+                return createCalculableExpression(matches);
             }
 
             matches = listRegex.exec(string);
             if(matches != null) {
-                return createListOfNumbersExpression(string, base)
+                return createListOfNumbersExpression(string)
             }
         },
         parseOperand: function(input) {
@@ -38,7 +36,7 @@ app.set('expression', function() {
 
     };
 
-    function createCalculableExpression(matches, base) {
+    function createCalculableExpression(matches) {
 
         var m = new app.models.BitwiseOperation();
         m.operand1 = new Operand(matches[1]);
@@ -50,7 +48,7 @@ app.set('expression', function() {
         return m;
     }
 
-    function createListOfNumbersExpression(input, base) {
+    function createListOfNumbersExpression(input) {
         var operands = [];
         input.split(' ').forEach(function(n){
             if(n.trim().length > 0) {
@@ -62,8 +60,8 @@ app.set('expression', function() {
         return new app.models.BitwiseNumbers(operands);
     }
 
-    function getBase(mode) {
-        switch (mode){
+    function getBase(kind) {
+        switch (kind){
             case 'bin': return 2;
             case 'hex': return 16;
             case 'dec': return 10;

@@ -31,8 +31,7 @@ app.compose(function () {
     app.modelView(app.models.BitwiseNumbers, {
         renderView: function(model) {
             var maxLen = getBinaryLength(model.numbers);
-            var table = html.element('<table class="expression {mode}"></table>');
-            var otherMode = cmdConfig.mode == 'dec' ? 'hex' : 'dec';
+            var table = html.element('<table class="expression"></table>');
 
             model.operands.forEach(function(n){
 
@@ -40,7 +39,6 @@ app.compose(function () {
                 var decCell = row.insertCell();
 
                 decCell.classList.add('label');
-                decCell.classList.add(cmdConfig.mode);
 
                 var binCell = row.insertCell();
                 binCell.className = 'bin';
