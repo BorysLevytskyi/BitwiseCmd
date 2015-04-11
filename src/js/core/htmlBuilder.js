@@ -1,16 +1,16 @@
 (function(core){
     "use strict";
 
-    var HtmlBuilder = {};
+    var html = {};
     var should = core.should;
 
-    HtmlBuilder.element = function(template, model) {
+    html.element = function(template, model) {
         var el = document.createElement('div');
-        el.innerHTML = HtmlBuilder.template(template, model);
+        el.innerHTML = html.template(template, model);
         return el.children[0];
     };
 
-    HtmlBuilder.template = function(template, model) {
+    html.template = function(template, model) {
         should.beString(template, "template");
         var regex = /(?:{([^}]+)})/g, html;
 
@@ -18,14 +18,14 @@
             html = template;
         } else {
             html =  template.replace(regex, function(m, g1) {
-                return HtmlBuilder.escapeHtml(model[g1]);
+                return html.escapeHtml(model[g1]);
             });
         }
 
         return html;
     };
 
-    HtmlBuilder.compileTemplate = function (template) {
+    html.compileTemplate = function (template) {
         var regex = /(?:{([^}]+)})/g;
 
         var sb = [];
@@ -39,7 +39,7 @@
             if(m.index > index) {
                 sb.push("\t\thtml.push('" + normalize(template.substr(index, m.index - index)) + "');");
             }
-            sb.push('\t\thtml.push(' + m[1] + ');');
+            sb.push(replaceToken(m[1]));
             index = m.index + m[0].length;
         }
 
@@ -49,7 +49,7 @@
         sb.push("\treturn html.join('');");
         sb.push('}');
         sb.push('})()');
-        // console.log(sb.join('\r\n'));
+        console.log(eval(sb.join('\r\n')).toString());
         return eval(sb.join('\r\n'));
     };
 
@@ -57,7 +57,7 @@
         return str.replace(/(\r|\n)+/g, '').replace("'", "\\\'");
     }
 
-    HtmlBuilder.escapeHtml = function(obj) {
+    html.escapeHtml = function(obj) {
             if(obj == null) {
                 return obj;
             }
@@ -74,6 +74,24 @@
                 .replace(/'/g, "&#039;");
     };
 
-    core.html = HtmlBuilder;
+
+    function replaceToken(token, indent) {
+        if(token.indexOf('foreach') == 0) {
+            var r = /([\w\.])\sin\s([\w\.]+)/g;
+            var m = r.exec(token);
+            var v = m[1];
+            var col = m[2];
+
+            return 'var '+ v + '_list = '+ col + '.slice(), ' + v + ';\r\nwhile(('+v+'='+v+'_list.splice(0,1)[0])!==undefined)\r\n{';
+        }
+
+        if(token == '/') {
+            return "}";
+        }
+
+        return '\t\thtml.push(' + token + ');console.log(html);'
+    }
+
+    core.html = html;
 
 })(window.core);

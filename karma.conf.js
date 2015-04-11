@@ -6,6 +6,7 @@ module.exports = function(config) {
             'src/js/core/core.js',
             'src/js/core/is.js',
             'src/js/core/di.js',
+            'src/js/core/should.js',
             'src/js/core/htmlBuilder.js',
             'src/js/core/should.js',
             'src/js/core/appShell.js',
