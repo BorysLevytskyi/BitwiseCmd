@@ -5,6 +5,9 @@ app.set('calc', function() {
     return {
 
         numberOfBits: function (num) {
+            if(num < 0) {
+                return 32;
+            }
             should.bePositiveInteger(num);
             return Math.floor(Math.log(num) / Math.log(2)) + 1;
         },

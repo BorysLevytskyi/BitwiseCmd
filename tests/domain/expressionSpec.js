@@ -36,6 +36,7 @@ describe("expression parse", function() {
     });
 
     var listCases = {
+        '-0xa -9' : [-10, -9],
         '1 2 3': [1, 2, 3],
         '0x1 2 0xa6b': [0x1, 2, 0xa6b],
         '0x11a': [0x11a]
@@ -66,6 +67,17 @@ describe('create operands', function() {
     var hexOperand = expression.createOperand(0x10, 'hex');
     var decOperand = expression.createOperand(10, 'dec');
     rundOperandsTest(hexOperand, decOperand);
+});
+
+describe('negative operands', function () {
+    var op = expression.parseOperand('-0xa');
+    it('shoold have correct values', function() {
+        expect(op.value).toBe(-10);
+        expect(op.hex).toBe('-0xa');
+        expect(op.bin).toBe('11111111111111111111111111110110');
+        expect(op.dec).toBe('-10');
+        expect(op.kind).toBe('hex');
+    })
 });
 
 function rundOperandsTest(hexOperand, decOperand) {

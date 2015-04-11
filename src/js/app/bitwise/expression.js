@@ -1,8 +1,8 @@
 app.set('expression', function() {
     "use strict";
 
-    var exprRegex = /^(\d+|0x[\d,a-f]+)\s*(<<|>>|\||\&|\^)\s*(\d+|0x[\d,a-f]+)$/;
-    var listRegex = /^((\d+|0x[\d,a-f]+)\s?)+$/
+    var exprRegex = /^(-?(?:\d+|0x[\d,a-f]+))\s*(<<|>>|\||\&|\^)\s*(-?(?:\d+|0x[\d,a-f]+))$/;
+    var listRegex = /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/;
 
     return {
         canParse: function(string) {
@@ -73,10 +73,11 @@ app.set('expression', function() {
         this.input = input;
         this.value = parseInt(input);
         // console.log('value: ' + this.value);
-        this.hex = '0x' + this.value.toString(16);
+        var hex = this.value.toString(16);
+        this.hex = hex.indexOf('-') == 0 ? '-0x' + hex.substr(1) : '0x' + hex;
         this.dec = this.value.toString(10);
-        this.bin = this.value.toString(2);
-        this.kind = this.input.indexOf('0x') == 0 ? 'hex' : 'dec';
+        this.bin = (this.value>>>0).toString(2);
+        this.kind = this.input.indexOf('0x') > -1 ? 'hex' : 'dec';
         this.other = this.kind == 'dec' ? this.hex : this.dec;
     }
 
