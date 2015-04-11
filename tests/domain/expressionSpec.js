@@ -3,12 +3,11 @@ var expression = app.get('expression');
 
 describe("expression parse", function() {
 
-    var shouldParse = ['0x2>>1', '1 2 3', '0x1 1 2 3 5', '0x1>>0x2', '1|2'];
+    var shouldParse = ['0x2>>1', '1 2 3', '0x1 1 2 3 5', '0x1>>0x2', '1|2', '-9', '-1|-2', '~3'];
 
     it("should be able to parse", function() {
        shouldParse.forEach(function(expr) {
-           console.log(expr);
-           expect(expression.canParse(expr)).toBe(true);
+           expect(expression.canParse(expr)).toBe(true, 'expr: ' + expr);
        })
     });
 
@@ -19,7 +18,10 @@ describe("expression parse", function() {
         "0xf>>0xa": { operand1: 15, operand2:10, "sign":">>", string:"0xf>>0xa" },
         "0x10&0x11": { operand1: 0x10, operand2:0x11, "sign":"&", string:"0x10&0x11" },
         "0x1a^11": { operand1: 0x1a, operand2:11, "sign":"^", string:"0x1a^11" },
-        "0x1a>>>11": { operand1: 0x1a, operand2:11, "sign":">>>", string:"0x1a>>>11" }
+        "0x1a>>>11": { operand1: 0x1a, operand2:11, "sign":">>>", string:"0x1a>>>11" },
+        '~3': { operand1: 3, operand2: null, "sign":"~", string:"~3" },
+        '~0xa': { operand1: 0xa, operand2: null, "sign":"~", string:"~0xa" },
+        '~-0xa': { operand1: -0xa, operand2: null, "sign":"~", string:"~-0xa" }
     };
 
     it("should parse expressions", function() {
@@ -31,7 +33,14 @@ describe("expression parse", function() {
             expect(actual).not.toBe(null);
             expect(actual.sign).toBe(expected.sign);
             expect(actual.operand1.value).toBe(expected.operand1);
-            expect(actual.operand2.value).toBe(expected.operand2);
+            if(expected.operand2 != null) {
+                expect(actual.operand2.value).toBe(expected.operand2);
+            }
+            else
+            {
+                expect(actual.operand2).not.toBeDefined();
+            }
+
             expect(actual.string).toBe(expected.string);
         }
     });

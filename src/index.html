@@ -93,9 +93,11 @@
                     <li><code>&</code> — bitwise AND</li>
                     <li><code>|</code> — bitwise inclusive OR</li>
                     <li><code>^</code> — bitwise exclusive XOR</li>
-                    <li><code><<</code> — left shift</li>
-                    <li><code>>></code> — sign propagating right shift</li>
-                    <li><code>>>></code> — zero-fill right shift</li>
+                    <li><code>~</code> — bitwise NOT</li>
+                    <li><code>&lt;<</code> — left shift</li>
+                    <li><code>&gt;&gt;</code> — sign propagating right shift</li>
+                    <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
+
                 </ul>
                 </p>
             </div>
@@ -130,6 +132,21 @@
         </tr>
         <tr class="result">
             <td class="label">{m.string.replace(/\s/g,'')}={m.result.input}</td>
+            <td class="bin">{m.resultBinary}</td>
+            <td class="other">{m.result.other}</td>
+        </tr>
+    </table>
+</script>
+
+<script data-template="notExpressionView" data-compiled="" type="text/template">
+    <table class="expression">
+        <tr>
+            <td class="label">{m.operand1.input}</td>
+            <td class="bin">{m.operand1Binary}</td>
+            <td class="other">{m.operand1.other}</td>
+        </tr>
+        <tr class="result">
+            <td class="label">{m.sign}{m.operand1.input}={m.result.input}</td>
             <td class="bin">{m.resultBinary}</td>
             <td class="other">{m.result.other}</td>
         </tr>

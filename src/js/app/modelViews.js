@@ -8,23 +8,41 @@ app.compose(function () {
     var cmdConfig = app.get('cmdConfig');
     var expression = app.get('expression');
 
-    app.modelView(app.models.BitwiseOperation, {
-        renderView: function(expr) {
-            var result = expression.createOperand(calc.calcExpression(expr), getResultMode([expr.operand1, expr.operand2]));
-            var maxLen = getBinaryLength([expr.operand1.value, expr.operand2.value, result.value]);
+    app.modelView(app.models.BitwiseOperation, function() {
+        function getTemplateId(model) {
+            switch (model.sign) {
+                case '<<':
+                case '>>':
+                case '>>>':
+                    return 'shiftExpressionView';
+                case '~':
+                    return 'notExpressionView';
+                default:
+                    return 'binaryExpressionView';
+            }
+        }
 
-            var model = Object.create(expr);
-            model.result = result;
-            model.operand1Binary = formatter.padLeft(expr.operand1.bin, maxLen);
-            model.operand2Binary = formatter.padLeft(expr.operand2.bin, maxLen);
-            model.resultBinary = formatter.padLeft(model.result.bin, maxLen);
+        return {
+            renderView: function(expr) {
 
-            var templateId = /<<|>>/.test(model.sign) ? 'shiftExpressionView' : 'binaryExpressionView';
-            var template = app.template(templateId);
+                var result = expression.createOperand(calc.calcExpression(expr), getResultMode([expr.operand1, expr.operand2]));
+                var maxLen = getBinaryLength([expr.operand1.value, expr.operand2 != null ? expr.operand2.value : 0, result.value]);
 
-            var el = template.render(model);
-            colorizeBits(el);
-            return el;
+                var model = Object.create(expr);
+                model.result = result;
+                model.operand1Binary = formatter.padLeft(expr.operand1.bin, maxLen);
+                if(expr.operand2) {
+                    model.operand2Binary = formatter.padLeft(expr.operand2.bin, maxLen);
+                }
+                model.resultBinary = formatter.padLeft(model.result.bin, maxLen);
+
+                var templateId = getTemplateId(model);
+                var template = app.template(templateId);
+
+                var el = template.render(model);
+                colorizeBits(el);
+                return el;
+            }
         }
     });
 
@@ -105,7 +123,7 @@ app.compose(function () {
 
     function getResultMode(operands) {
         for(var i=0; i<operands.length; i++) {
-            if(operands[i].kind == 'hex') {
+            if(operands[i] != null && operands[i].kind == 'hex') {
                 return 'hex';
             }
         }
