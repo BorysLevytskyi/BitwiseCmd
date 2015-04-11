@@ -26,6 +26,12 @@ app.run(function() {
         light: function () {
             cmdConfig.theme = 'light';
         },
+        dec: function () {
+          cmdConfig.mode = 'dec';
+        },
+        hex: function() {
+          cmdConfig.mode = 'hex';
+        },
         about: function() {
             var aboutResult = document.querySelector('.result .aboutTpl');
             if(aboutResult != null) {
@@ -38,9 +44,9 @@ app.run(function() {
 
     // TODO: Make as function
     cmd.command({
-        canHandle: function(input) { return app.get('expression').canParse(input); },
+        canHandle: function(input) { return app.get('expression').canParse(input, cmdConfig.mode); },
         handle: function(input) {
-            return app.get('expression').parse(input);
+            return app.get('expression').parse(input, cmdConfig.mode);
         }
     });
 

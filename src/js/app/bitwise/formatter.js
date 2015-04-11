@@ -27,8 +27,6 @@ app.set("formatter", function() {
         }
     };
 
-
-
     function getBase(mode) {
         switch (mode){
             case 'bin': return 2;
