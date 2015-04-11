@@ -74,7 +74,7 @@
                 sb.push("\treturn html.join('');");
                 sb.push('}');
                 sb.push('})()');
-                console.log(sb.join('\r\n'));
+                // console.log(sb.join('\r\n'));
                 return eval(sb.join('\r\n'));
             }
         };

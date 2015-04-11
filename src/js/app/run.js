@@ -4,7 +4,6 @@ app.run(function(){
     var cmdConfig = app.get('cmdConfig');
 
     cmdConfig.observe('theme', function (theme) {
-        console.log('changed theme');
         var theOther = theme == 'dark' ? 'light' : 'dark';
 
         if(rootView.classList.contains(theme)) {

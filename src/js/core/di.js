@@ -86,7 +86,7 @@
             this.onFirstTimeResolve(this.resolved);
         }
 
-        console.log('resolved:', this.name);
+        // console.log('resolved:', this.name);
     };
 
     Container.Registration = Registration;

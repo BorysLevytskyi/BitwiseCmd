@@ -13,11 +13,9 @@
     app.debugMode = false;
 
     app.bootstrap = function(rootViewElement) {
-        console.group('Bootstrap');
         this.rootViewElement = rootViewElement;
         this.set('rootView', rootViewElement)
         this.initialize();
-        console.groupEnd();
     };
 
 
