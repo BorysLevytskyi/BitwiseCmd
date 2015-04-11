@@ -1,6 +1,8 @@
 // Expression View
+
 app.compose(function () {
     "use strict";
+
 
     var formatter = app.get('formatter');
     var calc = app.get('calc');
@@ -8,7 +10,11 @@ app.compose(function () {
     var cmdConfig = app.get('cmdConfig');
     var expression = app.get('expression');
 
-    app.modelView(app.models.BitwiseOperation, function() {
+    // TODO: move to protojs
+    String.prototype.padLeft = function(size, char) { return formatter.padLeft(this, size, char); }
+
+
+        app.modelView(app.models.BitwiseOperation, function() {
         function getTemplateId(model) {
             switch (model.sign) {
                 case '<<':
@@ -24,53 +30,26 @@ app.compose(function () {
 
         return {
             renderView: function(expr) {
-
+                // TODO: move all this to expression
                 var result = expression.createOperand(calc.calcExpression(expr), getResultMode([expr.operand1, expr.operand2]));
                 var maxLen = getBinaryLength([expr.operand1.value, expr.operand2 != null ? expr.operand2.value : 0, result.value]);
 
                 var model = Object.create(expr);
+                model.bitsSize = maxLen;
                 model.result = result;
-                model.operand1Binary = formatter.padLeft(expr.operand1.bin, maxLen);
-                if(expr.operand2) {
-                    model.operand2Binary = formatter.padLeft(expr.operand2.bin, maxLen);
-                }
-                model.resultBinary = formatter.padLeft(model.result.bin, maxLen);
 
                 var templateId = getTemplateId(model);
                 var template = app.template(templateId);
 
-                var el = template.render(model);
-                colorizeBits(el);
-                return el;
+                return colorizeBits(template.render(model));
             }
         }
     });
 
     app.modelView(app.models.BitwiseNumbers, {
         renderView: function(model) {
-            var maxLen = getBinaryLength(model.numbers);
-            var table = html.element('<table class="expression"></table>');
-
-            model.operands.forEach(function(n){
-
-                var row = table.insertRow();
-                var decCell = row.insertCell();
-
-                decCell.classList.add('label');
-
-                var binCell = row.insertCell();
-                binCell.className = 'bin';
-
-                decCell.textContent = n.input;
-                binCell.textContent = formatter.padLeft(n.bin, maxLen);
-
-                var otherCell = row.insertCell();
-                otherCell.className = 'other';
-                otherCell.textContent = n.other;
-            });
-
-            colorizeBits(table);
-            return table;
+            model.bitsSize = getBinaryLength(model.numbers);
+            return colorizeBits(app.template('numbersList').render(model));
         }
     });
 
@@ -119,6 +98,7 @@ app.compose(function () {
                 .replace(/0/g, '<span class="zero">0</span>')
                 .replace(/1/g, '<span class="one">1</span>');
         });
+        return container;
     }
 
     function getResultMode(operands) {

@@ -12,17 +12,16 @@
 
     html.template = function(template, model) {
         should.beString(template, "template");
-        var regex = /(?:{([^}]+)})/g, html;
-
+        var regex = /(?:{([^}]+)})/g, htmlText;
         if(model == null){
-            html = template;
+            htmlText = template;
         } else {
-            html =  template.replace(regex, function(m, g1) {
+            htmlText =  template.replace(regex, function(m, g1) {
                 return html.escapeHtml(model[g1]);
             });
         }
 
-        return html;
+        return htmlText;
     };
 
     html.compileTemplate = function (template) {
@@ -33,7 +32,6 @@
         sb.push('(function() {')
         sb.push('return function (m) { ')
         sb.push('\tvar html = [];')
-        sb.push('console.log(m)');
         var m, index = 0;
         while ((m = regex.exec(template)) !== null) {
             if(m.index > index) {
@@ -77,7 +75,7 @@
 
     function replaceToken(token, indent) {
         if(token.indexOf('foreach') == 0) {
-            var r = /([\w\.])\sin\s([\w\.]+)/g;
+            var r = /([\w\.]+)\sin\s([\w\.]+)/g;
             var m = r.exec(token);
             var v = m[1];
             var col = m[2];
@@ -89,7 +87,7 @@
             return "}";
         }
 
-        return '\t\thtml.push(' + token + ');console.log(html);'
+        return '\t\thtml.push(' + token + ');'
     }
 
     core.html = html;

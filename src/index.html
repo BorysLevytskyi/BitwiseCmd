@@ -158,25 +158,33 @@
         <tr>
             <td></td>
             <td class="label">{m.operand1.input}</td>
-            <td class="bin">{m.operand1Binary}</td>
+            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand1.other}</td>
         </tr>
         <tr>
             <td>{m.sign}</td>
             <td class="label">{m.operand2.input}</td>
-            <td class="bin">{m.operand2Binary}</td>
+            <td class="bin">{m.operand2.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand2.other}</td>
         </tr>
         <tr class="result">
             <td>=</td>
             <td class="label">{m.result.input}</td>
-            <td class="bin">{m.resultBinary}</td>
+            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.result.other}</td>
         </tr>
     </table>
 </script>
 <script data-template="numbersList" data-compiled="" type="text/template">
-    <table></table>
+    <table class="expression">
+        {foreach op in m.operands}
+        <tr>
+            <td class="label">{op.input}@{m.bitsSize}</td>
+            <td class="bin">{op.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{op.other}</td>
+        </tr>
+        {/}
+    </table>
 </script>
 
 
