@@ -4,23 +4,26 @@
     var is = core.is;
 
     function Container(store) {
-        this.store = {};
+        this.store = store || {};
         this.resolutionStack = [];
     }
 
     Container.prototype.register = function(name, def) {
-        var reg = this.store[name];
-        if(reg == null) {
-            if(def instanceof Registration) {
-                reg = def;
-            }
-            else {
-                reg = new Registration(def);
-            }
+        var reg;
 
-            reg.name = name;
-            this.store[name] = reg;
+        if(this.store[name] != null)  {
+            console.warn("Previous registration for [%1] has been replaced", name);
         }
+
+        if(def instanceof Registration) {
+            reg = def;
+        }
+        else {
+            reg = new Registration(def);
+        }
+
+        reg.name = name;
+        this.store[name] = reg;
 
         // console.log('[' + name + '] component registered');
         return reg;
@@ -54,6 +57,14 @@
 
         return reg.resolved;
     }
+    
+    Container.prototype.clone = function () {
+        var newStore = {};
+        for(var key in this.store) {
+            newStore[key] = this.store[key];
+        }
+        return new Container(newStore);
+    };
 
 
     function Registration(definition) {
