@@ -31,57 +31,21 @@
         var els = containerEl.querySelectorAll('[data-template]');
         var store = app.templates;
 
-        Array.prototype.forEach.call(els, function(element) {
+        Array.prototype.forEach.call(els, function (element) {
             var key = element.getAttribute('data-template');
 
-            if(store[key] instanceof Template) {
+            if (store[key] instanceof Template) {
                 console.warn(key + ' templates already registered');
                 return;
             }
 
-
             var template = new Template(element.innerHTML);
             store[key] = template;
 
-            if(element.hasAttribute('data-compiled')) {
-                template.process = compile(template.html);
+            if (element.hasAttribute('data-compiled')) {
+                template.process = app.get('html').compileTemplate(template.html);
                 template.isCompiled = true;
             }
         });
-
-
-         function compile (template) {
-                var regex = /(?:{([^}]+)})/g;
-
-                var sb = [];
-
-                sb.push('(function() {')
-                sb.push('return function (m) { ')
-                sb.push('\tvar html = [];')
-                sb.push('console.log(m)');
-                var m, index = 0;
-                while ((m = regex.exec(template)) !== null) {
-                    if(m.index > index) {
-                        sb.push("\t\thtml.push('" + normalize(template.substr(index, m.index - index)) + "');");
-                    }
-                    sb.push('\t\thtml.push(' + m[1] + ');');
-                    index = m.index + m[0].length;
-                }
-
-                if(index < template.length - 1) {
-                    sb.push("\t\thtml.push('" + normalize(template.substr(index, template.length - index)) + "');");
-                }
-                sb.push("\treturn html.join('');");
-                sb.push('}');
-                sb.push('})()');
-                // console.log(sb.join('\r\n'));
-                return eval(sb.join('\r\n'));
-            }
-        };
-
-        function normalize(str) {
-            return str.replace(/(\r|\n)+/g, '').replace("'", "\\\'");
-        }
-
-
+    }
 })(window.app);

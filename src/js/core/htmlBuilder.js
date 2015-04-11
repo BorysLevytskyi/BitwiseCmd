@@ -25,19 +25,36 @@
         return html;
     };
 
-    function getAttributesStr(attr) {
-        if(attr == null) {
-            return '';
-        }
-        var str = [];
+    HtmlBuilder.compileTemplate = function (template) {
+        var regex = /(?:{([^}]+)})/g;
 
-        for(var key in attr) {
-            if(key == 'html')
-                continue;
-            str.push(key + '="' + HtmlBuilder.escapeHtml(attr[key]) + '"');
+        var sb = [];
+
+        sb.push('(function() {')
+        sb.push('return function (m) { ')
+        sb.push('\tvar html = [];')
+        sb.push('console.log(m)');
+        var m, index = 0;
+        while ((m = regex.exec(template)) !== null) {
+            if(m.index > index) {
+                sb.push("\t\thtml.push('" + normalize(template.substr(index, m.index - index)) + "');");
+            }
+            sb.push('\t\thtml.push(' + m[1] + ');');
+            index = m.index + m[0].length;
         }
 
-        return str.join(' ');
+        if(index < template.length - 1) {
+            sb.push("\t\thtml.push('" + normalize(template.substr(index, template.length - index)) + "');");
+        }
+        sb.push("\treturn html.join('');");
+        sb.push('}');
+        sb.push('})()');
+        // console.log(sb.join('\r\n'));
+        return eval(sb.join('\r\n'));
+    };
+
+    function normalize(str) {
+        return str.replace(/(\r|\n)+/g, '').replace("'", "\\\'");
     }
 
     HtmlBuilder.escapeHtml = function(obj) {
@@ -57,6 +74,6 @@
                 .replace(/'/g, "&#039;");
     };
 
-    core.HtmlBuilder = HtmlBuilder;
+    core.html = HtmlBuilder;
 
 })(window.core);
