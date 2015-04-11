@@ -1,8 +1,9 @@
-app.compose(function() {
+app.set("formatter", function() {
     "use strict";
 
     var should = app.get('should');
-    app.set("formatter", {
+
+    return {
         toBinaryString: function(num, totalLength) {
 
             var binaryStr = num.toString(2),
@@ -23,5 +24,5 @@ app.compose(function() {
 
             return formatted.join('');
         }
-    });
-})
+    }
+});

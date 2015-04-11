@@ -1,9 +1,8 @@
-app.compose(function() {
+app.set('calc', function() {
     "use strict";
 
-    var should = app.get('should')
-
-    app.set('calc', {
+    var should = app.get('should');
+    return {
 
         numberOfBits: function (num) {
             should.bePositiveInteger(num);
@@ -24,5 +23,5 @@ app.compose(function() {
         calcExpression: function (expr) {
             return eval(expr.string);
         }
-    });
+    }
 });
