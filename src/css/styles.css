@@ -37,7 +37,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .indicator { color: #ddd; }
 .light .on { color: #121212; }
 .light .prefix { color: #888}
-.light  .other { font-size: 0.9em}
+.light .other { color: #bbb }
 
 /* Dark */
 .dark { background: #121212; color: white;}
