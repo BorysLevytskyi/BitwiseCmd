@@ -22,7 +22,7 @@ describe("expression parse", function() {
     };
 
     it("should parse expressions", function() {
-        var input, expr;
+        var input;
         for(input in expressionCases) {
             var actual = expression.parse(input);
             var expected = expressionCases[input];
@@ -42,7 +42,7 @@ describe("expression parse", function() {
     };
 
     it("should parse hexadecimal expressions", function() {
-        var input, expr, i;
+        var input, i;
         for(input in listCases) {
             var actual = expression.parse(input);
             var expected = listCases[input];
@@ -54,16 +54,25 @@ describe("expression parse", function() {
     });
 });
 
-describe('operands', function() {
+describe('parse operands', function() {
 
     var hexOperand = expression.parseOperand('0x10');
     var decOperand = expression.parseOperand('10');
+    rundOperandsTest(hexOperand, decOperand);
+});
 
+describe('create operands', function() {
+
+    var hexOperand = expression.createOperand(0x10, 'hex');
+    var decOperand = expression.createOperand(10, 'dec');
+    rundOperandsTest(hexOperand, decOperand);
+});
+
+function rundOperandsTest(hexOperand, decOperand) {
     it('should remember input form', function() {
         expect(hexOperand.input).toBe('0x10');
         expect(decOperand.input).toBe('10');
     });
-
 
     it('should return integer value', function () {
         expect(hexOperand.value).toBe(0x10);
@@ -76,11 +85,12 @@ describe('operands', function() {
         expect(hexOperand.dec).toBe('16');
         expect(hexOperand.bin).toBe('10000');
         expect(hexOperand.hex).toBe('0x10');
+        expect(hexOperand.other).toBe('16');
 
         expect(decOperand.kind).toBe('dec');
         expect(decOperand.dec).toBe('10');
         expect(decOperand.bin).toBe('1010');
         expect(decOperand.hex).toBe('0xa');
+        expect(decOperand.other).toBe('0xa');
     });
-
-});
+}
