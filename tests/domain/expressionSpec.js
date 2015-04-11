@@ -18,7 +18,8 @@ describe("expression parse", function() {
         "23^0x1": { operand1: 23, operand2:1, "sign":"^", string: "23^0x1" },
         "0xf>>0xa": { operand1: 15, operand2:10, "sign":">>", string:"0xf>>0xa" },
         "0x10&0x11": { operand1: 0x10, operand2:0x11, "sign":"&", string:"0x10&0x11" },
-        "0x1a^11": { operand1: 0x1a, operand2:11, "sign":"^", string:"0x1a^11" }
+        "0x1a^11": { operand1: 0x1a, operand2:11, "sign":"^", string:"0x1a^11" },
+        "0x1a>>>11": { operand1: 0x1a, operand2:11, "sign":">>>", string:"0x1a>>>11" }
     };
 
     it("should parse expressions", function() {

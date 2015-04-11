@@ -1,7 +1,7 @@
 app.set('expression', function() {
     "use strict";
 
-    var exprRegex = /^(-?(?:\d+|0x[\d,a-f]+))\s*(<<|>>|\||\&|\^)\s*(-?(?:\d+|0x[\d,a-f]+))$/;
+    var exprRegex = /^(-?(?:\d+|0x[\d,a-f]+))\s*(<<|>>|>>>|\||\&|\^)\s*(-?(?:\d+|0x[\d,a-f]+))$/;
     var listRegex = /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/;
 
     return {
