@@ -120,10 +120,12 @@
         <tr>
             <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}</td>
             <td class="bin">{operand1Binary}</td>
+            <td class="other {otherMode}"><span class="prefix">0x</span>{operand1Other}</td>
         </tr>
         <tr class="result">
-            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}{sign}<span class="prefix">0x</span>{operand2}=<span class="prefix">0x</span>{resultStr}</td>
+            <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}{sign}<span class="prefix">0x</span>{operand2Str}=<span class="prefix">0x</span>{resultStr}</td>
             <td class="bin">{resultBinary}</td>
+            <td class="other {otherMode}">{resultOther}</td>
         </tr>
     </table>
 </script>
@@ -134,16 +136,19 @@
             <td></td>
             <td class="label {mode}"><span class="prefix">0x</span>{operand1Str}</td>
             <td class="bin">{operand1Binary}</td>
+            <td class="other {otherMode}"><span class="prefix">0x</span>{operand1Other}</td>
         </tr>
         <tr>
             <td>{sign}</td>
             <td class="label {mode}"><span class="prefix">0x</span>{operand2Str}</td>
             <td class="bin">{operand2Binary}</td>
+            <td class="other {otherMode}"><span class="prefix">0x</span>{operand2Other}</td>
         </tr>
         <tr class="result">
             <td>=</td>
             <td class="label {mode}"><span class="prefix">0x</span>{resultStr}</td>
             <td class="bin">{resultBinary}</td>
+            <td class="other {otherMode}"><span class="prefix">0x</span>{resultOther}</td>
         </tr>
     </table>
 </script>

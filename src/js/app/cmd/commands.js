@@ -39,6 +39,9 @@ app.run(function() {
                 return;
             }
             return new app.models.ViewResult('aboutTpl');
+        },
+        '-debug': function() {
+            app.debugMode = true;
         }
     });
 

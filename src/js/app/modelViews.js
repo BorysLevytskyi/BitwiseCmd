@@ -10,16 +10,26 @@ app.compose(function () {
     app.modelView(app.models.BitwiseOperation, {
         renderView: function(expr) {
             var result = calc.calcExpression(expr);
-            var maxLen = getBinaryLength([expr.operand1, expr.operand2, result]);
+            var maxLen = getBinaryLength([expr.operand1.value, expr.operand2.value, result]);
 
             var model = Object.create(expr);
+
+            var otherMode = cmdConfig.mode == 'dec' ? 'hex' : 'dec';
+
             model.mode = cmdConfig.mode;
+            model.otherMode = otherMode;
+
+            model.operand1Str = expr.operand1[cmdConfig.mode];
+            model.operand1Binary = formatter.padLeft(expr.operand1.bin, maxLen);
+            model.operand1Other = formatter.padLeft(expr.operand1[otherMode]);
+
+            model.operand2Str = expr.operand2[cmdConfig.mode];
+            model.operand2Binary = formatter.padLeft(expr.operand2.bin, maxLen);
+            model.operand2Other = expr.operand2[otherMode];
+
             model.resultStr = formatter.formatString(result, cmdConfig.mode);
-            model.operand1Str = formatter.formatString(expr.operand1, cmdConfig.mode);
-            model.operand2Str = formatter.formatString(expr.operand2, cmdConfig.mode);
-            model.operand1Binary = formatter.padLeft(formatter.formatString(expr.operand1), maxLen);
-            model.operand2Binary = formatter.padLeft(formatter.formatString(expr.operand2), maxLen);
             model.resultBinary = formatter.padLeft(formatter.formatString(result, cmdConfig.mode), maxLen);
+            model.resultOther = formatter.formatString(result, otherMode);
 
             console.log(model);
 
@@ -36,6 +46,7 @@ app.compose(function () {
         renderView: function(model) {
             var maxLen = getBinaryLength(model.numbers);
             var table = html.element('<table class="expression {mode}"></table>');
+            var otherMode = cmdConfig.mode == 'dec' ? 'hex' : 'dec';
 
             model.numbers.forEach(function(n){
 
@@ -50,6 +61,10 @@ app.compose(function () {
 
                 decCell.innerHTML = html.template('<span class="prefix">0x</span>{n}', { n: formatter.formatString(n, cmdConfig.mode) });
                 binCell.textContent = formatter.padLeft(formatter.formatString(n), maxLen);
+
+                var otherCell = row.insertCell();
+                otherCell.className = 'other ' + otherMode;
+                otherCell.innerHTML = html.template('<span class="prefix">0x</span>{n}', { n: formatter.formatString(n, otherMode) });
             });
 
             colorizeBits(table);

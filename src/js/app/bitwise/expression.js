@@ -44,8 +44,8 @@ app.set('expression', function() {
         var o2 = parseInt(matches[3], base);
 
         var m = new app.models.BitwiseOperation();
-        m.operand1 = o1;
-        m.operand2 = o2;
+        m.operand1 = new Operand(o1);
+        m.operand2 = new Operand(o2);
         m.sign = matches[2];
         m.string = matches.input;
         //m.result = eval(matches.input);
@@ -72,4 +72,15 @@ app.set('expression', function() {
             case 'dec': return 10;
         }
     }
+
+    function Operand(n) {
+        this.value = n;
+        this.hex = n.toString(16);
+        this.dec = n.toString(10);
+        this.bin = n.toString(2);
+    }
+
+    Operand.prototype.valueOf = function () {
+        return this.value;
+    };
 });
