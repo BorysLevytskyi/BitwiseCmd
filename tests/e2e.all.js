@@ -6,13 +6,9 @@ exports.config = {
         './e2e/spec.js'
     ],
 
-    capabilities: {
+    multiCapabilities: [{
         'browserName': 'chrome'
-    },
-
-    chromeOptions: {
-        binary: "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
-        args: [],
-        extensions: []
-    }
+    },{
+        'browserName': 'firefox'
+    }]
 };

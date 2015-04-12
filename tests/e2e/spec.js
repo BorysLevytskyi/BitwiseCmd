@@ -1,7 +1,7 @@
 browser.ignoreSynchronization = true;
 var By = protractor.By;
 var driver = browser.driver;
-var appUrl = 'http://localhost:63342/BitwiseCmd/src/';
+var appUrl = browser.params.appUrl || 'http://localhost:63342/BitwiseCmd/src/';
 var Key = protractor.Key;
 
 describe('launch of application', function() {
