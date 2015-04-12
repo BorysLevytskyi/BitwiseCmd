@@ -63,6 +63,26 @@ describe('launch of application', function() {
                      { label: '0xf', bin:'00001111', other: '15'}])
             });
     });
+
+
+    it('should emphasize bytes', function() {
+
+        driver.get(appUrl)
+            .then(function() { return sendCommand('clear')})
+            .then(function() { return sendCommand('1')})
+            .then(function() {
+                return assertBitwiseNumbersResults(driver, [{ label: '1', bin:'00000001', other: '0x1'}])
+            })
+            .then(function() { return sendCommand('clear')})
+            .then(function() { return sendCommand('em')})
+            .then(assertNoErrors)
+            .then(function() { return sendCommand('1 3')})
+            .then(function() {
+                return assertBitwiseNumbersResults(driver, [{ label: '1', bin:'01', other: '0x1'}, { label: '3', bin:'11', other: '0x3'}])
+            })
+
+
+    });
 });
 
 function sendCommand(cmd) {
