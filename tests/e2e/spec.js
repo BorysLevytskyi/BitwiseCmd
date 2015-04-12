@@ -62,14 +62,40 @@ describe('launch of application', function() {
 
     it('should do a shift operation', function() {
 
-        driver.get(appUrl)
-            .then(function() {
-                return assertOperation('1<<1',
-                    [{ label: '1', bin:'00000001', other: '0x1'},
-                     { label: '1<<1=2', bin:'00000010', other: '0x2'}])
-            });
+        return assertOperation('1<<1',
+            [{ label: '1', bin:'00000001', other: '0x1'},
+                { label: '1<<1=2', bin:'00000010', other: '0x2'}])
     });
 
+    it('should do a ignroe sign RIGHT shift operation', function() {
+
+        return assertOperation('-1>>>1',
+            [{ label: '-1', bin:'11111111111111111111111111111111', other: '-0x1'},
+                { label: '-1>>>1=2147483647', bin:'01111111111111111111111111111111', other: '0x7fffffff'}])
+    });
+
+    it('should do NOT operation', function() {
+
+        return assertOperation('~1',
+            [{ label: '1', bin:'00000000000000000000000000000001', other: '0x1'},
+             { label: '~1=-2', bin:'11111111111111111111111111111110', other: '-0x2'}])
+    });
+
+    it('should do OR operation', function() {
+
+        return assertOperation('1|2',
+            [{ label: '1', bin:'00000001', other: '0x1'},
+                { label: '2', bin:'00000010', other: '0x2'},
+                { label: '3', bin:'00000011', other: '0x3'}])
+    });
+
+    it('should do prefer hex result', function() {
+
+        return assertOperation('1|0x2',
+            [{ label: '1', bin:'00000001', other: '0x1'},
+                { label: '0x2', bin:'00000010', other: '2'},
+                { label: '0x3', bin:'00000011', other: '3'}])
+    });
 
     xit('should emphasize bytes', function() {
 
@@ -103,7 +129,6 @@ function assertNoErrors(cmd) {
     });
 }
 
-
 function assertBitwiseNumbersResults(contaier, array) {
 
     return contaier.findElement(By.css('.expression')).then(function (tableExpr){
@@ -118,11 +143,11 @@ function assertBitwiseNumbersResults(contaier, array) {
             }
         });
     });
-
 }
 
 function assertSingleRowResult(row, label, bin, other) {
-        return row.findElement(by.css('.label')).then(function (tbLabel) {
+
+    return row.findElement(by.css('.label')).then(function (tbLabel) {
             expect(tbLabel.getText()).toBe(label);
         }).then(function () {
             return row.findElement(by.css('.bin')).then(function (tdBin) {
@@ -136,11 +161,13 @@ function assertSingleRowResult(row, label, bin, other) {
 }
 
 function assertOperation(op, expected) {
-    return sendCommand('clear')
-        .then(function() { return sendCommand(op)})
-        .then(assertNoErrors)
-        .then(function() {
-            return assertBitwiseNumbersResults(driver,
-                expected)
-        });
+
+    return driver.get(appUrl).then(function() {
+        return sendCommand('clear')
+            .then(function() { return sendCommand(op)})
+            .then(assertNoErrors)
+            .then(function() {
+                return assertBitwiseNumbersResults(driver, expected)
+            });
+    })
 }
