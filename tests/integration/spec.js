@@ -42,6 +42,10 @@ describe('launch of application', function() {
             .then(function() { return sendCommand('0x1 0xf')})
             .then(function() { return sendCommand('0x1 | 0xf')})
             .then(function() { return sendCommand('0x1 ^ 123')})
+            .then(function() { return sendCommand('em')})
+            .then(function() { return sendCommand('em')})
+            .then(function() { return sendCommand('dark')})
+            .then(function() { return sendCommand('light')})
             .then(assertNoErrors);
     });
 
