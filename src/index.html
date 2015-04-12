@@ -177,7 +177,7 @@
 </script>
 <script data-template="numbersList" data-compiled="" type="text/template">
     <table class="expression">
-        {foreach op in m.operands}
+        {each op in m.operands}
         <tr>
             <td class="label">{op.input}</td>
             <td class="bin">{op.bin.padLeft(m.bitsSize, '0')}</td>

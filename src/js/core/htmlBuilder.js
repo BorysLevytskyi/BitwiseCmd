@@ -74,7 +74,7 @@
 
 
     function replaceToken(token, indent) {
-        if(token.indexOf('foreach') == 0) {
+        if(token.indexOf('each') == 0) {
             var r = /([\w\.]+)\sin\s([\w\.]+)/g;
             var m = r.exec(token);
             var v = m[1];

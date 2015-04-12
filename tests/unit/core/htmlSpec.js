@@ -8,8 +8,8 @@ describe('html templates', function () {
         expect(compiled({name: 'test'})).toBe('<div>test</div>');
     });
 
-    it('should support foreach', function () {
-        var t = '{foreach n in m.lst}{foreach c in m.lst2}{n}{c}{/}{/}';
+    it('should support each', function () {
+        var t = '{foreach n in m.lst}{each c in m.lst2}{n}{c}{/}{/}';
         var compiled = html.compileTemplate(t);
         var result = compiled({lst:[1,2,3], lst2:['a','b']});
         console.log(result);
