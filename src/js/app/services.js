@@ -9,7 +9,7 @@
     app.set('hash', function () {
         return {
             encodeHash: function(string) {
-                return encodeURI(string.trim()).replace(/\s/g,',');
+                return encodeURI(string.trim().replace(/\s/g,','));
             },
             decodeHash: function(hashValue) {
                 return decodeURI(hashValue).replace(/^\#/, '').replace(/,/g,' ');
