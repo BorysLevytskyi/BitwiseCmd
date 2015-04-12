@@ -54,13 +54,21 @@
             </div>
             <div class="float:left">
                 <p class="section">
-                    <strong>Supported Bitwise Operations</strong>
+                    <strong>Supported Bitwise Operations</strong><br/>
+                    <small>
+                        <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">
+                            as implemented in JavaScript engine
+                        </a>
+                    </small>
                 <ul>
                     <li><code>&</code> — bitwise AND</li>
                     <li><code>|</code> — bitwise inclusive OR</li>
                     <li><code>^</code> — bitwise exclusive XOR</li>
-                    <li><code><<</code> — left shift</li>
-                    <li><code>>></code> — right shift</li>
+                    <li><code>~</code> — bitwise NOT</li>
+                    <li><code>&lt;<</code> — left shift</li>
+                    <li><code>&gt;&gt;</code> — sign propagating right shift</li>
+                    <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
+
                 </ul>
                 </p>
             </div>
@@ -86,36 +94,67 @@
     </div>
 </script>
 
-<script data-template="shiftExpressionView" type="text/template">
+<script data-template="shiftExpressionView" data-compiled="" type="text/template">
     <table class="expression">
         <tr>
-            <td class="label">{operand1}</td>
-            <td class="bin">{operand1Binary}</td>
+            <td class="label">{m.operand1.input}</td>
+            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{m.operand1.other}</td>
         </tr>
         <tr class="result">
-            <td class="label">{operand1}{sign}{operand2}={result}</td>
-            <td class="bin">{resultBinary}</td>
+            <td class="label">{m.string.replace(/\s/g,'')}={m.result.input}</td>
+            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{m.result.other}</td>
         </tr>
     </table>
 </script>
 
-<script data-template="binaryExpressionView" type="text/template">
+<script data-template="notExpressionView" data-compiled="" type="text/template">
+    <table class="expression">
+        <tr>
+            <td class="label">{m.operand1.input}</td>
+            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{m.operand1.other}</td>
+        </tr>
+        <tr class="result">
+            <td class="label">{m.sign}{m.operand1.input}={m.result.input}</td>
+            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{m.result.other}</td>
+        </tr>
+    </table>
+</script>
+
+<script data-template="binaryExpressionView" data-compiled="" type="text/template">
     <table class="expression">
         <tr>
             <td></td>
-            <td class="label">{operand1}</td>
-            <td class="bin">{operand1Binary}</td>
+            <td class="label">{m.operand1.input}</td>
+            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{m.operand1.other}</td>
         </tr>
         <tr>
-            <td>{sign}</td>
-            <td class="label">{operand2}</td>
-            <td class="bin">{operand2Binary}</td>
+            <td>{m.sign}</td>
+            <td class="label">{m.operand2.input}</td>
+            <td class="bin">{m.operand2.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{m.operand2.other}</td>
         </tr>
         <tr class="result">
             <td>=</td>
-            <td class="label">{result}</td>
-            <td class="bin">{resultBinary}</td>
+            <td class="label">{m.result.input}</td>
+            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{m.result.other}</td>
         </tr>
+    </table>
+</script>
+<script data-template="numbersList" data-compiled="" type="text/template">
+    <table class="expression">
+        {each op in m.operands}
+        <tr>
+            <td class="label">{op.input}</td>
+            <td class="bin">{op.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{op.other}</td>
+        </tr>
+        {/}
     </table>
 </script>
 
@@ -136,6 +175,7 @@
     else {
 
         cmd.execute('1|2');
+        cmd.execute('1<<0x2a');
         cmd.execute('2 4 8 16 32');
     }
     
