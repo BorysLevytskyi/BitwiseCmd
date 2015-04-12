@@ -36,7 +36,8 @@ app.run(function() {
         },
         '-debug': function() {
             app.debugMode = true;
-        }
+        },
+        '-notrack': function () {}
     });
 
     // TODO: Make as function
