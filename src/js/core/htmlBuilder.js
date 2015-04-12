@@ -47,7 +47,7 @@
         sb.push("\treturn html.join('');");
         sb.push('}');
         sb.push('})()');
-        console.log(eval(sb.join('\r\n')).toString());
+        //console.log(eval(sb.join('\r\n')).toString());
         return eval(sb.join('\r\n'));
     };
 
