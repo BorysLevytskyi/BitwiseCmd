@@ -42,8 +42,6 @@ describe('launch of application', function() {
             .then(function() { return sendCommand('0x1 0xf')})
             .then(function() { return sendCommand('0x1 | 0xf')})
             .then(function() { return sendCommand('0x1 ^ 123')})
-            .then(function() { return sendCommand('em')})
-            .then(function() { return sendCommand('em')})
             .then(function() { return sendCommand('dark')})
             .then(function() { return sendCommand('light')})
             .then(assertNoErrors);
@@ -62,8 +60,18 @@ describe('launch of application', function() {
             });
     });
 
+    it('should do a shift operation', function() {
 
-    it('should emphasize bytes', function() {
+        driver.get(appUrl)
+            .then(function() {
+                return assertOperation('1<<1',
+                    [{ label: '1', bin:'00000001', other: '0x1'},
+                     { label: '1<<1=2', bin:'00000010', other: '0x2'}])
+            });
+    });
+
+
+    xit('should emphasize bytes', function() {
 
         driver.get(appUrl)
             .then(function() { return sendCommand('clear')})
@@ -95,6 +103,7 @@ function assertNoErrors(cmd) {
     });
 }
 
+
 function assertBitwiseNumbersResults(contaier, array) {
 
     return contaier.findElement(By.css('.expression')).then(function (tableExpr){
@@ -123,5 +132,15 @@ function assertSingleRowResult(row, label, bin, other) {
             return row.findElement(by.css('.other')).then(function (tdOther) {
                 expect(tdOther.getText()).toBe(other);
             })
+        });
+}
+
+function assertOperation(op, expected) {
+    return sendCommand('clear')
+        .then(function() { return sendCommand(op)})
+        .then(assertNoErrors)
+        .then(function() {
+            return assertBitwiseNumbersResults(driver,
+                expected)
         });
 }

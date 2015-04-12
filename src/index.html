@@ -127,12 +127,12 @@
     <table class="expression">
         <tr>
             <td class="label">{m.operand1.input}</td>
-            <td class="bin">{m.operand1Binary}</td>
+            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand1.other}</td>
         </tr>
         <tr class="result">
             <td class="label">{m.string.replace(/\s/g,'')}={m.result.input}</td>
-            <td class="bin">{m.resultBinary}</td>
+            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.result.other}</td>
         </tr>
     </table>
