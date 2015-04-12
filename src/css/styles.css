@@ -9,6 +9,8 @@ code { font-size: 1.2em; font-weight: bold; }
 .result .input { margin-bottom: 10px; }
 .result .content { padding-left: 10px}
 .result .cur { color: lightgray; margin-right: 5px; }
+.hashLink { text-decoration: none; margin-left: 5px; }
+.hashLink:hover { text-decoration: underline; margin-left: 5px; }
 
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
 .expression .bin { letter-spacing: 3px; }
@@ -38,6 +40,9 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .on { color: #121212; }
 .light .prefix { color: #888}
 .light .other { color: #bbb }
+.light .hashLink, .light .hashLink:visited { color: #ddd }
+.light .hashLink:hover { color: #888 }
+
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -48,5 +53,6 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .zero { color: #999;}
 .dark .prefix { color: #999}
 .dark  .other { color: #444;}
-
+.dark .hashLink, .dark .hashLink:visited { color: #333 }
+.dark .hashLink:hover { color: #999 }
 

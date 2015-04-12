@@ -27,6 +27,7 @@
 
     function DisplayResult (input, content) {
         this.input = input;
+        this.inputHash = app.get('hash').encodeHash(input);
         this.content = content;
     }
 

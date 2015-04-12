@@ -116,9 +116,9 @@
     </div>
 </script>
 
-<script data-template="resultView" type="text/template">
+<script data-template="resultView" data-compiled="" type="text/template">
     <div class="result">
-        <div class="input mono"><span class="cur">&gt;</span>{input}</div>
+        <div class="input mono"><span class="cur">&gt;</span>{m.input}<a class="hashLink" title="Link for this expression" href="{window.location.pathname}#{m.inputHash}">#</a></div>
         <div class="content"></div>
     </div>
 </script>
@@ -199,7 +199,8 @@
     cmd.execute('help');
 
     if(window.location.hash.length > 1) {
-        cmd.execute(window.location.hash.substr(1).replace(/,/g,' '));
+
+        cmd.execute(app.get('hash').decodeHash(window.location.hash));
     }
     else {
 
