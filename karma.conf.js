@@ -14,7 +14,7 @@ module.exports = function(config) {
             'src/js/app.js',
             'src/js/components/*.js',
             'src/js/app/**/*.js',
-            'tests/**/*.js'
+            'tests/unit/**/*.js'
         ]
     });
 };
