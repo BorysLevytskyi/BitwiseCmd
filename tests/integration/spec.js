@@ -4,12 +4,6 @@ var driver = browser.driver;
 var appUrl = 'http://localhost:63342/BitwiseCmd/src/';
 var Key = protractor.Key;
 
-describe('a quick test', function(){
-    it('should be true', function(){
-        expect(true).toBe(true);
-    });
-});
-
 describe('launch of application', function() {
     it('should have title', function() {
         driver.get(appUrl).then(function() {
