@@ -23,10 +23,8 @@ describe('launch of application', function() {
         driver.get(appUrl)
             .then(function() { return sendCommand('clear')})
             .then(function () {
-                console.log('before assert');
-
-                driver.findElements(By.css('.result')).then(function(els) {
-                    expect(els.length).toBe(0, "There should be no results after clear");
+                return driver.findElements(By.css('.result')).then(function(list) {
+                    expect(list.length).toBe(0, "There should be no results after clear");
                 });
         });
     });
@@ -54,7 +52,7 @@ describe('launch of application', function() {
             .then(function() { return sendCommand('3 0xf')})
             .then(assertNoErrors)
             .then(function() {
-                return assertBitwiseNumbersResults(driver,
+                return assertExpressionResult(driver,
                     [{ label: '3', bin:'00000011', other: '0x3'},
                      { label: '0xf', bin:'00001111', other: '15'}])
             });
@@ -97,23 +95,42 @@ describe('launch of application', function() {
                 { label: '0x3', bin:'00000011', other: '3'}])
     });
 
+    it('should create hashlink', function() {
+        var expected = [{ label: '1', bin:'00000001', other: '0x1'},
+            { label: '0x2', bin:'00000010', other: '2'},
+            { label: '0x3', bin:'00000011', other: '3'}];
+
+        return assertOperation('1|0x2', expected).then(function(){
+            return driver.findElement(By.css('.hashLink'));
+        }).then(function(el) {
+            return el.getAttribute('href');
+        }).then(function(hrefUrl) {
+            return driver.get(hrefUrl);
+        }).then(function() {
+            console.log('s1');
+            return driver.findElements(By.css('.result'));
+        }).then(function(list) {
+            expect(list.length).toBeGreaterThan(0);
+            return assertExpressionResult(list[0], expected);
+        }).then(function(){console.log('s3')});
+
+    });
+
     xit('should emphasize bytes', function() {
 
         driver.get(appUrl)
             .then(function() { return sendCommand('clear')})
             .then(function() { return sendCommand('1')})
             .then(function() {
-                return assertBitwiseNumbersResults(driver, [{ label: '1', bin:'00000001', other: '0x1'}])
+                return assertExpressionResult(driver, [{ label: '1', bin:'00000001', other: '0x1'}])
             })
             .then(function() { return sendCommand('clear')})
             .then(function() { return sendCommand('em')})
             .then(assertNoErrors)
             .then(function() { return sendCommand('1 3')})
             .then(function() {
-                return assertBitwiseNumbersResults(driver, [{ label: '1', bin:'01', other: '0x1'}, { label: '3', bin:'11', other: '0x3'}])
-            })
-
-
+                return assertExpressionResult(driver, [{ label: '1', bin:'01', other: '0x1'}, { label: '3', bin:'11', other: '0x3'}])
+            });
     });
 });
 
@@ -129,10 +146,11 @@ function assertNoErrors(cmd) {
     });
 }
 
-function assertBitwiseNumbersResults(contaier, array) {
+function assertExpressionResult(contaier, array) {
 
-    return contaier.findElement(By.css('.expression')).then(function (tableExpr){
-        return tableExpr.findElements(By.tagName('tr')).then(function(rows) {
+    return contaier.findElement(By.css('.expression'))
+        .then(function (tableExpr){
+            return tableExpr.findElements(By.tagName('tr')).then(function(rows) {
             expect(rows.length).toBe(array.length, 'Rows number mismatch');
 
             var all= null, cur;
@@ -167,7 +185,7 @@ function assertOperation(op, expected) {
             .then(function() { return sendCommand(op)})
             .then(assertNoErrors)
             .then(function() {
-                return assertBitwiseNumbersResults(driver, expected)
+                return assertExpressionResult(driver, expected)
             });
     })
 }

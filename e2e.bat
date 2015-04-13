@@ -1,1 +1,1 @@
-protractor tests\e2e.chrome.js --params.url='test'
+protractor tests\e2e.chrome.js
