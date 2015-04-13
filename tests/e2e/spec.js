@@ -1,7 +1,7 @@
 browser.ignoreSynchronization = true;
 var By = protractor.By;
 var driver = browser.driver;
-var appUrl = browser.params.appUrl || 'http://localhost:63342/BitwiseCmd/src/';
+var appUrl = browser.params.appUrl || 'http://localhost:63342/BitwiseCmd/src/#clear';
 var Key = protractor.Key;
 
 describe('launch of application', function() {
@@ -107,12 +107,11 @@ describe('launch of application', function() {
         }).then(function(hrefUrl) {
             return driver.get(hrefUrl);
         }).then(function() {
-            console.log('s1');
             return driver.findElements(By.css('.result'));
         }).then(function(list) {
             expect(list.length).toBeGreaterThan(0);
             return assertExpressionResult(list[0], expected);
-        }).then(function(){console.log('s3')});
+        });
 
     });
 
@@ -125,7 +124,7 @@ describe('launch of application', function() {
                 return assertExpressionResult(driver, [{ label: '1', bin:'00000001', other: '0x1'}])
             })
             .then(function() { return sendCommand('clear')})
-            .then(function() { return sendCommand('em')})
+ //           .then(function() { return sendCommand('em')})
             .then(assertNoErrors)
             .then(function() { return sendCommand('1 3')})
             .then(function() {
@@ -168,21 +167,20 @@ function assertSingleRowResult(row, label, bin, other) {
     return row.findElement(by.css('.label')).then(function (tbLabel) {
             expect(tbLabel.getText()).toBe(label);
         }).then(function () {
-            return row.findElement(by.css('.bin')).then(function (tdBin) {
-                expect(tdBin.getText()).toBe(bin);
-            })
+            return row.findElement(by.css('.bin'));
+        }).then(function (tdBin) {
+            expect(tdBin.getText()).toBe(bin);
         }).then(function () {
-            return row.findElement(by.css('.other')).then(function (tdOther) {
-                expect(tdOther.getText()).toBe(other);
-            })
+            return row.findElement(by.css('.other'));
+        }).then(function (tdOther) {
+            expect(tdOther.getText()).toBe(other);
         });
 }
 
 function assertOperation(op, expected) {
 
     return driver.get(appUrl).then(function() {
-        return sendCommand('clear')
-            .then(function() { return sendCommand(op)})
+        return sendCommand(op)
             .then(assertNoErrors)
             .then(function() {
                 return assertExpressionResult(driver, expected)
