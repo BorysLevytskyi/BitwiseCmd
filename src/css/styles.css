@@ -9,8 +9,10 @@ code { font-size: 1.2em; font-weight: bold; }
 .result .input { margin-bottom: 10px; }
 .result .content { padding-left: 10px}
 .result .cur { color: lightgray; margin-right: 5px; }
-.hashLink { text-decoration: none; margin-left: 5px; }
+
+.hashLink { text-decoration: none; margin-left: 5px; visibility: hidden }
 .hashLink:hover { text-decoration: underline; margin-left: 5px; }
+.input:hover .hashLink { visibility: visible }
 
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
 .expression .bin { letter-spacing: 3px; }
