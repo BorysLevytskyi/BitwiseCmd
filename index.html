@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <meta name="description" content="Visualised Bitwise Operations">
+    <meta name="description" content="Bitwise Calculator. Visualised Bitwise Operations.">
 
     <title>BitwiseCmd</title>
     <link rel="shortcut icon" href="http://bitwisecmd.com/favicon.ico">
@@ -19,7 +19,8 @@
     <h1>Bitwise<span style="color: #c5c5c5;">Cmd</span></h1>
 
     <div class="links">
-        <a href="https://github.com/BorisLevitskiy/BitwiseCmd">Project on GitHub</a>
+        <a href="https://github.com/BorisLevitskiy/BitwiseCmd">Project on GitHub</a>&nbsp;
+        <a href="mailto:&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=Feedback">Send Feedback</a>
     </div>
 
     <div>
@@ -83,13 +84,14 @@
 <script data-template="aboutTpl" type="text/template">
     <div class="aboutTpl">
         <p> Created by <a href="http://boryslevytskyi.github.io/">Borys Levytskyi</a></p>
+        <p>If you have an idea, suggestion or you've spotted a bug here, please send it to <a href="mailto:&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=Feedback">&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>. Your feedback is greatly appreciated.</p>
         <p><a href="https://github.com/BorisLevitskiy/BitwiseCmd">Project on <strong>GitHub</strong></a></p>
     </div>
 </script>
 
-<script data-template="resultView" type="text/template">
+<script data-template="resultView" data-compiled="" type="text/template">
     <div class="result">
-        <div class="input mono"><span class="cur">&gt;</span>{input}</div>
+        <div class="input mono"><span class="cur">&gt;</span>{m.input}<a class="hashLink" title="Link for this expression" href="{window.location.pathname}#{m.inputHash}">#</a></div>
         <div class="content"></div>
     </div>
 </script>
@@ -101,7 +103,7 @@
             <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand1.other}</td>
         </tr>
-        <tr class="result">
+        <tr class="expression-result">
             <td class="label">{m.string.replace(/\s/g,'')}={m.result.input}</td>
             <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.result.other}</td>
@@ -116,7 +118,7 @@
             <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand1.other}</td>
         </tr>
-        <tr class="result">
+        <tr class="expression-result">
             <td class="label">{m.sign}{m.operand1.input}={m.result.input}</td>
             <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.result.other}</td>
@@ -138,7 +140,7 @@
             <td class="bin">{m.operand2.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand2.other}</td>
         </tr>
-        <tr class="result">
+        <tr class="expression-result">
             <td>=</td>
             <td class="label">{m.result.input}</td>
             <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
@@ -166,14 +168,13 @@
     app.bootstrap(document.getElementById('rootView'));
 
     var cmd = app.get('cmd');
+    var hashArgs = app.get('hashArgs');
 
-    cmd.execute('help');
-
-    if(window.location.hash.length > 1) {
-        cmd.execute(window.location.hash.substr(1).replace(/,/g,' '));
+    if(hashArgs.commands.length > 0) {
+        hashArgs.commands.forEach(cmd.execute.bind(cmd));
     }
     else {
-
+        cmd.execute('help');
         cmd.execute('1|2');
         cmd.execute('1<<0x2a');
         cmd.execute('2 4 8 16 32');
