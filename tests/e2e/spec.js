@@ -79,6 +79,28 @@ describe('launch of application', function() {
              { label: '~1=-2', bin:'11111111111111111111111111111110', other: '-0x2'}])
     });
 
+    it('should execute multiple expressions from hash arguments', function() {
+
+        var url = appUrl + "||16,15||16&15";
+        console.log('accessing url: ', url);
+
+        return driver.get(url)
+            .then(function() { return driver.navigate().refresh(); })
+            .then(assertNoErrors)
+            .then(function() {
+                return assertMultipleExpressionResults(driver, [
+                    //16&15
+                    [{ label: '16', bin:'00010000', other: '0x10'},
+                        { label: '15', bin:'00001111', other: '0xf'},
+                        { label: '0', bin:'00000000', other: '0x0'}],
+
+                    //16 15
+                    [{ label: '16', bin:'00010000', other: '0x10'},
+                        { label: '15', bin:'00001111', other: '0xf'}]
+                ])
+            })
+    });
+
     it('should do OR operation', function() {
 
         return assertOperation('1|2',
@@ -87,6 +109,8 @@ describe('launch of application', function() {
                 { label: '3', bin:'00000011', other: '0x3'}])
     });
 
+
+
     it('should do prefer hex result', function() {
 
         return assertOperation('1|0x2',
@@ -94,6 +118,7 @@ describe('launch of application', function() {
                 { label: '0x2', bin:'00000010', other: '2'},
                 { label: '0x3', bin:'00000011', other: '3'}])
     });
+
 
     it('should create hashlink', function() {
         var expected = [{ label: '1', bin:'00000001', other: '0x1'},
@@ -139,10 +164,25 @@ function sendCommand(cmd) {
     });
 }
 
-function assertNoErrors(cmd) {
+function assertNoErrors() {
     return driver.findElements(By.css('.result .error')).then(function(els) {
         expect(els.length).toBe(0, "There should be no errors");
     });
+}
+
+function assertMultipleExpressionResults(contaier, array) {
+
+    return contaier.findElements(By.css('.result'))
+        .then(function (results){
+            expect(results.length).toBe(array.length, 'Expression results number mismatch');
+            var all= null, cur;
+            for(var i=0; i<results.length;i++) {
+                var expected = array[i];
+                cur = assertExpressionResult(results[i], expected);
+                all = all == null ? cur : all.then(cur);
+            }
+            return all;
+        });
 }
 
 function assertExpressionResult(contaier, array) {
@@ -186,4 +226,8 @@ function assertOperation(op, expected) {
                 return assertExpressionResult(driver, expected)
             });
     })
+}
+
+function refreshBrowser() {
+    return driver.navigate().refresh();
 }

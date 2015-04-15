@@ -132,7 +132,7 @@
             <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand1.other}</td>
         </tr>
-        <tr class="result">
+        <tr class="expression-result">
             <td class="label">{m.string.replace(/\s/g,'')}={m.result.input}</td>
             <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.result.other}</td>
@@ -147,7 +147,7 @@
             <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand1.other}</td>
         </tr>
-        <tr class="result">
+        <tr class="expression-result">
             <td class="label">{m.sign}{m.operand1.input}={m.result.input}</td>
             <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.result.other}</td>
@@ -169,7 +169,7 @@
             <td class="bin">{m.operand2.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{m.operand2.other}</td>
         </tr>
-        <tr class="result">
+        <tr class="expression-result">
             <td>=</td>
             <td class="label">{m.result.input}</td>
             <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
