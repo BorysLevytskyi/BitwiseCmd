@@ -36,6 +36,7 @@ code { font-size: 1.2em; font-weight: bold; }
 
 /* Light */
 .light { background: rgb(250, 250, 250); }
+.light a, .light a:visited { color: #222; }
 .light .one { color: black; }
 .light .zero { color: #888; }
 .light .indicator { color: #ddd; }
