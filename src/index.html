@@ -197,15 +197,13 @@
     app.bootstrap(document.getElementById('rootView'));
 
     var cmd = app.get('cmd');
+    var hashArgs = app.get('hashArgs');
 
-    cmd.execute('help');
-
-    if(window.location.hash.length > 1) {
-
-        cmd.execute(app.get('hash').decodeHash(window.location.hash));
+    if(hashArgs.commands.length > 0) {
+        hashArgs.commands.forEach(cmd.execute.bind(cmd));
     }
     else {
-
+        cmd.execute('help');
         cmd.execute('1|2');
         cmd.execute('1<<0x2a');
         cmd.execute('2 4 8 16 32');

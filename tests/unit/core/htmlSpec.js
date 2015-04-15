@@ -9,7 +9,7 @@ describe('html templates', function () {
     });
 
     it('should support each', function () {
-        var t = '{foreach n in m.lst}{each c in m.lst2}{n}{c}{/}{/}';
+        var t = '{each n in m.lst}{each c in m.lst2}{n}{c}{/}{/}';
         var compiled = html.compileTemplate(t);
         var result = compiled({lst:[1,2,3], lst2:['a','b']});
         console.log(result);
