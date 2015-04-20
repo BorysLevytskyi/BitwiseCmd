@@ -1,5 +1,5 @@
 # BitwiseCmd
-[Bitwise Operations Visualised](http://bitwisecmd.com/)
+[Bitwise Calculator Online](http://bitwisecmd.com/)
 
 Web App that rolls on wheels that I most certainly had to reinvent myself. Nuff said. 
 
