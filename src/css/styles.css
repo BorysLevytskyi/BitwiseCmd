@@ -1,7 +1,11 @@
 body { font-family: Verdana; font-size: 0.8em; padding: 20px 100px 0 100px; margin: 0  }
 code { font-size: 1.2em; font-weight: bold; }
 
-.links { float: right; position: absolute; right: 10px; top: 10px; }
+ul.links { position: absolute; right: 10px; top: 10px; list-style-type: none; margin: 0 }
+ul.links li { float: left; padding-left: 10px; }
+.links a { display: inline-block; padding: 10px 10px 10px 0px}
+.links .icon { margin-right: 5px; }
+
 .mono { font-family: monospace; font-size: 1.3em }
 .expressionInput { width: 500px; padding: 3px; border: solid 1px lightgray; }
 
@@ -35,15 +39,18 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .cur { color: lightgray; }
 
-.icon { width: 16px; height: 16px; display: inline-block }
-.twitter { background: url('../img/twitter.png') }
-.feedback { background: url('../img/feedback.gif') }
+.icon { width: 16px; height: 16px; display: inline-block; }
+.light .twitter { background: url('../img/twitter-light.png') }
+.dark .twitter { background: url('../img/twitter-dark.png') }
+
+.light .feedback { background: url('../img/feedback-light.png') }
+.dark .feedback { background: url('../img/feedback-dark.png') }
 
 .dark .github { background: url('../img/github-dark.png') }
 .light .github { background: url('../img/github-light.png') }
 
 /* Light */
-.light { background: rgb(250, 250, 250); }
+.light { background: #fafafa; }
 .light a, .light a:visited { color: #222; }
 .light .one { color: black; }
 .light .zero { color: #888; }
@@ -53,7 +60,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .other { color: #bbb }
 .light .hashLink, .light .hashLink:visited { color: #ddd }
 .light .hashLink:hover { color: #888 }
-
+.light ul.links li:hover { background: #ddd }
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -66,4 +73,5 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark  .other { color: #444;}
 .dark .hashLink, .dark .hashLink:visited { color: #333 }
 .dark .hashLink:hover { color: #999 }
+.dark ul.links li:hover { background: #333 }
 
