@@ -8,7 +8,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .result { margin: 10px 10px 30px; }
 .result .input { margin-bottom: 10px; }
 .result .content { padding-left: 10px}
-.result .cur { color: lightgray; margin-right: 5px; }
+.result .cur { margin-right: 5px; }
 
 .hashLink { text-decoration: none; margin-left: 5px; visibility: hidden }
 .hashLink:hover { text-decoration: underline; margin-left: 5px; }
@@ -24,15 +24,23 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .hex .prefix { display: inline; }
 
-
 .help { padding: 10px; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
 .help p { margin-top: 0 }
 
-.indicator { font-size: 0.7em; padding: 2px 5px;  font-family: monospace; font-size: 1.3em; background: transparent; border: none; cursor: pointer }
+.indicator { padding: 2px 5px;  font-family: monospace; font-size: 1.3em; background: transparent; border: none; cursor: pointer }
 .error { color: maroon; }
 
 #view { padding: 10px}
+
+.cur { color: lightgray; }
+
+.icon { width: 16px; height: 16px; display: inline-block }
+.twitter { background: url('../img/twitter.png') }
+.feedback { background: url('../img/feedback.gif') }
+
+.dark .github { background: url('../img/github-dark.png') }
+.light .github { background: url('../img/github-light.png') }
 
 /* Light */
 .light { background: rgb(250, 250, 250); }
