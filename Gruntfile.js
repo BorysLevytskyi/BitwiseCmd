@@ -46,6 +46,11 @@ module.exports = function(grunt) {
                   flatten: true,
                   expand: true
               }, {
+                  src: 'src/img/*.*',
+                  dest: 'build/img/',
+                  flatten: true,
+                  expand: true
+              }, {
                   src: 'src/js/analytics.js',
                   dest:'build/js/',
                   flatten: true,
