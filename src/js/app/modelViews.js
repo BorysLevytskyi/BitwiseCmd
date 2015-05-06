@@ -93,8 +93,11 @@ app.compose(function () {
         Array.prototype.forEach.call(list, function(el){
             var bin = el.textContent;
 
+            if(cmdConfig.emphasizeBytes) {
+                bin = bin.replace(/(\d{8})/g, '<span class="byte">$1</span>');
+            }
+
             el.innerHTML = bin
-                .replace(/(\d{8})/g, '<span class="byte">$1</span>')
                 .replace(/0/g, '<span class="zero">0</span>')
                 .replace(/1/g, '<span class="one">1</span>');
         });
