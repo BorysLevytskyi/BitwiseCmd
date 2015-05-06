@@ -1,4 +1,5 @@
 browser.ignoreSynchronization = true;
+
 var By = protractor.By;
 var driver = browser.driver;
 var appUrl = browser.params.appUrl || 'http://localhost:63342/BitwiseCmd/src/#clear';
@@ -6,13 +7,13 @@ var Key = protractor.Key;
 
 describe('launch of application', function() {
     it('should have title', function() {
-        driver.get(appUrl).then(function() {
+        goToApp().then(function() {
             expect(driver.getTitle()).toEqual('BitwiseCmd');
         });
     });
 
     it('should have no errors title', function() {
-        driver.get(appUrl).then(function() {
+        goToApp().then(function() {
             driver.findElements(By.css('.result .error')).then(function(els) {
                 expect(els.length).toBe(0, "There should be no errors on auto launch");
             });
@@ -20,7 +21,7 @@ describe('launch of application', function() {
     });
 
     it('should execute clear command', function() {
-        driver.get(appUrl)
+        goToApp()
             .then(function() { return sendCommand('clear')})
             .then(function () {
                 return driver.findElements(By.css('.result')).then(function(list) {
@@ -31,7 +32,7 @@ describe('launch of application', function() {
 
     it('should execute list of commands without errors', function() {
 
-        driver.get(appUrl)
+        goToApp()
             .then(function() { return sendCommand('clear')})
             .then(function() { return sendCommand('1')})
             .then(function() { return sendCommand('1|2')})
@@ -47,7 +48,7 @@ describe('launch of application', function() {
 
     it('should execute list of numbers', function() {
 
-        driver.get(appUrl)
+        goToApp()
             .then(function() { return sendCommand('clear')})
             .then(function() { return sendCommand('3 0xf')})
             .then(assertNoErrors)
@@ -80,11 +81,7 @@ describe('launch of application', function() {
     });
 
     it('should execute multiple expressions from hash arguments', function() {
-
-        var url = appUrl + "||16,15||16&15";
-        console.log('accessing url: ', url);
-
-        return driver.get(url)
+        return goToApp("16,15||16&15")
             .then(function() { return driver.navigate().refresh(); })
             .then(assertNoErrors)
             .then(function() {
@@ -130,7 +127,7 @@ describe('launch of application', function() {
         }).then(function(el) {
             return el.getAttribute('href');
         }).then(function(hrefUrl) {
-            return driver.get(hrefUrl);
+            return driver.get(hrefUrl + "||-notrack"); // TODO: temp solution. Need to implement better tracking handling logic
         }).then(function() {
             return driver.findElements(By.css('.result'));
         }).then(function(list) {
@@ -142,7 +139,7 @@ describe('launch of application', function() {
 
     xit('should emphasize bytes', function() {
 
-        driver.get(appUrl)
+        goToApp()
             .then(function() { return sendCommand('clear')})
             .then(function() { return sendCommand('1')})
             .then(function() {
@@ -218,8 +215,7 @@ function assertSingleRowResult(row, label, bin, other) {
 }
 
 function assertOperation(op, expected) {
-
-    return driver.get(appUrl).then(function() {
+    return goToApp().then(function() {
         return sendCommand(op)
             .then(assertNoErrors)
             .then(function() {
@@ -228,6 +224,22 @@ function assertOperation(op, expected) {
     })
 }
 
-function refreshBrowser() {
-    return driver.navigate().refresh();
+function goToApp(hashValue) {
+
+    var url = appUrl;
+    var hash = hashValue || '-notrack';
+
+    if(hash.indexOf('-notrack') < 0) {
+        hash += "||-notrack";
+    }
+
+    if(url.indexOf("#") < 0) {
+        url += "#" + hash;
+    } else {
+        url += "||" + hash;
+    }
+
+    console.log('---------- accessing url: ' + url);
+
+    return driver.get(url);
 }

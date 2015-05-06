@@ -1,1 +1,0 @@
-protractor tests\e2e.all.js

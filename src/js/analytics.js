@@ -1,6 +1,6 @@
 (function() {
 
-    if(window.location.hash.indexOf('-notrack') > -1) {
+    if(window.location.host != 'bitwisecmd.com' ||  window.location.hash.indexOf('-notrack') > -1) {
         return;
     }
 
