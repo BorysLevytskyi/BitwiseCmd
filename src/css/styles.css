@@ -1,10 +1,10 @@
-body { font-family: Verdana; font-size: 0.8em; padding: 20px 100px 0 100px; margin: 0  }
+body { font-family: Verdana; font-size: 0.8em; margin: 0; padding: 20px 100px 0 100px; }
 code { font-size: 1.2em; font-weight: bold; }
 
-ul.links { position: absolute; right: 10px; top: 10px; list-style-type: none; margin: 0 }
-ul.links li { float: left; }
-.links a { display: inline-block; padding: 10px 15px}
-.links .icon { margin-right: 5px; }
+.top-links { position: absolute; right: 10px; top: 10px; list-style-type: none; margin: 0 }
+.top-links li { float: left; }
+.top-links a { display: inline-block; padding: 10px 15px}
+.top-links .icon { margin-right: 5px; }
 
 .mono { font-family: monospace; font-size: 1.3em }
 .expressionInput { width: 500px; padding: 3px; border: solid 1px lightgray; }
@@ -60,7 +60,7 @@ ul.links li { float: left; }
 .light .other { color: #bbb }
 .light .hashLink, .light .hashLink:visited { color: #ddd }
 .light .hashLink:hover { color: #888 }
-.light ul.links li:hover { background: #ddd }
+.light ul.top-links li:hover { background: #ddd }
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -73,5 +73,26 @@ ul.links li { float: left; }
 .dark  .other { color: #444;}
 .dark .hashLink, .dark .hashLink:visited { color: #333 }
 .dark .hashLink:hover { color: #999 }
-.dark ul.links li:hover { background: #333 }
+.dark ul.top-links li:hover { background: #333 }
 
+/* Top Links Shrink */
+@media (max-width: 800px) {
+
+    .top-links .link-text { display: none }
+}
+
+/* Remove margin space on body. Inline top links with header */
+@media (max-width: 700px) {
+    body { padding: 10px; }
+    .expressionInput { width: 500px; }
+}
+
+/* Further shrink */
+@media (max-width: 500px) {
+    .expressionInput { width: 350px; }
+    .top-links a { display: inline-block; padding: 5px 10px}
+}
+
+@media (max-width: 350px) {
+    .expressionInput { width: 200px; }
+}

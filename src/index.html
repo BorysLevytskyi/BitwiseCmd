@@ -42,21 +42,23 @@
 <body id="rootView" class="dark">
 
 <header>
-    <h1>Bitwise<span style="color: #c5c5c5;">Cmd</span></h1>
+    <div class="header">
+        <h1>Bitwise<span style="color: #c5c5c5;">Cmd</span></h1>
 
-    <ul class="links">
-        <li>
-            <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><i class="icon github">&nbsp;</i>Project on GitHub</a>
-        </li>
-        <li>
-            <a href="https://twitter.com/BitwiseCmd"><i class="icon twitter">&nbsp;</i>Twitter</a>
-        </li>
-        <li>
-            <a href="mailto:&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=Feedback"><i class="icon feedback">&nbsp;</i>Send Feedback</a>
-        </li>
-    </ul>
+        <ul class="top-links">
+            <li>
+                <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><i class="icon github">&nbsp;</i><span class="link-text">Project on GitHub</span></a>
+            </li>
+            <li>
+                <a href="https://twitter.com/BitwiseCmd"><i class="icon twitter">&nbsp;</i><span class="link-text">Twitter</span></a>
+            </li>
+            <li>
+                <a href="mailto:&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=Feedback"><i class="icon feedback">&nbsp;</i><span class="link-text">Send Feedback</span></a>
+            </li>
+        </ul>
+    </div>
 
-    <div>
+    <div class="expressionInput-container">
         <input id="in" type="text" class="expressionInput mono" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
 
         <span data-controller="configPanelCtrl" class="configPnl">
