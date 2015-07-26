@@ -158,7 +158,7 @@
 <script data-template="numbersList" data-compiled="" type="text/template">
     <table class="expression">
         {each op in m.operands}
-        <tr>
+        <tr data-kind="{op.kind}">
             <td class="label">{op.input}</td>
             <td class="bin">{op.bin.padLeft(m.bitsSize, '0')}</td>
             <td class="other">{op.other}</td>
