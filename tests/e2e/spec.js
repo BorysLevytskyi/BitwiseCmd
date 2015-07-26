@@ -161,9 +161,34 @@ describe('launch of application', function() {
     });
 });
 
+describe('interaction with results', function() {
+    it('should flip bits', function () {
+
+        // Given: 0x2a 00101010 42
+        // Expected: 0x6a 01101010 106
+
+        goToApp()
+            .then(function() { return sendCommand('clear')})
+            .then(function() { return sendCommand('0x2a')})
+            .then(function() { assertExpressionResult(driver, [{ label: "0x2a", bin: '00101010', other: '42' }]); })
+            .then(function() { return flipBit(2); })
+            .then(function() { return assertExpressionResult(driver, [{ label: "0x6a", bin: '01101010', other: '106' }]); })
+            .then(function() { return flipBit(6); })
+            .then(function() { return assertExpressionResult(driver, [{ label: "0x6e", bin: '01101110', other: '110' }]); });
+    })
+});
+
 function sendCommand(cmd) {
     return driver.findElement(By.id('in')).then(function (el) {
         return el.sendKeys(cmd + Key.ENTER);
+    });
+}
+
+function flipBit(bitNumber) {
+    return driver.findElements(By.css('.flipable'))
+        .then(function(rows) {
+            var bitElemet = rows[bitNumber-1]; // Flip 2nd bit;
+            return bitElemet.click();
     });
 }
 

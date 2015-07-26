@@ -18,7 +18,6 @@
         this.initialize();
     };
 
-
     window.app = app;
 
 })(window.core);

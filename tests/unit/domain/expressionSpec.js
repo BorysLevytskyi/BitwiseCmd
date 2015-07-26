@@ -90,6 +90,20 @@ describe('negative operands', function () {
     })
 });
 
+describe('should format to kind strings', function() {
+   var dec = expression.toKindString(15, 'dec'),
+       hexNegative = expression.toKindString(-2, 'hex'),
+       hex = expression.toKindString(11, 'hex'),
+       bin = expression.toKindString(10, 'bin');
+
+    it('should be correctly formatted', function() {
+        expect(dec).toBe('15');
+        expect(hexNegative).toBe('-0x2');
+        expect(hex).toBe('0xb');
+        expect(bin).toBe('1010')
+    });
+});
+
 function rundOperandsTest(hexOperand, decOperand) {
     it('should remember input form', function() {
         expect(hexOperand.input).toBe('0x10');

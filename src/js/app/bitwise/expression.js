@@ -5,44 +5,6 @@ app.set('expression', function() {
     var listRegex = /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/;
     var notRex = /^(~)(-?(?:\d+|0x[\d,a-f]+))$/;
 
-    return {
-        canParse: function(string) {
-            return exprRegex.test(string) || listRegex.test(string) || notRex.test(string)
-        },
-        parse: function(string) {
-            var trimmed = string.replace(/^\s+|\s+$/, '');
-
-            var matches = exprRegex.exec(trimmed);
-
-            if(matches != null) {
-                return createTwoOperandExpr(matches);
-            }
-
-            matches = notRex.exec(trimmed);
-            if(matches != null) {
-                return createSingleOperandExpr(matches);
-            }
-
-            matches = listRegex.exec(string);
-            if(matches != null) {
-                return createListOfNumbersExpression(string)
-            }
-
-        },
-        parseOperand: function(input) {
-            return new Operand(input);
-        },
-        createOperand: function(number, kind) {
-            var str = number.toString(getBase(kind));
-            if(kind == 'hex') {
-                str = toHex(str);
-            }
-
-            return new Operand(str);
-        }
-
-    };
-
     function createTwoOperandExpr(matches) {
 
         var m = new app.models.BitwiseOperation();
@@ -87,6 +49,20 @@ app.set('expression', function() {
         return hex.indexOf('-') == 0 ? '-0x' + hex.substr(1) : '0x' + hex;
     }
 
+    function toKindString(value, kind) {
+        switch(kind) {
+            case 'hex':
+                var hexVal = Math.abs(value).toString(16);
+                return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
+            case 'bin':
+                return (value>>>0).toString(2);
+            case 'dec':
+                return value.toString(10);
+            default:
+                throw new Error("Unexpected kind: " + kind)
+        }
+    }
+
     function Operand(input) {
         this.input = input;
         this.value = parseInt(input);
@@ -97,4 +73,50 @@ app.set('expression', function() {
         this.kind = this.input.indexOf('0x') > -1 ? 'hex' : 'dec';
         this.other = this.kind == 'dec' ? this.hex : this.dec;
     }
+
+    return {
+        canParse: function(string) {
+            return exprRegex.test(string) || listRegex.test(string) || notRex.test(string)
+        },
+        parse: function(string) {
+            var trimmed = string.replace(/^\s+|\s+$/, '');
+
+            var matches = exprRegex.exec(trimmed);
+
+            if(matches != null) {
+                return createTwoOperandExpr(matches);
+            }
+
+            matches = notRex.exec(trimmed);
+            if(matches != null) {
+                return createSingleOperandExpr(matches);
+            }
+
+            matches = listRegex.exec(string);
+            if(matches != null) {
+                return createListOfNumbersExpression(string)
+            }
+
+        },
+        parseOperand: function(input) {
+            return new Operand(input);
+        },
+        createOperand: function(number, kind) {
+            var str = number.toString(getBase(kind));
+            if(kind == 'hex') {
+                str = toHex(str);
+            }
+
+            return new Operand(str);
+        },
+        getOtherKind: function(kind) {
+            switch(kind) {
+                case 'dec': return 'hex';
+                case 'hex': return 'dec';
+                default : throw new Error(kind + " kind doesn't have opposite kind")
+            }
+        },
+        toKindString: toKindString
+    };
+
 });

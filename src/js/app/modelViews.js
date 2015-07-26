@@ -11,10 +11,10 @@ app.compose(function () {
     var expression = app.get('expression');
 
     // TODO: move to protojs
-    String.prototype.padLeft = function(size, char) { return formatter.padLeft(this, size, char); }
+    String.prototype.padLeft = function(size, char) { return formatter.padLeft(this, size, char); };
 
 
-        app.modelView(app.models.BitwiseOperation, function() {
+    app.modelView(app.models.BitwiseOperation, function() {
         function getTemplateId(model) {
             switch (model.sign) {
                 case '<<':
@@ -49,7 +49,16 @@ app.compose(function () {
     app.modelView(app.models.BitwiseNumbers, {
         renderView: function(model) {
             model.bitsSize = getBinaryLength(model.numbers);
-            return colorizeBits(app.template('numbersList').render(model));
+            var templateElement = colorizeBits(app.template('numbersList').render(model));
+            var list = templateElement.querySelectorAll('.bit');
+
+            Array.prototype.forEach.call(list, function(el) {
+                el.classList.add('flipable');
+                el.setAttribute('title', 'Click to flip this bit');
+                el.addEventListener('click', flipBits);
+            });
+
+            return templateElement;
         }
     });
 
@@ -98,8 +107,8 @@ app.compose(function () {
             }
 
             el.innerHTML = bin
-                .replace(/0/g, '<span class="zero">0</span>')
-                .replace(/1/g, '<span class="one">1</span>');
+                .replace(/0/g, '<span class="bit zero">0</span>')
+                .replace(/1/g, '<span class="bit one">1</span>');
         });
         return container;
     }
@@ -112,6 +121,35 @@ app.compose(function () {
         }
 
         return 'dec';
+    }
+
+    function flipBits(evt) {
+        var el = evt.target;
+        var content = el.textContent;
+        if(content == '0') {
+            el.innerHTML = '1';
+            el.classList.remove('zero');
+            el.classList.add('one');
+        } else {
+            el.innerHTML = '0';
+            el.classList.add('zero');
+            el.classList.remove('one');
+        }
+
+        var row = findParent(el, 'TR');
+        var value = parseInt(row.cells[1].textContent, 2);
+        var kind = row.dataset.kind;
+
+        row.cells[0].innerHTML = expression.toKindString(value, kind);
+        row.cells[2].innerHTML = expression.toKindString(value, expression.getOtherKind(kind));
+    }
+
+    function findParent(el, tageName) {
+        var parent = el.parentNode;
+        while(parent.tagName != tageName) {
+            parent = parent.parentNode;
+        }
+        return parent;
     }
 });
 
