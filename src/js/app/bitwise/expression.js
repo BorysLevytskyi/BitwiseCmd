@@ -3,7 +3,7 @@ app.set('expression', function() {
 
     var exprRegex = /^(-?(?:\d+|0x[\d,a-f]+))\s*(<<|>>|>>>|\||\&|\^)\s*(-?(?:\d+|0x[\d,a-f]+))$/;
     var listRegex = /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/;
-    var notRex = /^(~)(-?(?:\d+|0x[\d,a-f]+))$/
+    var notRex = /^(~)(-?(?:\d+|0x[\d,a-f]+))$/;
 
     return {
         canParse: function(string) {
@@ -92,12 +92,9 @@ app.set('expression', function() {
         this.value = parseInt(input);
         this.hex = toHex(this.value.toString(16));
         this.dec = this.value.toString(10);
-        this.bin = (this.value>>>0).toString(2);
+        // >>> 0 makes negative numbers like -1 to be displayed as '11111111111111111111111111111111' in binary instead of -1
+        this.bin = this.value < 0 ? (this.value >>> 0).toString(2) : this.value.toString(2);
         this.kind = this.input.indexOf('0x') > -1 ? 'hex' : 'dec';
         this.other = this.kind == 'dec' ? this.hex : this.dec;
     }
-
-    Operand.prototype.valueOf = function () {
-        return this.value;
-    };
 });

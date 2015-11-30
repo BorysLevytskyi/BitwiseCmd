@@ -106,7 +106,13 @@ describe('launch of application', function() {
                 { label: '3', bin:'00000011', other: '0x3'}])
     });
 
+    it('should do XOR or large numbers', function() {
 
+        return assertOperation('0x0001000000003003^0x3001800400000fc1',
+            [{ label: '0x0001000000003003', bin:'0000000000000001000000000000000000000000000000000011000000000011', other: '281474976722947'},
+                { label: '0x3001800400000fc1', bin:'0011000000000001100000000000010000000000000000000001000000000000', other: '3459186743465480000'},
+                { label: '0x2003', bin:'0000000000000000000000000000000000000000000000000010000000000011', other: '8195'}])
+    });
 
     it('should do prefer hex result', function() {
 
