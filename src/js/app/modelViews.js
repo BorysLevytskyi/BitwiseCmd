@@ -29,12 +29,12 @@ app.compose(function () {
         }
 
         return {
-            renderView: function(expr) {
+            renderView: function(model) {
                 // TODO: move all this to expression
-                var result = expression.createOperand(calc.calcExpression(expr), getResultMode([expr.operand1, expr.operand2]));
-                var maxLen = getBinaryLength([expr.operand1.value, expr.operand2 != null ? expr.operand2.value : 0, result.value]);
+                var result = expression.createOperand(calc.calcExpression(model.expression), getResultMode([model.operand1, model.operand2]));
+                var maxLen = getBinaryLength([model.operand1.value, model.operand2 != null ? model.operand2.value : 0, result.value]);
 
-                var model = Object.create(expr);
+                var model = Object.create(model);
                 model.bitsSize = maxLen;
                 model.result = result;
 

@@ -41,7 +41,8 @@ describe("expression parse", function() {
                 expect(actual.operand2).not.toBeDefined();
             }
 
-            expect(actual.string).toBe(expected.string);
+            expect(actual.expressionString).toBe(expected.string);
+            console.log(actual.toString());
         }
     });
 
@@ -59,7 +60,8 @@ describe("expression parse", function() {
             var expected = listCases[input];
 
             for(i =0; i<expected.length;i++) {
-                expect(actual.operands[i].value).toBe(expected[i]);
+                expect(actual.numbers[i].value).toBe(expected[i]);
+                expect(actual.expressionString).toBe(input)
             }
         }
     });

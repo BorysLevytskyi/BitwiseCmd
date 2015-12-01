@@ -1,18 +1,21 @@
 (function(app) {
     "use strict";
 
-    function BitwiseOperation () {
+    function BitwiseOperation (expression) {
+        this.expression = expression;
+        this.operand1 = expression.operand1;
+        this.operand2 = expression.operand2;
+        this.sign = expression.sign;
+        this.string = expression.expressionString;
     }
 
-    BitwiseOperation.prototype.calculate = function () {
-        return eval(this.string);
-    };
+    function BitwiseNumbers(expression) {
+        this.expression = expression;
+        this.operands = expression.numbers;
 
-    function BitwiseNumbers(operands) {
-        this.operands = operands;
         var numbers = this.numbers = [];
 
-        operands.forEach(function (o) {
+        expression.numbers.forEach(function (o) {
            numbers.push(o.value);
         });
     }

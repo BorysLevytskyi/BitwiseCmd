@@ -24,7 +24,7 @@ app.set('calc', function() {
         },
 
         calcExpression: function (expr) {
-            return eval(expr.string);
+            return eval(expr.expressionString);
         }
     }
 });

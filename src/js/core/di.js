@@ -35,7 +35,7 @@
 
     function resolveInternal(name) {
         if(contains(this.resolutionStack, name)) {
-            throw new Error("Failed to resolve service: " + name + ". Circular reference: " + this.resolutionStack.join(' < '));
+            throw new Error("Failed to resolve dependency: " + name + ". Circular reference: " + this.resolutionStack.join(' < '));
         }
 
         this.resolutionStack.unshift(name);

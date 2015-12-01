@@ -4,6 +4,7 @@ app.run(function() {
     var cmd = app.get('cmd');
     var cmdConfig = app.get('cmdConfig');
     var rootView = app.get('rootView');
+    var expression = app.get('expression');
 
     cmd.commands({
         'help': function() {
@@ -36,6 +37,7 @@ app.run(function() {
         },
         '-debug': function() {
             app.debugMode = true;
+            console.log('debug is on');
         },
         '-notrack': function () {}
     });
@@ -44,7 +46,19 @@ app.run(function() {
     cmd.command({
         canHandle: function(input) { return app.get('expression').canParse(input); },
         handle: function(input) {
-            return app.get('expression').parse(input);
+            var expr = expression.parse(input);
+            return this.locateModel(expr);
+        },
+        locateModel: function (expr) {
+            if(expr instanceof expression.SingleOperandExpression || expr instanceof expression.TwoOperandExpression){
+                return new app.models.BitwiseOperation(expr);
+            }
+
+            if(expr instanceof expression.ListOfNumbersExpression) {
+                return new app.models.BitwiseNumbers(expr);
+            }
+
+            return new app.models.ErrorResult('Cannot create model for expression: ' + expr.toString());
         }
     });
 

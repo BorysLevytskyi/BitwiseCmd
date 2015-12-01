@@ -5,7 +5,7 @@ app.set('expression', function() {
     var listRegex = /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/;
     var notRex = /^(~)(-?(?:\d+|0x[\d,a-f]+))$/;
 
-    return {
+    var expression = {
         canParse: function(string) {
             return exprRegex.test(string) || listRegex.test(string) || notRex.test(string)
         },
@@ -39,40 +39,36 @@ app.set('expression', function() {
             }
 
             return new Operand(str);
-        }
-
+        },
+        TwoOperandExpression: TwoOperandExpression,
+        SingleOperandExpression: SingleOperandExpression,
+        ListOfNumbersExpression: ListOfNumbersExpression
     };
 
     function createTwoOperandExpr(matches) {
 
-        var m = new app.models.BitwiseOperation();
-        m.operand1 = new Operand(matches[1]);
-        m.operand2 = new Operand(matches[3]);
-        m.sign = matches[2];
-        m.string = matches.input;
-        //m.result = eval(matches.input);
+        var operand1 = new Operand(matches[1]),
+            operand2 = new Operand(matches[3]),
+            sign = matches[2],
+            expressionString = matches.input;
 
-        return m;
+        return new TwoOperandExpression(expressionString, operand1, operand2, sign);
     }
 
     function createSingleOperandExpr(matches) {
-        var m = new app.models.BitwiseOperation();
-        m.operand1 = new Operand(matches[2]);
-        m.sign = matches[1];
-        m.string = matches.input;
-        return m;
+        var operand = new Operand(matches[2])
+        return new SingleOperandExpression(matches.input, operand, matches[1]);
     }
 
     function createListOfNumbersExpression(input) {
-        var operands = [];
+        var numbers = [];
         input.split(' ').forEach(function(n){
             if(n.trim().length > 0) {
-                operands.push(new Operand(n.trim()));
+                numbers.push(new Operand(n.trim()));
             }
-
         });
 
-        return new app.models.BitwiseNumbers(operands);
+        return new ListOfNumbersExpression(input, numbers);
     }
 
     function getBase(kind) {
@@ -97,4 +93,35 @@ app.set('expression', function() {
         this.kind = this.input.indexOf('0x') > -1 ? 'hex' : 'dec';
         this.other = this.kind == 'dec' ? this.hex : this.dec;
     }
+
+    function SingleOperandExpression(expressionString, operand, sign) {
+        this.expressionString = expressionString;
+        this.operand1 = operand;
+        this.sign = sign;
+    }
+
+    function TwoOperandExpression(expressionString, operand1, operand2, sign) {
+        this.expressionString = expressionString;
+        this.operand1 = operand1;
+        this.operand2 = operand2;
+        this.sign = sign;
+    }
+
+    function ListOfNumbersExpression(expressionString, numbers) {
+        this.expressionString = expressionString;
+        this.numbers = numbers;
+    }
+
+    function Expression() {
+    }
+
+    Expression.prototype.toString = function() {
+        return this.expressionString ? "Expression: " + this.expressionString : this.toString();
+    };
+
+    //TwoOperandExpression.prototype = Expression.prototype;
+    //SingleOperandExpression.prototype = Expression.prototype;
+    //ListOfNumbersExpression.prototype = Expression.prototype;
+
+    return expression;
 });
