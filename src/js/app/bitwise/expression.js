@@ -1,33 +1,34 @@
 app.set('expression', function() {
     "use strict";
 
-    var exprRegex = /^(-?(?:\d+|0x[\d,a-f]+))\s*(<<|>>|>>>|\||\&|\^)\s*(-?(?:\d+|0x[\d,a-f]+))$/;
-    var listRegex = /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/;
-    var notRex = /^(~)(-?(?:\d+|0x[\d,a-f]+))$/;
-
     var expression = {
+        factories:[],
         canParse: function(string) {
-            return exprRegex.test(string) || listRegex.test(string) || notRex.test(string)
+            var i = this.factories.length-1;
+            for(;i>=0;i--) {
+                if(this.factories[i].regex.test(string)){
+                    return true;
+                }
+            }
+            return false;
         },
         parse: function(string) {
+
             var trimmed = string.replace(/^\s+|\s+$/, '');
+            var i = 0, l = this.factories.length, factory, matches;
 
-            var matches = exprRegex.exec(trimmed);
+            for(;i<l;i++) {
+                factory = this.factories[i];
+                matches = factory.regex.exec(trimmed);
 
-            if(matches != null) {
-                return createTwoOperandExpr(matches);
+                if(matches == null){
+                    continue;
+                }
+
+                return factory.create(matches);
             }
 
-            matches = notRex.exec(trimmed);
-            if(matches != null) {
-                return createSingleOperandExpr(matches);
-            }
-
-            matches = listRegex.exec(string);
-            if(matches != null) {
-                return createListOfNumbersExpression(string)
-            }
-
+            return null;
         },
         parseOperand: function(input) {
             return new Operand(input);
@@ -40,36 +41,53 @@ app.set('expression', function() {
 
             return new Operand(str);
         },
+        addFactory: function(factory) {
+          this.factories.push(factory);
+        },
         TwoOperandExpression: TwoOperandExpression,
         SingleOperandExpression: SingleOperandExpression,
         ListOfNumbersExpression: ListOfNumbersExpression
     };
 
-    function createTwoOperandExpr(matches) {
+    // List of numbers
+    expression.addFactory({
+        regex: /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/,
+        create: function (matches) {
+            var numbers = [],
+                input = matches.input;
 
-        var operand1 = new Operand(matches[1]),
-            operand2 = new Operand(matches[3]),
-            sign = matches[2],
-            expressionString = matches.input;
+            input.split(' ').forEach(function(n){
+                if(n.trim().length > 0) {
+                    numbers.push(new Operand(n.trim()));
+                }
+            });
 
-        return new TwoOperandExpression(expressionString, operand1, operand2, sign);
-    }
+            return new ListOfNumbersExpression(input, numbers);
+        }
+    });
 
-    function createSingleOperandExpr(matches) {
-        var operand = new Operand(matches[2])
-        return new SingleOperandExpression(matches.input, operand, matches[1]);
-    }
+    // Not Expression
+    expression.addFactory({
+        regex: /^(~)(-?(?:\d+|0x[\d,a-f]+))$/,
+        create: function (matches) {
+            var operand = new Operand(matches[2])
+            return new SingleOperandExpression(matches.input, operand, matches[1]);
+        }
+    });
 
-    function createListOfNumbersExpression(input) {
-        var numbers = [];
-        input.split(' ').forEach(function(n){
-            if(n.trim().length > 0) {
-                numbers.push(new Operand(n.trim()));
-            }
-        });
+    // Two operands expression
+    expression.addFactory({
+        regex: /^(-?(?:\d+|0x[\d,a-f]+))\s*(<<|>>|>>>|\||\&|\^)\s*(-?(?:\d+|0x[\d,a-f]+))$/,
+        create:  function (matches) {
 
-        return new ListOfNumbersExpression(input, numbers);
-    }
+            var operand1 = new Operand(matches[1]),
+                operand2 = new Operand(matches[3]),
+                sign = matches[2],
+                expressionString = matches.input;
+
+            return new TwoOperandExpression(expressionString, operand1, operand2, sign);
+        }
+    });
 
     function getBase(kind) {
         switch (kind){
