@@ -65,6 +65,10 @@ describe("expression parse", function() {
             }
         }
     });
+
+    it ("should parse multiple operands expression", function () {
+        var actual = expression.parse("1|2&3");
+    })
 });
 
 describe('parse operands', function() {

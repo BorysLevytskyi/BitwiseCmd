@@ -46,6 +46,13 @@ app.compose(function () {
         }
     });
 
+    app.modelView(app.models.BitwiseExpression, {
+        renderView: function(model) {
+            var template = app.template('bitwiseExpressionView');
+            return colorizeBits(template.render(model));
+        }
+    });
+
     app.modelView(app.models.BitwiseNumbers, {
         renderView: function(model) {
             model.bitsSize = getBinaryLength(model.numbers);
@@ -87,6 +94,9 @@ app.compose(function () {
         }
         return bits;
     }
+
+
+
 
     function colorizeBits(container) {
         var list = container.querySelectorAll('.bin');

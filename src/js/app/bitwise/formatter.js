@@ -6,11 +6,7 @@ app.set("formatter", function() {
 
     return {
         formatString: function(num, kind) {
-            kind = kind || "bin";
-
-            var convertedString = num.toString(getBase(kind));
-            return convertedString;
-
+            return num.toString(getBase(kind || "bin"));
         },
         padLeft: function (str, length, symbol) {
             var sb = Array.prototype.slice.call(str), symbol = symbol || "0";

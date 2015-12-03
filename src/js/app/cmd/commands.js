@@ -58,6 +58,10 @@ app.run(function() {
                 return new app.models.BitwiseNumbers(expr);
             }
 
+            if(expr instanceof expression.MultipleOperandsExpression) {
+                return new app.models.BitwiseExpression(expr);
+            }
+
             return new app.models.ErrorResult('Cannot create model for expression: ' + expr.toString());
         }
     });

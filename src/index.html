@@ -146,6 +146,18 @@
     </table>
 </script>
 
+<script data-template="bitwiseExpressionView" data-compiled="" type="text/template">
+    <table class="expression">
+        {each itm in m.items}
+        <tr class="{itm.css}">
+            <td class="label">{itm.label}</td>
+            <td class="bin">{itm.bin.padLeft(m.maxNumberOfBits, '0')}</td>
+            <td class="other">{itm.other}</td>
+        </tr>
+        {/}
+    </table>
+</script>
+
 <script data-template="notExpressionView" data-compiled="" type="text/template">
     <table class="expression">
         <tr>
