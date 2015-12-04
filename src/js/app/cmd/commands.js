@@ -51,15 +51,15 @@ app.run(function() {
         },
         locateModel: function (expr) {
             if(expr instanceof expression.ListOfNumbersExpression) {
-                return new app.models.BitwiseNumbers(expr);
+                return new app.models.BitwiseNumbersViewModel(expr);
             }
 
             if(expr instanceof expression.SingleOperandExpression ){
-                return new app.models.BitwiseExpression.buildNot(expr);
+                return new app.models.BitwiseExpressionViewModel.buildNot(expr);
             }
 
             if(expr instanceof expression.MultipleOperandsExpression) {
-                return new app.models.BitwiseExpression.buildMultiple(expr);
+                return new app.models.BitwiseExpressionViewModel.buildMultiple(expr);
             }
 
             return new app.models.ErrorResult('Cannot create model for expression: ' + expr.toString());

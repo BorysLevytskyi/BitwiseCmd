@@ -9,7 +9,7 @@
         this.string = expr.expressionString;
     }
 
-    function BitwiseNumbers(expr) {
+    function BitwiseNumbersViewModel(expr) {
         this.expression = expr;
         this.operands = expr.numbers;
 
@@ -20,15 +20,15 @@
         });
     }
 
-    function BitwiseExpression() {
+    function BitwiseExpressionViewModel() {
         this.items = [];
         this.maxNumberOfBits = 0;
     }
 
-    BitwiseExpression.buildMultiple = function (expr) {
+    BitwiseExpressionViewModel.buildMultiple = function (expr) {
         var op = expr.expressions[0],
             i = 1, l = expr.expressions.length,
-            ex, m = new BitwiseExpression();
+            ex, m = new BitwiseExpressionViewModel();
 
         m.addOperand(op);
 
@@ -48,25 +48,25 @@
         return m;
     };
 
-    BitwiseExpression.buildNot = function (expression) {
-        var m = new BitwiseExpression();
+    BitwiseExpressionViewModel.buildNot = function (expression) {
+        var m = new BitwiseExpressionViewModel();
         m.addExpression(expression);
         m.addExpressionResult(expression.apply());
         m.maxNumberOfBits = m.emphasizeBytes(m.maxNumberOfBits);
         return m;
     };
 
-    BitwiseExpression.prototype.addOperand = function(operand) {
+    BitwiseExpressionViewModel.prototype.addOperand = function(operand) {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ sign:'', label: operand.toString(), bin: operand.bin, other: operand.other, css: ''});
     };
 
-    BitwiseExpression.prototype.addExpression = function(expression) {
+    BitwiseExpressionViewModel.prototype.addExpression = function(expression) {
         this.maxNumberOfBits = Math.max(expression.operand1.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ sign: expression.sign, label: expression.operand1.input, bin: expression.operand1.bin, other: expression.operand1.other, css: ''});
     };
 
-    BitwiseExpression.prototype.addShiftExpressionResult = function(expression, resultOperand) {
+    BitwiseExpressionViewModel.prototype.addShiftExpressionResult = function(expression, resultOperand) {
         this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({
             sign: expression.sign + expression.operand1.input,
@@ -76,12 +76,12 @@
             css: 'expression-result'});
     };
 
-    BitwiseExpression.prototype.addExpressionResult = function(operand) {
+    BitwiseExpressionViewModel.prototype.addExpressionResult = function(operand) {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ sign:'=', label: operand.toString(), bin: operand.bin, other: operand.other, css: 'expression-result'});
     };
 
-    BitwiseExpression.prototype.emphasizeBytes = function (bits) {
+    BitwiseExpressionViewModel.prototype.emphasizeBytes = function (bits) {
         var cmdConfig = app.get('cmdConfig');
         if(cmdConfig.emphasizeBytes && bits % 8 != 0) {
             if(bits < 8) {
@@ -108,11 +108,10 @@
         this.content = content;
     }
 
-    app.models.BitwiseOperation = BitwiseOperation;
-    app.models.BitwiseNumbers = BitwiseNumbers;
+    app.models.BitwiseExpressionViewModel = BitwiseExpressionViewModel;
+    app.models.BitwiseNumbersViewModel = BitwiseNumbersViewModel;
     app.models.ErrorResult = ErrorResult;
     app.models.ViewResult = ViewResult;
     app.models.DisplayResult = DisplayResult;
-    app.models.BitwiseExpression = BitwiseExpression;
 
 })(window.app);

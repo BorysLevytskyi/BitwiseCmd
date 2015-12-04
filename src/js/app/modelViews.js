@@ -13,47 +13,14 @@ app.compose(function () {
     // TODO: move to protojs
     String.prototype.padLeft = function(size, char) { return formatter.padLeft(this, size, char); }
 
-
-        app.modelView(app.models.BitwiseOperation, function() {
-        function getTemplateId(model) {
-            switch (model.sign) {
-                case '<<':
-                case '>>':
-                case '>>>':
-                    return 'shiftExpressionView';
-                case '~':
-                    return 'notExpressionView';
-                default:
-                    return 'binaryExpressionView';
-            }
-        }
-
-        return {
-            renderView: function(model) {
-                // TODO: move all this to expression
-                var result = expression.createOperand(calc.calcExpression(model.expression), getResultMode([model.operand1, model.operand2]));
-                var maxLen = getBinaryLength([model.operand1.value, model.operand2 != null ? model.operand2.value : 0, result.value]);
-
-                var model = Object.create(model);
-                model.bitsSize = maxLen;
-                model.result = result;
-
-                var templateId = getTemplateId(model);
-                var template = app.template(templateId);
-
-                return colorizeBits(template.render(model));
-            }
-        }
-    });
-
-    app.modelView(app.models.BitwiseExpression, {
+    app.modelView(app.models.BitwiseExpressionViewModel, {
         renderView: function(model) {
             var template = app.template('bitwiseExpressionView');
             return colorizeBits(template.render(model));
         }
     });
 
-    app.modelView(app.models.BitwiseNumbers, {
+    app.modelView(app.models.BitwiseNumbersViewModel, {
         renderView: function(model) {
             model.bitsSize = getBinaryLength(model.numbers);
             return colorizeBits(app.template('numbersList').render(model));
@@ -94,9 +61,6 @@ app.compose(function () {
         }
         return bits;
     }
-
-
-
 
     function colorizeBits(container) {
         var list = container.querySelectorAll('.bin');
