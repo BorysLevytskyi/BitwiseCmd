@@ -36,6 +36,7 @@ app.set('expression', function() {
         addFactory: function(factory) {
           this.factories.push(factory);
         },
+        Operand:Operand,
         TwoOperandExpression: TwoOperandExpression,
         SingleOperandExpression: SingleOperandExpression,
         ListOfNumbersExpression: ListOfNumbersExpression,
@@ -205,6 +206,28 @@ app.set('expression', function() {
 
     SingleOperandExpression.prototype.toString = function() {
         return this.sign + this.operand1.toString();
+    };
+
+    Operand.toKindString = function(value, kind) {
+        switch(kind) {
+            case 'hex':
+                var hexVal = Math.abs(value).toString(16);
+                return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
+            case 'bin':
+                return (value>>>0).toString(2);
+            case 'dec':
+                return value.toString(10);
+            default:
+                throw new Error("Unexpected kind: " + kind)
+        }
+    };
+
+    Operand.getOtherKind = function(kind) {
+        switch(kind) {
+            case 'dec': return 'hex';
+            case 'hex': return 'dec';
+            default : throw new Error(kind + " kind doesn't have opposite kind")
+        }
     };
 
     return expression;

@@ -23,7 +23,16 @@ app.compose(function () {
     app.modelView(app.models.BitwiseNumbersViewModel, {
         renderView: function(model) {
             model.bitsSize = getBinaryLength(model.numbers);
-            return colorizeBits(app.template('numbersList').render(model));
+            var templateElement = colorizeBits(app.template('numbersList').render(model));
+            var list = templateElement.querySelectorAll('.bit');
+
+            Array.prototype.forEach.call(list, function(el) {
+                el.classList.add('flipable');
+                el.setAttribute('title', 'Click to flip this bit');
+                el.addEventListener('click', flipBits);
+            });
+
+            return templateElement;
         }
     });
 
@@ -72,20 +81,39 @@ app.compose(function () {
             }
 
             el.innerHTML = bin
-                .replace(/0/g, '<span class="zero">0</span>')
-                .replace(/1/g, '<span class="one">1</span>');
+                .replace(/0/g, '<span class="bit zero">0</span>')
+                .replace(/1/g, '<span class="bit one">1</span>');
         });
         return container;
     }
 
-    function getResultMode(operands) {
-        for(var i=0; i<operands.length; i++) {
-            if(operands[i] != null && operands[i].kind == 'hex') {
-                return 'hex';
-            }
+    function flipBits(evt) {
+        var el = evt.target;
+        var content = el.textContent;
+        if(content == '0') {
+            el.innerHTML = '1';
+            el.classList.remove('zero');
+            el.classList.add('one');
+        } else {
+            el.innerHTML = '0';
+            el.classList.add('zero');
+            el.classList.remove('one');
         }
 
-        return 'dec';
+        var row = findParent(el, 'TR');
+        var value = parseInt(row.cells[1].textContent, 2);
+        var kind = row.dataset.kind;
+
+        row.cells[0].innerHTML = expression.Operand.toKindString(value, kind);
+        row.cells[2].innerHTML = expression.Operand.toKindString(value, expression.Operand.getOtherKind(kind));
+    }
+
+    function findParent(el, tagName) {
+        var parent = el.parentNode;
+        while(parent.tagName != tagName) {
+            parent = parent.parentNode;
+        }
+        return parent;
     }
 });
 
