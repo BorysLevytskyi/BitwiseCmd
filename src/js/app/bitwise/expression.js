@@ -15,7 +15,7 @@ app.set('expression', function() {
         },
         parse: function(string) {
             var trimmed = string.replace(/^\s+|\s+$/, '');
-            var i = 0, l = this.factories.length, factory, matches;
+            var i = 0, l = this.factories.length, factory;
 
             for(;i<l;i++) {
                 factory = this.factories[i];
@@ -77,48 +77,23 @@ app.set('expression', function() {
         }
     });
 
-    // Two operands expression
-    expression.addFactory({
-        regex: /^(-?(?:\d+|0x[\d,a-f]+))\s*(<<|>>|>>>|\||\&|\^)\s*(-?(?:\d+|0x[\d,a-f]+))$/,
-        canCreate: function(string) {
-            return this.regex.test(string);
-        },
-        create: function (string) {
-            var matches = this.regex.exec(string),
-                operand1 = new Operand(matches[1]),
-                operand2 = new Operand(matches[3]),
-                sign = matches[2],
-                expressionString = matches.input;
-
-            return new TwoOperandExpression(expressionString, operand1, operand2, sign);
-        }
-    });
-
     // Multiple operands expression
     expression.addFactory({
-        fullRegex: /^((?:\s*)(<<|>>|>>>|\||\&|\^)?(?:\s*)(-?(?:\d+|0x[\d,a-f]+)))+$/,
-        regex: /(?:\s*)(<<|>>|>>>|\||\&|\^)?(?:\s*)(-?(?:\d+|0x[\d,a-f]+))/g,
+        fullRegex: /^((<<|>>|>>>|\||\&|\^)?(-?((?:\d+(?!x))|(?:0x[\d,a-f]+))))+$/,
+        regex: /(<<|>>|>>>|\||\&|\^)?(-?((?:\d+(?!x))|(?:0x[\d,a-f]+)))/g,
         canCreate: function(string) {
             this.fullRegex.lastIndex = 0;
-            return this.fullRegex.test(string);
+            return this.fullRegex.test(this.normalizeString(string));
         },
         create: function (string) {
-            var m = null, operands = [];
+            var m, operands = [],
+                normalizedString = this.normalizeString(string);
 
-            while ((m = this.regex.exec(string)) != null) {
+            while ((m = this.regex.exec(normalizedString)) != null) {
                operands.push(this.parseMatch(m));
             }
 
-            //matches.input.replace(this.regex, function(inpt, sign, num) {
-            //    if(sign == null) {
-            //        operands.push(new Operand(num));
-            //    } else {
-            //        operands.push(new SingleOperandExpression(inpt, new Operand(num), sign))
-            //    }
-            //
-            //});
-
-            return new MultipleOperandsExpression(string, operands)
+            return new MultipleOperandsExpression(normalizedString, operands)
         },
         parseMatch: function (m) {
             var input = m[0],
@@ -130,6 +105,9 @@ app.set('expression', function() {
             } else {
                 return new SingleOperandExpression(input, new Operand(num), sign);
             }
+        },
+        normalizeString: function (string) {
+            return string.replace(/\s+/g,'');
         }
     });
 
@@ -187,6 +165,10 @@ app.set('expression', function() {
           }
 
          return Operand.create(eval(str), this.operand1.kind);
+    };
+
+    SingleOperandExpression.prototype.isShiftExpression = function () {
+        return this.sign.indexOf('<') >= 0 || this.sign.indexOf('>')>= 0;
     };
 
     function TwoOperandExpression(expressionString, operand1, operand2, sign) {

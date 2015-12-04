@@ -25,6 +25,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .expression { font-size: 1.5em; font-family: monospace }
 .expression .prefix { font-weight: normal; display: none; font-size: 0.9em }
 .expression .other { font-size: 0.9em}
+.expression .sign { text-align: right}
 
 .hex .prefix { display: inline; }
 

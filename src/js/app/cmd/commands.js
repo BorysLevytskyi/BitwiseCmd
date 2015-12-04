@@ -50,16 +50,16 @@ app.run(function() {
             return this.locateModel(expr);
         },
         locateModel: function (expr) {
-            if(expr instanceof expression.SingleOperandExpression || expr instanceof expression.TwoOperandExpression){
-                return new app.models.BitwiseOperation(expr);
-            }
-
             if(expr instanceof expression.ListOfNumbersExpression) {
                 return new app.models.BitwiseNumbers(expr);
             }
 
+            if(expr instanceof expression.SingleOperandExpression ){
+                return new app.models.BitwiseExpression.buildNot(expr);
+            }
+
             if(expr instanceof expression.MultipleOperandsExpression) {
-                return new app.models.BitwiseExpression(expr);
+                return new app.models.BitwiseExpression.buildMultiple(expr);
             }
 
             return new app.models.ErrorResult('Cannot create model for expression: ' + expr.toString());

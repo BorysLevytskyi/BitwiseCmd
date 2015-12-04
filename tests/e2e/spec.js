@@ -41,6 +41,7 @@ describe('launch of application', function() {
             .then(function() { return sendCommand('0x1 0xf')})
             .then(function() { return sendCommand('0x1 | 0xf')})
             .then(function() { return sendCommand('0x1 ^ 123')})
+            .then(function() { return sendCommand('1|2&3|5 |5')})
             .then(function() { return sendCommand('dark')})
             .then(function() { return sendCommand('light')})
             .then(assertNoErrors);
@@ -63,21 +64,21 @@ describe('launch of application', function() {
 
         return assertOperation('1<<1',
             [{ label: '1', bin:'00000001', other: '0x1'},
-                { label: '1<<1=2', bin:'00000010', other: '0x2'}])
+                { sign:'<<1', label: '2', bin:'00000010', other: '0x2'}])
     });
 
-    it('should do a ignroe sign RIGHT shift operation', function() {
+    it('should do a ignore sign RIGHT shift operation', function() {
 
         return assertOperation('-1>>>1',
             [{ label: '-1', bin:'11111111111111111111111111111111', other: '-0x1'},
-                { label: '-1>>>1=2147483647', bin:'01111111111111111111111111111111', other: '0x7fffffff'}])
+                { sign: '>>>1', label: '2147483647', bin:'01111111111111111111111111111111', other: '0x7fffffff'}])
     });
 
     it('should do NOT operation', function() {
 
         return assertOperation('~1',
-            [{ label: '1', bin:'00000000000000000000000000000001', other: '0x1'},
-             { label: '~1=-2', bin:'11111111111111111111111111111110', other: '-0x2'}])
+            [{ sing: '~', label: '1', bin:'00000000000000000000000000000001', other: '0x1'},
+             { sign: '=', label: '-2', bin:'11111111111111111111111111111110', other: '-0x2'}])
     });
 
     it('should execute multiple expressions from hash arguments', function() {
@@ -88,8 +89,8 @@ describe('launch of application', function() {
                 return assertMultipleExpressionResults(driver, [
                     //16&15
                     [{ label: '16', bin:'00010000', other: '0x10'},
-                        { label: '15', bin:'00001111', other: '0xf'},
-                        { label: '0', bin:'00000000', other: '0x0'}],
+                        { sign:'&', label: '15', bin:'00001111', other: '0xf'},
+                        { sign:'=', label: '0', bin:'00000000', other: '0x0'}],
 
                     //16 15
                     [{ label: '16', bin:'00010000', other: '0x10'},
@@ -101,34 +102,47 @@ describe('launch of application', function() {
     it('should do OR operation', function() {
 
         return assertOperation('1|2',
+               [{ label: '1', bin:'00000001', other: '0x1'},
+                {  sign: '|', label: '2', bin:'00000010', other: '0x2'},
+                { sign: '=', label: '3', bin:'00000011', other: '0x3'}])
+    });
+
+    it('should do multiple operand expression', function() {
+
+        return assertOperation('1|2|4<<0x1',
             [{ label: '1', bin:'00000001', other: '0x1'},
-                { label: '2', bin:'00000010', other: '0x2'},
-                { label: '3', bin:'00000011', other: '0x3'}])
+                { sign:'|',   label: '2',  bin:'00000010', other: '0x2'},
+                { sign: '=',  label: '3',   bin:'00000011', other: '0x3'},
+                { sign: '|',  label: '4',   bin:'00000100', other: '0x4'},
+                { sign: '=',  label: '7',   bin:'00000111', other: '0x7'},
+                { sign: '<<0x1', label: '0xe', bin:'00001110', other: '14'}
+            ])
     });
 
     it('should do XOR or large numbers', function() {
 
         return assertOperation('0x0001000000003003^0x3001800400000fc1',
-            [{ label: '0x0001000000003003', bin:'0000000000000001000000000000000000000000000000000011000000000011', other: '281474976722947'},
-                { label: '0x3001800400000fc1', bin:'0011000000000001100000000000010000000000000000000001000000000000', other: '3459186743465480000'},
-                { label: '0x2003', bin:'0000000000000000000000000000000000000000000000000010000000000011', other: '8195'}])
+               [{ label: '0x0001000000003003', bin:'0000000000000001000000000000000000000000000000000011000000000011', other: '281474976722947'},
+                { sign:'^', label: '0x3001800400000fc1', bin:'0011000000000001100000000000010000000000000000000001000000000000', other: '3459186743465480000'},
+                { sign:'=', label: '0x2003', bin:'0000000000000000000000000000000000000000000000000010000000000011', other: '8195'}])
     });
 
     it('should do prefer hex result', function() {
 
         return assertOperation('1|0x2',
             [{ label: '1', bin:'00000001', other: '0x1'},
-                { label: '0x2', bin:'00000010', other: '2'},
-                { label: '0x3', bin:'00000011', other: '3'}])
+                { sign: '|', label: '0x2', bin:'00000010', other: '2'},
+                { sign: '=', label: '0x3', bin:'00000011', other: '3'}])
     });
 
 
     it('should create hashlink', function() {
+        var expression = '1|0x2';
         var expected = [{ label: '1', bin:'00000001', other: '0x1'},
-            { label: '0x2', bin:'00000010', other: '2'},
-            { label: '0x3', bin:'00000011', other: '3'}];
+            { sign: '|', label: '0x2', bin:'00000010', other: '2'},
+            { sign: '=', label: '0x3', bin:'00000011', other: '3'}];
 
-        return assertOperation('1|0x2', expected).then(function(){
+        return assertOperation(expression, expected).then(function(){
             return driver.findElement(By.css('.hashLink'));
         }).then(function(el) {
             return el.getAttribute('href');
@@ -162,6 +176,7 @@ describe('launch of application', function() {
 });
 
 function sendCommand(cmd) {
+    console.log('\r\nSend command: ' + cmd + "\r\n");
     return driver.findElement(By.id('in')).then(function (el) {
         return el.sendKeys(cmd + Key.ENTER);
     });
@@ -198,16 +213,15 @@ function assertExpressionResult(contaier, array) {
             var all= null, cur;
             for(var i=0; i<rows.length;i++) {
                 var expected = array[i];
-                cur = assertSingleRowResult(rows[i], expected.label, expected.bin, expected.other);
+                cur = assertSingleRowResult(rows[i], expected.label, expected.bin, expected.other, expected.sign);
                 all = all == null ? cur : all.then(cur);
             }
         });
     });
 }
 
-function assertSingleRowResult(row, label, bin, other) {
-
-    return row.findElement(by.css('.label')).then(function (tbLabel) {
+function assertSingleRowResult(row, label, bin, other, sign) {
+    var p = row.findElement(by.css('.label')).then(function (tbLabel) {
             expect(tbLabel.getText()).toBe(label);
         }).then(function () {
             return row.findElement(by.css('.bin'));
@@ -218,7 +232,17 @@ function assertSingleRowResult(row, label, bin, other) {
         }).then(function (tdOther) {
             expect(tdOther.getText()).toBe(other);
         });
-}
+
+    if(sign != null) {
+        p = p.then(function () {
+            return row.findElement(by.css('.sign'));
+        }).then(function (tdSign) {
+            expect(tdSign.getText()).toBe(sign);
+        });
+    }
+
+    return p;
+};
 
 function assertOperation(op, expected) {
     return goToApp().then(function() {
@@ -244,8 +268,6 @@ function goToApp(hashValue) {
     } else {
         url += "||" + hash;
     }
-
-    console.log('---------- accessing url: ' + url);
 
     return driver.get(url);
 }
