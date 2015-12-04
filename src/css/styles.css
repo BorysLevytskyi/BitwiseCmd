@@ -20,6 +20,8 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
 .expression .bin { letter-spacing: 3px; }
+.expression .flipable { cursor: pointer; opacity: 1 }
+.expression .flipable:hover { opacity: 0.8 }
 .expression .byte { margin: 0 3px; }
 .expression .flipable { cursor: pointer; opacity: 1 }
 .expression .flipable:hover { opacity: 0.8 }
