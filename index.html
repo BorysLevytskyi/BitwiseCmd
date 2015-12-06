@@ -103,58 +103,19 @@
     </div>
 </script>
 
-<script data-template="shiftExpressionView" data-compiled="" type="text/template">
+<script data-template="bitwiseExpressionView" data-compiled="" type="text/template">
     <table class="expression">
-        <tr>
-            <td class="label">{m.operand1.input}</td>
-            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
-            <td class="other">{m.operand1.other}</td>
+        {each itm in m.items}
+        <tr class="{itm.css}">
+            <td class="sign">{itm.sign}</td>
+            <td class="label">{itm.label}</td>
+            <td class="bin">{itm.bin.padLeft(m.maxNumberOfBits, '0')}</td>
+            <td class="other">{itm.other}</td>
         </tr>
-        <tr class="expression-result">
-            <td class="label">{m.string.replace(/\s/g,'')}={m.result.input}</td>
-            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
-            <td class="other">{m.result.other}</td>
-        </tr>
+        {/}
     </table>
 </script>
 
-<script data-template="notExpressionView" data-compiled="" type="text/template">
-    <table class="expression">
-        <tr>
-            <td class="label">{m.operand1.input}</td>
-            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
-            <td class="other">{m.operand1.other}</td>
-        </tr>
-        <tr class="expression-result">
-            <td class="label">{m.sign}{m.operand1.input}={m.result.input}</td>
-            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
-            <td class="other">{m.result.other}</td>
-        </tr>
-    </table>
-</script>
-
-<script data-template="binaryExpressionView" data-compiled="" type="text/template">
-    <table class="expression">
-        <tr>
-            <td></td>
-            <td class="label">{m.operand1.input}</td>
-            <td class="bin">{m.operand1.bin.padLeft(m.bitsSize, '0')}</td>
-            <td class="other">{m.operand1.other}</td>
-        </tr>
-        <tr>
-            <td>{m.sign}</td>
-            <td class="label">{m.operand2.input}</td>
-            <td class="bin">{m.operand2.bin.padLeft(m.bitsSize, '0')}</td>
-            <td class="other">{m.operand2.other}</td>
-        </tr>
-        <tr class="expression-result">
-            <td>=</td>
-            <td class="label">{m.result.input}</td>
-            <td class="bin">{m.result.bin.padLeft(m.bitsSize, '0')}</td>
-            <td class="other">{m.result.other}</td>
-        </tr>
-    </table>
-</script>
 <script data-template="numbersList" data-compiled="" type="text/template">
     <table class="expression">
         {each op in m.operands}
@@ -166,8 +127,6 @@
         {/}
     </table>
 </script>
-
-
 
 <script type="text/javascript">
 
@@ -182,7 +141,7 @@
     }
     else {
         cmd.execute('help');
-        cmd.execute('1|2');
+        cmd.execute('1|2&6');
         cmd.execute('1<<0x2a');
         cmd.execute('2 4 8 16 32');
     }
