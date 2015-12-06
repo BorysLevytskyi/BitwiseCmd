@@ -1,19 +1,20 @@
 browser.ignoreSynchronization = true;
+var BitwiseCmdPage = require('./pageObject.js');
 
 var By = protractor.By;
 var driver = browser.driver;
 var appUrl = browser.params.appUrl || 'http://localhost:63342/BitwiseCmd/src/#clear';
-var Key = protractor.Key;
+var sutPage = new BitwiseCmdPage(driver, appUrl);
 
 describe('launch of application', function() {
     it('should have title', function() {
-        goToApp().then(function() {
+        sutPage.goToApp().then(function() {
             expect(driver.getTitle()).toEqual('BitwiseCmd');
         });
     });
 
     it('should have no errors title', function() {
-        goToApp().then(function() {
+        sutPage.goToApp().then(function() {
             driver.findElements(By.css('.result .error')).then(function(els) {
                 expect(els.length).toBe(0, "There should be no errors on auto launch");
             });
@@ -21,37 +22,31 @@ describe('launch of application', function() {
     });
 
     it('should execute clear command', function() {
-        goToApp()
-            .then(function() { return sendCommand('clear')})
-            .then(function () {
-                return driver.findElements(By.css('.result')).then(function(list) {
-                    expect(list.length).toBe(0, "There should be no results after clear");
-                });
+        sutPage.clearResults().then(function () {
+            return driver.findElements(By.css('.result')).then(function(list) {
+                expect(list.length).toBe(0, "There should be no results after clear");
+            });
         });
     });
 
     it('should execute list of commands without errors', function() {
-
-        goToApp()
-            .then(function() { return sendCommand('clear')})
-            .then(function() { return sendCommand('1')})
-            .then(function() { return sendCommand('1|2')})
-            .then(function() { return sendCommand('1^2')})
-            .then(function() { return sendCommand('0x1>>>0xf')})
-            .then(function() { return sendCommand('0x1 0xf')})
-            .then(function() { return sendCommand('0x1 | 0xf')})
-            .then(function() { return sendCommand('0x1 ^ 123')})
-            .then(function() { return sendCommand('1|2&3|5 |5')})
-            .then(function() { return sendCommand('dark')})
-            .then(function() { return sendCommand('light')})
+        sutPage.goToApp()
+            .then(function() { return sutPage.executeExpression('clear')})
+            .then(function() { return sutPage.executeExpression('1')})
+            .then(function() { return sutPage.executeExpression('1|2')})
+            .then(function() { return sutPage.executeExpression('1^2')})
+            .then(function() { return sutPage.executeExpression('0x1>>>0xf')})
+            .then(function() { return sutPage.executeExpression('0x1 0xf')})
+            .then(function() { return sutPage.executeExpression('0x1 | 0xf')})
+            .then(function() { return sutPage.executeExpression('0x1 ^ 123')})
+            .then(function() { return sutPage.executeExpression('1|2&3|5 |5')})
+            .then(function() { return sutPage.executeExpression('dark')})
+            .then(function() { return sutPage.executeExpression('light')})
             .then(assertNoErrors);
     });
 
     it('should execute list of numbers', function() {
-
-        goToApp()
-            .then(function() { return sendCommand('clear')})
-            .then(function() { return sendCommand('3 0xf')})
+        sutPage.executeExpression('3 0xf')
             .then(assertNoErrors)
             .then(function() {
                 return assertExpressionResult(driver,
@@ -82,7 +77,7 @@ describe('launch of application', function() {
     });
 
     it('should execute multiple expressions from hash arguments', function() {
-        return goToApp("16,15||16&15")
+        return sutPage.goToApp("16,15||16&15")
             .then(function() { return driver.navigate().refresh(); })
             .then(assertNoErrors)
             .then(function() {
@@ -160,15 +155,14 @@ describe('launch of application', function() {
     xit('should emphasize bytes', function() {
 
         goToApp()
-            .then(function() { return sendCommand('clear')})
-            .then(function() { return sendCommand('1')})
+            .then(function() { return sutPage.executeExpression('1')})
             .then(function() {
                 return assertExpressionResult(driver, [{ label: '1', bin:'00000001', other: '0x1'}])
             })
-            .then(function() { return sendCommand('clear')})
+            .then(function() { return sutPage.executeExpression('clear')})
  //           .then(function() { return sendCommand('em')})
             .then(assertNoErrors)
-            .then(function() { return sendCommand('1 3')})
+            .then(function() { return sutPage.executeExpression('1 3')})
             .then(function() {
                 return assertExpressionResult(driver, [{ label: '1', bin:'01', other: '0x1'}, { label: '3', bin:'11', other: '0x3'}])
             });
@@ -181,9 +175,8 @@ describe('interaction with results', function() {
         // Given: 0x2a 00101010 42
         // Expected: 0x6a 01101010 106
 
-        goToApp()
-            .then(function() { return sendCommand('clear')})
-            .then(function() { return sendCommand('0x2a')})
+        sutPage.goToApp()
+            .then(function() { return sutPage.executeExpression('0x2a')})
             .then(function() { assertExpressionResult(driver, [{ label: "0x2a", bin: '00101010', other: '42' }]); })
             .then(function() { return flipBit(2); })
             .then(function() { return assertExpressionResult(driver, [{ label: "0x6a", bin: '01101010', other: '106' }]); })
@@ -191,14 +184,6 @@ describe('interaction with results', function() {
             .then(function() { return assertExpressionResult(driver, [{ label: "0x6e", bin: '01101110', other: '110' }]); });
     })
 });
-
-
-function sendCommand(cmd) {
-    console.log('\r\nSend command: ' + cmd + "\r\n");
-    return driver.findElement(By.id('in')).then(function (el) {
-        return el.sendKeys(cmd + Key.ENTER);
-    });
-}
 
 function assertNoErrors() {
     return driver.findElements(By.css('.result .error')).then(function(els) {
@@ -263,31 +248,11 @@ function assertSingleRowResult(row, label, bin, other, sign) {
 }
 
 function assertOperation(op, expected) {
-    return goToApp().then(function() {
-        return sendCommand(op)
-            .then(assertNoErrors)
-            .then(function() {
-                return assertExpressionResult(driver, expected)
-            });
-    })
-}
-
-function goToApp(hashValue) {
-
-    var url = appUrl;
-    var hash = hashValue || '-notrack';
-
-    if(hash.indexOf('-notrack') < 0) {
-        hash += "||-notrack";
-    }
-
-    if(url.indexOf("#") < 0) {
-        url += "#" + hash;
-    } else {
-        url += "||" + hash;
-    }
-
-    return driver.get(url);
+    return sutPage.executeExpression(op)
+        .then(assertNoErrors)
+        .then(function() {
+            return assertExpressionResult(driver, expected)
+        });
 }
 
 function flipBit(bitNumber) {
