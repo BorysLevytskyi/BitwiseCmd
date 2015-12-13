@@ -1,5 +1,6 @@
 browser.ignoreSynchronization = true;
-var BitwiseCmdPage = require('./pageObject.js');
+var pageObject = require('./pageObject.js')
+var BitwiseCmdPage = pageObject.BitwiseCmdPage;
 
 var By = protractor.By;
 var driver = browser.driver;
@@ -42,14 +43,14 @@ describe('launch of application', function() {
             .then(function() { return sutPage.executeExpression('1|2&3|5 |5')})
             .then(function() { return sutPage.executeExpression('dark')})
             .then(function() { return sutPage.executeExpression('light')})
-            .then(assertNoErrors);
+            .then(function() { return sutPage.shouldHaveNoErrors(); });
     });
 
     it('should execute list of numbers', function() {
         sutPage.executeExpression('3 0xf')
-            .then(assertNoErrors)
+            .then(function() { return sutPage.shouldHaveNoErrors(); })
             .then(function() {
-                return assertExpressionResult(driver,
+                return assertExpressionResult(
                     [{ label: '3', bin:'00000011', other: '0x3'},
                      { label: '0xf', bin:'00001111', other: '15'}])
             });
@@ -79,9 +80,9 @@ describe('launch of application', function() {
     it('should execute multiple expressions from hash arguments', function() {
         return sutPage.goToApp("16,15||16&15")
             .then(function() { return driver.navigate().refresh(); })
-            .then(assertNoErrors)
+            .then(function() { return sutPage.shouldHaveNoErrors(); })
             .then(function() {
-                return assertMultipleExpressionResults(driver, [
+                return assertMultipleExpressionResults([
                     //16&15
                     [{ label: '16', bin:'00010000', other: '0x10'},
                         { sign:'&', label: '15', bin:'00001111', other: '0xf'},
@@ -147,7 +148,7 @@ describe('launch of application', function() {
             return driver.findElements(By.css('.result'));
         }).then(function(list) {
             expect(list.length).toBeGreaterThan(0);
-            return assertExpressionResult(list[0], expected);
+            return assertExpressionResult(expected);
         });
 
     });
@@ -157,14 +158,14 @@ describe('launch of application', function() {
         goToApp()
             .then(function() { return sutPage.executeExpression('1')})
             .then(function() {
-                return assertExpressionResult(driver, [{ label: '1', bin:'00000001', other: '0x1'}])
+                return assertExpressionResult([{ label: '1', bin:'00000001', other: '0x1'}])
             })
             .then(function() { return sutPage.executeExpression('clear')})
  //           .then(function() { return sendCommand('em')})
-            .then(assertNoErrors)
+            .then(function() { return sutPage.shouldHaveNoErrors(); })
             .then(function() { return sutPage.executeExpression('1 3')})
             .then(function() {
-                return assertExpressionResult(driver, [{ label: '1', bin:'01', other: '0x1'}, { label: '3', bin:'11', other: '0x3'}])
+                return assertExpressionResult([{ label: '1', bin:'01', other: '0x1'}, { label: '3', bin:'11', other: '0x3'}])
             });
     });
 });
@@ -177,81 +178,38 @@ describe('interaction with results', function() {
 
         sutPage.goToApp()
             .then(function() { return sutPage.executeExpression('0x2a')})
-            .then(function() { assertExpressionResult(driver, [{ label: "0x2a", bin: '00101010', other: '42' }]); })
+            .then(function() { assertExpressionResult([{ label: "0x2a", bin: '00101010', other: '42' }]); })
             .then(function() { return flipBit(2); })
-            .then(function() { return assertExpressionResult(driver, [{ label: "0x6a", bin: '01101010', other: '106' }]); })
+            .then(function() { return assertExpressionResult([{ label: "0x6a", bin: '01101010', other: '106' }]); })
             .then(function() { return flipBit(6); })
-            .then(function() { return assertExpressionResult(driver, [{ label: "0x6e", bin: '01101110', other: '110' }]); });
+            .then(function() { return assertExpressionResult([{ label: "0x6e", bin: '01101110', other: '110' }]); });
     })
 });
 
-function assertNoErrors() {
-    return driver.findElements(By.css('.result .error')).then(function(els) {
-        expect(els.length).toBe(0, "There should be no errors");
+function assertMultipleExpressionResults(array) {
+    return sutPage.getAllResults().then(function(results){
+        var all= null, cur;
+        for(var i=0; i<results.length;i++) {
+            var expected = array[i];
+            cur = results[i].shouldBe(expected);
+            all = all == null ? cur : all.then(cur);
+        }
+
+        return all;
     });
 }
 
-function assertMultipleExpressionResults(contaier, array) {
-
-    return contaier.findElements(By.css('.result'))
-        .then(function (results){
-            expect(results.length).toBe(array.length, 'Expression results number mismatch');
-            var all= null, cur;
-            for(var i=0; i<results.length;i++) {
-                var expected = array[i];
-                cur = assertExpressionResult(results[i], expected);
-                all = all == null ? cur : all.then(cur);
-            }
-            return all;
-        });
-}
-
-function assertExpressionResult(contaier, array) {
-
-    return contaier.findElement(By.css('.expression'))
-        .then(function (tableExpr){
-            return tableExpr.findElements(By.tagName('tr')).then(function(rows) {
-            expect(rows.length).toBe(array.length, 'Rows number mismatch');
-
-            var all= null, cur;
-            for(var i=0; i<rows.length;i++) {
-                var expected = array[i];
-                cur = assertSingleRowResult(rows[i], expected.label, expected.bin, expected.other, expected.sign);
-                all = all == null ? cur : all.then(cur);
-            }
-        });
+function assertExpressionResult(expected) {
+    return sutPage.getLasExpressionResult().then(function(result){
+       result.shouldBe(expected);
     });
-}
-
-function assertSingleRowResult(row, label, bin, other, sign) {
-    var p = row.findElement(by.css('.label')).then(function (tbLabel) {
-            expect(tbLabel.getText()).toBe(label);
-        }).then(function () {
-            return row.findElement(by.css('.bin'));
-        }).then(function (tdBin) {
-            expect(tdBin.getText()).toBe(bin);
-        }).then(function () {
-            return row.findElement(by.css('.other'));
-        }).then(function (tdOther) {
-            expect(tdOther.getText()).toBe(other);
-        });
-
-    if(sign != null) {
-        p = p.then(function () {
-            return row.findElement(by.css('.sign'));
-        }).then(function (tdSign) {
-            expect(tdSign.getText()).toBe(sign);
-        });
-    }
-
-    return p;
 }
 
 function assertOperation(op, expected) {
     return sutPage.executeExpression(op)
-        .then(assertNoErrors)
+        .then(function() { return sutPage.shouldHaveNoErrors(); })
         .then(function() {
-            return assertExpressionResult(driver, expected)
+            return assertExpressionResult(expected)
         });
 }
 
