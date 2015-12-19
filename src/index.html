@@ -132,7 +132,7 @@
 </script>
 
 <script data-template="bitwiseExpressionView" data-compiled="" type="text/template">
-    <table class="expression">
+    <table class="expression" cellspacing="0">
         {each itm in m.items}
         <tr class="{itm.css}">
             <td class="sign">{itm.sign}</td>
@@ -145,7 +145,7 @@
 </script>
 
 <script data-template="numbersList" data-compiled="" type="text/template">
-    <table class="expression">
+    <table class="expression" cellspacing="0">
         {each op in m.operands}
         <tr data-kind="{op.kind}">
             <td class="label">{op.input}</td>
