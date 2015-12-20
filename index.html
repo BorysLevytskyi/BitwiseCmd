@@ -2,10 +2,16 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <meta name="description" content="Bitwise Calculator. Visualised Bitwise Operations.">
+    <meta name="description" content="Free Text Online Bitwise Calculator">
 
     <title>BitwiseCmd</title>
     <link rel="shortcut icon" href="http://bitwisecmd.com/favicon.ico">
+
+    <meta property="og:url"           content="http://bitwisecmd.com" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="BitwiseCmd" />
+    <meta property="og:description"   content="Free Text Online Bitwise Calculator" />
+    <meta property="og:image"         content="http://bitwisecmd.com/img/social-avatar.png" />
 
     <script src="js/bitwisecmd.js"></script>
 
@@ -15,7 +21,9 @@
 
 <header>
     <div class="header">
-        <h1>Bitwise<span style="color: #c5c5c5;">Cmd</span></h1>
+        <h1>Bitwise<span style="color: #c5c5c5;">Cmd</span>  <span>
+
+        </span></h1>
 
         <ul class="top-links">
             <li>
@@ -90,7 +98,7 @@
 
 <script data-template="aboutTpl" type="text/template">
     <div class="aboutTpl">
-        <p> Created by <a href="http://boryslevytskyi.github.io/">Borys Levytskyi</a></p>
+        <p> Created by <a href="http://boryslevytskyi.github.io/">Borys Levytskyi</a>. Please give it a like if BitwiseCmd has helped you in your work.</p>
         <p>If you have an idea, suggestion or you've spotted a bug here, please send it to <a href="mailto:&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=Feedback">&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a> or tweet on <a href="http://twitter.com/BitwiseCmd">@BitwiseCmd</a>. Your feedback is greatly appreciated.</p>
         <p><a href="https://github.com/BorisLevitskiy/BitwiseCmd">Project on <strong>GitHub</strong></a></p>
     </div>
@@ -104,7 +112,7 @@
 </script>
 
 <script data-template="bitwiseExpressionView" data-compiled="" type="text/template">
-    <table class="expression">
+    <table class="expression" cellspacing="0">
         {each itm in m.items}
         <tr class="{itm.css}">
             <td class="sign">{itm.sign}</td>
@@ -117,7 +125,7 @@
 </script>
 
 <script data-template="numbersList" data-compiled="" type="text/template">
-    <table class="expression">
+    <table class="expression" cellspacing="0">
         {each op in m.operands}
         <tr data-kind="{op.kind}">
             <td class="label">{op.input}</td>
@@ -149,5 +157,19 @@
 </script>
 
 <script src="js/analytics.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="social-container">
+    <div class="fb-like" data-href="http://bitwisecmd.com" data-layout="box_count" data-action="like" data-show-faces="false" data-share="true"></div>
+</div>
+
 </body>
 </html>
