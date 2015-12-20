@@ -1,5 +1,6 @@
 var Key = protractor.Key;
 var By = protractor.By;
+var resultTableReader = require('./resultTableReader');
 
 function BitwiseCmdPage(driver, appUrl) {
     this.driver = driver;
@@ -24,7 +25,6 @@ BitwiseCmdPage.prototype.goToApp = function (hashValue) {
 };
 
 BitwiseCmdPage.prototype.sendCommand = function(cmd) {
-    console.log('\r\nSend command: ' + cmd + "\r\n");
     return this.driver.findElement(By.id('in')).then(function (el) {
         return el.sendKeys(cmd + Key.ENTER);
     });
@@ -69,60 +69,23 @@ function ExpressionResultObject(resultElement) {
     this.resultElement = resultElement;
 }
 
-ExpressionResultObject.prototype.shouldBe = function(expectedResult) {
-    return this.resultElement.findElements(By.tagName('tr'))
-        .then(function(rows) {
-            var actualLength = rows.length + 0;
-            var expectedLength = expectedResult.length + 0;
-
-            expect(actualLength).toBe(expectedLength);
-            if(actualLength != expectedLength) {
-                //TODO:  I don't know why but expect doesn't throw exception...
-                throw new Error("Inconsistent length");
-            }
-
-            var all = null, cur, expectedRow, actualRow;
-            for (var i = 0; i < rows.length; i++) {
-                expectedRow = expectedResult[i];
-                actualRow = rows[i];
-
-                cur = ExpressionResultObject.assertSingleRowResult(actualRow, expectedRow);
-                all = all == null ? cur : all.then(cur);
-            }
-
-            return all;
-        });
+ExpressionResultObject.prototype.readResult = function () {
+  return resultTableReader.read(this.resultElement);
 };
 
-ExpressionResultObject.assertSingleRowResult = function(actualRow, expectedRow) {
+ExpressionResultObject.prototype.shouldBe = function(expectedResult) {
+    this.readResult().then(function(actualResult) {
+        expect(actualResult.length).toEqual(expectedResult.length, "Unexpected result length");
+        var expected, actual;
+        for(var i=0;i<expectedResult.length; i++) {
+            var actual = actualResult[i],
+                expected = expectedResult[i];
 
-    if(expectedRow == null) {
-        throw new Error("Expected row is null")
-    }
-
-    var p = actualRow.findElement(by.css('.label')).then(function (tbLabel) {
-            expect(tbLabel.getText()).toBe(expectedRow.label);
-        }).then(function () {
-            return actualRow.findElement(by.css('.bin'));
-        }).then(function (tdBin) {
-            expect(tdBin.getText()).toBe(expectedRow.bin);
-        }).then(function () {
-            return actualRow.findElement(by.css('.other'));
-        }).then(function (tdOther) {
-            expect(tdOther.getText()).toBe(expectedRow.other);
-        });
-
-        if(expectedRow.sign != null) {
-            console.log('has sign!!!!!!!!!!!!!!!!!!!!!!!!');
-            p = p.then(function () {
-                return actualRow.findElement(by.css('.sign'));
-            }).then(function (tdSign) {
-                expect(tdSign.getText()).toBe(expectedRow.sign);
-            });
+            expect(actual).toEqual(jasmine.objectContaining(expected));
         }
+    });
 
-        return p;
-    };
+};
 
 module.exports = {
     BitwiseCmdPage : BitwiseCmdPage,

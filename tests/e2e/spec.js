@@ -14,12 +14,8 @@ describe('launch of application', function() {
         });
     });
 
-    it('should have no errors title', function() {
-        sutPage.goToApp().then(function() {
-            driver.findElements(By.css('.result .error')).then(function(els) {
-                expect(els.length).toBe(0, "There should be no errors on auto launch");
-            });
-        });
+    it('should have no errors upon loading', function() {
+        return sutPage.shouldHaveNoErrors();
     });
 
     it('should execute clear command', function() {
@@ -73,7 +69,7 @@ describe('launch of application', function() {
     it('should do NOT operation', function() {
 
         return assertOperation('~1',
-            [{ sing: '~', label: '1', bin:'00000000000000000000000000000001', other: '0x1'},
+            [{ sign: '~', label: '1', bin:'00000000000000000000000000000001', other: '0x1'},
              { sign: '=', label: '-2', bin:'11111111111111111111111111111110', other: '-0x2'}])
     });
 
