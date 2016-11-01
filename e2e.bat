@@ -1,6 +1,6 @@
 @echo off
 
-SET appUrl="http://localhost:63342/BitwiseCmd/src/#clear"
+SET appUrl="http://localhost:13270/src/#clear"
 SET confFile=e2e.chrome.js
 
 FOR %%p IN (%*) DO (
