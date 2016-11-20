@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import InputBox from './components/InputBox.jsx';
 var rootView = <div>
                     <div className="header">
                         <h1>Bitwise<span style={{color: "#c5c5c5"}}>Cmd</span></h1>
@@ -19,7 +19,7 @@ var rootView = <div>
                     </div>
 
                     <div className="expressionInput-container">
-                        <input id="in" type="text" className="expressionInput mono" placeholder="type expression like '1>>2' or 'help' "/>
+                        <InputBox />
 
                         <span className="configPnl">
                              <span id="emphasizeBytes" data-cmd="em" className="indicator on" title="Emphasize Bytes">[em]</span>
