@@ -3,17 +3,17 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
 
         files: [
-            'src/js/core/core.js',
-            'src/js/core/is.js',
-            'src/js/core/di.js',
-            'src/js/core/should.js',
-            'src/js/core/htmlBuilder.js',
-            'src/js/core/should.js',
-            'src/js/core/appShell.js',
-            'src/js/core/observable.js',
-            'src/js/app.js',
-            'src/js/components/*.js',
-            'src/js/app/**/*.js',
+            'src.old/js/core/core.js',
+            'src.old/js/core/is.js',
+            'src.old/js/core/di.js',
+            'src.old/js/core/should.js',
+            'src.old/js/core/htmlBuilder.js',
+            'src.old/js/core/should.js',
+            'src.old/js/core/appShell.js',
+            'src.old/js/core/observable.js',
+            'src.old/js/app.js',
+            'src.old/js/components/*.js',
+            'src.old/js/app/**/*.js',
             'tests/unit/**/*.js'
         ]
     });

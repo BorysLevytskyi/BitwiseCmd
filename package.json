@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/BorysLevytskyi/BitwiseCmd",
   "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-react": "^6.16.0",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-contrib-cssmin": "latest",
@@ -31,7 +35,13 @@
   "dependencies": {
     "@types/react": "^0.14.44",
     "@types/react-dom": "^0.14.18",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-transform-class-properties": "^6.19.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "body-parser": "^1.15.2",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0"
   }
 }

@@ -1,6 +1,4 @@
-body { padding:0; margin:0; height: 100% }
-html { height: 100% }
-#root { font-family: Verdana; font-size: 0.8em; margin: 0; padding: 20px 100px 0 100px; height: 100% }
+body { font-family: Verdana; font-size: 0.8em; margin: 0; padding: 20px 100px 0 100px; }
 code { font-size: 1.2em; font-weight: bold; }
 
 .top-links { position: absolute; right: 10px; top: 10px; list-style-type: none; margin: 0 }
