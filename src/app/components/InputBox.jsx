@@ -1,8 +1,13 @@
 import React from 'react';
+import cmd from '../cmd';
 
 export default class InputBox extends React.Component {
-    history = [];
-    historyIndex = 0;
+    constructor() {
+        super();
+        this.history = [];
+        this.historyIndex = 0;
+    }
+
     render() {
         return <input type="text"
                       onKeyUp={e => this.onKeyUp(e)}
@@ -18,10 +23,10 @@ export default class InputBox extends React.Component {
         }
 
         var value = input.value;
-        console.log(value);
         this.history.unshift(value);
-        input.value = '';
-        console.log(this.history);
+
+        input.value = '';        
+        cmd.execute(value);
     }
 
     onKeyDown(args) {

@@ -8,14 +8,14 @@ module.exports = {
     devtool: 'source-maps',
     module: {
         loaders: [{
-            test: /\.jsx$/,
+            test: /\.jsx?$/,
             loader: 'babel',
-            //exclude: /node-modules/,
+            exclude: /node-modules/,
             output: { path: __dirname + '/src', filename: 'bundle.js' },
             query: {
-                presets: ['es2015', 'react'],
-                plugins: ['transform-class-properties']
-            }
+                presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-react')],
+                plugins: [require.resolve('babel-plugin-transform-class-properties')]
+            },
         }]
     },
     // externals: {

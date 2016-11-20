@@ -1,11 +1,8 @@
-app.set('cmd', function() {
-    "use strict";
-
+import is from './is';
+    
     var handlers = [];
-    var is = app.get('is');
-    var cmdController = app.controller('cmdController');
 
-    return {
+var cmd = {
         debugMode: true,
         execute: function(rawInput) {
             var input = rawInput.trim().toLowerCase();
@@ -53,19 +50,20 @@ app.set('cmd', function() {
             handlers.push(h);
         },
         clear: function() {
-            console.error('[displayCommandError] not implemented');
+            console.log('clear');
         }
     };
 
     function displayCommandError(input, message) {
-        console.error('[displayCommandError] not implemented');
+        var error = new app.models.ErrorResult(message);
+        cmdController.display(new app.models.DisplayResult(input, error));
     }
 
     function invokeHandler (input, handler) {
+        console.log('[invokeHandler]: ' + input);
         var cmdResult = handler.handle(input);
         if(cmdResult != null) {
-            var r = new app.models.DisplayResult(input, cmdResult);
-            cmdController.display(r);
+            console.log(cmdResult);
         }
     }
 
@@ -88,5 +86,6 @@ app.set('cmd', function() {
                 return handlers[i];
             }
         }
-    }
-});
+    };
+
+export default cmd;
