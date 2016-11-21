@@ -1,5 +1,6 @@
 import appState from './appState';
 import HelpResult from './models/HelpResult';
+import UnknownCommandResult from './models/UnknownCommandResult';
 
 var cmdConfig = {};
 
@@ -41,5 +42,10 @@ export default {
             },
             '-notrack': function () {}
         });
+
+        cmd.command({
+            canHandle: () => true,
+            handle: (c) => appState.addCommandResult(new UnknownCommandResult(c.input))
+        })
     }
  }

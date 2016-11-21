@@ -12,7 +12,7 @@ export default class AppRoot extends React.Component {
         this.setState(this.props.appState);
     }
     render() {
-        var results = this.state.commandResults.map((r, i) => <DisplayResultView key={i} content={r} input="sad" inputHash="asd" />);
+        var results = this.state.commandResults.map((r, i) => <DisplayResultView key={i} content={r} input={r.input} inputHash={r.inputHash} />);
         return <div>
             <div className="header">
                 <h1>Bitwise<span style={{color: "#c5c5c5"}}>Cmd</span></h1>
