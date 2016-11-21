@@ -1,7 +1,6 @@
 import React from 'react';
 import InputBox from './InputBox';
-import * as results from '../result/result';
-import HelpView from './HelpView';
+import DisplayResultView from './results/DisplayResultView';
 
 export default class AppRoot extends React.Component {
     componentWillMount() {
@@ -13,11 +12,10 @@ export default class AppRoot extends React.Component {
         this.setState(this.props.appState);
     }
     render() {
-        var results = this.state.commandResults.map((r, i) => this.findResultComponent(r, i));
+        var results = this.state.commandResults.map((r, i) => <DisplayResultView key={i} content={r} input="sad" inputHash="asd" />);
         return <div>
             <div className="header">
                 <h1>Bitwise<span style={{color: "#c5c5c5"}}>Cmd</span></h1>
-                <div>State: <span>{JSON.stringify(this.state)}</span></div>
                 <ul className="top-links">
                     <li>
                         <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><i className="icon github">&nbsp;</i><span className="link-text">Project on GitHub</span></a>
@@ -43,13 +41,5 @@ export default class AppRoot extends React.Component {
               {results}
             </div>
         </div>;
-    }
-
-    findResultComponent(result, key) {
-        if(result instanceof results.HelpResult) {
-            return <HelpView key={key} />
-        }
-
-        return <span>Unknown result {typeof result}</span>
     }
 }

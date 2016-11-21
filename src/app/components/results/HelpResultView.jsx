@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class HelpView extends React.Component {
+export default class HelpResultView extends React.Component {
     render() {
         return <div className="help helpResultTpl">
                         <div style={{overflow: "hidden"}}>

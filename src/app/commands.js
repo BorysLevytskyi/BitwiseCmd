@@ -1,18 +1,19 @@
 import appState from './appState';
-import * as result from './result/result';
+import HelpResult from './models/HelpResult';
+
 var cmdConfig = {};
 
 export default {
     initialize (cmd) {
             cmd.commands({
-            'help': function() {
-                var helpResult = document.querySelector('.result .helpResultTpl');
-                if(helpResult != null) {
-                    moveResultUp(helpResult);
-                    return;
-                }
+            'help': function(c) {
+                // var helpResult = document.querySelector('.result .helpResultTpl');
+                // if(helpResult != null) {
+                //     moveResultUp(helpResult);
+                //     return;
+                // }
 
-                appState.addCommandResult(new result.HelpResult());                
+                appState.addCommandResult(new HelpResult(c.input));                
             },
             'clear': function() {
                 appState.clearCommmandResults();
