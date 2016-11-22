@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 var expression = {
         factories:[],
         canParse: function(string) {
@@ -119,6 +121,7 @@ export class Operand {
             this.bin = this.value < 0 ? (this.value >>> 0).toString(2) : this.value.toString(2);
             this.kind = this.input.indexOf('0x') > -1 ? 'hex' : 'dec';
             this.other = this.kind == 'dec' ? this.hex : this.dec;
+            this.lengthInBits = Operand.getBitLength(this.value);
         }
                 
         getLengthInBits() {
@@ -153,6 +156,10 @@ export class Operand {
     toString() {
         return this.input;
     }
+    
+    static getBitLength(num) {
+        return Math.floor(Math.log(num) / Math.log(2)) + 1
+    }    
     
     static getBase(kind){
         switch (kind){
@@ -223,6 +230,7 @@ export class ListOfNumbersExpression {
     constructor(expressionString, numbers) {
         this.expressionString = expressionString;
         this.numbers = numbers;
+        this.maxBitsLegnth = _.chain(numbers).map(n => n.lengthInBits).reduce((n , c) => n >= c ? n : c, 0).value();
     }
 }
 
