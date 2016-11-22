@@ -131,19 +131,7 @@ export class Operand {
             return Math.floor(Math.log(this.value) / Math.log(2)) + 1;
         };
 
-        toKindString(value, kind) {
-            switch(kind) {
-                case 'hex':
-                    var hexVal = Math.abs(value).toString(16);
-                    return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
-                case 'bin':
-                    return (value>>>0).toString(2);
-                case 'dec':
-                    return value.toString(10);
-                default:
-                    throw new Error("Unexpected kind: " + kind)
-            }
-        };
+        
 
      getOtherKind(kind) {
         switch(kind) {
@@ -156,7 +144,15 @@ export class Operand {
     toString() {
         return this.input;
     }
-    
+
+    update(binary) {
+        this.value = parseInt(2);
+        this.bin = binary;
+        this.dec = Operand.toKindString(this.value, 'dec');
+        this.hex = Operand.toKindString(this.value, 'hex');
+
+    }
+        
     static getBitLength(num) {
         return Math.floor(Math.log(num) / Math.log(2)) + 1
     }    
@@ -177,6 +173,20 @@ export class Operand {
 
         return new Operand(str);
     };
+
+    static toKindString(value, kind) {
+            switch(kind) {
+                case 'hex':
+                    var hexVal = Math.abs(value).toString(16);
+                    return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
+                case 'bin':
+                    return (value>>>0).toString(2);
+                case 'dec':
+                    return value.toString(10);
+                default:
+                    throw new Error("Unexpected kind: " + kind)
+            }
+        };
 
     static toHexString (hex) {
             return hex.indexOf('-') == 0 ? '-0x' + hex.substr(1) : '0x' + hex;
