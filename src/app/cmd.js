@@ -55,8 +55,7 @@ var cmd = {
     };
 
     function displayCommandError(input, message) {
-        var error = new app.models.ErrorResult(message);
-        cmdController.display(new app.models.DisplayResult(input, error));
+        console.error(message)
     }
 
     function invokeHandler (input, handler) {

@@ -71,6 +71,7 @@ code { font-size: 1.2em; font-weight: bold; }
 
 /* Dark */
 .dark { background: #121212; color: white;}
+.dark .expression { color: white;}
 .dark .expressionInput { background: #121212; color: white; }
 .dark a, .dark a:visited { color: white; }
 .dark .indicator { color: #555; }

@@ -9,6 +9,7 @@ import AppRoot from './components/AppRoot';
 commands.initialize(cmd);
 
 cmd.execute('help');
+cmd.execute('1 2 3');
 
 var root = <AppRoot appState={appState} />;
 ReactDOM.render(root, document.getElementById('root'));
