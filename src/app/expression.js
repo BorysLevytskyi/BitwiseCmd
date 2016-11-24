@@ -150,7 +150,6 @@ export class Operand {
         this.bin = binary;
         this.dec = Operand.toKindString(this.value, 'dec');
         this.hex = Operand.toKindString(this.value, 'hex');
-
     }
         
     static getBitLength(num) {

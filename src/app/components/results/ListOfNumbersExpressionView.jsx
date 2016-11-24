@@ -31,7 +31,7 @@ class OperandView extends React.Component {
         const binaryString = formatter.padLeft(op.bin, this.props.maxBitsLegnth, '0');
         var arr = binaryString.split('');
         arr[index] = arr[index] == '0' ? '1' : '0';
-        op.update(arr.join());
+        op.update(arr.join(''));
         this.setState(op);
     }
 }
