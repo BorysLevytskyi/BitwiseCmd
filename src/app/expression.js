@@ -120,11 +120,7 @@ export class Operand {
             this.kind = this.input.indexOf('0x') > -1 ? 'hex' : 'dec';
             this.other = this.kind == 'dec' ? this.hex : this.dec;
         }
-        
-        toHexString (hex) {
-            return hex.indexOf('-') == 0 ? '-0x' + hex.substr(1) : '0x' + hex;
-        };
-
+                
         getLengthInBits() {
             if(this.value < 0) {
                 return 32;
@@ -153,6 +149,10 @@ export class Operand {
             default : throw new Error(kind + " kind doesn't have opposite kind")
         }
     };
+
+    toString() {
+        return this.input;
+    }
     
     static getBase(kind){
         switch (kind){
@@ -171,9 +171,9 @@ export class Operand {
         return new Operand(str);
     };
 
-    toString() {
-        return this.input;
-    }
+    static toHexString (hex) {
+            return hex.indexOf('-') == 0 ? '-0x' + hex.substr(1) : '0x' + hex;
+     };
 }
 
 export class SingleOperandExpression {
@@ -231,7 +231,5 @@ export class Expression {
         return this.expressionString ? "Expression: " + this.expressionString : this.toString();
     };
 }
-
-
-    
-export default expression;
+  
+export var parser = expression;

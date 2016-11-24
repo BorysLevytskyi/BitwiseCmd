@@ -1,6 +1,6 @@
-body { padding:0; margin:0; height: 100% }
+body { padding:0; margin:0; height: 100%; overflow: hidden; }
 html { height: 100% }
-#root { font-family: Verdana; font-size: 0.8em; margin: 0; padding: 20px 100px 0 100px; height: 100% }
+#root { font-family: Verdana; font-size: 0.8em; margin: 0; padding: 20px 100px 0 100px; height: 100%; overflow: auto; }
 code { font-size: 1.2em; font-weight: bold; }
 
 .top-links { position: absolute; right: 10px; top: 10px; list-style-type: none; margin: 0 }
@@ -71,6 +71,7 @@ code { font-size: 1.2em; font-weight: bold; }
 
 /* Dark */
 .dark { background: #121212; color: white;}
+.dark .expression { color: white;}
 .dark .expressionInput { background: #121212; color: white; }
 .dark a, .dark a:visited { color: white; }
 .dark .indicator { color: #555; }

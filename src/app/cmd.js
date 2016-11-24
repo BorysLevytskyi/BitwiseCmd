@@ -55,7 +55,7 @@ var cmd = {
     };
 
     function displayCommandError(input, message) {
-        console.error('[displayCommandError] not implemented');
+        console.error(message)
     }
 
     function invokeHandler (input, handler) {
