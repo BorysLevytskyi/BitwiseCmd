@@ -36,7 +36,6 @@ var expression = {
           this.factories.push(factory);
         },
         Operand:Operand,
-        TwoOperandExpression: TwoOperandExpression,
         SingleOperandExpression: SingleOperandExpression,
         ListOfNumbersExpression: ListOfNumbersExpression,
         MultipleOperandsExpression: MultipleOperandsExpression

@@ -10,7 +10,9 @@ export default class BitwiseOperationEpxressionView extends React.Component {
         }
 
         return <table className="expression">
-                    <tbody>{rows}</tbody>
+                    <tbody>
+                            {rows}
+                    </tbody>
                 </table>
     }
 
@@ -24,6 +26,7 @@ export default class BitwiseOperationEpxressionView extends React.Component {
 
         if(expr instanceof expression.MultipleOperandsExpression) {
             const m = BitwiseExpressionViewModel.buildMultiple(expr);
+            console.log('Render model', m);
             return m.items.map((itm, i) => <ExpressionRow key={i} {...itm} maxNumberOfBits={m.maxNumberOfBits} />);
         }
 
@@ -35,12 +38,14 @@ class ExpressionRow extends React.Component {
     render() {
         const { sign, label, bin, other, css, maxNumberOfBits } = this.props;
         
-        return <tr className={css}>
+        var tr = <tr className={css}>
                     <td className="sign">{sign}</td>
                     <td className="label">{label}</td>
                     <td className="bin">{formatter.padLeft(bin, maxNumberOfBits, '0')}</td>
                     <td className="other">{other}</td>
                 </tr>;
+
+        return tr;
     }
 }
 
@@ -89,14 +94,14 @@ class BitwiseExpressionViewModel {
 
     addExpression(expression) {
         this.maxNumberOfBits = Math.max(expression.operand1.getLengthInBits(), this.maxNumberOfBits);
-        this.items.push({ sign: expression.sign, label: expression.operand1.input, bin: expression.operand1.bin, other: expression.operand1.other, css: ''});
+        this.items.push({ sign: expression.sign, label: expression.operand1.toString(), bin: expression.operand1.bin, other: expression.operand1.other, css: ''});
     };
 
     addShiftExpressionResult(expression, resultOperand) {
         this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({
             sign: expression.sign + expression.operand1.input,
-            label: resultOperand,
+            label: resultOperand.toString(),
             bin: resultOperand.bin,
             other: resultOperand.other,
             css: 'expression-result'});
