@@ -1,5 +1,6 @@
 import React from 'react';
 import formatter from '../../formatter';
+import BinaryStringView from './BinaryStringView';
 
 export default class ListOfNumersExpressionView extends React.Component {
     render() {
@@ -24,7 +25,7 @@ class OperandView extends React.Component {
 
         return <tr data-kind={op.kind}>
                     <td className="label">{op.input}</td>
-                    <td className="bin"><ClickableBinary binaryString={binaryString} onFlipBit={e => this.flipBit(e)} /></td>
+                    <td className="bin"><BinaryStringView binaryString={binaryString} allowFlipBits={true} onFlipBit={e => this.flipBit(e)} /></td>
                     <td className="other">{op.other}</td>
                 </tr>;
     };
@@ -39,22 +40,5 @@ class OperandView extends React.Component {
         op.setValue(parseInt(bin, 2));
 
         this.setState({ operand: op });
-    }
-}
-
-class ClickableBinary extends React.Component {
-    render() {
-        const str = this.props.binaryString;
-        const chars = str.split('');
-        const classNames = { '0': 'zero flipable', '1' : 'one flipable' };
-        const children = chars.map((c, i) => <span className={classNames[c]} key={i} onClick={e => this.onBitClick(i, e)}>{c}</span>);
-        
-        return <span>{children}</span>
-    }
-
-    onBitClick(index, e) {
-        if(this.props.onFlipBit) {
-            this.props.onFlipBit(index);
-        }
     }
 }

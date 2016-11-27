@@ -1,6 +1,9 @@
 import React from 'react';
 import * as expression from '../../expression';
 import formatter from '../../formatter';
+import BinaryStringView from './BinaryStringView';
+
+console.log('BinaryStringView', BinaryStringView);
 
 export default class BitwiseOperationEpxressionView extends React.Component {
     render() {
@@ -38,14 +41,14 @@ class ExpressionRow extends React.Component {
     render() {
         const { sign, label, bin, other, css, maxNumberOfBits } = this.props;
         
-        var tr = <tr className={css}>
+        return <tr className={css}>
                     <td className="sign">{sign}</td>
                     <td className="label">{label}</td>
-                    <td className="bin">{formatter.padLeft(bin, maxNumberOfBits, '0')}</td>
+                    <td className="bin">
+                        <BinaryStringView binaryString={formatter.padLeft(bin, maxNumberOfBits, '0')} allowFlipBits={false}/>
+                    </td>
                     <td className="other">{other}</td>
                 </tr>;
-
-        return tr;
     }
 }
 
