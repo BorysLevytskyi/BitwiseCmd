@@ -5,17 +5,11 @@ export default class ListOfNumersExpressionView extends React.Component {
     render() {
         const expr = this.props.expression;
         const numberRows = expr.numbers.map((n, i) => <OperandView key={i} operand={n} maxBitsLegnth={expr.maxBitsLegnth} />);
-        console.log('Numbers: ', expr.numbers);
-        return <div>
-                <div>
-                    !{expr.toString()}!
-                </div>
-                <table className="expression">
+        return <table className="expression">
                         <tbody>
                             {numberRows}
                         </tbody>        
                     </table>
-        </div>
     }
 }
 
