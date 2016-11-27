@@ -1,9 +1,9 @@
-class AppState {
-    constructor() {
-        this.emphasizeBytes = true;
+export default class AppState {
+    constructor(persistData) {
+        this.emphasizeBytes = persistData.emphasizeBytes || true;
         this.commandResults = [];
         this.handlers = [];
-        this.uiTheme = 'dark'
+        this.uiTheme = persistData.uiTheme || 'dark';
     }
 
     addCommandResult(result) {
@@ -35,7 +35,11 @@ class AppState {
          this.uiTheme = theme;
          this.triggerChanged();    
     }
-};
 
-var appState = new AppState();
-export default appState;
+    getPersistData() {
+        return {
+            emphasizeBytes: this.emphasizeBytes,
+            uiTheme: this.uiTheme 
+        }
+    }
+};

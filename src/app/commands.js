@@ -1,4 +1,3 @@
-import appState from './appState';
 import HelpResult from './models/HelpResult';
 import UnknownCommandResult from './models/UnknownCommandResult';
 import ExpressionResult from './models/ExpressionResult';
@@ -7,7 +6,7 @@ import * as expression from './expression';
 var cmdConfig = {};
 
 export default {
-    initialize (cmd) {
+    initialize (cmd, appState) {
 
             cmd.command({
                    canHandle: (input) => expression.parser.canParse(input),
