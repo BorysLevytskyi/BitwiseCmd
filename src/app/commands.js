@@ -34,10 +34,10 @@ export default {
                     cmdConfig.emphasizeBytes = !cmdConfig.emphasizeBytes;
                 },
                 'dark': function() {
-                    cmdConfig.theme = 'dark';
+                    appState.setUiTheme('dark');
                 },
                 'light': function () {
-                    cmdConfig.theme = 'light';
+                    appState.setUiTheme('light');
                 },
                 'about': function() {
                     var aboutResult = document.querySelector('.result .aboutTpl');

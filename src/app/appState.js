@@ -3,6 +3,7 @@ class AppState {
         this.emphasizeBytes = true;
         this.commandResults = [];
         this.handlers = [];
+        this.uiTheme = 'dark'
     }
 
     addCommandResult(result) {
@@ -28,6 +29,11 @@ class AppState {
         for(var h of this.handlers) {
             h();
         }
+    }
+
+    setUiTheme(theme) {
+         this.uiTheme = theme;
+         this.triggerChanged();    
     }
 };
 
