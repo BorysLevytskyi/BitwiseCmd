@@ -12,6 +12,8 @@ export default class AppRoot extends React.Component {
         this.setState(this.props.appState);
     }
     render() {
+        console.log('[AppRoot] render():this.state.commandResults', this.state.commandResults)
+
         var results = this.state.commandResults.map((r, i) => <DisplayResultView key={i} content={r} input={r.input} inputHash={r.inputHash} />);
         return <div>
             <div className="header">

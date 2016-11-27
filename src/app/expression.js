@@ -134,7 +134,7 @@ export class Operand {
         
 
      getOtherKind(kind) {
-        switch(kind) {
+        switch(kind || this.kind) {
             case 'dec': return 'hex';
             case 'hex': return 'dec';
             default : throw new Error(kind + " kind doesn't have opposite kind")
@@ -145,11 +145,15 @@ export class Operand {
         return this.input;
     }
 
-    update(binary) {
-        this.value = parseInt(2);
-        this.bin = binary;
+    setValue(value) {
+        console.log('Before ' + value, this);
+        this.value = value;
+        this.bin = Operand.toKindString(this.value, 'bin');
         this.dec = Operand.toKindString(this.value, 'dec');
         this.hex = Operand.toKindString(this.value, 'hex');
+        this.other = Operand.toKindString(this.value, this.getOtherKind());
+        this.input = Operand.toKindString(this.value, this.kind);
+        console.log('After ' + value, this);
     }
         
     static getBitLength(num) {
@@ -240,6 +244,10 @@ export class ListOfNumbersExpression {
         this.expressionString = expressionString;
         this.numbers = numbers;
         this.maxBitsLegnth = _.chain(numbers).map(n => n.lengthInBits).reduce((n , c) => n >= c ? n : c, 0).value();
+    }
+
+    toString() {
+        return this.numbers.map(n => n.value.toString()).join(' ');
     }
 }
 

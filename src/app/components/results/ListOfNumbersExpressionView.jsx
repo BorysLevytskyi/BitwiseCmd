@@ -4,35 +4,47 @@ import formatter from '../../formatter';
 export default class ListOfNumersExpressionView extends React.Component {
     render() {
         const expr = this.props.expression;
-        const numberViews = expr.numbers.map((n, i) => <OperandView key={i} operand={n} maxBitsLegnth={expr.maxBitsLegnth} />) 
-        return <table className="expression" cellspacing="0">
-                    {numberViews}        
-               </table>
+        const numberRows = expr.numbers.map((n, i) => <OperandView key={i} operand={n} maxBitsLegnth={expr.maxBitsLegnth} />);
+        console.log('Numbers: ', expr.numbers);
+        return <div>
+                <div>
+                    !{expr.toString()}!
+                </div>
+                <table className="expression">
+                        <tbody>
+                            {numberRows}
+                        </tbody>        
+                    </table>
+        </div>
     }
 }
 
 class OperandView extends React.Component {
-    componentWillMount() {
-        this.setState(this.props.operand);
-    }
+   constructor() {
+       super();
+       this.state = { operand: null };
+   }
     render() {
-        const op = this.state;
+        const op = this.props.operand;
         const binaryString = formatter.padLeft(op.bin, this.props.maxBitsLegnth, '0');
 
         return <tr data-kind={op.kind}>
-            <td className="label">{op.input}</td>
-            <td className="bin"><ClickableBinary binaryString={binaryString} onFlipBit={i => this.flipBit(i)} /></td>
-            <td className="other">{op.other}</td>
-        </tr>
+                    <td className="label">{op.input}</td>
+                    <td className="bin"><ClickableBinary binaryString={binaryString} onFlipBit={e => this.flipBit(e)} /></td>
+                    <td className="other">{op.other}</td>
+                </tr>;
     };
 
     flipBit(index) {    
         var op = this.props.operand;
         const binaryString = formatter.padLeft(op.bin, this.props.maxBitsLegnth, '0');
         var arr = binaryString.split('');
+        // TODO: this code looks ugly
         arr[index] = arr[index] == '0' ? '1' : '0';
-        op.update(arr.join(''));
-        this.setState(op);
+        var bin = arr.join('');
+        op.setValue(parseInt(bin, 2));
+
+        this.setState({ operand: op });
     }
 }
 

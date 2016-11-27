@@ -13,7 +13,6 @@ export default {
                    canHandle: (input) => expression.parser.canParse(input),
                    handle: function(c) {
                        var expr = expression.parser.parse(c.input);
-                       console.log(expr);
                        appState.addCommandResult(new ExpressionResult(c.input, expr));
                    }         
              })
