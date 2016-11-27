@@ -1,7 +1,9 @@
 import React from 'react';
 import HelpResult from '../../models/HelpResult';
+import AboutResult from '../../models/AboutResult';
 import UnknownCommandResult from '../../models/UnknownCommandResult';
 import HelpResultView from './HelpResultView';
+import AboutResultView from './AboutResultView';
 import ExpressionResult from '../../models/ExpressionResult';
 import ExpressionResultView from './ExpressionResultView';
 
@@ -24,16 +26,20 @@ export default class DisplayResult extends React.Component {
         return <div className="error">Sorry, i don't know what <strong>{this.props.input}</strong> is :(</div>
     }
 
-    findResultComponent(result, key) {
+    findResultComponent(result) {
         if(result instanceof HelpResult) {
-            return <HelpResultView key={key} content={result} />
+            return <HelpResultView content={result} />
+        }
+
+        if(result instanceof AboutResult) {
+            return <AboutResultView />
         }
 
         if(result instanceof ExpressionResult) {
-            return <ExpressionResultView key={key} result={result} /> 
+            return <ExpressionResultView result={result} /> 
         }
 
-        console.warn('Unknow result', result);
-        return <span>Unknown result {typeof result}</span>
+        console.warn('Unknown result:', result);
+        return <span>Unknown result: {typeof result}</span>
     }
 }

@@ -1,4 +1,5 @@
 import HelpResult from './models/HelpResult';
+import AboutResult from './models/AboutResult';
 import UnknownCommandResult from './models/UnknownCommandResult';
 import ExpressionResult from './models/ExpressionResult';
 import * as expression from './expression';
@@ -18,7 +19,7 @@ export default {
 
             cmd.commands({
                 'help': function(c) {
-                    // var helpResult = document.querySelector('.result .helpResultTpl');
+                    // TODO: var helpResult = document.querySelector('.result .helpResultTpl');
                     // if(helpResult != null) {
                     //     moveResultUp(helpResult);
                     //     return;
@@ -38,13 +39,14 @@ export default {
                 'light': function () {
                     appState.setUiTheme('light');
                 },
-                'about': function() {
-                    var aboutResult = document.querySelector('.result .aboutTpl');
-                    if(aboutResult != null) {
-                        moveResultUp(aboutResult);
-                        return;
-                    }
-                    return new app.models.ViewResult('aboutTpl');
+                'about': function(c) {
+                    // 
+                    // TODO: var aboutResult = document.querySelector('.result .aboutTpl');
+                    // if(aboutResult != null) {
+                    //     moveResultUp(aboutResult);
+                    //     return;
+                    // }
+                    appState.addCommandResult(new AboutResult(c.input));
                 },
                 '-debug': function() {
                     app.debugMode = true;

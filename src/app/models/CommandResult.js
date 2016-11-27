@@ -5,6 +5,6 @@ export default class CommandResult {
     }
 
     encodeHash (string) {
-                return encodeURI(string.trim().replace(/\s/g,','));
+        return encodeURI(string.trim().replace(/\s/g,','));
     }
 }

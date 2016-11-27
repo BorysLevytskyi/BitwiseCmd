@@ -3,8 +3,6 @@ import * as expression from '../../expression';
 import formatter from '../../formatter';
 import BinaryStringView from './BinaryStringView';
 
-console.log('BinaryStringView', BinaryStringView);
-
 export default class BitwiseOperationEpxressionView extends React.Component {
     render() {
         var rows = this.getRows();
