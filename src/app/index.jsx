@@ -11,8 +11,6 @@ import AppRoot from './components/AppRoot';
 var stateData = appStateStore.getPersistedData();
 const appState = new AppState(stateData);
 
-console.log('Loaded stateData', stateData);
-
 appStateStore.watch(appState);
 
 commands.initialize(cmd, appState);
