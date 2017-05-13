@@ -2,7 +2,7 @@ import React from 'react';
 import formatter from '../../formatter';
 import BinaryStringView from './BinaryStringView';
 import BitwiseExpressionViewModel from './models/BitwiseExpressionViewModel'
-//import calc from '../../calc';
+
 
 export default class ListOfNumersExpressionView extends React.Component {
     render() {

@@ -12,11 +12,7 @@ export default class AppRoot extends React.Component {
     }
     
     getIndicator(value) {
-        if(value) { 
-            return "on";
-        }
-
-        return "off";
+        return value === true ? 'on' : 'off';
     }
 
     getResultViews() {

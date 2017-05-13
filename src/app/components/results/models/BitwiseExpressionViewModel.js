@@ -7,7 +7,7 @@ export default class BitwiseExpressionViewModel {
     }
 
     static buildMultiple (expr, config) {
-        console.log(config);
+
         var op = expr.expressions[0],
             i = 1, l = expr.expressions.length,
             ex, m = new BitwiseExpressionViewModel(config);
@@ -30,8 +30,8 @@ export default class BitwiseExpressionViewModel {
         return m;
     };
 
-    static buildNot (expression, cofig) {
-        console.log(config);
+    static buildNot (expression, config) {
+        
         var m = new BitwiseExpressionViewModel(config);
         m.addExpression(expression);
         m.addExpressionResult(expression.apply());

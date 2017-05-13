@@ -6,6 +6,7 @@ import appStateStore from './appStateStore';
 import cmd from './cmd';
 import commands from './commands';
 import AppRoot from './components/AppRoot';
+import hash from './hash';
 
 
 var stateData = appStateStore.getPersistedData();
@@ -17,9 +18,14 @@ commands.initialize(cmd, appState);
 
 console.log("appState", appState);
 
-cmd.execute('1');
-cmd.execute('2');
-cmd.execute('1|2<<2');
+
+var hashArgs = hash.getArgs(window.location.hash);
+var startupCommands = ['1','2','1|2<<2'];
+if(hashArgs.length > 0) {
+    startupCommands = hashArgs;
+}
+
+startupCommands.forEach(cmd.execute.bind(cmd));
 
 var root = <AppRoot appState={appState} />;
 ReactDOM.render(root, document.getElementById('root'));

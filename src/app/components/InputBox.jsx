@@ -9,7 +9,7 @@ export default class InputBox extends React.Component {
     }
 
     render() {
-        return <input type="text"
+        return <input id="in" type="text"
                       onKeyUp={e => this.onKeyUp(e)}
                       onKeyDown={e => this.onKeyDown(e)}
                       className="expressionInput mono"
