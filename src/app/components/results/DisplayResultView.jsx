@@ -23,7 +23,9 @@ export default class DisplayResult extends React.Component {
     }
 
     renderUnknown() {
-        return <div className="error">Sorry, i don't know what <strong>{this.props.input}</strong> is :(</div>
+        return <div className="result">
+                    <div className="error">¯\_(ツ)_/¯ Sorry, i don't know what <strong>{this.props.input}</strong> is</div>
+               </div>
     }
 
     findResultComponent(result) {

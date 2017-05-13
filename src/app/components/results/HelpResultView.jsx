@@ -35,7 +35,6 @@ export default class HelpResultView extends React.Component {
                                         <li><code>&lt;&lt;</code> — left shift</li>
                                         <li><code>&gt;&gt;</code> — sign propagating right shift</li>
                                         <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
-
                                     </ul>
                                 </p>
                           </div>

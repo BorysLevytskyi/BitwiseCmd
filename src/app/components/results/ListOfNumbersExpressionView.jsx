@@ -8,7 +8,7 @@ export default class ListOfNumersExpressionView extends React.Component {
     render() {
         const expr = this.props.expression;
         const maxBitsLegnth = BitwiseExpressionViewModel.getNumberOfBits(expr.maxBitsLegnth, this.props.emphasizeBytes);
-        const numberRows = expr.numbers.map((n, i) => <OperandView key={i} operand={n} maxBitsLegnth={maxBitsLegnth} />);
+        const numberRows = expr.numbers.map((n, i) => <OperandView key={i} operand={n} maxBitsLegnth={maxBitsLegnth} emphasizeBytes={this.props.emphasizeBytes} />);
         return <table className="expression">
                         <tbody>
                             {numberRows}
@@ -28,7 +28,7 @@ class OperandView extends React.Component {
 
         return <tr data-kind={op.kind}>
                     <td className="label">{op.input}</td>
-                    <td className="bin"><BinaryStringView binaryString={binaryString} allowFlipBits={true} onFlipBit={e => this.flipBit(e)} /></td>
+                    <td className="bin"><BinaryStringView emphasizeBytes={this.props.emphasizeBytes} binaryString={binaryString} allowFlipBits={true} onFlipBit={e => this.flipBit(e)} /></td>
                     <td className="other">{op.other}</td>
                 </tr>;
     };
