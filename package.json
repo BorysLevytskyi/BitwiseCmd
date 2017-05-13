@@ -4,12 +4,11 @@
   "description": "Bitwise Operations Console",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf ./build/* && cp ./src/index.html ./build && cp ./src/bundle.js ./build && cp ./src/bundle.js.map ./build && cp -r ./src/css ./build && cp -r ./src/img ./build",
+    "build": "rm -rf ./BitwiseCmdPages/* && cp ./src/index.html ./BitwiseCmdPages && cp ./src/bundle.js ./BitwiseCmdPages && cp ./src/bundle.js.map ./BitwiseCmdPages && cp -r ./src/css ./BitwiseCmdPages && cp -r ./src/img ./BitwiseCmdPages",
     "serv": "webpack-dev-server --content-base ./src",
     "e2e": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:8080/#clear'",
     "e2e_build": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:3000/#clear'",
-    "deploy": "rm -rf ./BitwiseCmdPages/* && cp -r ./build/* ./BitwiseCmdPages"
-
+    "e2e_remote": "protractor ./tests/e2e.chrome.js --params.appUrl='http://bitwisecmd.com/react/#clear'"
   },
   "repository": {
     "type": "git",
