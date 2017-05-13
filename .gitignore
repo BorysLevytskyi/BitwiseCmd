@@ -1,1 +1,4 @@
 .idea/
+BitwiseCmdPages/
+.DS_Store
+node_modules/
