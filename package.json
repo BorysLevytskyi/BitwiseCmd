@@ -4,7 +4,7 @@
   "description": "Bitwise Operations Console",
   "main": "index.js",
   "scripts": {
-    "build": "webpack -p && rm -rf ./react/* && cp ./src/index.html ./react && cp ./src/*.js ./react && cp ./src/bundle.js.map ./react && cp -r ./src/css ./react && cp -r ./src/img ./react",
+    "build": "webpack -p && rm -rf ./BitwiseCmdPages/* && cp ./src/index.html ./BitwiseCmdPages && cp ./src/*.js ./BitwiseCmdPages && cp ./src/bundle.js.map ./BitwiseCmdPages && cp -r ./src/css ./BitwiseCmdPages && cp -r ./src/img ./BitwiseCmdPages",
     "serv": "webpack-dev-server --content-base ./src",
     "e2e": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:8080/#clear'",
     "e2e_build": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:3000/#clear'",
