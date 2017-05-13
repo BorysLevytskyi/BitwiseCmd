@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serv": "webpack-dev-server --content-base ./src"
+    "serv": "webpack-dev-server --content-base ./src",
+    "e2e": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:8080/#clear'"
   },
   "repository": {
     "type": "git",
