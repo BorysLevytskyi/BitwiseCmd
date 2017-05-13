@@ -8,8 +8,13 @@ export default class InputBox extends React.Component {
         this.historyIndex = 0;
     }
 
+    componentDidMount(){
+        this.nameInput.focus();
+    }
+
     render() {
         return <input id="in" type="text"
+                      ref={(input) => { this.nameInput = input; }} 
                       onKeyUp={e => this.onKeyUp(e)}
                       onKeyDown={e => this.onKeyDown(e)}
                       className="expressionInput mono"
