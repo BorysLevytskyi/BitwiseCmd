@@ -5,7 +5,7 @@ export default class HelpResultView extends React.Component {
         return <div className="help helpResultTpl">
                         <div style={{overflow: "hidden"}}>
                             <div style={{float: "left", "marginRight": "20px"}}>
-                                <p className="section">
+                                <div className="section">
                                     <strong>Supported Commands</strong>
                                 <ul>
                                     <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
@@ -17,10 +17,10 @@ export default class HelpResultView extends React.Component {
                                     <li><code>light</code> — set Light theme</li>
                                     <li><code>about</code> — about the app</li>
                                 </ul>
-                                </p>
+                                </div>
                             </div>
                             <div style={{"float":"left"}}>
-                                <p className="section">
+                                <div className="section">
                                     <strong>Supported Bitwise Operations</strong><br/>
                                     <small>
                                         <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">
@@ -36,7 +36,7 @@ export default class HelpResultView extends React.Component {
                                         <li><code>&gt;&gt;</code> — sign propagating right shift</li>
                                         <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
                                     </ul>
-                                </p>
+                                </div>
                           </div>
                      </div>
                  </div>;

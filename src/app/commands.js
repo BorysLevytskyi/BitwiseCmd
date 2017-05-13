@@ -19,13 +19,6 @@ export default {
 
             cmd.commands({
                 'help': function(c) {
-                    // TODO: implement latest behavior - pull up help result to the top 
-                    // var helpResult = document.querySelector('.result .helpResultTpl');
-                    // if(helpResult != null) {
-                    //     moveResultUp(helpResult);
-                    //     return;
-                    // }
-
                     appState.addCommandResult(new HelpResult(c.input));                
                 },
                 'clear': function() {
@@ -41,12 +34,6 @@ export default {
                     appState.setUiTheme('light');
                 },
                 'about': function(c) {
-                    // 
-                    // TODO: var aboutResult = document.querySelector('.result .aboutTpl');
-                    // if(aboutResult != null) {
-                    //     moveResultUp(aboutResult);
-                    //     return;
-                    // }
                     appState.addCommandResult(new AboutResult(c.input));
                 },
                 '-debug': function() {
