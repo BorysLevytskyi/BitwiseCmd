@@ -5,7 +5,7 @@ export default class InputBox extends React.Component {
     constructor() {
         super();
         this.history = [];
-        this.historyIndex = 0;
+        this.historyIndex = -1;
     }
 
     componentDidMount(){
@@ -29,16 +29,21 @@ export default class InputBox extends React.Component {
 
         var value = input.value;
         this.history.unshift(value);
+        this.historyIndex = -1;
 
         input.value = '';        
         cmd.execute(value);
+        console.log(this.history);
     }
 
     onKeyDown(args) {
-        if(args.keyCode == 38) {
 
-            if (this.history.length > this.historyIndex) { // up
-                args.target.value = this.history[this.historyIndex++];
+        if(args.keyCode == 38) {
+            var newIndex = this.historyIndex+1;
+
+            if (this.history.length > newIndex) { // up
+                args.target.value = this.history[newIndex];
+                this.historyIndex = newIndex;
             }
 
             args.preventDefault();
@@ -46,8 +51,7 @@ export default class InputBox extends React.Component {
         }
 
         if(args.keyCode == 40) {
-
-            if(this.historyIndex > 0) { // up
+            if(this.historyIndex > 0) { // down
                 args.target.value = this.history[--this.historyIndex];
             }
 

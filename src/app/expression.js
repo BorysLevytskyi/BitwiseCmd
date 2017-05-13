@@ -253,3 +253,21 @@ export class Expression {
 }
   
 export var parser = expression;
+
+
+export class Parser {
+    constructor(input, pos) {
+        this.input = input;
+        this.pos = pos || 0;
+        this.buffer = [];
+    }
+
+    parse() {
+        console.log(this.input.length);
+        while(this.pos<this.input.length) {
+            this.buffer.push(this.input[this.pos]);
+            this.pos++;
+        }
+        console.log('exit');
+    }
+}
