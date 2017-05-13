@@ -2,7 +2,8 @@ import React from 'react';
 import * as expression from '../../expression';
 import formatter from '../../formatter';
 import BinaryStringView from './BinaryStringView';
-import BitwiseExpressionViewModel from './models/BitwiseExpressionViewModel'
+import BitwiseExpressionViewModel from './models/BitwiseExpressionViewModel';
+import log from 'loglevel';
 
 export default class BitwiseOperationEpxressionView extends React.Component {
     render() {
@@ -23,12 +24,13 @@ export default class BitwiseOperationEpxressionView extends React.Component {
 
         if(expr instanceof expression.SingleOperandExpression) {
             const m = BitwiseExpressionViewModel.buildNot(expr, { emphasizeBytes: this.props.emphasizeBytes });
+            log.info('Render model', m);
             return m.items.map((itm, i) => <ExpressionRow key={i} {...itm} emphasizeBytes={this.props.emphasizeBytes} maxNumberOfBits={m.maxNumberOfBits} />);
         }
 
         if(expr instanceof expression.MultipleOperandsExpression) {
             const m = BitwiseExpressionViewModel.buildMultiple(expr, { emphasizeBytes: this.props.emphasizeBytes });
-            console.log('Render model', m);
+            log.info('Render model', m);
             return m.items.map((itm, i) => <ExpressionRow key={i} {...itm} emphasizeBytes={this.props.emphasizeBytes} maxNumberOfBits={m.maxNumberOfBits} />);
         }
 

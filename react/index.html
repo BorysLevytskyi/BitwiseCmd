@@ -2,14 +2,34 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="description" content="Bitwise Calculator. Visualised Bitwise Operations.">
+        <meta name="description" content="Free Text Online Bitwise Calculator">
 
         <title>BitwiseCmd</title>
         <link rel="shortcut icon" href="http://bitwisecmd.com/favicon.ico">
         <link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+        <meta property="og:url"           content="http://bitwisecmd.com" />
+        <meta property="og:type"          content="website" />
+        <meta property="og:title"         content="BitwiseCmd" />
+        <meta property="og:description"   content="Free Text Online Bitwise Calculator" />
+        <meta property="og:image"         content="http://bitwisecmd.com/img/social-avatar.png" />
     </head>
     <body>
         <div id="root">Ooops... Something went wrong ¯\_(ツ)_/¯</div>
         <script src="bundle.js"></script>
+        <script src="analytics.js"></script>
+
+        <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+            
+            <div class="social-container">
+                <div class="fb-like" data-href="http://bitwisecmd.com" data-layout="box_count" data-action="like" data-show-faces="false" data-share="true"></div>
+            </div>
     </body>
 </html>
