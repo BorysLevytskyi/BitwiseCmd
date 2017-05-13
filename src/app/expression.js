@@ -110,6 +110,8 @@ var expression = {
         }
     });
 
+
+// Represents numeric value
 export class Operand {
         constructor(input) {
             this.input = input;
@@ -130,14 +132,12 @@ export class Operand {
             return Math.floor(Math.log(this.value) / Math.log(2)) + 1;
         };
 
-        
-
-     getOtherKind(kind) {
-        switch(kind || this.kind) {
-            case 'dec': return 'hex';
-            case 'hex': return 'dec';
-            default : throw new Error(kind + " kind doesn't have opposite kind")
-        }
+        getOtherKind(kind) {
+            switch(kind || this.kind) {
+                case 'dec': return 'hex';
+                case 'hex': return 'dec';
+                default : throw new Error(kind + " kind doesn't have opposite kind")
+            }
     };
 
     toString() {
@@ -195,6 +195,7 @@ export class Operand {
      };
 }
 
+// Expressions like ~1
 export class SingleOperandExpression {
     constructor(expressionString, operand, sign) {
         this.expressionString = expressionString;
@@ -222,6 +223,7 @@ export class SingleOperandExpression {
     }
 }
 
+// Expression like 1|2 or 4^5
 export class TwoOperandExpression {
     constructor(expressionString, operand1, operand2, sign) {
         this.expressionString = expressionString;
