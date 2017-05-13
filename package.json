@@ -8,7 +8,8 @@
     "serv": "webpack-dev-server --content-base ./src",
     "e2e": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:8080/#clear'",
     "e2e_build": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:3000/#clear'",
-    "e2e_remote": "protractor ./tests/e2e.chrome.js --params.appUrl='http://bitwisecmd.com/react/#clear'"
+    "e2e_remote": "protractor ./tests/e2e.chrome.js --params.appUrl='http://bitwisecmd.com/react/#clear'",
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "jasmine": "latest",
     "karma": "latest",
     "karma-jasmine": "latest",
+    "karma-webpack": "latest",
     "source-map-loader": "^0.1.5",
     "ts-loader": "^1.0.0"
   },

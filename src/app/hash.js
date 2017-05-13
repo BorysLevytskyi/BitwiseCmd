@@ -8,15 +8,16 @@ export default {
             getArgs: function (hashValue) {
 
                 var decodedHash = this.decodeHash(hashValue),
-                    args = [];
+                    args = { commands: [] };
 
                 splitHashList(decodedHash).forEach(function(value) {
+                    // Support for -debur or -notrack properties
                     if(/^\-[a-zA-Z]+$/.test(value)) {
                         args[value.substr(1)] = true;
                         return;
                     }
 
-                    args.push(value);
+                    args.commands.push(value);
                 });
 
                 return Object.freeze(args);

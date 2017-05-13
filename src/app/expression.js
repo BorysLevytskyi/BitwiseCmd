@@ -34,11 +34,7 @@ var expression = {
         },
         addFactory: function(factory) {
           this.factories.push(factory);
-        },
-        Operand:Operand,
-        SingleOperandExpression: SingleOperandExpression,
-        ListOfNumbersExpression: ListOfNumbersExpression,
-        MultipleOperandsExpression: MultipleOperandsExpression
+        }
     };
 
     // List of numbers

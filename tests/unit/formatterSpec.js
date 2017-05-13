@@ -1,6 +1,6 @@
+var formatter = require('../../src/app/formatter');
+
 describe('expression formatter', function () {
-    var di = app.di.clone();
-    var formatter = di.resolve('formatter');
 
     xit('should format number to binary by default', function() {
         expect(formatter.formatString(10)).toBe("1010");
