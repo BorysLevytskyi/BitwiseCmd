@@ -10,8 +10,26 @@ export default class AppRoot extends React.Component {
     refresh() {
         this.setState(this.props.appState);
     }
+    
+    getIndicator(value) {
+        if(value) { 
+            return "on";
+        }
+
+        return "off";
+    }
+
+    getResultViews() {
+        var results = this.state.commandResults.map((r, i) => <DisplayResultView key={i} content={r} input={r.input} inputHash={r.inputHash} appState={this.props.appState} />);
+        return results;
+    }
+
+    toggleEmphasizeBytes() {
+        console.log(this.props.appState);
+        this.props.appState.toggleEmphasizeBytes();
+    }
+
     render() {
-        var results = this.state.commandResults.map((r, i) => <DisplayResultView key={i} content={r} input={r.input} inputHash={r.inputHash} />);
         return <div className={`app-root ${this.state.uiTheme}`}>
                     <div className="header">
                         <h1>Bitwise<span style={{color: "#c5c5c5"}}>Cmd</span></h1>
@@ -32,12 +50,12 @@ export default class AppRoot extends React.Component {
                         <InputBox />
 
                         <span className="configPnl">
-                            <span id="emphasizeBytes" data-cmd="em" className="indicator on" title="Emphasize Bytes">[em]</span>
+                            <span id="emphasizeBytes" data-cmd="em" className={"indicator " + this.getIndicator(this.state.emphasizeBytes)} title="Toggle Emphasize Bytes" onClick={e => this.toggleEmphasizeBytes()}>[em]</span>
                         </span>
                     </div>
 
                     <div id="output">
-                    {results}
+                    {this.getResultViews()}
                     </div>
                 </div>;
     }

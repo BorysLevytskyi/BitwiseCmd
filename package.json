@@ -4,7 +4,8 @@
   "description": "Bitwise Operations Console",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serv": "webpack-dev-server --content-base ./src"
   },
   "repository": {
     "type": "git",
@@ -46,8 +47,5 @@
     "lodash": "^4.17.2",
     "react": "^15.4.0",
     "react-dom": "^15.4.0"
-  },
-  "scripts": {
-    "serv": "webpack-dev-server --content-base ./src"
   }
 }

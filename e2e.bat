@@ -1,4 +1,4 @@
-@echo off
+pr@echo off
 
 SET appUrl="http://localhost:13270/src/#clear"
 SET confFile=e2e.chrome.js

@@ -1,7 +1,7 @@
 module.exports = {
     entry: __dirname + "/src/app/index.jsx",
     output: {
-        fileame: 'bundle.js',
+        filename: 'bundle.js',
         path: __dirname + '/src',
         publicPath: 'http://localhost:8080/'
     },
@@ -9,9 +9,9 @@ module.exports = {
     module: {
         loaders: [{
             test: /\.jsx?$/,
-            loader: 'babel',
+            loader: 'babel-loader',
             exclude: /node-modules/,
-            output: { path: __dirname + '/src', filename: 'bundle.js' },
+            //output: { path: __dirname + '/src', filename: 'bundle.js' },
             query: {
                 presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-react')],
                 plugins: [require.resolve('babel-plugin-transform-class-properties')]
@@ -24,6 +24,6 @@ module.exports = {
     //     'react': 'React'
     // },
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['.js', '.jsx']
     }
 };

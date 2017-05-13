@@ -36,7 +36,7 @@ export default class DisplayResult extends React.Component {
         }
 
         if(result instanceof ExpressionResult) {
-            return <ExpressionResultView result={result} /> 
+            return <ExpressionResultView result={result} emphasizeBytes={this.props.appState.emphasizeBytes} /> 
         }
 
         console.warn('Unknown result:', result);

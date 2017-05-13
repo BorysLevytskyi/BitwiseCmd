@@ -10,12 +10,12 @@ export default class ExpressionResultView extends React.Component {
 
         if(expr instanceof expression.ListOfNumbersExpression) {
             return <div>
-                        <ListOfNumbersExpressionView expression={expr} />
+                        <ListOfNumbersExpressionView expression={expr} emphasizeBytes={this.props.emphasizeBytes} />
                     </div>
         }
         if(expr instanceof expression.SingleOperandExpression || expr instanceof expression.MultipleOperandsExpression) {
             return <div>
-                        <BitwiseOperationExpressionView expression={expr} />
+                        <BitwiseOperationExpressionView expression={expr} emphasizeBytes={this.props.emphasizeBytes} />
                     </div>
         }
 

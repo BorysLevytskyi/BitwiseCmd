@@ -19,7 +19,8 @@ export default {
 
             cmd.commands({
                 'help': function(c) {
-                    // TODO: var helpResult = document.querySelector('.result .helpResultTpl');
+                    // TODO: implement latest behavior - pull up help result to the top 
+                    // var helpResult = document.querySelector('.result .helpResultTpl');
                     // if(helpResult != null) {
                     //     moveResultUp(helpResult);
                     //     return;
@@ -31,7 +32,7 @@ export default {
                     appState.clearCommmandResults();
                 },
                 'em': function() {
-                    cmdConfig.emphasizeBytes = !cmdConfig.emphasizeBytes;
+                    appState.toggleEmphasizeBytes();
                 },
                 'dark': function() {
                     appState.setUiTheme('dark');

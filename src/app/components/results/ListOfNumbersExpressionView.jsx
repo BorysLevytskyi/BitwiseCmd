@@ -1,11 +1,14 @@
 import React from 'react';
 import formatter from '../../formatter';
 import BinaryStringView from './BinaryStringView';
+import BitwiseExpressionViewModel from './models/BitwiseExpressionViewModel'
+//import calc from '../../calc';
 
 export default class ListOfNumersExpressionView extends React.Component {
     render() {
         const expr = this.props.expression;
-        const numberRows = expr.numbers.map((n, i) => <OperandView key={i} operand={n} maxBitsLegnth={expr.maxBitsLegnth} />);
+        const maxBitsLegnth = BitwiseExpressionViewModel.getNumberOfBits(expr.maxBitsLegnth, this.props.emphasizeBytes);
+        const numberRows = expr.numbers.map((n, i) => <OperandView key={i} operand={n} maxBitsLegnth={maxBitsLegnth} />);
         return <table className="expression">
                         <tbody>
                             {numberRows}

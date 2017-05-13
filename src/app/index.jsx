@@ -17,8 +17,8 @@ commands.initialize(cmd, appState);
 
 console.log("appState", appState);
 
-// cmd.execute('1');
-// cmd.execute('2');
+cmd.execute('1');
+cmd.execute('2');
 cmd.execute('1|2<<2');
 
 var root = <AppRoot appState={appState} />;
