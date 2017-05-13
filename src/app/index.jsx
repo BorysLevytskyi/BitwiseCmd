@@ -18,9 +18,8 @@ commands.initialize(cmd, appState);
 
 console.log("appState", appState);
 
-
 var hashArgs = hash.getArgs(window.location.hash);
-var startupCommands = ['1','2','1|2<<2'];
+var startupCommands = ['help', '1|2&6','1<<0x2a','2 4 8 16 32'];
 if(hashArgs.length > 0) {
     startupCommands = hashArgs;
 }

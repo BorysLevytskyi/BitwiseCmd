@@ -4,9 +4,12 @@
   "description": "Bitwise Operations Console",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf ./build/* && cp ./src/index.html ./build && cp ./src/bundle.js ./build && cp ./src/bundle.js.map ./build && cp -r ./src/css ./build && cp -r ./src/img ./build",
     "serv": "webpack-dev-server --content-base ./src",
-    "e2e": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:8080/#clear'"
+    "e2e": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:8080/#clear'",
+    "e2e_build": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:3000/#clear'",
+    "deploy": "rm -rf ./BitwiseCmdPages/* && cp -r ./build/* ./BitwiseCmdPages"
+
   },
   "repository": {
     "type": "git",
