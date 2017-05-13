@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 var expression = {
         factories:[],
         canParse: function(string) {
@@ -240,7 +238,7 @@ export class ListOfNumbersExpression {
     constructor(expressionString, numbers) {
         this.expressionString = expressionString;
         this.numbers = numbers;
-        this.maxBitsLegnth = _.chain(numbers).map(n => n.lengthInBits).reduce((n , c) => n >= c ? n : c, 0).value();
+        this.maxBitsLegnth = numbers.map(n => n.lengthInBits).reduce((n , c) => n >= c ? n : c, 0);
     }
 
     toString() {
