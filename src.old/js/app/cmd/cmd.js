@@ -6,12 +6,13 @@ app.set('cmd', function() {
     var cmdController = app.controller('cmdController');
 
     return {
+        debugMode: true,
         execute: function(rawInput) {
             var input = rawInput.trim().toLowerCase();
             var handler = findHandler(input);
 
             if(handler != null) {
-                if(app.debugMode) {
+                if(this.debugMode) {
                     invokeHandler(input, handler);
                 } else {
                     try {
@@ -52,13 +53,12 @@ app.set('cmd', function() {
             handlers.push(h);
         },
         clear: function() {
-            cmdController.clear();
+            console.error('[displayCommandError] not implemented');
         }
     };
 
     function displayCommandError(input, message) {
-        var error = new app.models.ErrorResult(message);
-        cmdController.display(new app.models.DisplayResult(input, error));
+        console.error('[displayCommandError] not implemented');
     }
 
     function invokeHandler (input, handler) {

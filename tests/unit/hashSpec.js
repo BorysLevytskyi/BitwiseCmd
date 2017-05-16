@@ -1,5 +1,6 @@
+var hash = require('../../src/app/hash').default;
+
 describe('hash arguments parser', function() {
-    var hash = app.get('hash');
 
     it('should parse empty', function() {
         var args = hash.getArgs('');
@@ -53,7 +54,4 @@ describe('hash arguments parser', function() {
         expect(args.notrack).toBe(true);
         expect(args.debug).toBe(true);
     });
-
-
-
 });

@@ -6,42 +6,6 @@ app.run(function() {
     var rootView = app.get('rootView');
     var expression = app.get('expression');
 
-    cmd.commands({
-        'help': function() {
-            var helpResult = document.querySelector('.result .helpResultTpl');
-            if(helpResult != null) {
-                moveResultUp(helpResult);
-                return;
-            }
-            return new app.models.ViewResult('helpResultTpl');
-        },
-        'clear': function() {
-            cmd.clear();
-        },
-        'em': function() {
-            cmdConfig.emphasizeBytes = !cmdConfig.emphasizeBytes;
-        },
-        'dark': function() {
-            cmdConfig.theme = 'dark';
-        },
-        light: function () {
-            cmdConfig.theme = 'light';
-        },
-        about: function() {
-            var aboutResult = document.querySelector('.result .aboutTpl');
-            if(aboutResult != null) {
-                moveResultUp(aboutResult);
-                return;
-            }
-            return new app.models.ViewResult('aboutTpl');
-        },
-        '-debug': function() {
-            app.debugMode = true;
-            console.log('debug is on');
-        },
-        '-notrack': function () {}
-    });
-
     // TODO: Make as function
     cmd.command({
         canHandle: function(input) { return app.get('expression').canParse(input); },

@@ -7,7 +7,7 @@ var driver = browser.driver;
 var appUrl = browser.params.appUrl || 'http://localhost:63342/BitwiseCmd/src/#clear';
 var sutPage = new BitwiseCmdPage(driver, appUrl);
 
-describe('launch of application', function() {
+describe('when application starts', function() {
     it('should have title', function() {
         sutPage.goToApp().then(function() {
             expect(driver.getTitle()).toEqual('BitwiseCmd');
@@ -149,15 +149,15 @@ describe('launch of application', function() {
 
     });
 
-    xit('should emphasize bytes', function() {
+    it('should emphasize bytes', function() {
 
-        goToApp()
+        sutPage.goToApp()
             .then(function() { return sutPage.executeExpression('1')})
             .then(function() {
                 return assertExpressionResult([{ label: '1', bin:'00000001', other: '0x1'}])
             })
             .then(function() { return sutPage.executeExpression('clear')})
- //           .then(function() { return sendCommand('em')})
+            .then(function() { return sutPage.executeExpression('em')})
             .then(function() { return sutPage.shouldHaveNoErrors(); })
             .then(function() { return sutPage.executeExpression('1 3')})
             .then(function() {

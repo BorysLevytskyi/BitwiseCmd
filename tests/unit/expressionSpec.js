@@ -1,13 +1,12 @@
-var app = window.app;
-var expression = app.get('expression');
+var expression = require('../../src/app/expression');
+var parser = expression.parser;
 
-describe("expression parse", function() {
+describe("expression parser", function() {
 
     var shouldParse = ['0x2>>1', '1 2 3', '0x1 1 2 3 5', '0x1>>0x2', '1|2', '-9', '-1|-2', '~3'];
-
     it("should be able to parse", function() {
        shouldParse.forEach(function(expr) {
-           expect(expression.canParse(expr)).toBe(true, 'expr: ' + expr);
+           expect(parser.canParse(expr)).toBe(true, 'expr: ' + expr);
        })
     });
 
@@ -29,7 +28,7 @@ describe("expression parse", function() {
 
         for(input in expressionCases) {
             console.log('case: ' + input);
-            var actual = expression.parse(input);
+            var actual = parser.parse(input);
             var expected = expressionCases[input];
             expect(actual).toBeDefined();
             expect(actual).not.toBe(null);
@@ -58,7 +57,7 @@ describe("expression parse", function() {
     it("should parse hexadecimal expressions", function() {
         var input, i;
         for(input in listCases) {
-            var actual = expression.parse(input);
+            var actual = parser.parse(input);
             var expected = listCases[input];
 
             for(i =0; i<expected.length;i++) {
@@ -69,26 +68,26 @@ describe("expression parse", function() {
     });
 
     it ("should parse multiple operands expression", function () {
-        var actual = expression.parse("1|2&3");
+        var actual = parser.parse("1|2&3");
     })
 });
 
 describe('parse operands', function() {
 
-    var hexOperand = expression.parseOperand('0x10');
-    var decOperand = expression.parseOperand('10');
+    var hexOperand = parser.parseOperand('0x10');
+    var decOperand = parser.parseOperand('10');
     rundOperandsTest(hexOperand, decOperand);
 });
 
 describe('create operands', function() {
 
-    var hexOperand = expression.createOperand(0x10, 'hex');
-    var decOperand = expression.createOperand(10, 'dec');
+    var hexOperand = parser.createOperand(0x10, 'hex');
+    var decOperand = parser.createOperand(10, 'dec');
     rundOperandsTest(hexOperand, decOperand);
 });
 
 describe('negative operands', function () {
-    var op = expression.parseOperand('-0xa');
+    var op = parser.parseOperand('-0xa');
     it('shoold have correct values', function() {
         expect(op.value).toBe(-10);
         expect(op.hex).toBe('-0xa');
@@ -111,8 +110,6 @@ describe('should format to kind strings', function() {
         expect(bin).toBe('1010')
     });
 });
-
-
 
 function rundOperandsTest(hexOperand, decOperand) {
     it('should remember input form', function() {
