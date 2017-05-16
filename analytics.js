@@ -1,6 +1,7 @@
 (function() {
 
     if(window.location.host != 'bitwisecmd.com' ||  window.location.hash.indexOf('-notrack') > -1) {
+        console.log("Analytics not tracked")
         return;
     }
 
