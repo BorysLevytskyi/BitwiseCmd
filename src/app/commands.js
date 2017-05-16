@@ -3,6 +3,7 @@ import AboutResult from './models/AboutResult';
 import UnknownCommandResult from './models/UnknownCommandResult';
 import ExpressionResult from './models/ExpressionResult';
 import ErrorResult from './models/ErrorResult';
+import WahtsnewResult from './models/WhatsnewResult';
 import * as expression from './expression';
 
 var cmdConfig = {};
@@ -36,6 +37,9 @@ export default {
                 },
                 'about': function(c) {
                     appState.addCommandResult(new AboutResult(c.input));
+                },
+                'whatsnew': function(c) {
+                    appState.addCommandResult(new WahtsnewResult(c.input));
                 },
                 '-notrack': function () {}
         });

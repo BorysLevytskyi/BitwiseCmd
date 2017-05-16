@@ -1,6 +1,6 @@
 import React from 'react';
 import InputBox from './InputBox';
-import DisplayResultView from './results/DisplayResultView';
+import DisplayResultView from './DisplayResultView';
 
 export default class AppRoot extends React.Component {
     componentWillMount() {
