@@ -12,6 +12,7 @@ export default class HelpResultView extends React.Component {
                                     <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
                                     <li><code>clear</code> — clear output pane</li>
                                     <li><code>help</code> — display this help</li>
+                                    <li><code>whatsnew</code> — display changelog</li>
                                     <li><code>em</code> — turn On/Off Emphasize Bytes</li>
                                     <li><code>dark</code> — set Dark theme</li>
                                     <li><code>light</code> — set Light theme</li>

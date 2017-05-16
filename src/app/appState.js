@@ -5,6 +5,10 @@ export default class AppState {
         this.handlers = [];
         this.uiTheme = persistData.uiTheme || 'dark';
         this.debugMode = false;
+
+        this.version = 1;
+        this.persistedVersion = persistData.version || 0.9;
+        this.wasOldVersion = this.version > this.persistedVersion;
     }
 
     addCommandResult(result) {
@@ -40,7 +44,8 @@ export default class AppState {
     getPersistData() {
         return {
             emphasizeBytes: this.emphasizeBytes,
-            uiTheme: this.uiTheme 
+            uiTheme: this.uiTheme,
+            version: this.version
         }
     }
 };

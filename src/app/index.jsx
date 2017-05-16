@@ -43,6 +43,10 @@ function executeStartupCommands() {
 
     var startupCommands = ['help', '1|2&6','1<<0x2a','2 4 8 16 32'];
 
+    if(appState.wasOldVersion) {
+        startupCommands = ["whatsnew"];
+    }
+
     if(hashArgs.commands.length > 0) {
         startupCommands = hashArgs.commands;
     }
