@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="description" content="Free Text Online Bitwise Calculator">
+
+    <title>BitwiseCmd</title>
+    <link rel="shortcut icon" href="http://bitwisecmd.com/favicon.ico">
+
+    <meta property="og:url"           content="http://bitwisecmd.com" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="BitwiseCmd" />
+    <meta property="og:description"   content="Free Text Online Bitwise Calculator" />
+    <meta property="og:image"         content="http://bitwisecmd.com/img/social-avatar.png" />
+
+    <script src="js/bitwisecmd.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
+<body id="rootView" class="dark">
+
+<header>
+    <div class="header">
+        <h1>Bitwise<span style="color: #c5c5c5;">Cmd</span>  <span>
+
+        </span></h1>
+
+        <ul class="top-links">
+            <li>
+                <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><i class="icon github">&nbsp;</i><span class="link-text">Project on GitHub</span></a>
+            </li>
+            <li>
+                <a href="https://twitter.com/BitwiseCmd"><i class="icon twitter">&nbsp;</i><span class="link-text">Twitter</span></a>
+            </li>
+            <li>
+                <a href="mailto:&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=Feedback"><i class="icon feedback">&nbsp;</i><span class="link-text">Send Feedback</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="expressionInput-container">
+        <input id="in" type="text" class="expressionInput mono" data-controller="expressionInputCtrl" placeholder="type expression like '1>>2' or 'help' "/>
+
+        <span data-controller="configPanelCtrl" class="configPnl">
+             <span id="emphasizeBytes" data-cmd="em" class="indicator on" title="Emphasize Bytes">[em]</span>
+        </span>
+    </div>
+</header>
+
+<div id="output" data-controller="cmdController">
+</div>
+
+<script data-template="helpResultTpl" type="text/template">
+    <div class="help helpResultTpl">
+        <div style="overflow: hidden">
+            <div style="float: left; margin-right: 20px">
+                <p class="section">
+                    <strong>Supported Commands</strong>
+                <ul>
+                    <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
+                    <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
+                    <li><code>clear</code> — clear output pane</li>
+                    <li><code>help</code> — display this help</li>
+                    <li><code>em</code> — turn On/Off Emphasize Bytes</li>
+                    <li><code>dark</code> — set Dark theme</li>
+                    <li><code>light</code> — set Light theme</li>
+                    <li><code>about</code> — about the app</li>
+                </ul>
+                </p>
+            </div>
+            <div class="float:left">
+                <p class="section">
+                    <strong>Supported Bitwise Operations</strong><br/>
+                    <small>
+                        <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">
+                            as implemented in JavaScript engine
+                        </a>
+                    </small>
+                <ul>
+                    <li><code>&</code> — bitwise AND</li>
+                    <li><code>|</code> — bitwise inclusive OR</li>
+                    <li><code>^</code> — bitwise exclusive XOR</li>
+                    <li><code>~</code> — bitwise NOT</li>
+                    <li><code>&lt;<</code> — left shift</li>
+                    <li><code>&gt;&gt;</code> — sign propagating right shift</li>
+                    <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
+
+                </ul>
+                </p>
+            </div>
+        </div>
+
+        <p style="font-style: italic">
+            <strong>Tip:</strong> Use Up and Down keys to navigate trough executed commands.
+        </p>
+    </div>
+</script>
+
+<script data-template="aboutTpl" type="text/template">
+    <div class="aboutTpl">
+        <p> Created by <a href="http://boryslevytskyi.github.io/">Borys Levytskyi</a>. Please give it a like if BitwiseCmd has helped you in your work.</p>
+        <p>If you have an idea, suggestion or you've spotted a bug here, please send it to <a href="mailto:&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=Feedback">&#098;&#105;&#116;&#119;&#105;&#115;&#101;&#099;&#109;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a> or tweet on <a href="http://twitter.com/BitwiseCmd">@BitwiseCmd</a>. Your feedback is greatly appreciated.</p>
+        <p><a href="https://github.com/BorisLevitskiy/BitwiseCmd">Project on <strong>GitHub</strong></a></p>
+    </div>
+</script>
+
+<script data-template="resultView" data-compiled="" type="text/template">
+    <div class="result">
+        <div class="input mono"><span class="cur">&gt;</span>{m.input}<a class="hashLink" title="Link for this expression" href="{window.location.pathname}#{m.inputHash}">#</a></div>
+        <div class="content"></div>
+    </div>
+</script>
+
+<script data-template="bitwiseExpressionView" data-compiled="" type="text/template">
+    <table class="expression" cellspacing="0">
+        {each itm in m.items}
+        <tr class="{itm.css}">
+            <td class="sign">{itm.sign}</td>
+            <td class="label">{itm.label}</td>
+            <td class="bin">{itm.bin.padLeft(m.maxNumberOfBits, '0')}</td>
+            <td class="other">{itm.other}</td>
+        </tr>
+        {/}
+    </table>
+</script>
+
+<script data-template="numbersList" data-compiled="" type="text/template">
+    <table class="expression" cellspacing="0">
+        {each op in m.operands}
+        <tr data-kind="{op.kind}">
+            <td class="label">{op.input}</td>
+            <td class="bin">{op.bin.padLeft(m.bitsSize, '0')}</td>
+            <td class="other">{op.other}</td>
+        </tr>
+        {/}
+    </table>
+</script>
+
+<script type="text/javascript">
+
+    var app = window.app;
+    app.bootstrap(document.getElementById('rootView'));
+
+    var cmd = app.get('cmd');
+    var hashArgs = app.get('hashArgs');
+
+    if(hashArgs.commands.length > 0) {
+        hashArgs.commands.forEach(cmd.execute.bind(cmd));
+    }
+    else {
+        cmd.execute('help');
+        cmd.execute('1|2&6');
+        cmd.execute('1<<0x2a');
+        cmd.execute('2 4 8 16 32');
+    }
+
+</script>
+
+<script src="js/analytics.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="social-container">
+    <div class="fb-like" data-href="http://bitwisecmd.com" data-layout="box_count" data-action="like" data-show-faces="false" data-share="true"></div>
+</div>
+
+</body>
+</html>
