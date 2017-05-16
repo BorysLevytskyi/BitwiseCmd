@@ -83,6 +83,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .hashLink, .dark .hashLink:visited { color: #333 }
 .dark .hashLink:hover { color: #999 }
 .dark ul.top-links li:hover { background: #333 }
+.dark .error { color: mediumvioletred}
 
 /* Top Links Shrink */
 @media (max-width: 800px) {

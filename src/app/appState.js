@@ -4,6 +4,7 @@ export default class AppState {
         this.commandResults = [];
         this.handlers = [];
         this.uiTheme = persistData.uiTheme || 'dark';
+        this.debugMode = false;
     }
 
     addCommandResult(result) {

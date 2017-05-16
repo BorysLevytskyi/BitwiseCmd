@@ -6,12 +6,17 @@ import HelpResultView from './HelpResultView';
 import AboutResultView from './AboutResultView';
 import ExpressionResult from '../../models/ExpressionResult';
 import ExpressionResultView from './ExpressionResultView';
+import ErrorResult from '../../models/ErrorResult';
 
 export default class DisplayResult extends React.Component {
     render() {
 
         if(this.props.content instanceof UnknownCommandResult) {
             return this.renderUnknown();            
+        }
+
+        if(this.props.content instanceof ErrorResult) {
+            return this.renderError(this.props.content.error.message);
         }
 
         return <div className="result">
@@ -25,6 +30,12 @@ export default class DisplayResult extends React.Component {
     renderUnknown() {
         return <div className="result">
                     <div className="error">¯\_(ツ)_/¯ Sorry, i don't know what <strong>{this.props.input}</strong> is</div>
+               </div>
+    }
+
+    renderError(message) {
+        return <div className="result">
+                    <div className="error">(X_X) Error occurred: <strong>{message}</strong></div>
                </div>
     }
 

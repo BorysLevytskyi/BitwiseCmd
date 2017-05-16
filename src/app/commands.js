@@ -2,6 +2,7 @@ import HelpResult from './models/HelpResult';
 import AboutResult from './models/AboutResult';
 import UnknownCommandResult from './models/UnknownCommandResult';
 import ExpressionResult from './models/ExpressionResult';
+import ErrorResult from './models/ErrorResult';
 import * as expression from './expression';
 
 var cmdConfig = {};
@@ -36,16 +37,15 @@ export default {
                 'about': function(c) {
                     appState.addCommandResult(new AboutResult(c.input));
                 },
-                '-debug': function() {
-                    app.debugMode = true;
-                    console.log('debug is on');
-                },
                 '-notrack': function () {}
         });
 
+        // Last command handler reports that input is unknown
         cmd.command({
             canHandle: () => true,
             handle: (c) => appState.addCommandResult(new UnknownCommandResult(c.input))
         });
+
+        cmd.onError((input, err) => appState.addCommandResult(new ErrorResult(input, err)));
     }
  }

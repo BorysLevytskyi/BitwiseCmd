@@ -2,8 +2,12 @@ import is from './is';
     
     var handlers = [];
 
+var config = {
+    errorHandler: (input, err) => logError(err)
+}
+
 var cmd = {
-        debugMode: true,
+        debugMode: false,
         execute: function(rawInput) {
             var input = rawInput.trim().toLowerCase();
             var handler = findHandler(input);
@@ -15,12 +19,12 @@ var cmd = {
                     try {
                         invokeHandler(input, handler);
                     } catch (e) {
-                        displayCommandError(input, "Error: " + e);
+                         config.errorHandler(input, e);
                     }
                 }
             }
             else {
-                displayCommandError(input, "Unsupported expression: " + input.trim());
+                logError(input, new Error("Unsupported expression: " + input.trim()));
             }
         },
         commands: function(catalog) {
@@ -51,11 +55,14 @@ var cmd = {
         },
         clear: function() {
             console.log('clear');
+        },
+        onError: function(handler) {
+            config.errorHandler = handler;
         }
     };
 
-    function displayCommandError(input, message) {
-        console.error(message)
+    function logError(err) {
+        console.error(err)
     }
 
     function invokeHandler (input, handler) {
