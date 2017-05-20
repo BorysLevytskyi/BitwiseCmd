@@ -35,6 +35,9 @@ export default {
                 'light': function () {
                     appState.setUiTheme('light');
                 },
+                'midnight': function() {
+                    appState.setUiTheme('midnight');
+                },
                 'about': function(c) {
                     appState.addCommandResult(new AboutResult(c.input));
                 },

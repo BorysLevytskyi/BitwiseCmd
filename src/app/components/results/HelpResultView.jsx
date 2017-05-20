@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import cmd from '../../cmd';
+import CommandLink from '../misc/CommandLink';
 
 export default class HelpResultView extends React.Component {
     render() {
@@ -8,15 +10,16 @@ export default class HelpResultView extends React.Component {
                                 <div className="section">
                                     <strong>Supported Commands</strong>
                                 <ul>
-                                    <li><code>23 ^ 34</code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
-                                    <li><code>23 34</code> — type one or more numbers to see their binary representations</li>
-                                    <li><code>clear</code> — clear output pane</li>
-                                    <li><code>help</code> — display this help</li>
-                                    <li><code>whatsnew</code> — display changelog</li>
-                                    <li><code>em</code> — turn On/Off Emphasize Bytes</li>
-                                    <li><code>dark</code> — set Dark theme</li>
-                                    <li><code>light</code> — set Light theme</li>
-                                    <li><code>about</code> — about the app</li>
+                                    <li><code><CommandLink text="23 | 34" /></code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
+                                    <li><code><CommandLink text="23 34" /></code> — type one or more numbers to see their binary representations</li>
+                                    <li><code><CommandLink text="clear" /></code> — clear output pane</li>
+                                    <li><code><CommandLink text="help" /></code> — display this help</li>
+                                    <li><code><CommandLink text="whatsnew" /></code> — display changelog</li>
+                                    <li><code><CommandLink text="em" /></code> — turn On/Off Emphasize Bytes</li>
+                                    <li><code><CommandLink text="light" /></code> — set Dark theme</li>
+                                    <li><code><CommandLink text="dark" /></code> — set Light theme</li>
+                                    <li><code><CommandLink text="midnight" /></code> — set Midnight theme</li>
+                                    <li><code><CommandLink text="about" /></code> — about the app</li>
                                 </ul>
                                 </div>
                             </div>

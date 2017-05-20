@@ -28,7 +28,7 @@ export default class AppRoot extends React.Component {
     render() {
         return <div className={`app-root ${this.state.uiTheme}`}>
                     <div className="header">
-                        <h1>Bitwise<span style={{color: "#c5c5c5"}}>Cmd</span></h1>
+                        <h1>Bitwise<span className="header-cmd">Cmd</span></h1>
                         <ul className="top-links">
                             <li>
                                 <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><i className="icon github">&nbsp;</i><span className="link-text">Project on GitHub</span></a>

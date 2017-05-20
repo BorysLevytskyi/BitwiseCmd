@@ -6,8 +6,8 @@ export default class AppState {
         this.uiTheme = persistData.uiTheme || 'dark';
         this.debugMode = false;
 
-        this.version = 1;
-        this.persistedVersion = persistData.version || 0.9;
+        this.version = 2;
+        this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version && this.version > this.persistedVersion;
     }
 
