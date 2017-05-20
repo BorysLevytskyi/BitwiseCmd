@@ -8,7 +8,7 @@ export default class AppState {
 
         this.version = 1;
         this.persistedVersion = persistData.version || 0.9;
-        this.wasOldVersion = this.version > this.persistedVersion;
+        this.wasOldVersion = persistData.version && this.version > this.persistedVersion;
     }
 
     addCommandResult(result) {
