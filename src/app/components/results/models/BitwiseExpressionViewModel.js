@@ -51,21 +51,16 @@ export default class BitwiseExpressionViewModel {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ 
             sign:'', 
-            label: this.getLabel(operand), 
-            bin: operand.bin, 
-            other: operand.other, 
             css: '',
-            operand: operand});
+            operand: operand
+        });
     };
 
     addExpression(expression) {
         this.maxNumberOfBits = Math.max(expression.operand1.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ 
             sign: expression.sign, 
-            label: this.getLabel(expression.operand1), 
-            bin: expression.operand1.bin, 
-            other: expression.operand1.other, 
-            css: '',
+            label: this.getLabel(expression.operand1),
             operand: expression.operand1
         });
     };
@@ -74,22 +69,18 @@ export default class BitwiseExpressionViewModel {
         this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({
             sign: expression.sign + expression.operand1.input,
-            label: this.getLabel(resultOperand),
-            bin: resultOperand.bin,
-            other: resultOperand.other,
             css: 'expression-result',
-            operand: resultOperand});
+            operand: resultOperand
+        });
     };
 
     addExpressionResult(operand) {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ 
             sign:'=', 
-            label: this.getLabel(operand), 
-            bin: operand.bin, 
-            other: operand.other, 
             css: 'expression-result',
-            operand: operand});
+            operand: operand 
+        });
     };
 
     getLabel (op) {

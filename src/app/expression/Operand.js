@@ -4,17 +4,9 @@ import ExpressionError from './ExpressionError';
 // Represents numeric value
 export default class Operand {
         constructor(cfg) {
-
             this.input = cfg.input;
             this.value = cfg.value;
             this.kind = cfg.kind;
-
-            this.hex = Operand.toHexString(this.value.toString(16));
-            this.dec = this.value.toString(10);
-            // >>> 0 makes negative numbers like -1 to be displayed as '11111111111111111111111111111111' in binary instead of -1
-            this.bin = this.value < 0 ? (this.value >>> 0).toString(2) : this.value.toString(2);
-            this.other = this.kind == 'hex' ? this.dec : this.hex;
-
             this.lengthInBits = Operand.getBitLength(this.value);
         }
                 
@@ -35,17 +27,29 @@ export default class Operand {
             }
     };
 
-    toString() {
-        return this.input;
+    toString(kind) {
+        return Operand.toKindString(this.value, kind || this.kind);
+    }
+
+    toOtherKindString() {
+        return this.toString(this.getOtherKind());
+    }
+
+    toDecimalString() {
+        return this.toString('dec');
+    }
+
+    toHexString() {
+        return this.toString('hex');
+    }
+
+    toBinaryString() {
+        return this.toString('bin');
     }
 
     setValue(value) {
         this.value = value;
-        this.bin = Operand.toKindString(this.value, 'bin');
-        this.dec = Operand.toKindString(this.value, 'dec');
-        this.hex = Operand.toKindString(this.value, 'hex');
-        this.other = Operand.toKindString(this.value, this.getOtherKind());
-        this.input = Operand.toKindString(this.value, this.kind);
+        this.input = this.toString();
     }
         
     static getBitLength(num) {

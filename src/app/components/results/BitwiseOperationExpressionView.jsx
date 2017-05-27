@@ -1,5 +1,5 @@
 import React from 'react';
-import * as expression from '../../expression';
+import { Operand, ListOfNumbersExpression, SingleOperandExpression, MultipleOperandsExpression } from '../../expression';
 import formatter from '../../formatter';
 import BinaryStringView from './BinaryStringView';
 import BitwiseExpressionViewModel from './models/BitwiseExpressionViewModel';
@@ -23,17 +23,17 @@ export default class BitwiseOperationEpxressionView extends React.Component {
         const expr = this.props.expression;
         var model = null;
 
-        if(expr instanceof expression.ListOfNumbersExpression) {
+        if(expr instanceof ListOfNumbersExpression) {
             model = BitwiseExpressionViewModel.buildListOfNumbers(expr, { 
                 emphasizeBytes: this.props.emphasizeBytes, 
                 allowFlipBits: true });
         }
 
-        if(expr instanceof expression.SingleOperandExpression) {
+        if(expr instanceof SingleOperandExpression) {
             model = BitwiseExpressionViewModel.buildNot(expr, { emphasizeBytes: this.props.emphasizeBytes });
         }
 
-        if(expr instanceof expression.MultipleOperandsExpression) {
+        if(expr instanceof MultipleOperandsExpression) {
             model = BitwiseExpressionViewModel.buildMultiple(expr, { emphasizeBytes: this.props.emphasizeBytes });
         }
 
@@ -48,7 +48,7 @@ class ExpressionRow extends React.Component {
        this.state = { operand: null };
    }
     render() {
-        const { sign, label, bin, other, css, maxNumberOfBits, emphasizeBytes, allowFlipBits, operand } = this.props;
+        const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits, operand } = this.props;
         
         return <tr className={css}>
                     <td className="sign">{sign}</td>
@@ -56,28 +56,31 @@ class ExpressionRow extends React.Component {
                     <td className="bin">
                         <BinaryStringView 
                             emphasizeBytes={emphasizeBytes} 
-                            binaryString={formatter.padLeft(operand.bin, maxNumberOfBits, '0')} 
+                            binaryString={formatter.padLeft(operand.toBinaryString(), maxNumberOfBits, '0')} 
                             allowFlipBits={allowFlipBits} 
                             onFlipBit={idx => this.flipBit(idx)}/>
                     </td>
-                    <td className="other">{operand.other}</td>
-                </tr>;
+                    <td className="other">{this.getOther(operand)}</td>
+                </tr>;;
     }
 
     getLabel(op) {
-        return op.kind == 'bin' ? op.dec : op.toString();
+        return op.toString(op.kind == 'bin' ? 'dec' : op.kind);
     }
 
-     flipBit(index) {    
+    getOther(op) {
+        return op.toString(op.getOtherKind());
+    }
 
-        var op = this.props.operand;
-        const binaryString = formatter.padLeft(op.bin, this.props.maxNumberOfBits, '0');
+     flipBit(args) {    
+
+        const op  = this.props.operand;
+        const { index, binaryString } = args;
+        
         var arr = binaryString.split('');
-        // TODO: this code looks ugly
         arr[index] = arr[index] == '0' ? '1' : '0';
         var bin = arr.join('');
 
-        console.log('new bin: '+ bin);
         op.setValue(parseInt(bin, 2));
 
         this.setState({ operand: op });

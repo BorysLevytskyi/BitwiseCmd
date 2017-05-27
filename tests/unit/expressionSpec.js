@@ -94,9 +94,9 @@ describe('negative operands', function () {
     var op = parser.parseOperand('-0xa');
     it('shoold have correct values', function() {
         expect(op.value).toBe(-10);
-        expect(op.hex).toBe('-0xa');
-        expect(op.bin).toBe('11111111111111111111111111110110');
-        expect(op.dec).toBe('-10');
+        expect(op.toHexString()).toBe('-0xa');
+        expect(op.toBinaryString()).toBe('11111111111111111111111111110110');
+        expect(op.toDecimalString()).toBe('-10');
         expect(op.kind).toBe('hex');
     })
 });
@@ -129,15 +129,15 @@ function rundOperandsTest(hexOperand, decOperand) {
     it('should have all kinds', function () {
 
         expect(hexOperand.kind).toBe('hex');
-        expect(hexOperand.dec).toBe('16');
-        expect(hexOperand.bin).toBe('10000');
-        expect(hexOperand.hex).toBe('0x10');
-        expect(hexOperand.other).toBe('16');
+        expect(hexOperand.toDecimalString()).toBe('16');
+        expect(hexOperand.toBinaryString()).toBe('10000');
+        expect(hexOperand.toHexString()).toBe('0x10');
+        expect(hexOperand.toOtherKindString()).toBe('16');
 
         expect(decOperand.kind).toBe('dec');
-        expect(decOperand.dec).toBe('10');
-        expect(decOperand.bin).toBe('1010');
-        expect(decOperand.hex).toBe('0xa');
-        expect(decOperand.other).toBe('0xa');
+        expect(decOperand.toDecimalString()).toBe('10');
+        expect(decOperand.toBinaryString()).toBe('1010');
+        expect(decOperand.toHexString()).toBe('0xa');
+        expect(decOperand.toOtherKindString()).toBe('0xa');
     });
 }
