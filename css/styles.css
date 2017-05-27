@@ -112,6 +112,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight .hashLink:hover { color: #9FBAC7 }
 .midnight ul.top-links li:hover { background: #132537 }
 .midnight .error { color:#da586d}
+.midnight .changelog .item-new .date { font-weight: bold }
 
 /* Top Links Shrink */
 @media (max-width: 800px) {
