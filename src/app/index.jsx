@@ -51,7 +51,5 @@ function executeStartupCommands() {
         startupCommands = hashArgs.commands;
     }
 
-    log.info('starup commands', startupCommands);
-
     startupCommands.forEach(cmd.execute.bind(cmd));
 }
