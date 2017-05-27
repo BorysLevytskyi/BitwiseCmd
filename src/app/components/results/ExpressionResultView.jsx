@@ -19,8 +19,6 @@ export default class ExpressionResultView extends React.Component {
                     </div>
         }
 
-        console.log('[BitwiseOperationExpressionView] render()', expr);
-
         return <b>Expression: {expr.expressionString}</b>;
     } 
 }

@@ -66,6 +66,7 @@ var cmd = {
     }
 
     function invokeHandler (input, handler) {
+
         var cmdResult = handler.handle({ input: input});
         if(cmdResult != null) {
             console.log(cmdResult);

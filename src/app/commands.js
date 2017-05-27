@@ -11,14 +11,6 @@ var cmdConfig = {};
 export default {
     initialize (cmd, appState) {
 
-            cmd.command({
-                   canHandle: (input) => expression.parser.canParse(input),
-                   handle: function(c) {
-                       var expr = expression.parser.parse(c.input);
-                       appState.addCommandResult(new ExpressionResult(c.input, expr));
-                   }         
-             })
-
             cmd.commands({
                 'help': function(c) {
                     appState.addCommandResult(new HelpResult(c.input));                
@@ -44,8 +36,20 @@ export default {
                 'whatsnew': function(c) {
                     appState.addCommandResult(new WahtsnewResult(c.input));
                 },
-                '-notrack': function () {}
+                '-notrack': function () {}, 
+                '-debug': function() {
+                    console.log('Debug mode on')
+                    cmd.debugMode = true;
+                }
         });
+
+        cmd.command({
+            canHandle: (input) => expression.parser.canParse(input),
+            handle: function(c) {
+                var expr = expression.parser.parse(c.input);
+                appState.addCommandResult(new ExpressionResult(c.input, expr));
+            }         
+        })
 
         // Last command handler reports that input is unknown
         cmd.command({

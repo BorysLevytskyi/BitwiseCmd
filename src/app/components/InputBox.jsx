@@ -33,7 +33,6 @@ export default class InputBox extends React.Component {
 
         input.value = '';        
         cmd.execute(value);
-        console.log(this.history);
     }
 
     onKeyDown(args) {

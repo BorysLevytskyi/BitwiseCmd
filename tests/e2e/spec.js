@@ -32,6 +32,7 @@ describe('when application starts', function() {
             .then(function() { return sutPage.executeExpression('1')})
             .then(function() { return sutPage.executeExpression('1|2')})
             .then(function() { return sutPage.executeExpression('1^2')})
+            .then(function() { return sutPage.executeExpression('1^0b10')})
             .then(function() { return sutPage.executeExpression('0x1>>>0xf')})
             .then(function() { return sutPage.executeExpression('0x1 0xf')})
             .then(function() { return sutPage.executeExpression('0x1 | 0xf')})
@@ -43,13 +44,10 @@ describe('when application starts', function() {
     });
 
     it('should execute list of numbers', function() {
-        sutPage.executeExpression('3 0xf')
-            .then(function() { return sutPage.shouldHaveNoErrors(); })
-            .then(function() {
-                return assertExpressionResult(
-                    [{ label: '3', bin:'00000011', other: '0x3'},
-                     { label: '0xf', bin:'00001111', other: '15'}])
-            });
+        assertOperation('3 0xf 0b101',
+            [{ label: '3', bin:'00000011', other: '0x3'},
+             { label: '0xf', bin:'00001111', other: '15'},
+             { label: '5', bin: '00000101', other: '0x5' }]);
     });
 
     it('should do a shift operation', function() {
@@ -111,13 +109,13 @@ describe('when application starts', function() {
             ])
     });
 
-    it('should do XOR or large numbers', function() {
-
-        return assertOperation('0x0001000000003003^0x3001800400000fc1',
-               [{ label: '0x0001000000003003', bin:'0000000000000001000000000000000000000000000000000011000000000011', other: '281474976722947'},
-                { sign:'^', label: '0x3001800400000fc1', bin:'0011000000000001100000000000010000000000000000000001000000000000', other: '3459186743465480000'},
-                { sign:'=', label: '0x2003', bin:'0000000000000000000000000000000000000000000000000010000000000011', other: '8195'}])
-    });
+    it('should do or for binary numbers', function() {
+        return assertOperation('0b10|0b11', 
+        [{             label: "2", bin: "00000010", other: "0x2" },
+         { sign: "|",  label: "3", bin: "00000011", other: "0x3" },
+         { sign: "=",  label: "3", bin: "00000011", other: '0x3'}]
+        );
+    })
 
     it('should do prefer hex result', function() {
 
@@ -202,6 +200,7 @@ function assertExpressionResult(expected) {
 }
 
 function assertOperation(op, expected) {
+    console.log('\n' + op);
     return sutPage.executeExpression(op)
         .then(function() { return sutPage.shouldHaveNoErrors(); })
         .then(function() {

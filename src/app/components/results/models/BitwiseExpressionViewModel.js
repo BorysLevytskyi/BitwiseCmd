@@ -41,19 +41,30 @@ export default class BitwiseExpressionViewModel {
 
     addOperand(operand) {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
-        this.items.push({ sign:'', label: operand.toString(), bin: operand.bin, other: operand.other, css: ''});
+        this.items.push({ 
+            sign:'', 
+            label: this.getLabel(operand), 
+            bin: operand.bin, 
+            other: operand.other, 
+            css: ''});
     };
 
     addExpression(expression) {
         this.maxNumberOfBits = Math.max(expression.operand1.getLengthInBits(), this.maxNumberOfBits);
-        this.items.push({ sign: expression.sign, label: expression.operand1.toString(), bin: expression.operand1.bin, other: expression.operand1.other, css: ''});
+        this.items.push({ 
+            sign: expression.sign, 
+            label: this.getLabel(expression.operand1), 
+            bin: expression.operand1.bin, 
+            other: expression.operand1.other, 
+            css: ''
+        });
     };
 
     addShiftExpressionResult(expression, resultOperand) {
         this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({
             sign: expression.sign + expression.operand1.input,
-            label: resultOperand.toString(),
+            label: this.getLabel(resultOperand),
             bin: resultOperand.bin,
             other: resultOperand.other,
             css: 'expression-result'});
@@ -61,8 +72,22 @@ export default class BitwiseExpressionViewModel {
 
     addExpressionResult(operand) {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
-        this.items.push({ sign:'=', label: operand.toString(), bin: operand.bin, other: operand.other, css: 'expression-result'});
+        this.items.push({ 
+            sign:'=', 
+            label: this.getLabel(operand), 
+            bin: operand.bin, 
+            other: operand.other, 
+            css: 'expression-result'});
     };
+
+    getLabel (op) {
+        
+        if(op.kind == 'bin') {
+            return op.dec;
+        }
+
+        return op.toString();
+    }
 
     // TODO: move this method elsewhere. It is also used in LisOfNumbersExpressionView.js
     static getNumberOfBits = function (bits, emphasizeBytes) {

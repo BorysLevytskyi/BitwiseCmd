@@ -1,3 +1,5 @@
+import Operand from './expression/operand';
+
 var expression = {
         factories:[],
         canParse: function(string) {
@@ -25,7 +27,7 @@ var expression = {
             return null;
         },
         parseOperand: function(input) {
-            return new Operand(input);
+            return Operand.parse(input);
         },
         createOperand: function(number, kind) {
             return Operand.create(number, kind);
@@ -37,7 +39,7 @@ var expression = {
 
     // List of numbers
     expression.addFactory({
-        regex: /^(-?(?:\d+|0x[\d,a-f]+)\s?)+$/,
+        regex: /^(-?(?:\d+|0x[\d,a-f]+|0b[0-1])\s?)+$/,
         canCreate: function(string) {
             return this.regex.test(string);
         },
@@ -48,7 +50,7 @@ var expression = {
 
             input.split(' ').forEach(function(n){
                 if(n.trim().length > 0) {
-                    numbers.push(new Operand(n.trim()));
+                    numbers.push(Operand.parse(n.trim()));
                 }
             });
 
@@ -58,13 +60,13 @@ var expression = {
 
     // Not Expression
     expression.addFactory({
-        regex: /^(~)(-?(?:\d+|0x[\d,a-f]+))$/,
+        regex: /^(~)(-?[b,x,a-f,0-9]+)$/,
         canCreate: function(string) {
             return this.regex.test(string);
         },
         create: function (string) {
             var matches = this.regex.exec(string),
-                operand = new Operand(matches[2]);
+                operand = Operand.parse(matches[2]);
 
             return new SingleOperandExpression(matches.input, operand, matches[1]);
         }
@@ -72,8 +74,8 @@ var expression = {
 
     // Multiple operands expression
     expression.addFactory({
-        fullRegex: /^((<<|>>|>>>|\||\&|\^)?(-?((?:\d+(?!x))|(?:0x[\d,a-f]+))))+$/,
-        regex: /(<<|>>|>>>|\||\&|\^)?(-?((?:\d+(?!x))|(?:0x[\d,a-f]+)))/g,
+        fullRegex: /^((<<|>>|>>>|\||\&|\^)?(-?([b,x,a-f,0-9]+)))+$/,
+        regex: /(<<|>>|>>>|\||\&|\^)?(-?([b,x,a-f,0-9]+))/g,
         canCreate: function(string) {
             this.fullRegex.lastIndex = 0;
             return this.fullRegex.test(this.normalizeString(string));
@@ -93,101 +95,17 @@ var expression = {
                 sign = m[1],
                 num = m[2];
 
+            var op = Operand.parse(num);
             if(sign == null) {
-                return new Operand(num);
+                return op;
             } else {
-                return new SingleOperandExpression(input, new Operand(num), sign);
+                return new SingleOperandExpression(input, op, sign);
             }
         },
         normalizeString: function (string) {
             return string.replace(/\s+/g,'');
         }
     });
-
-
-// Represents numeric value
-export class Operand {
-        constructor(input) {
-            this.input = input;
-            this.value = parseInt(input);
-            this.hex = Operand.toHexString(this.value.toString(16));
-            this.dec = this.value.toString(10);
-            // >>> 0 makes negative numbers like -1 to be displayed as '11111111111111111111111111111111' in binary instead of -1
-            this.bin = this.value < 0 ? (this.value >>> 0).toString(2) : this.value.toString(2);
-            this.kind = this.input.indexOf('0x') > -1 ? 'hex' : 'dec';
-            this.other = this.kind == 'dec' ? this.hex : this.dec;
-            this.lengthInBits = Operand.getBitLength(this.value);
-        }
-                
-        getLengthInBits() {
-            if(this.value < 0) {
-                return 32;
-            }
-            return Math.floor(Math.log(this.value) / Math.log(2)) + 1;
-        };
-
-        getOtherKind(kind) {
-            switch(kind || this.kind) {
-                case 'dec': return 'hex';
-                case 'hex': return 'dec';
-                default : throw new Error(kind + " kind doesn't have opposite kind")
-            }
-    };
-
-    toString() {
-        return this.input;
-    }
-
-    setValue(value) {
-        console.log('Before ' + value, this);
-        this.value = value;
-        this.bin = Operand.toKindString(this.value, 'bin');
-        this.dec = Operand.toKindString(this.value, 'dec');
-        this.hex = Operand.toKindString(this.value, 'hex');
-        this.other = Operand.toKindString(this.value, this.getOtherKind());
-        this.input = Operand.toKindString(this.value, this.kind);
-        console.log('After ' + value, this);
-    }
-        
-    static getBitLength(num) {
-        return Math.floor(Math.log(num) / Math.log(2)) + 1
-    }    
-    
-    static getBase(kind){
-        switch (kind){
-            case 'bin': return 2;
-            case 'hex': return 16;
-            case 'dec': return 10;
-        }
-    };
-
-    static create(number, kind) {
-        var str = number.toString(Operand.getBase(kind));
-        if(kind == 'hex') {
-            str = Operand.toHexString(str);
-        }
-
-        return new Operand(str);
-    };
-
-    static toKindString(value, kind) {
-            switch(kind) {
-                case 'hex':
-                    var hexVal = Math.abs(value).toString(16);
-                    return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
-                case 'bin':
-                    return (value>>>0).toString(2);
-                case 'dec':
-                    return value.toString(10);
-                default:
-                    throw new Error("Unexpected kind: " + kind)
-            }
-        };
-
-    static toHexString (hex) {
-            return hex.indexOf('-') == 0 ? '-0x' + hex.substr(1) : '0x' + hex;
-     };
-}
 
 // Expressions like ~1
 export class SingleOperandExpression {
@@ -205,7 +123,10 @@ export class SingleOperandExpression {
               str = value + this.sign + this.operand1.value
           }
 
-         return Operand.create(eval(str), this.operand1.kind);
+         console.log('eval:' + str + " = " + eval(str), Operand.create(eval(str), this.operand1.kind));
+
+         const resultValue = eval(str);
+         return Operand.create(resultValue, this.operand1.kind);
     };
 
     isShiftExpression() {

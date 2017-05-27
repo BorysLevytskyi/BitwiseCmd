@@ -27,11 +27,15 @@ class OperandView extends React.Component {
         const binaryString = formatter.padLeft(op.bin, this.props.maxBitsLegnth, '0');
 
         return <tr data-kind={op.kind}>
-                    <td className="label">{op.input}</td>
+                    <td className="label">{this.getLabel(op)}</td>
                     <td className="bin"><BinaryStringView emphasizeBytes={this.props.emphasizeBytes} binaryString={binaryString} allowFlipBits={true} onFlipBit={e => this.flipBit(e)} /></td>
                     <td className="other">{op.other}</td>
                 </tr>;
     };
+
+    getLabel(op) {
+        return op.kind == 'bin' ? op.dec : op.input;
+    }
 
     flipBit(index) {    
         var op = this.props.operand;
