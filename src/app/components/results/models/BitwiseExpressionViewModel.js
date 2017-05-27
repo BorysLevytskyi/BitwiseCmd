@@ -68,7 +68,7 @@ export default class BitwiseExpressionViewModel {
     addShiftExpressionResult(expression, resultOperand) {
         this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({
-            sign: expression.sign + expression.operand1.input,
+            sign: expression.sign + expression.operand1.toString(),
             css: 'expression-result',
             operand: resultOperand
         });

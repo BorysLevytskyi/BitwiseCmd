@@ -4,7 +4,6 @@ import ExpressionError from './ExpressionError';
 // Represents numeric value
 export default class Operand {
         constructor(cfg) {
-            this.input = cfg.input;
             this.value = cfg.value;
             this.kind = cfg.kind;
             this.lengthInBits = Operand.getBitLength(this.value);
@@ -49,7 +48,6 @@ export default class Operand {
 
     setValue(value) {
         this.value = value;
-        this.input = this.toString();
     }
         
     static getBitLength(num) {
