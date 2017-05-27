@@ -27,7 +27,9 @@ export default class Operand {
 
         getOtherKind(kind) {
             switch(kind || this.kind) {
-                case 'dec': return 'hex';
+                case 'dec': 
+                case 'bin':
+                    return 'hex';
                 case 'hex': return 'dec';
                 default : throw new Error(kind + " kind doesn't have opposite kind")
             }
