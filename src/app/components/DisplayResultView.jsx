@@ -9,17 +9,10 @@ import ExpressionResultView from './results/ExpressionResultView';
 import WhatsnewResult from '../models/WhatsnewResult';
 import WhatsnewResultView from './results/WhatsnewResultView';
 import ErrorResult from '../models/ErrorResult';
+import expression from '../../expression';
 
 export default class DisplayResult extends React.Component {
     render() {
-
-        if(this.props.content instanceof UnknownCommandResult) {
-            return this.renderUnknown();            
-        }
-
-        if(this.props.content instanceof ErrorResult) {
-            return this.renderError(this.props.content.error.message);
-        }
 
         return <div className="result">
                         <div className="input mono"><span className="cur">&gt;</span>{this.props.content.input}<a className="hashLink" title="Link for this expression" href={window.location.pathname + '#' + this.props.inputHash}>#</a></div>
@@ -58,7 +51,14 @@ export default class DisplayResult extends React.Component {
             return <WhatsnewResultView />
         }
 
-        console.warn('Unknown result:', result);
-        return <span>Unknown result: {typeof result}</span>
+        if (result instanceof expression.ExpressionError) {
+            return this.renderError(result.message);
+        }
+
+        if (result instanceof Error) {
+            return this.renderError(result.message);
+        }
+
+        return this.renderUnknown();
     }
 }
