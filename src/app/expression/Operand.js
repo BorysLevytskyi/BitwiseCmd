@@ -72,7 +72,7 @@ export default class Operand {
             var parsed = numberParser.parse(input);
 
             if(!parsed) {
-                throw new ExpressionError("Unknown number: " + input);
+                throw new ExpressionError(input + " is not a valid number");
             }
 
             return new Operand(parsed);

@@ -9,7 +9,7 @@ import ExpressionResultView from './results/ExpressionResultView';
 import WhatsnewResult from '../models/WhatsnewResult';
 import WhatsnewResultView from './results/WhatsnewResultView';
 import ErrorResult from '../models/ErrorResult';
-import expression from '../../expression';
+import * as expression from '../expression';
 
 export default class DisplayResult extends React.Component {
     render() {
@@ -20,18 +20,6 @@ export default class DisplayResult extends React.Component {
                             {this.findResultComponent(this.props.content)}
                         </div>
                     </div>;
-    }
-
-    renderUnknown() {
-        return <div className="result">
-                    <div className="error">¯\_(ツ)_/¯ Sorry, i don&prime;t know what <strong>{this.props.input}</strong> is</div>
-               </div>
-    }
-
-    renderError(message) {
-        return <div className="result">
-                    <div className="error">(X_X) Error occurred: <strong>{message}</strong></div>
-               </div>
     }
 
     findResultComponent(result) {
@@ -51,14 +39,14 @@ export default class DisplayResult extends React.Component {
             return <WhatsnewResultView />
         }
 
-        if (result instanceof expression.ExpressionError) {
-            return this.renderError(result.message);
+        if (result instanceof ErrorResult) {
+            return <div className="result">
+                    <div className="error">(X_X) Ooops.. Something ain' right: <strong>{result.error.message}</strong></div>
+               </div>
         }
 
-        if (result instanceof Error) {
-            return this.renderError(result.message);
-        }
-
-        return this.renderUnknown();
+        return <div className="result">
+                    <div className="error">¯\_(ツ)_/¯ Sorry, i don&prime;t know what <strong>{this.props.input}</strong> is</div>
+               </div>
     }
 }

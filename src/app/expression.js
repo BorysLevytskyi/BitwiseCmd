@@ -1,4 +1,6 @@
 import Operand from './expression/operand';
+export { default as Operand } from './expression/operand';
+export { default as ExpressionError } from './expression/ExpressionError';
 
 var expression = {
         factories:[],

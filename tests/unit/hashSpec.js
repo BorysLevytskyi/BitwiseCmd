@@ -30,28 +30,10 @@ describe('hash arguments parser', function() {
         expect(args.commands).toEqual(['clear', '16 15', '16&15']);
     });
 
-    it('should parse multiple commands url encoded', function() {
-        var args = hash.getArgs('#' + encodeURI('1|2||1^2||~2'));
-        expect(args).not.toBe(null);
-        expect(args).toBeDefined();
-        expect(args.commands).toEqual(['1|2', '1^2', '~2']);
-    });
-
-    it('should parse multiple commands and switcher encoded', function() {
+    it('should parse multiple commands encoded', function() {
         var args = hash.getArgs('#' + encodeURI('1|2||1^2||~2||-notrack||-debug'));
         expect(args).not.toBe(null);
         expect(args).toBeDefined();
-        expect(args.commands).toEqual(['1|2', '1^2', '~2']);
-        expect(args.notrack).toBe(true);
-        expect(args.debug).toBe(true);
-    });
-
-    it('should parse only switchers encoded', function() {
-        var args = hash.getArgs('#' + encodeURI('-notrack||-debug'));
-        expect(args).not.toBe(null);
-        expect(args).toBeDefined();
-        expect(args.commands).toEqual([]);
-        expect(args.notrack).toBe(true);
-        expect(args.debug).toBe(true);
+        expect(args.commands).toEqual(['1|2', '1^2', '~2','-notrack','-debug']);
     });
 });
