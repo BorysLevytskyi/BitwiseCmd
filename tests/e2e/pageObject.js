@@ -79,13 +79,40 @@ ExpressionResultObject.prototype.shouldBe = function(expectedResult) {
         var expected, actual;
         for(var i=0;i<expectedResult.length; i++) {
             var actual = actualResult[i],
-                expected = expectedResult[i];
+                expected = convertToExpected(expectedResult[i]);
 
             expect(actual).toEqual(jasmine.objectContaining(expected));
         }
     });
 
 };
+
+function convertToExpected(arg) {    
+    if(arg.length) {
+        return convertExpectedFromArray(arg);
+    }
+
+    return arg;
+}
+
+function convertExpectedFromArray(arg) {
+
+        var start = 0;
+        if(arg.length == 4) {
+            start = 1
+        }
+
+        var obj = {
+            sign: arg.length == 4 ? arg[0] : '',
+            label: arg[start++],
+            bin: arg[start++],
+            other: arg[start++]
+        }
+
+        console.log('convert: ' + JSON.stringify(arg) + " to " + JSON.stringify(obj));
+
+        return obj;
+}
 
 module.exports = {
     BitwiseCmdPage : BitwiseCmdPage,
