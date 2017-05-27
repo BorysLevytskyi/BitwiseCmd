@@ -1,9 +1,13 @@
 import Operand from './expression/Operand';
 import ExpressionOperand from './expression/ExpressionOperand'
+import ListOfNumbersExpression from './expression/ListOfNumbersExpression';
+import MultipleOperandsExpression from './expression/MultipleOperandsExpression';
 
 export { default as Operand } from './expression/Operand';
 export { default as ExpressionError } from './expression/ExpressionError';
 export { default as ExpressionOperand } from './expression/ExpressionOperand';
+export { default as ListOfNumbersExpression } from './expression/ListOfNumbersExpression';
+export { default as MultipleOperandsExpression } from './expression/MultipleOperandsExpression';
 
 var expression = {
         factories:[],
@@ -112,25 +116,8 @@ var expression = {
 
 // Expression like 1|2 or 4^5
 
-export class MultipleOperandsExpression {
-    constructor(expressionString, expressions) {
-        this.expressionString = expressionString;
-        this.expressions = expressions;
-    }
-}
 
-export class ListOfNumbersExpression {
-    constructor(expressionString, numbers) {
-        this.expressionString = expressionString;
-        this.numbers = numbers;
-        this.maxBitsLegnth = numbers.map(n => n.lengthInBits).reduce((n , c) => n >= c ? n : c, 0);
-    }
 
-    toString() {
-        return this.numbers.map(n => n.value.toString()).join(' ');
-    }
-}
-  
 export var parser = expression;
 
 
