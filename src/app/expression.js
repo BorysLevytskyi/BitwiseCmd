@@ -1,6 +1,9 @@
-import Operand from './expression/operand';
-export { default as Operand } from './expression/operand';
+import Operand from './expression/Operand';
+import SingleOperandExpression from './expression/SingleOperandExpression'
+
+export { default as Operand } from './expression/Operand';
 export { default as ExpressionError } from './expression/ExpressionError';
+export { default as SingleOperandExpression } from './expression/SingleOperandExpression';
 
 var expression = {
         factories:[],
@@ -60,24 +63,10 @@ var expression = {
         }
     });
 
-    // Not Expression
-    expression.addFactory({
-        regex: /^(~)(-?[b,x,a-f,0-9]+)$/,
-        canCreate: function(string) {
-            return this.regex.test(string);
-        },
-        create: function (string) {
-            var matches = this.regex.exec(string),
-                operand = Operand.parse(matches[2]);
-
-            return new SingleOperandExpression(matches.input, operand, matches[1]);
-        }
-    });
-
     // Multiple operands expression
     expression.addFactory({
-        fullRegex: /^((<<|>>|>>>|\||\&|\^)?(-?([b,x,a-f,0-9]+)))+$/,
-        regex: /(<<|>>|>>>|\||\&|\^)?(-?([b,x,a-f,0-9]+))/g,
+        fullRegex: /^((<<|>>|>>>|\||\&|\^)?(~?-?([b,x,a-f,0-9]+)))+$/,
+        regex: /(<<|>>|>>>|\||\&|\^)?(~?-?(?:[b,x,a-f,0-9]+))/g,
         canCreate: function(string) {
             this.fullRegex.lastIndex = 0;
             return this.fullRegex.test(this.normalizeString(string));
@@ -93,11 +82,20 @@ var expression = {
             return new MultipleOperandsExpression(normalizedString, operands)
         },
         parseMatch: function (m) {
+            console.log('match');
+            console.log(m);
             var input = m[0],
                 sign = m[1],
                 num = m[2];
 
-            var op = Operand.parse(num);
+            var op = null;
+            if(num.indexOf('~') == '0') {
+                op = new SingleOperandExpression(input, Operand.parse(num.substring(1)), '~');
+            }
+            else {
+                op = Operand.parse(num);
+            }
+
             if(sign == null) {
                 return op;
             } else {
@@ -110,45 +108,9 @@ var expression = {
     });
 
 // Expressions like ~1
-export class SingleOperandExpression {
-    constructor(expressionString, operand, sign) {
-        this.expressionString = expressionString;
-        this.operand1 = operand;
-        this.sign = sign;
-    }
-    
-    apply(value) {
-          var str = '';
-          if(this.sign == '~'){
-              str = '~' + this.operand1.value;
-          } else {
-              str = value + this.sign + this.operand1.value
-          }
 
-         console.log('eval:' + str + " = " + eval(str), Operand.create(eval(str), this.operand1.kind));
-
-         const resultValue = eval(str);
-         return Operand.create(resultValue, this.operand1.kind);
-    };
-
-    isShiftExpression() {
-        return this.sign.indexOf('<') >= 0 || this.sign.indexOf('>')>= 0;
-    };
-
-    toString() {
-        return this.sign + this.operand1.toString();
-    }
-}
 
 // Expression like 1|2 or 4^5
-export class TwoOperandExpression {
-    constructor(expressionString, operand1, operand2, sign) {
-        this.expressionString = expressionString;
-        this.operand1 = operand1;
-        this.operand2 = operand2;
-        this.sign = sign;
-    }
-}
 
 export class MultipleOperandsExpression {
     constructor(expressionString, expressions) {
@@ -167,12 +129,6 @@ export class ListOfNumbersExpression {
     toString() {
         return this.numbers.map(n => n.value.toString()).join(' ');
     }
-}
-
-export class Expression {
-    toString() {
-        return this.expressionString ? "Expression: " + this.expressionString : this.toString();
-    };
 }
   
 export var parser = expression;

@@ -80,7 +80,7 @@ ExpressionResultObject.prototype.shouldBe = function(expectedResult) {
         for(var i=0;i<expectedResult.length; i++) {
             var actual = actualResult[i],
                 expected = convertToExpected(expectedResult[i]);
-
+            //console.log("actual.bin.length=" + actual.bin.length)
             expect(actual).toEqual(jasmine.objectContaining(expected));
         }
     });
@@ -109,7 +109,7 @@ function convertExpectedFromArray(arg) {
             other: arg[start++]
         }
 
-        console.log('convert: ' + JSON.stringify(arg) + " to " + JSON.stringify(obj));
+        // console.log('convert: ' + JSON.stringify(arg) + " to " + JSON.stringify(obj));
 
         return obj;
 }

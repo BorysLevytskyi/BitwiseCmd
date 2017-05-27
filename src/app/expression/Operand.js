@@ -1,12 +1,16 @@
 import numberParser from './numberParser';
 import ExpressionError from './ExpressionError';
 
+var id = 1;
+
 // Represents numeric value
 export default class Operand {
         constructor(cfg) {
+            this.id = id++;
             this.value = cfg.value;
             this.kind = cfg.kind;
             this.lengthInBits = Operand.getBitLength(this.value);
+            this.isExpression = false;
         }
                 
         getLengthInBits() {
@@ -47,11 +51,16 @@ export default class Operand {
     }
 
     setValue(value) {
+        console.log('Operand:%s.setValue: %s', this.id, this.value);
         this.value = value;
+    }
+
+    apply() {
+        return this;
     }
         
     static getBitLength(num) {
-        return Math.floor(Math.log(num) / Math.log(2)) + 1
+        return Math.floor(Math.log(num) / Math.log(2)) + 1;
     }    
     
     static getBase(kind){

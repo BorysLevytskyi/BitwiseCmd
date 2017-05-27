@@ -1,3 +1,5 @@
+import { Operand, SingleOperandExpression } from '../../../expression';
+
 export default class BitwiseExpressionViewModel {
 
     constructor({ emphasizeBytes = false, allowFlipBits = false } = {}) {
@@ -15,22 +17,36 @@ export default class BitwiseExpressionViewModel {
     }
 
     static buildMultiple (expr, config) {
-
+        console.log('build: ', expr);
         var op = expr.expressions[0],
-            i = 1, l = expr.expressions.length,
+            i = 0, l = expr.expressions.length,
             ex, m = new BitwiseExpressionViewModel(config);
 
-        m.addOperand(op);
-
+        var cur = null;
         for (;i<l;i++) {
-            ex = expr.expressions[i];
-            op = ex.apply(op.value);
+            var ex = expr.expressions[i];
+            if(ex instanceof Operand) {
+                m.addOperand(ex);
+                cur = ex;
+                console.log('cur is ', cur)
+                continue;
+            }
 
-            if(ex.isShiftExpression()){
-                m.addShiftExpressionResult(ex, op);
-            } else {
+            if(ex.isNotExpression) {
                 m.addExpression(ex);
-                m.addExpressionResult(op);
+                var notResult = ex.apply();
+                m.addExpressionResult(notResult);
+                cur = notResult;
+            }
+            else if(ex.isShiftExpression){
+                console.log('cur is ', cur)
+                cur = ex.apply(cur);
+                m.addShiftExpressionResult(ex, cur);
+            } else {
+
+                cur = ex.apply(cur);
+                m.addExpression(ex);
+                m.addExpressionResult(cur);
             }
         }
 
@@ -52,16 +68,19 @@ export default class BitwiseExpressionViewModel {
         this.items.push({ 
             sign:'', 
             css: '',
-            operand: operand
+            operand: operand,
+            allowFlipBits: this.allowFlipBits
         });
     };
 
     addExpression(expression) {
-        this.maxNumberOfBits = Math.max(expression.operand1.getLengthInBits(), this.maxNumberOfBits);
+        this.maxNumberOfBits = Math.max(expression.operand1.apply().getLengthInBits(), this.maxNumberOfBits);
+        
         this.items.push({ 
             sign: expression.sign, 
             label: this.getLabel(expression.operand1),
-            operand: expression.operand1
+            operand: expression.operand1,
+            allowFlipBits: this.allowFlipBits
         });
     };
 
@@ -70,7 +89,8 @@ export default class BitwiseExpressionViewModel {
         this.items.push({
             sign: expression.sign + expression.operand1.toString(),
             css: 'expression-result',
-            operand: resultOperand
+            operand: resultOperand,
+            allowFlipBits: false
         });
     };
 
@@ -79,7 +99,8 @@ export default class BitwiseExpressionViewModel {
         this.items.push({ 
             sign:'=', 
             css: 'expression-result',
-            operand: operand 
+            operand: operand, 
+            allowFlipBits: false
         });
     };
 
