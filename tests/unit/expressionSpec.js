@@ -11,16 +11,16 @@ describe("expression parser", function() {
     });
 
     var expressionCases = {
-        "0x2>>1": { operand1: 2, operand2:1, "sign":">>", string:"0x2>>1" },
-        "123|111": { operand1: 123, operand2:111, "sign":"|", string: "123|111" },
-        "23^0x1": { operand1: 23, operand2:1, "sign":"^", string: "23^0x1" },
-        "0xf>>0xa": { operand1: 15, operand2:10, "sign":">>", string:"0xf>>0xa" },
-        "0x10&0x11": { operand1: 0x10, operand2:0x11, "sign":"&", string:"0x10&0x11" },
-        "0x1a^11": { operand1: 0x1a, operand2:11, "sign":"^", string:"0x1a^11" },
-        "0x1a>>>11": { operand1: 0x1a, operand2:11, "sign":">>>", string:"0x1a>>>11" },
-        '~3': { operand1: 3, operand2: null, "sign":"~", string:"~3" },
-        '~0xa': { operand1: 0xa, operand2: null, "sign":"~", string:"~0xa" },
-        '~-0xa': { operand1: -0xa, operand2: null, "sign":"~", string:"~-0xa" }
+        "0x2>>1": { operand: 2, operand2:1, "sign":">>", string:"0x2>>1" },
+        "123|111": { operand: 123, operand2:111, "sign":"|", string: "123|111" },
+        "23^0x1": { operand: 23, operand2:1, "sign":"^", string: "23^0x1" },
+        "0xf>>0xa": { operand: 15, operand2:10, "sign":">>", string:"0xf>>0xa" },
+        "0x10&0x11": { operand: 0x10, operand2:0x11, "sign":"&", string:"0x10&0x11" },
+        "0x1a^11": { operand: 0x1a, operand2:11, "sign":"^", string:"0x1a^11" },
+        "0x1a>>>11": { operand: 0x1a, operand2:11, "sign":">>>", string:"0x1a>>>11" },
+        '~3': { operand: 3, operand2: null, "sign":"~", string:"~3" },
+        '~0xa': { operand: 0xa, operand2: null, "sign":"~", string:"~0xa" },
+        '~-0xa': { operand: -0xa, operand2: null, "sign":"~", string:"~-0xa" }
     };
 
     // TODO: update to support multiple expressions
@@ -36,7 +36,7 @@ describe("expression parser", function() {
             // expect(actual).toBeDefined();
             // expect(actual).not.toBe(null);
             // expect(actual.sign).toBe(expected.sign);
-            // expect(actual.operand1.value).toBe(expected.operand1);
+            // expect(actual.operand.value).toBe(expected.operand);
 
             // if(expected.operand2 != null) {
             //     expect(actual.operand2.value).toBe(expected.operand2);

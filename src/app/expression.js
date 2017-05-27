@@ -1,9 +1,9 @@
 import Operand from './expression/Operand';
-import SingleOperandExpression from './expression/SingleOperandExpression'
+import ExpressionOperand from './expression/ExpressionOperand'
 
 export { default as Operand } from './expression/Operand';
 export { default as ExpressionError } from './expression/ExpressionError';
-export { default as SingleOperandExpression } from './expression/SingleOperandExpression';
+export { default as ExpressionOperand } from './expression/ExpressionOperand';
 
 var expression = {
         factories:[],
@@ -90,7 +90,7 @@ var expression = {
 
             var op = null;
             if(num.indexOf('~') == '0') {
-                op = new SingleOperandExpression(input, Operand.parse(num.substring(1)), '~');
+                op = new ExpressionOperand(input, Operand.parse(num.substring(1)), '~');
             }
             else {
                 op = Operand.parse(num);
@@ -99,7 +99,7 @@ var expression = {
             if(sign == null) {
                 return op;
             } else {
-                return new SingleOperandExpression(input, op, sign);
+                return new ExpressionOperand(input, op, sign);
             }
         },
         normalizeString: function (string) {

@@ -1,4 +1,4 @@
-import { Operand, SingleOperandExpression } from '../../../expression';
+import { Operand, ExpressionOperand } from '../../../expression';
 
 export default class BitwiseExpressionViewModel {
 
@@ -74,12 +74,12 @@ export default class BitwiseExpressionViewModel {
     };
 
     addExpression(expression) {
-        this.maxNumberOfBits = Math.max(expression.operand1.apply().getLengthInBits(), this.maxNumberOfBits);
+        this.maxNumberOfBits = Math.max(expression.operand.apply().getLengthInBits(), this.maxNumberOfBits);
         
         this.items.push({ 
             sign: expression.sign, 
-            label: this.getLabel(expression.operand1),
-            operand: expression.operand1,
+            label: this.getLabel(expression.operand),
+            operand: expression.operand,
             allowFlipBits: this.allowFlipBits
         });
     };
@@ -87,7 +87,7 @@ export default class BitwiseExpressionViewModel {
     addShiftExpressionResult(expression, resultOperand) {
         this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({
-            sign: expression.sign + expression.operand1.toString(),
+            sign: expression.sign + expression.operand.toString(),
             css: 'expression-result',
             operand: resultOperand,
             allowFlipBits: false

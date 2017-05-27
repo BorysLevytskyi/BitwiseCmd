@@ -1,5 +1,5 @@
 import React from 'react';
-import { Operand, ListOfNumbersExpression, SingleOperandExpression, MultipleOperandsExpression } from '../../expression';
+import { Operand, ListOfNumbersExpression, ExpressionOperand, MultipleOperandsExpression } from '../../expression';
 import formatter from '../../formatter';
 import BinaryStringView from './BinaryStringView';
 import BitwiseExpressionViewModel from './models/BitwiseExpressionViewModel';
