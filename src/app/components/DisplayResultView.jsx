@@ -5,7 +5,7 @@ import UnknownCommandResult from '../models/UnknownCommandResult';
 import HelpResultView from './results/HelpResultView';
 import AboutResultView from './results/AboutResultView';
 import ExpressionResult from '../models/ExpressionResult';
-import ExpressionResultView from './results/ExpressionResultView';
+import BitwiseOperationExpressionView from './results/BitwiseOperationExpressionView';
 import WhatsnewResult from '../models/WhatsnewResult';
 import WhatsnewResultView from './results/WhatsnewResultView';
 import ErrorResult from '../models/ErrorResult';
@@ -32,7 +32,7 @@ export default class DisplayResult extends React.Component {
         }
 
         if(result instanceof ExpressionResult) {
-            return <ExpressionResultView result={result} emphasizeBytes={this.props.appState.emphasizeBytes} /> 
+            return <BitwiseOperationExpressionView expression={result.expression} emphasizeBytes={this.props.appState.emphasizeBytes} /> 
         }
 
         if(result instanceof WhatsnewResult) {
