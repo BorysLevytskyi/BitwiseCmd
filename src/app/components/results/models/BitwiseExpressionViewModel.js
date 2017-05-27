@@ -1,9 +1,17 @@
 export default class BitwiseExpressionViewModel {
 
-    constructor({ emphasizeBytes = false } = {}) {
+    constructor({ emphasizeBytes = false, allowFlipBits = false } = {}) {
         this.emphasizeBytes = emphasizeBytes;
         this.items = [];
         this.maxNumberOfBits = 0;
+        this.allowFlipBits = allowFlipBits === true;
+    }
+
+    static buildListOfNumbers(expr, config) {
+        var model = new BitwiseExpressionViewModel(config);
+        expr.numbers.forEach(op => model.addOperand(op));
+        model.maxNumberOfBits = BitwiseExpressionViewModel.getNumberOfBits(model.maxNumberOfBits, model.emphasizeBytes);
+        return model;
     }
 
     static buildMultiple (expr, config) {
@@ -46,7 +54,8 @@ export default class BitwiseExpressionViewModel {
             label: this.getLabel(operand), 
             bin: operand.bin, 
             other: operand.other, 
-            css: ''});
+            css: '',
+            operand: operand});
     };
 
     addExpression(expression) {
@@ -56,7 +65,8 @@ export default class BitwiseExpressionViewModel {
             label: this.getLabel(expression.operand1), 
             bin: expression.operand1.bin, 
             other: expression.operand1.other, 
-            css: ''
+            css: '',
+            operand: expression.operand1
         });
     };
 
@@ -67,7 +77,8 @@ export default class BitwiseExpressionViewModel {
             label: this.getLabel(resultOperand),
             bin: resultOperand.bin,
             other: resultOperand.other,
-            css: 'expression-result'});
+            css: 'expression-result',
+            operand: resultOperand});
     };
 
     addExpressionResult(operand) {
@@ -77,7 +88,8 @@ export default class BitwiseExpressionViewModel {
             label: this.getLabel(operand), 
             bin: operand.bin, 
             other: operand.other, 
-            css: 'expression-result'});
+            css: 'expression-result',
+            operand: operand});
     };
 
     getLabel (op) {
