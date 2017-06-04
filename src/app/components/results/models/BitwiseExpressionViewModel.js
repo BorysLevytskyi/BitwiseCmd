@@ -17,7 +17,7 @@ export default class BitwiseExpressionViewModel {
     }
 
     static buildMultiple (expr, config) {
-        console.log('build: ', expr);
+        // console.log('build: ', expr);
         var op = expr.expressions[0],
             i = 0, l = expr.expressions.length,
             ex, m = new BitwiseExpressionViewModel(config);
@@ -28,7 +28,7 @@ export default class BitwiseExpressionViewModel {
             if(ex instanceof Operand) {
                 m.addOperand(ex);
                 cur = ex;
-                console.log('cur is ', cur)
+                // console.log('cur is ', cur)
                 continue;
             }
 
@@ -40,7 +40,7 @@ export default class BitwiseExpressionViewModel {
                 cur = notResult;
             }
             else if(ex.isShiftExpression){
-                console.log('cur is ', cur)
+                // console.log('cur is ', cur)
                 cur = ex.apply(cur);
                 m.addShiftExpressionResult(ex, cur);
             } else {
