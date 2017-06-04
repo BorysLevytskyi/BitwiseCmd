@@ -13,10 +13,10 @@ export default class ExpressionOperand {
     apply(operand) {
          if (operand instanceof ExpressionOperand) {
              console.error("value shouldnt be expression", value);
-            throw new Error('value shouldnt be expression'); 
+             throw new Error('value shouldnt be expression'); 
          }
 
-         console.log('operand', operand);
+         // console.log('operand', operand);
 
           var str = '';
           if(this.sign == '~'){
@@ -25,11 +25,10 @@ export default class ExpressionOperand {
               str = operand.value + this.sign + this.operand.apply().value;
           }
 
-         console.log('eval:' + str, this); 
+         // console.log('eval:' + str, this); 
          const resultValue = eval(str);
-
          var resultOp = Operand.create(eval(str), this.operand.kind || this.operand.operand.kind);
-         console.log(resultValue, resultOp);
+         // console.log(resultValue, resultOp);
 
          return resultOp;
     };

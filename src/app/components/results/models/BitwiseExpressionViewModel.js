@@ -32,6 +32,7 @@ export default class BitwiseExpressionViewModel {
                 continue;
             }
 
+            // If it a single NOT expression
             if(ex.isNotExpression) {
                 m.addExpression(ex);
                 var notResult = ex.apply();

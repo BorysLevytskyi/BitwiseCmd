@@ -86,8 +86,8 @@ var expression = {
             return new MultipleOperandsExpression(normalizedString, operands)
         },
         parseMatch: function (m) {
-            console.log('match');
-            console.log(m);
+            // console.log('match');
+            // console.log(m);
             var input = m[0],
                 sign = m[1],
                 num = m[2];
@@ -111,15 +111,8 @@ var expression = {
         }
     });
 
-// Expressions like ~1
-
-
-// Expression like 1|2 or 4^5
-
-
 
 export var parser = expression;
-
 
 export class Parser {
     constructor(input, pos) {
