@@ -3,10 +3,10 @@ export default class AppState {
         this.emphasizeBytes = persistData.emphasizeBytes || true;
         this.commandResults = [];
         this.handlers = [];
-        this.uiTheme = persistData.uiTheme || 'dark';
+        this.uiTheme = persistData.uiTheme || 'midnight';
         this.debugMode = false;
 
-        this.version = 3;
+        this.version = 4;
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version && this.version > this.persistedVersion;
     }
@@ -16,7 +16,7 @@ export default class AppState {
         this.triggerChanged();
     }
 
-    clearCommmandResults() {
+    clearCommandResults() {
         this.commandResults = [];
         this.triggerChanged();
     }

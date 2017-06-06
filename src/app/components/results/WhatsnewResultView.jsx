@@ -5,7 +5,11 @@ export default class WhatsnewResultView extends React.Component {
     render() {
         return <div className="changelog">
                     <h3>Changelog</h3>
-                     <div className="item item-new">
+                    <div className="item item-new">
+                        <p><span className="soft date">Jun 6th, 2017</span> <br/>
+                        Added <code><CommandLink text="guid" /></code> command. Use it for generating v4 GUIDs </p>
+                    </div>
+                    <div className="item">
                         <p><span className="soft date">May 27th, 2017</span> <br/>
                         Added support of binary number notation (e.g. <code><CommandLink text="0b10101" /></code>). </p>
                     </div>  

@@ -8,8 +8,6 @@ import StringResult from './models/StringResult';
 import * as expression from './expression';
 import uuid from 'uuid/v4';
 
-console.log(uuid);
-
 var cmdConfig = {};
 
 export default {
@@ -20,7 +18,7 @@ export default {
                     appState.addCommandResult(new HelpResult(c.input));                
                 },
                 'clear': function() {
-                    appState.clearCommmandResults();
+                    appState.clearCommandResults();
                 },
                 'em': function() {
                     appState.toggleEmphasizeBytes();

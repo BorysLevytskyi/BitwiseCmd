@@ -40,6 +40,8 @@ describe('when application starts', function() {
             .then(function() { return sutPage.executeExpression('1|2&3|5 |5')})
             .then(function() { return sutPage.executeExpression('dark')})
             .then(function() { return sutPage.executeExpression('light')})
+            .then(function() { return sutPage.executeExpression('midnight')})
+            .then(function() { return sutPage.executeExpression('guid')})
             .then(function() { return sutPage.shouldHaveNoErrors(); });
     });
 
