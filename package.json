@@ -54,6 +54,7 @@
     "body-parser": "^1.15.2",
     "loglevel": "^1.4.1",
     "react": "^15.4.0",
-    "react-dom": "^15.4.0"
+    "react-dom": "^15.4.0",
+    "uuid": "^3.0.1"
   }
 }

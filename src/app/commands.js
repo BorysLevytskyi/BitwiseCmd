@@ -4,7 +4,11 @@ import UnknownCommandResult from './models/UnknownCommandResult';
 import ExpressionResult from './models/ExpressionResult';
 import ErrorResult from './models/ErrorResult';
 import WahtsnewResult from './models/WhatsnewResult';
+import StringResult from './models/StringResult';
 import * as expression from './expression';
+import uuid from 'uuid/v4';
+
+console.log(uuid);
 
 var cmdConfig = {};
 
@@ -35,6 +39,9 @@ export default {
                 },
                 'whatsnew': function(c) {
                     appState.addCommandResult(new WahtsnewResult(c.input));
+                },
+                'guid': function(c) {
+                    appState.addCommandResult(new StringResult(c.input, uuid()))
                 },
                 '-notrack': function () {}, 
                 '-debug': function() {

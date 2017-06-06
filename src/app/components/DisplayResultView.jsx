@@ -9,6 +9,8 @@ import BitwiseOperationExpressionView from './results/BitwiseOperationExpression
 import WhatsnewResult from '../models/WhatsnewResult';
 import WhatsnewResultView from './results/WhatsnewResultView';
 import ErrorResult from '../models/ErrorResult';
+import StringResult from '../models/StringResult';
+
 import * as expression from '../expression';
 
 export default class DisplayResult extends React.Component {
@@ -37,6 +39,10 @@ export default class DisplayResult extends React.Component {
 
         if(result instanceof WhatsnewResult) {
             return <WhatsnewResultView />
+        }
+
+        if(result instanceof StringResult) {
+            return <p>{result.value}</p>
         }
 
         if (result instanceof ErrorResult) {
