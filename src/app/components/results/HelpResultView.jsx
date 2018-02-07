@@ -16,8 +16,8 @@ export default class HelpResultView extends React.Component {
                                     <li><code><CommandLink text="help" /></code> — display this help</li>
                                     <li><code><CommandLink text="whatsnew" /></code> — display changelog</li>
                                     <li><code><CommandLink text="em" /></code> — turn On/Off Emphasize Bytes</li>
-                                    <li><code><CommandLink text="light" /></code> — set Dark theme</li>
-                                    <li><code><CommandLink text="dark" /></code> — set Light theme</li>
+                                    <li><code><CommandLink text="light" /></code> — set Light theme</li>
+                                    <li><code><CommandLink text="dark" /></code> — set Dark theme</li>
                                     <li><code><CommandLink text="midnight" /></code> — set Midnight theme</li>
                                     <li><code><CommandLink text="about" /></code> — about the app</li>
                                     <li><code><CommandLink text="guid" /></code> — generate <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_.28random.29">v4</a> GUID</li>
