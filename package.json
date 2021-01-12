@@ -1,60 +1,47 @@
 {
-  "name": "BitwiseCmd",
-  "version": "1.0.0",
-  "description": "Bitwise Operations Console",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack -p && rm -rf ./BitwiseCmdPages/* && cp ./src/index.html ./BitwiseCmdPages && cp ./src/*.js ./BitwiseCmdPages && cp ./src/bundle.js.map ./BitwiseCmdPages && cp -r ./src/css ./BitwiseCmdPages && cp -r ./src/img ./BitwiseCmdPages && cp -r ./src/css ./BitwiseCmdPages",
-    "stage": "npm run build && cp -r ./BitwiseCmdPages/* ../BitwiseCmdPages",
-    "stage:react": "npm run build && cp -r ./BitwiseCmdPages/* ../BitwiseCmdPages/react",
-    "serve": "webpack-dev-server --content-base ./src",
-    "e2e": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:8080/#clear'",
-    "e2e:stage": "protractor ./tests/e2e.chrome.js --params.appUrl='http://localhost:3000/#clear'",
-    "e2e:prod:old": "protractor ./tests/e2e.chrome.js --params.appUrl='http://bitwisecmd.com/old/#clear||-notrack'",
-    "e2e:prod": "protractor ./tests/e2e.chrome.js --params.appUrl='http://bitwisecmd.com//#clear||-notrack'",
-    "test": "karma start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BorysLevytskyi/BitwiseCmd.git"
-  },
-  "author": "Borys Levytskyi",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/BorysLevytskyi/BitwiseCmd/issues"
-  },
-  "homepage": "https://github.com/BorysLevytskyi/BitwiseCmd",
-  "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-class-properties": "^6.19.0",
-    "babel-plugin-transform-react-jsx": "^6.8.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "grunt-contrib-clean": "latest",
-    "grunt-contrib-copy": "latest",
-    "grunt-contrib-cssmin": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-processhtml": "latest",
-    "jasmine": "latest",
-    "karma": "latest",
-    "karma-jasmine": "latest",
-    "karma-webpack": "latest",
-    "source-map-loader": "^0.1.5",
-    "ts-loader": "^1.0.0"
-  },
+  "name": "bitwisecmd",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@types/react": "^0.14.44",
-    "@types/react-dom": "^0.14.18",
-    "babel-core": "^6.18.2",
-    "babel-loader": "^6.2.8",
-    "babel-plugin-transform-class-properties": "^6.19.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "body-parser": "^1.15.2",
-    "loglevel": "^1.4.1",
-    "react": "^15.4.0",
-    "react-dom": "^15.4.0",
-    "uuid": "^3.0.1"
+    "@types/enzyme": "^3.9.4",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.0.10",
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "@types/uuid": "^3.4.4",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1",
+    "react-test-renderer": "^16.8.6",
+    "typescript": "^3.5.2",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "http-server": "^0.12.3",
+    "wdio-jasmine-framework": "^0.3.8"
   }
 }

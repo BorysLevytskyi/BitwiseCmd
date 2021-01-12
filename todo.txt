@@ -1,2 +1,2 @@
-Unparsable expressions:
-~2|11
+- Bug: ~1|~2
+- add Firefox tests
