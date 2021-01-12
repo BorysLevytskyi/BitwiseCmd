@@ -1,14 +1,15 @@
 (function() {
 
-    var disableAnalytics = localStorage.getItem('trackAnalytics') === 'false' ||  window.location.hash.indexOf('-notrack') > -1
+    var key = 'TrackAnalytics';
+    var disableAnalytics = localStorage.getItem(key) === 'false' ||  window.location.hash.indexOf('-notrack') > -1
 
     if(disableAnalytics) {
-        localStorage.setItem("trackAnalytics", "false");
+        localStorage.setItem(key, "false");
         console.log('Analytics tracking disabled.');
         return;
     }
 
-    if(window.location.host != 'bitwisecmd.com') {
+    if(window.location.host !== 'bitwisecmd.com') {
         console.log("Analytics not tracked. Non-prod host")
         return;
     }
