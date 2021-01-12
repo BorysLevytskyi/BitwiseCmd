@@ -31,9 +31,10 @@ function createAppState(env:string) {
     return appState;
 }
 
-function setupLogger(env: string) {
+function setupLogger(env: Env) {
     if(env != 'prod'){
         log.setLevel("debug");
+        log.debug(`Log level is set to debug. Env: ${env}`)
     } else {
         log.setLevel("warn");
     }
@@ -55,3 +56,4 @@ function executeStartupCommands() {
     startupCommands.forEach(cmd.execute.bind(cmd));
 }
 
+type Env = 'prod' | 'stage';
