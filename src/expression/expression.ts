@@ -117,7 +117,7 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
             num = m[2];
 
         var parsed = null;
-        if(num.indexOf('~') == '0') {
+        if(num.indexOf('~') == 0) {
             parsed = new ExpressionOperand(num, NumericOperand.parse(num.substring(1)), '~');
         }
         else {
