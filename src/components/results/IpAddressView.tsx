@@ -1,5 +1,5 @@
 import React from 'react';
-import { IpAddress } from '../../ipaddress/ip';
+import { IpAddress, OctetNumber } from '../../ipaddress/ip';
 import formatter from '../../core/formatter'
 import BinaryStringView from './BinaryString';
 
@@ -7,27 +7,41 @@ type IpAddressViewProps = {
     ipAddress: IpAddress
 };
 
-function IpAddressView(props: IpAddressViewProps) {
+export class IpAddressView extends React.Component<IpAddressViewProps> 
+{
     
-    const ip = props.ipAddress;
-    const em = false;
-    const alloweFlipBits = false;
-
-    return <div>
-        <table>
-            {octet(ip.firstByte)}
-            {octet(ip.secondByte)}
-            {octet(ip.thirdByte)}
-            {octet(ip.fourthByte)}
-        </table>
+    render() {
         
-    </div>
+        const ip = this.props.ipAddress;
 
-    function octet(number: number) {
+        return <div>
+            <table>
+                {this.octet(ip.firstByte, 1)}
+                {this.octet(ip.secondByte, 2)}
+                {this.octet(ip.thirdByte, 3)}
+                {this.octet(ip.fourthByte, 4)}
+            </table>
+            
+        </div>
+    }
+
+    octet(number: number, octetNumber: OctetNumber) {
         return <tr>
-            <td>{number}</td>
-            <td><BinaryStringView binaryString={fmt(number)} key={2} emphasizeBytes={false} allowFlipBits={false} /></td>
+        <td>{number}</td>
+            <td>
+                <BinaryStringView 
+                    binaryString={fmt(number)} 
+                    key={2} 
+                    emphasizeBytes={false} 
+                    allowFlipBits={true} 
+                    onFlipBit={e => this.onFlippedBit(e.newBinaryString, octetNumber)} />
+            </td>
         </tr>
+    }
+    
+    onFlippedBit(binaryString: string, number: OctetNumber) {
+        this.props.ipAddress.setOctet(number, parseInt(binaryString, 2));
+        this.forceUpdate();
     }
 };
 
