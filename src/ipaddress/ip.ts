@@ -39,7 +39,7 @@ export class IpAddress {
     setOctet(octet: OctetNumber, value : number)  {
         switch(octet) {
             case 1:
-               return new IpAddress(this.firstByte, this.secondByte, this.thirdByte, this.fourthByte)
+                this.firstByte = value;
                 break;
             case 2:
                 this.secondByte = value;
