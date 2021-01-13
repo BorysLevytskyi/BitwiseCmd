@@ -1,8 +1,8 @@
 import React from 'react';
-import { IpAddress, OctetNumber } from '../../ipaddress/ip';
+import { IpAddress, OctetNumber, getNetworkClass } from '../../ipaddress/ip';
 import formatter from '../../core/formatter'
 import BinaryStringView from './BinaryString';
-
+import './IpAddressView.css';
 type IpAddressViewProps = {
     ipAddress: IpAddress
 };
@@ -31,23 +31,14 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
                         <td>{this.bin(ip.thirdByte, 3)}</td>
                         <td>{this.bin(ip.fourthByte, 4)}</td>
                     </tr>
+                    <tr>
+                        <td colSpan={2} className="ip-address-info">
+                            <a href="https://www.wikiwand.com/en/Classful_network" target="_blank">Network Class: {getNetworkClass(this.props.ipAddress).toUpperCase()}</a>
+                        </td>
+                    </tr>
                 </tbody>
-            </table>
-            
+            </table>            
         </div>
-    }
-
-    octet(number: number, octetNumber: OctetNumber) {
-        return <tr>
-        <td>{number}</td>
-            <td>
-                <BinaryStringView 
-                    binaryString={fmt(number)} 
-                    emphasizeBytes={false} 
-                    allowFlipBits={true} 
-                    onFlipBit={e => this.onFlippedBit(e.newBinaryString, octetNumber)} />
-            </td>
-        </tr>
     }
 
     bin(value: number, octetNumber: OctetNumber) {

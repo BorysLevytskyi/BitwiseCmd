@@ -2,7 +2,7 @@ import HelpResult from './models/HelpResult';
 import AboutResult from './models/AboutResult';
 import UnknownCommandResult from './models/UnknownCommandResult';
 import ExpressionResult from './models/ExpressionResult';
-import ErrorResult from './models/ErrorResult';
+import {UnhandledErrorResult, ErrorResult} from './models/ErrorResults';
 import WahtsnewResult from './models/WhatsnewResult';
 import StringResult from './models/StringResult';
 import * as expression from './expression/expression';
@@ -10,7 +10,7 @@ import uuid from 'uuid/v4';
 import { CommandInput, CmdShell } from './core/cmd';
 import { ExpressionInput } from './expression/expression-interfaces';
 import AppState from './core/AppState';
-import {ipAddressParser} from './ipaddress/ip'
+import {InvalidIpAddress, IpAddress, ipAddressParser} from './ipaddress/ip'
 import IpAddressResult from './models/IpAddressResult';
 
 export default {
@@ -40,7 +40,12 @@ export default {
             canHandle: (input:string) => ipAddressParser.parse(input) != null,
             handle: function(c: CommandInput) {
                 var ipAddress = ipAddressParser.parse(c.input);
-                appState.addCommandResult(new IpAddressResult(c.input, ipAddress!));
+
+                if(ipAddress instanceof IpAddress)
+                    appState.addCommandResult(new IpAddressResult(c.input, ipAddress as IpAddress));
+
+                if(ipAddress instanceof InvalidIpAddress)
+                    appState.addCommandResult(new ErrorResult(c.input, `${c.input} value doesn't fall within the valid range of the IP address space`))
             }         
         })
 
@@ -59,6 +64,6 @@ export default {
             handle: (c: CommandInput) => appState.addCommandResult(new UnknownCommandResult(c.input))
         });
 
-        cmd.onError((input: string, err: Error) => appState.addCommandResult(new ErrorResult(input, err)));
+        cmd.onError((input: string, err: Error) => appState.addCommandResult(new UnhandledErrorResult(input, err)));
     }
  }
