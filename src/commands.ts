@@ -10,6 +10,8 @@ import uuid from 'uuid/v4';
 import { CommandInput, CmdShell } from './core/cmd';
 import { ExpressionInput } from './expression/expression-interfaces';
 import AppState from './core/AppState';
+import {ipAddressParser} from './ipaddress/ip'
+import IpAddressResult from './models/IpAddressResult';
 
 export default {
     initialize (cmd: CmdShell, appState: AppState) {
@@ -32,11 +34,21 @@ export default {
             appState.addCommandResult(new StringResult(c.input, `Debug Mode: ${appState.debugMode}`))
         });            
 
+
+        // Ip Addresses
+        cmd.command({
+            canHandle: (input:string) => ipAddressParser.parse(input) != null,
+            handle: function(c: CommandInput) {
+                var ipAddress = ipAddressParser.parse(c.input);
+                appState.addCommandResult(new IpAddressResult(c.input, ipAddress!));
+            }         
+        })
+
+        // Bitwise Expressions
         cmd.command({
             canHandle: (input:string) => expression.parser.canParse(input),
             handle: function(c: CommandInput) {
                 var expr = expression.parser.parse(c.input);
-                appState.toggleDebugMode();
                 appState.addCommandResult(new ExpressionResult(c.input, expr as ExpressionInput));
             }         
         })

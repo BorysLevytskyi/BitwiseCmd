@@ -9,9 +9,11 @@ import WhatsnewResult from '../models/WhatsnewResult';
 import WhatsnewResultView from './results/WhatsNewResultView';
 import ErrorResult from '../models/ErrorResult';
 import StringResult from '../models/StringResult';
+import IpAddressView from './results/IpAddressView';
 
 import CommandResult from '../models/CommandResult';
 import AppState from '../core/AppState';
+import IpAddressResult from '../models/IpAddressResult';
 
 type DisplayResultProps = {
     content : CommandResult,
@@ -58,6 +60,12 @@ export default class DisplayResult extends React.Component<DisplayResultProps> {
             return <div className="result">
                     <div className="error">(X_X) Ooops.. Something ain' right: <strong>{result.error.message}</strong></div>
                </div>
+        }
+
+        if(result instanceof IpAddressResult) {
+            const ipResult = result as IpAddressResult;
+
+            return <IpAddressView ipAddress={ipResult.ipAddress} />
         }
 
         return <div className="result">

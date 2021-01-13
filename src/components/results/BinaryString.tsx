@@ -3,7 +3,7 @@ import React from 'react';
 export type BinaryStringViewProps = {
     allowFlipBits: boolean;
     binaryString: string;
-    onFlipBit: (input: FlipBitEventArg) => void;
+    onFlipBit?: (input: FlipBitEventArg) => void;
     emphasizeBytes: boolean;
 };
 

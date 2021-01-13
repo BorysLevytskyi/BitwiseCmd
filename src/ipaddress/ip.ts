@@ -1,6 +1,6 @@
 import { runInThisContext } from "vm";
 
-const ipV4Rregex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/gi;
+const ipV4Rregex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/;
 
 const ipAddressParser = {
     parse: function(input: string) : IpAddress | null {
