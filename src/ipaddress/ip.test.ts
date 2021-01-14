@@ -1,12 +1,16 @@
-import {IpAddress, ipAddressParser, getNetworkClass, ValueOutOfRange, IpAddressWithSubnetMask} from './ip';
+import {IpAddress, ipAddressParser, getNetworkClass, ParsingError, IpAddressWithSubnetMask, ParsedIpObject} from './ip';
 
 
 describe('parser tests', () => {
     it('can parse correct ip address', () => {
         const actual = ipAddressParser.parse('127.1.2.3');
-        const expected = new IpAddress(127, 1, 2, 3);
         expect(actual).not.toBe(null);
-        expect(actual!.toString()).toBe(expected.toString());
+        expect(actual).not.toBeInstanceOf(ParsingError);
+
+        const obj = (actual as ParsedIpObject[])[0];
+        const expected = new IpAddress(127, 1, 2, 3);
+        expect(obj).not.toBe(null);
+        expect(obj.toString()).toBe(expected.toString());
     });
 
     it('cannot parse incorrect ip address', () => {
@@ -15,19 +19,40 @@ describe('parser tests', () => {
     });
 
     it('should parse invalid ip address', () => {
-        expect(ipAddressParser.parse('256.0.0.0')).toBeInstanceOf(ValueOutOfRange);
-        expect(ipAddressParser.parse('0.256.0.0')).toBeInstanceOf(ValueOutOfRange);
-        expect(ipAddressParser.parse('0.0.256.0')).toBeInstanceOf(ValueOutOfRange);
-        expect(ipAddressParser.parse('0.0.0.256')).toBeInstanceOf(ValueOutOfRange);
+        expect(ipAddressParser.parse('256.0.0.0')).toBeInstanceOf(ParsingError);
+        expect(ipAddressParser.parse('0.256.0.0')).toBeInstanceOf(ParsingError);
+        expect(ipAddressParser.parse('0.0.256.0')).toBeInstanceOf(ParsingError);
+        expect(ipAddressParser.parse('0.0.0.256')).toBeInstanceOf(ParsingError);
+        expect(ipAddressParser.parse('0.0.0.255 asd')).toBeInstanceOf(ParsingError);
+        expect(ipAddressParser.parse('0.0.0.255/99')).toBeInstanceOf(ParsingError);
     });
 
     it('parses correct ip and subnet mask', () => {
-        const result = ipAddressParser.parse('127.0.0.1/24');
-        expect(result).toBeInstanceOf(IpAddressWithSubnetMask);
-        expect(result!.toString()).toBe('127.0.0.1/24');
+        const actual = ipAddressParser.parse('127.0.0.1/24');
+        
+        expect(actual).not.toBe(null);
+        expect(actual).not.toBeInstanceOf(ParsingError);
 
-        const x = result as IpAddressWithSubnetMask;
-        expect(x.maskBits).toBe(24);
+        const obj = (actual as ParsedIpObject[])[0];
+        expect(obj).toBeInstanceOf(IpAddressWithSubnetMask);
+        expect(obj!.toString()).toBe('127.0.0.1/24');
+        expect((obj as IpAddressWithSubnetMask).maskBits).toBe(24);
+    });
+
+    it('parses list of ip addresses', () => {
+        const actual = ipAddressParser.parse('127.0.0.1/24 255.255.1.1');
+        
+        expect(actual).not.toBe(null);
+        expect(actual).not.toBeInstanceOf(ParsingError);
+
+        const first = (actual as ParsedIpObject[])[0];
+        expect(first).toBeInstanceOf(IpAddressWithSubnetMask);
+        expect(first!.toString()).toBe('127.0.0.1/24');
+        expect((first as IpAddressWithSubnetMask).maskBits).toBe(24);
+
+        const second = (actual as ParsedIpObject[])[1];
+        expect(second).toBeInstanceOf(IpAddress);
+        expect(second!.toString()).toBe('255.255.1.1');
     });
 });
 

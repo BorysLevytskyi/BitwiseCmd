@@ -3,16 +3,51 @@ import formatter from '../core/formatter';
 
 export type OctetNumber = 1 | 2 | 3 | 4;
 export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
+export type ParsedIpObject = IpAddress | IpAddressWithSubnetMask;
 
 const ipAddressParser = {
-    parse: function(input: string) : IpAddress | IpAddressWithSubnetMask | ValueOutOfRange | null {
+    parse: function(input: string) : ParsedIpObject[] | ParsingError | null {
 
-        const ipV4Regex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})(\/\d{1,2})?$/;
-        const matches = ipV4Regex.exec(input);
-
-        if(matches == null || matches.length === 0)
+        const matches = this.getMaches(input);
+        const correctInputs = matches.filter(m => m.matches != null);
+        const incorrectInputs = matches.filter(m => m.matches == null);
+        
+        if(correctInputs.length == 0)
             return null;
 
+        if(incorrectInputs.length > 0) {
+                return new ParsingError(`Values ${incorrectInputs.map(v => v.input).join(',')} were not recognized as valid ip address values`);
+        }
+
+        const parsedObjects = matches.map(m => this.parseSingle(m.matches!, m.input));
+        const parsingErrors = parsedObjects.filter(p => p instanceof ParsingError);
+
+        if(parsingErrors.length > 0) {
+            return parsingErrors[0] as ParsingError;
+        }
+
+        return parsedObjects as ParsedIpObject[];
+        
+    },
+
+    getMaches(input : string) : { matches: RegExpExecArray | null, input: string }[] {
+
+        return input.
+            replace(/[\t\s]+/g, ' ')
+                .split(' ')
+                .filter(s => s.length>0)
+                .map(s => {
+                    const ipV4Regex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})(\/\d{1,2})?$/;
+                    const matches = ipV4Regex.exec(s);
+                    
+                    if(matches == null || matches.length === 0)
+                        return {matches: null, input: s};
+                    
+                    return {matches, input: s};
+                });
+    },
+
+    parseSingle(matches : RegExpExecArray, input: string) : ParsedIpObject | ParsingError {
         const invalid = (n: number) => n < 0 || n > 255;
     
         const first = parseInt(matches[1]);
@@ -21,7 +56,7 @@ const ipAddressParser = {
         const fourth = parseInt(matches[4]);
 
         if(invalid(first) || invalid(second) || invalid(third) || invalid(fourth))
-            return new ValueOutOfRange(`${input} value doesn't fall within the valid range of the IP address space`);
+            return new ParsingError(`${input} value doesn't fall within the valid range of the IP address space`);
 
         const ipAddress = new IpAddress(first, second, third, fourth);
 
@@ -30,7 +65,7 @@ const ipAddressParser = {
             const maskBits = parseInt(maskPart);
 
             if(maskBits > 32) {
-                return new ValueOutOfRange('Subnet mask value is out of range');
+                return new ParsingError('Subnet mask value is out of range');
             }
 
             return new IpAddressWithSubnetMask(ipAddress, maskBits);
@@ -40,10 +75,10 @@ const ipAddressParser = {
     }
 }
 
-export class ValueOutOfRange {
-    message: string;
+export class ParsingError {
+    errorMessage: string;
     constructor(message: string) {
-        this.message = message;
+        this.errorMessage = message;
     }
 }
 
