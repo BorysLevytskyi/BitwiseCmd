@@ -1,9 +1,9 @@
 export default {
     encodeHash: function(input:string):string {
-        return encodeURI(input.trim().replace(/\s/g,','));
+        return encodeURIComponent(input.trim().replace(/\s/g,','));
     },
     decodeHash: function(hashValue:string):string {
-        return decodeURI(hashValue).replace(/^\#/, '').replace(/,/g,' ');
+        return decodeURIComponent(hashValue.replace(/^\#/, '')).replace(/,/g,' ');
     },
     getArgs: function (hashValue:string) : string[] {
 
@@ -19,17 +19,6 @@ export default {
 };
 
 function splitHashList(str: string) : string[] {
-    var values = [];
 
-    if(str.indexOf('||')) {
-    str.split('||').forEach(function (v) {
-        if (v.length > 0) {
-            values.push(v);
-        }
-    });
-    } else {
-        values.push(str);
-    }
-
-    return values;
+    return str.split('||').filter(s => s.length > 0);
 }

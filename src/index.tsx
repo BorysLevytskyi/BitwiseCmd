@@ -53,6 +53,8 @@ function executeStartupCommands() {
         startupCommands = hashArgs;
     }
 
+    log.debug('Executing startup commands', startupCommands);
+
     startupCommands.forEach(cmd.execute.bind(cmd));
 }
 
