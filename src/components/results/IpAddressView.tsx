@@ -21,9 +21,12 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
         return <table className="expression">
             <tbody>
                 {this.props.ipAddresses.map((ip, i) => <tr key={i}>
-                        <td><strong>{ip.toString()}</strong></td>
+                        <td className="label"><strong>{ip.toString()}</strong></td>
                         <td>
-                            {this.bin(ip.firstByte, 1, ip)}.{this.bin(ip.secondByte, 2, ip)}.{this.bin(ip.thirdByte, 3, ip)}.{this.bin(ip.fourthByte, 4, ip)}
+                            {this.bin(ip.firstByte, 1, ip)}<span className="soft">.</span>
+                            {this.bin(ip.secondByte, 2, ip)}<span className="soft">.</span>
+                            {this.bin(ip.thirdByte, 3, ip)}<span className="soft">.</span>
+                            {this.bin(ip.fourthByte, 4, ip)}
                         </td>
                     </tr>)}
             </tbody>
@@ -61,7 +64,8 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
             binaryString={fmt(value)} 
             key={octetNumber} 
             emphasizeBytes={false} 
-            allowFlipBits={true} 
+            allowFlipBits={true}
+            className={`octet-${octetNumber}`}
             onFlipBit={e => this.onFlippedBit(e.newBinaryString, octetNumber, ip)} />;
     }
     

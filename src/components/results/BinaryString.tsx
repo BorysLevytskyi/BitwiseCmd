@@ -5,18 +5,19 @@ export type BinaryStringViewProps = {
     binaryString: string;
     onFlipBit?: (input: FlipBitEventArg) => void;
     emphasizeBytes: boolean;
+    className?:string
 };
 
 export type FlipBitEventArg = {
     index: number;
     binaryString: string;
     $event: any;
-    newBinaryString: string
+    newBinaryString: string,    
 };
 
 export default class BinaryStringView extends React.Component<BinaryStringViewProps> {
     render() {
-        return <span>{this.getChildren()}</span>
+        return <span className={this.props.className}>{this.getChildren()}</span>
     }
 
     onBitClick(index: number, e : any) {
