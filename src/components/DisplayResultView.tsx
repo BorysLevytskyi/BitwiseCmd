@@ -9,7 +9,7 @@ type DisplayResultProps = {
     key: number
 }
 
-export default class DisplayResult extends React.Component<DisplayResultProps> {
+export default class DisplayResultView extends React.Component<DisplayResultProps> {
     render() {
 
         return <div className="result">

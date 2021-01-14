@@ -10,6 +10,7 @@ export type PersistedAppData = {
 }
 
 export type CommandResultView = {
+    key: number,
     input: string,
     view: JSX.Element
 };
@@ -41,8 +42,9 @@ export default class AppState {
     }
 
     addCommandResult(input : string, view : JSX.Element) {
-        this.commandResults.unshift({input, view});
-        log.debug("result added", view);
+        const key = generateKey();
+        this.commandResults.unshift({key, input, view});
+        log.debug(`command result added: ${input}`);
         this.triggerChanged();
     }
 
@@ -83,3 +85,7 @@ export default class AppState {
         }
     }
 };
+
+function generateKey() : number {
+    return Math.ceil(Math.random()*10000000) ^ Date.now(); // Because why the hell not...
+}
