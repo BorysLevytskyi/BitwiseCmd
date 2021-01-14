@@ -37,24 +37,24 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
         return <table className="expression">
                 <thead>
                     <tr>
-                        <th>{ip.firstByte}</th>
-                        <th>{ip.secondByte}</th>
-                        <th>{ip.thirdByte}</th>
-                        <th>{ip.fourthByte}</th>
+                        <th className='first-decimal'>{ip.firstByte}</th>
+                        <th className='second-decimal'>{ip.secondByte}</th>
+                        <th className='third-decimal'>{ip.thirdByte}</th>
+                        <th className='fourth-decimal'>{ip.fourthByte}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{this.bin(ip.firstByte, 1, ip)}</td>
-                        <td>{this.bin(ip.secondByte, 2, ip)}</td>
-                        <td>{this.bin(ip.thirdByte, 3, ip)}</td>
-                        <td>{this.bin(ip.fourthByte, 4, ip)}</td>
+                        <td className='first-bin'>{this.bin(ip.firstByte, 1, ip)}</td>
+                        <td className='second-bin'>{this.bin(ip.secondByte, 2, ip)}</td>
+                        <td className='third-bin'>{this.bin(ip.thirdByte, 3, ip)}</td>
+                        <td className='fourth-bin'>{this.bin(ip.fourthByte, 4, ip)}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                         <td colSpan={2} className="ip-address-info">
                             <a href="https://www.wikiwand.com/en/Classful_network" target="_blank">Network Class: {getNetworkClass(ip).toUpperCase()}</a>
                         </td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>;
     }
