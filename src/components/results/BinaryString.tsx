@@ -3,7 +3,7 @@ import React from 'react';
 export type BinaryStringViewProps = {
     allowFlipBits: boolean;
     binaryString: string;
-    onFlipBit: (input: FlipBitEventArg) => void;
+    onFlipBit?: (input: FlipBitEventArg) => void;
     emphasizeBytes: boolean;
 };
 
@@ -11,6 +11,7 @@ export type FlipBitEventArg = {
     index: number;
     binaryString: string;
     $event: any;
+    newBinaryString: string
 };
 
 export default class BinaryStringView extends React.Component<BinaryStringViewProps> {
@@ -19,13 +20,19 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
     }
 
     onBitClick(index: number, e : any) {
-        if(!this.props.allowFlipBits) {
+        if(!this.props.allowFlipBits || !this.props.onFlipBit) {
             return;
         }
 
-        if(this.props.onFlipBit) {
-            this.props.onFlipBit({ index: index, binaryString: this.props.binaryString, $event: e });
+        if(!this.props.onFlipBit) {
+            
         }
+
+        const arr = this.props.binaryString.split('');
+        arr[index] = arr[index] == '0' ? '1' : '0';
+        const newBinaryString = arr.join('');
+
+        this.props.onFlipBit({ index: index, binaryString: this.props.binaryString, $event: e, newBinaryString });        
     }
 
     getChildren() {
