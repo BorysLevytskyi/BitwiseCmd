@@ -22,15 +22,20 @@ function HelpResultView() {
                                 </ul>
                                 </div>
                                 <div className="section">
+                                    <strong className="section-title">Color Themes</strong>
+                                <ul>
+                                    <li><code><CommandLink text="light" /></code> — set Light theme</li>
+                                    <li><code><CommandLink text="dark" /></code> — set Dark theme</li>
+                                    <li><code><CommandLink text="midnight" /></code> — set Midnight theme</li>
+                                </ul>
+                                </div>
+                                <div className="section">
                                     <strong className="section-title">Other Commands</strong>
                                 <ul>
                                     <li><code><CommandLink text="clear" /></code> — clear output pane</li>
                                     <li><code><CommandLink text="help" /></code> — display this help</li>
                                     <li><code><CommandLink text="whatsnew" /></code> — display changelog</li>
                                     <li><code><CommandLink text="em" /></code> — turn On/Off Emphasize Bytes</li>
-                                    <li><code><CommandLink text="light" /></code> — set Light theme</li>
-                                    <li><code><CommandLink text="dark" /></code> — set Dark theme</li>
-                                    <li><code><CommandLink text="midnight" /></code> — set Midnight theme</li>
                                     <li><code><CommandLink text="about" /></code> — about the app</li>
                                     <li><code><CommandLink text="guid" /></code> — generate <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_.28random.29">v4</a> GUID</li>
                                 </ul>
@@ -41,7 +46,7 @@ function HelpResultView() {
                                     <strong className="section-title">Supported Bitwise Operations</strong><br/>
                                     <small>
                                         <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">
-                                            as implemented in JavaScript engine
+                                            as implemented in JavaScript engine of your browser
                                         </a>
                                     </small>
                                     <ul>
