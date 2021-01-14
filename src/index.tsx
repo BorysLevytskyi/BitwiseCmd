@@ -43,7 +43,7 @@ function setupLogger(env: Env) {
 function executeStartupCommands() {
     var hashArgs = hash.getArgs(window.location.hash);
 
-    var startupCommands = ['127.0.0.1']; // ['help', '1|2&6','1 2 4 8 16 32 0b1000000 0x80'];
+    var startupCommands = ['help', '1|2&6','1 2 4 8 16 32 0b1000000 0x80'];
 
     if(appState.wasOldVersion) {
         startupCommands = ["whatsnew"];
