@@ -1,10 +1,10 @@
-import { IpAddress, ipAddressParser } from '../ipaddress/ip';
+import { IpAddress, ipAddressParser, IpAddressWithSubnetMask } from '../ipaddress/ip';
 import CommandResult from './CommandResult';
 
 export default class IpAddressResult extends CommandResult {
-    ipAddress: IpAddress;
-    constructor(input: string, ipAddress: IpAddress) {
+    ipAddresses: IpAddress[];
+    constructor(input: string, ipAddresses: IpAddress[]) {
         super(input);
-        this.ipAddress = ipAddress;
+        this.ipAddresses = ipAddresses;
     }
 }

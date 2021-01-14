@@ -10,8 +10,9 @@ import uuid from 'uuid/v4';
 import { CommandInput, CmdShell } from './core/cmd';
 import { ExpressionInput } from './expression/expression-interfaces';
 import AppState from './core/AppState';
-import {InvalidIpAddress, IpAddress, ipAddressParser} from './ipaddress/ip'
+import {ValueOutOfRange, IpAddress, ipAddressParser, IpAddressWithSubnetMask} from './ipaddress/ip'
 import IpAddressResult from './models/IpAddressResult';
+import { isPrefixUnaryExpression } from 'typescript';
 
 export default {
     initialize (cmd: CmdShell, appState: AppState) {
@@ -39,12 +40,16 @@ export default {
         cmd.command({
             canHandle: (input:string) => ipAddressParser.parse(input) != null,
             handle: function(c: CommandInput) {
-                var ipAddress = ipAddressParser.parse(c.input);
+                var result = ipAddressParser.parse(c.input);
 
-                if(ipAddress instanceof IpAddress)
-                    appState.addCommandResult(new IpAddressResult(c.input, ipAddress as IpAddress));
+                if(result instanceof IpAddress)
+                    appState.addCommandResult(new IpAddressResult(c.input, [result]));
+                
+                if(result instanceof IpAddressWithSubnetMask) {
+                    appState.addCommandResult(new IpAddressResult(c.input, [result.ipAddress, result.createSubnetMaskIp()]));
+                }
 
-                if(ipAddress instanceof InvalidIpAddress)
+                if(result instanceof ValueOutOfRange)
                     appState.addCommandResult(new ErrorResult(c.input, `${c.input} value doesn't fall within the valid range of the IP address space`))
             }         
         })

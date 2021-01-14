@@ -4,10 +4,11 @@ import formatter from '../core/formatter';
 export type OctetNumber = 1 | 2 | 3 | 4;
 export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
 
-const ipV4Rregex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/;
 const ipAddressParser = {
-    parse: function(input: string) : IpAddress | InvalidIpAddress | null {
-        const matches = ipV4Rregex.exec(input);
+    parse: function(input: string) : IpAddress | IpAddressWithSubnetMask | ValueOutOfRange | null {
+
+        const ipV4Regex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})(\/\d{1,2})?$/;
+        const matches = ipV4Regex.exec(input);
 
         if(matches == null || matches.length === 0)
             return null;
@@ -20,17 +21,61 @@ const ipAddressParser = {
         const fourth = parseInt(matches[4]);
 
         if(invalid(first) || invalid(second) || invalid(third) || invalid(fourth))
-            return new InvalidIpAddress(input);
+            return new ValueOutOfRange(`${input} value doesn't fall within the valid range of the IP address space`);
 
+        const ipAddress = new IpAddress(first, second, third, fourth);
 
-        return new IpAddress(first, second, third, fourth)
+        if(matches[5]) {
+            const maskPart = matches[5].substr(1);
+            const maskBits = parseInt(maskPart);
+
+            if(maskBits > 32) {
+                return new ValueOutOfRange('Subnet mask value is out of range');
+            }
+
+            return new IpAddressWithSubnetMask(ipAddress, maskBits);
+        }
+
+        return ipAddress;
     }
 }
 
-export class InvalidIpAddress {
-    input: string;
-    constructor(input: string) {
-        this.input = input;
+export class ValueOutOfRange {
+    message: string;
+    constructor(message: string) {
+        this.message = message;
+    }
+}
+
+export class IpAddressWithSubnetMask {
+    maskBits: number;
+    ipAddress: IpAddress;
+    
+    constructor(ipAddress : IpAddress, maskBits : number) {
+        this.ipAddress = ipAddress;
+        this.maskBits = maskBits;
+    }
+
+    toString() {
+        return `${this.ipAddress.toString()}/${this.maskBits}`;
+    }
+
+    createSubnetMaskIp() : IpAddress {
+
+        const mask = (bits: number) => 255<<(8-bits)&255;
+
+        if(this.maskBits <= 8) {
+            return new IpAddress(mask(this.maskBits), 0, 0, 0);
+        }
+        else if(this.maskBits <= 16) {
+            return new IpAddress(255, mask(this.maskBits-8), 0, 0);
+        }
+        else if(this.maskBits <= 24) {
+            return new IpAddress(255, 255, mask(this.maskBits-16), 0);
+        }
+        else {
+            return new IpAddress(255, 255, 255, mask(this.maskBits-24));
+        }
     }
 }
 

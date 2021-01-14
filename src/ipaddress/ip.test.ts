@@ -1,4 +1,4 @@
-import {IpAddress, ipAddressParser, getNetworkClass, InvalidIpAddress} from './ip';
+import {IpAddress, ipAddressParser, getNetworkClass, ValueOutOfRange, IpAddressWithSubnetMask} from './ip';
 
 
 describe('parser tests', () => {
@@ -15,10 +15,19 @@ describe('parser tests', () => {
     });
 
     it('should parse invalid ip address', () => {
-        expect(ipAddressParser.parse('256.0.0.0')).toBeInstanceOf(InvalidIpAddress);
-        expect(ipAddressParser.parse('0.256.0.0')).toBeInstanceOf(InvalidIpAddress);
-        expect(ipAddressParser.parse('0.0.256.0')).toBeInstanceOf(InvalidIpAddress);
-        expect(ipAddressParser.parse('0.0.0.256')).toBeInstanceOf(InvalidIpAddress);
+        expect(ipAddressParser.parse('256.0.0.0')).toBeInstanceOf(ValueOutOfRange);
+        expect(ipAddressParser.parse('0.256.0.0')).toBeInstanceOf(ValueOutOfRange);
+        expect(ipAddressParser.parse('0.0.256.0')).toBeInstanceOf(ValueOutOfRange);
+        expect(ipAddressParser.parse('0.0.0.256')).toBeInstanceOf(ValueOutOfRange);
+    });
+
+    it('parses correct ip and subnet mask', () => {
+        const result = ipAddressParser.parse('127.0.0.1/24');
+        expect(result).toBeInstanceOf(IpAddressWithSubnetMask);
+        expect(result!.toString()).toBe('127.0.0.1/24');
+
+        const x = result as IpAddressWithSubnetMask;
+        expect(x.maskBits).toBe(24);
     });
 });
 
@@ -56,3 +65,15 @@ describe('getNetworkClass tests', () => {
     });
 });
 
+describe('IpAddressWithSubnetMask tests', () => {
+
+    it('creates subnetmask ip', () => {
+        const ip = new IpAddress(127, 0, 0, 1);
+        expect(new IpAddressWithSubnetMask(ip, 1).createSubnetMaskIp().toString()).toBe('128.0.0.0');
+        expect(new IpAddressWithSubnetMask(ip, 8).createSubnetMaskIp().toString()).toBe('255.0.0.0');
+        expect(new IpAddressWithSubnetMask(ip, 10).createSubnetMaskIp().toString()).toBe('255.192.0.0');
+        expect(new IpAddressWithSubnetMask(ip, 20).createSubnetMaskIp().toString()).toBe('255.255.240.0');
+        expect(new IpAddressWithSubnetMask(ip, 30).createSubnetMaskIp().toString()).toBe('255.255.255.252');
+        expect(new IpAddressWithSubnetMask(ip, 32).createSubnetMaskIp().toString()).toBe('255.255.255.255');
+    });
+});

@@ -71,7 +71,7 @@ export default class DisplayResult extends React.Component<DisplayResultProps> {
         if(result instanceof IpAddressResult) {
             const ipResult = result as IpAddressResult;
 
-            return <IpAddressView ipAddress={ipResult.ipAddress} />
+            return <IpAddressView ipAddresses={ipResult.ipAddresses} />
         }
 
         return <div className="result">
