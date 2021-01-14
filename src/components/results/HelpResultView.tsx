@@ -59,6 +59,12 @@ function HelpResultView() {
                                         <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
                                     </ul>
                                 </div>
+                                <div className="section">
+                                    <strong className="section-title">Tip</strong>
+                                    <p>
+                                        You can click on bits to flip them in number inputs (e.g. <CommandLink text="2 4" />) or IP addresses (e.g. <CommandLink text="192.168.0.0/8"/>)
+                                    </p>
+                                </div>
                           </div>
                      </div>
                  </div>;
