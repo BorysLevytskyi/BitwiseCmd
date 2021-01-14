@@ -9,6 +9,11 @@ export type PersistedAppData = {
     debugMode: boolean | null;
 }
 
+export type CommandResultView = {
+    input: string,
+    view: JSX.Element
+};
+
 export type AppStateChangeHandler = (state: AppState) => void;
 
 export default class AppState {
@@ -17,15 +22,15 @@ export default class AppState {
     emphasizeBytes: boolean;
     debugMode: boolean = false;
     uiTheme: string;
-    handlers: AppStateChangeHandler[];
-    commandResults: any[];
+    changeHandlers: AppStateChangeHandler[];
+    commandResults: CommandResultView[];
     persistedVersion: number;
     wasOldVersion: boolean;
     env: string;    
 
     constructor(persistData : PersistedAppData, env: string) {
         this.commandResults = [];
-        this.handlers = [];
+        this.changeHandlers = [];
         this.uiTheme = persistData.uiTheme || 'midnight';
         this.env = env;
 
@@ -35,9 +40,9 @@ export default class AppState {
         this.debugMode = env !== 'prod' || persistData.debugMode === true;
     }
 
-    addCommandResult(result : any) {
-        this.commandResults.unshift(result);
-        log.debug("result added", result);
+    addCommandResult(input : string, view : JSX.Element) {
+        this.commandResults.unshift({input, view});
+        log.debug("result added", view);
         this.triggerChanged();
     }
 
@@ -52,11 +57,11 @@ export default class AppState {
     }
 
     onChange(handler : AppStateChangeHandler) {
-        this.handlers.push(handler);
+        this.changeHandlers.push(handler);
     }
 
     triggerChanged() {
-        this.handlers.forEach(h => h(this));
+        this.changeHandlers.forEach(h => h(this));
     }
 
     setUiTheme(theme: string) {
