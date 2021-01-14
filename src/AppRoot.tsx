@@ -1,12 +1,11 @@
 import React from 'react';
 import InputBox from './components/InputBox';
 import DisplayResultView from './components/DisplayResultView';
-import AppState from './core/AppState';
+import AppState, { CommandResultView } from './core/AppState';
 import cmd from './core/cmd';
-import CommandResult from './models/CommandResult';
 import log from 'loglevel';
 import Indicators from './components/Indicators';
-import CommandLink from './components/CommandLink';
+import hash from './core/hash';
 
 type AppRootProps = {
     appState: AppState,    
@@ -15,7 +14,7 @@ type AppRootProps = {
 type AppRootState = {
     uiTheme: string,
     emphasizeBytes: boolean,
-    commandResults: CommandResult[]
+    commandResults: CommandResultView[]
 }
 
 export default class AppRoot extends React.Component<AppRootProps, AppRootState> {
@@ -35,7 +34,10 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
 
     getResultViews() : JSX.Element[] {
         log.debug('getting result views')
-        var results = this.state.commandResults.map((r, i) => <DisplayResultView key={i} content={r} input={r.input} inputHash={r.inputHash} appState={this.props.appState} />);
+        var results = this.state.commandResults.map((r, i) => 
+            <DisplayResultView key={r.key}  input={r.input} inputHash={hash.encodeHash(r.input)} appState={this.props.appState}>
+                {r.view}
+            </DisplayResultView>);
         return results;
     }
 
@@ -66,7 +68,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
 
                         <span className="configPnl">
-                            <span id="emphasizeBytes" data-cmd="em" className={"indicator " + this.getIndicator(this.state.emphasizeBytes)} title="Toggle Emphasize Bytes" onClick={e => this.toggleEmphasizeBytes()}>[em]</span>
+                            <span id="emphasizeBytes" data-cmd="em" className={"indicator " + this.getIndicator(this.state.emphasizeBytes)} title="Toggle Emphasize Bytes" onClick={() => this.toggleEmphasizeBytes()}>[em]</span>
                         </span>
                     </div>
 
