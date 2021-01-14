@@ -18,7 +18,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
     }
 
     renderMultipleIps() {
-        return <table>
+        return <table className="expression">
             <tbody>
                 {this.props.ipAddresses.map((ip, i) => <tr key={i}>
                         <td>{ip.toString()}</td>
@@ -31,8 +31,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
     }
 
     renderSingleIp(ip: IpAddress) {
-        return <div>
-            <table>
+        return <table className="expression">
                 <thead>
                     <tr>
                         <th>{ip.firstByte}</th>
@@ -54,8 +53,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
                         </td>
                     </tr>
                 </tbody>
-            </table>            
-        </div>
+            </table>;
     }
 
     bin(value: number, octetNumber: OctetNumber, ip: IpAddress) {
