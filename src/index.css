@@ -6,11 +6,6 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .header-cmd { color: #c5c5c5 }
 
-.top-links { position: absolute; right: 10px; top: 10px; list-style-type: none; margin: 0 }
-.top-links li { float: left; }
-.top-links a { display: inline-block; padding: 10px 15px}
-.top-links .icon { margin-right: 5px; }
-
 .mono { font-family: monospace; font-size: 1.3em }
 .expressionInput { width: 500px; padding: 3px; border: solid 1px lightgray; }
 
@@ -50,19 +45,6 @@ code { font-size: 1.2em; font-weight: bold; }
 #view { padding: 10px}
 
 .cur { color: lightgray; }
-
-.icon { width: 16px; height: 16px; display: inline-block; }
-.light .twitter { background: url('./img/twitter-light.png') }
-.dark .twitter { background: url('./img/twitter-dark.png') }
-.midnight .twitter { background: url('./img/twitter-dark.png') }
-
-.light .feedback { background: url('./img/feedback-light.png') }
-.dark .feedback { background: url('./img/feedback-dark.png') }
-.midnight .feedback { background: url('./img/feedback-dark.png') }
-
-.light .github { background: url('./img/github-light.png') }
-.dark .github { background: url('./img/github-dark.png') }
-.midnight .github { background: url('./img/github-dark.png') }
 
 /* Light */
 .light { background: #fafafa; }
