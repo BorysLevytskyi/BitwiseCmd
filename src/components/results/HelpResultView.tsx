@@ -8,21 +8,21 @@ function HelpResultView() {
                         <div className="panel-container">
                             <div className="left-panel">
                                 <div className="section">
-                                    <strong className="section-title">Bitiwse Calculation Commands</strong>
+                                    <strong className="section-title soft">Bitiwse Calculation Commands</strong>
                                 <ul>
                                     <li><code><CommandLink text="23 | 34" /></code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
                                     <li><code><CommandLink text="23 34" /></code> — type one or more numbers to see their binary representations</li>
                                 </ul>
                                 </div>
                                 <div className="section">
-                                    <strong className="section-title">IP Address Commands</strong>
+                                    <strong className="section-title  soft">IP Address Commands</strong>
                                 <ul>
                                     <li><code><CommandLink text="127.0.0.1" /></code> — enter single or multiple ip addresses (separated by space) to see their binary represenation</li>
                                     <li><code><CommandLink text="192.168.0.1/8" /></code> — subnet mask notiations are support as well</li>
                                 </ul>
                                 </div>
                                 <div className="section">
-                                    <strong className="section-title">Color Themes</strong>
+                                    <strong className="section-title  soft">Color Theme Commands</strong>
                                 <ul>
                                     <li><code><CommandLink text="light" /></code> — set Light theme</li>
                                     <li><code><CommandLink text="dark" /></code> — set Dark theme</li>
@@ -30,7 +30,7 @@ function HelpResultView() {
                                 </ul>
                                 </div>
                                 <div className="section">
-                                    <strong className="section-title">Other Commands</strong>
+                                    <strong className="section-title  soft">Other Commands</strong>
                                 <ul>
                                     <li><code><CommandLink text="clear" /></code> — clear output pane</li>
                                     <li><code><CommandLink text="help" /></code> — display this help</li>
@@ -43,7 +43,7 @@ function HelpResultView() {
                             </div>
                             <div className="right-panel">
                                 <div className="section">
-                                    <strong className="section-title">Supported Bitwise Operations</strong><br/>
+                                    <strong className="section-title soft">Supported Bitwise Operations</strong><br/>
                                     <small>
                                         <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">
                                             as implemented in JavaScript engine of your browser
@@ -60,7 +60,7 @@ function HelpResultView() {
                                     </ul>
                                 </div>
                                 <div className="section">
-                                    <strong className="section-title">Tip</strong>
+                                    <strong className="section-title  soft">Tip</strong>
                                     <p>
                                         You can click on bits to flip them in number inputs (e.g. <CommandLink text="2 4" />) or IP addresses (e.g. <CommandLink text="192.168.0.0/8"/>)
                                     </p>
