@@ -1,0 +1,5 @@
+.help .section {margin-bottom:10px;}
+.help .panel-container {overflow: hidden;}
+.help .left-panel {float:left; margin-right: 20px;}
+.help .right-panel {float:left;}
+.help .section-title {opacity: 0.8;}

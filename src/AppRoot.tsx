@@ -6,6 +6,7 @@ import cmd from './core/cmd';
 import CommandResult from './models/CommandResult';
 import log from 'loglevel';
 import Indicators from './components/Indicators';
+import CommandLink from './components/CommandLink';
 
 type AppRootProps = {
     appState: AppState,    

@@ -1,16 +1,29 @@
 import React from 'react';
 import CommandLink from '../CommandLink';
+import './HelpResultView.css';
 
 function HelpResultView() {
     
         return <div className="help helpResultTpl">
-                        <div style={{overflow: "hidden"}}>
-                            <div style={{float: "left", "marginRight": "20px"}}>
+                        <div className="panel-container">
+                            <div className="left-panel">
                                 <div className="section">
-                                    <strong>Supported Commands</strong>
+                                    <strong className="section-title">Bitiwse Calculation Commands</strong>
                                 <ul>
                                     <li><code><CommandLink text="23 | 34" /></code> — type bitwise expression to see result in binary (only positive integers are supported now)</li>
                                     <li><code><CommandLink text="23 34" /></code> — type one or more numbers to see their binary representations</li>
+                                </ul>
+                                </div>
+                                <div className="section">
+                                    <strong className="section-title">Ip Address Commands</strong>
+                                <ul>
+                                    <li><code><CommandLink text="127.0.0.1" /></code> — enter single or multiple ip addresses (separated by space) to see their binary represenation</li>
+                                    <li><code><CommandLink text="192.168.0.1/8" /></code> — subnet mask notiations are support as well</li>
+                                </ul>
+                                </div>
+                                <div className="section">
+                                    <strong className="section-title">Other Commands</strong>
+                                <ul>
                                     <li><code><CommandLink text="clear" /></code> — clear output pane</li>
                                     <li><code><CommandLink text="help" /></code> — display this help</li>
                                     <li><code><CommandLink text="whatsnew" /></code> — display changelog</li>
@@ -23,9 +36,9 @@ function HelpResultView() {
                                 </ul>
                                 </div>
                             </div>
-                            <div style={{"float":"left"}}>
+                            <div className="right-panel">
                                 <div className="section">
-                                    <strong>Supported Bitwise Operations</strong><br/>
+                                    <strong className="section-title">Supported Bitwise Operations</strong><br/>
                                     <small>
                                         <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">
                                             as implemented in JavaScript engine

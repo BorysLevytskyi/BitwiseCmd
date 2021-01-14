@@ -1,5 +1,7 @@
 import log from 'loglevel';
 
+const APP_VERSION = 5;
+
 export type PersistedAppData = {
     emphasizeBytes: boolean;
     uiTheme: string;
@@ -11,7 +13,7 @@ export type AppStateChangeHandler = (state: AppState) => void;
 
 export default class AppState {
 
-    version: number = 4;
+    version: number = APP_VERSION;
     emphasizeBytes: boolean;
     debugMode: boolean = false;
     uiTheme: string;

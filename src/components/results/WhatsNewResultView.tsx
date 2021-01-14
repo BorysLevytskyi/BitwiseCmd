@@ -1,11 +1,22 @@
-import React from 'react'
-import CommandLink from '../CommandLink'
+import React from 'react';
+import CommandLink from '../CommandLink';
+import './WhatsNewResultView.css';
 
 function WhatsnewResultView() {
     
         return <div className="changelog">
                     <h3>Changelog</h3>
                     <div className="item item-new">
+                        <p><span className="soft date">Jun 14th, 2021</span> <br/>
+                        Added support of ip addresses and subnet masks notatioans. Try them out: 
+                        </p>
+                        <ul>
+                            <li>Single IP address <CommandLink text="127.0.0.1" /></li>
+                            <li>Multiple IP addresses and subnet mask notations <CommandLink text="127.0.0.1 192.168.0.0/24" /></li>
+                        </ul>
+                        
+                    </div>
+                    <div className="item">
                         <p><span className="soft date">Jun 6th, 2017</span> <br/>
                         Added <code><CommandLink text="guid" /></code> command. Use it for generating v4 GUIDs </p>
                     </div>
