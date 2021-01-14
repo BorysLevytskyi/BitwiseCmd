@@ -118,7 +118,7 @@ code { font-size: 1.2em; font-weight: bold; }
     .top-links .link-text { display: none }
 }
 
-.social-container{ position:fixed; bottom:10px; right:10px }
+.social-container{ position:fixed; bottom:20px; right:20px }
 
 /* Remove margin space on body. Inline top links with header */
 @media (max-width: 700px) {
