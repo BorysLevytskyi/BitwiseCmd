@@ -16,7 +16,7 @@ const ipAddressParser = {
             return null;
 
         if(incorrectInputs.length > 0) {
-                return new ParsingError(`Values ${incorrectInputs.map(v => v.input).join(',')} were not recognized as valid ip address values`);
+                return new ParsingError(`Value(s) ${incorrectInputs.map(v => v.input).join(',')} was not recognized as valid ip address or ip address with a subnet mask`);
         }
 
         const parsedObjects = matches.map(m => this.parseSingle(m.matches!, m.input));
@@ -37,7 +37,7 @@ const ipAddressParser = {
                 .split(' ')
                 .filter(s => s.length>0)
                 .map(s => {
-                    const ipV4Regex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})(\/\d{1,2})?$/;
+                    const ipV4Regex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})(\/\d+)?$/;
                     const matches = ipV4Regex.exec(s);
                     
                     if(matches == null || matches.length === 0)
@@ -65,7 +65,7 @@ const ipAddressParser = {
             const maskBits = parseInt(maskPart);
 
             if(maskBits > 32) {
-                return new ParsingError('Subnet mask value is out of range');
+                return new ParsingError(`Subnet mask value in ${input} is out of range`);
             }
 
             return new IpAddressWithSubnetMask(ipAddress, maskBits);
