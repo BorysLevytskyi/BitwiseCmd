@@ -13,10 +13,11 @@ import UnknownInputResultView from './shell/components/UnknownInputResultView';
 const appData = bootstrapAppData();
 
 initializeModules();
-executeStartupCommands();
 
 var root = <AppRoot appState={appData.appState} />;
 ReactDOM.render(root, document.getElementById('root'));
+
+executeStartupCommands();
 
 log.debug("started");
 
