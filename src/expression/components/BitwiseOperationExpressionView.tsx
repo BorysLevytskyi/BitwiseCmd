@@ -1,9 +1,9 @@
 import React from 'react';
-import formatter from '../../../core/formatter';
-import BinaryStringView, { FlipBitEventArg } from '../BinaryString';
+import formatter from '../../core/formatter';
+import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseExpressionViewModel from './BitwiseExpressionModel';
-import { ExpressionInput, ExpressionInputItem } from '../../../expression/expression-interfaces';
-import { ExpressionOperand, NumericOperand } from '../../../expression/expression';
+import { ExpressionInput, ExpressionInputItem } from '../expression-interfaces';
+import { ExpressionOperand, NumericOperand } from '../expression';
 
 type BitwiseOperationExpressionViewProps = {
     expression: ExpressionInput;

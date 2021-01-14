@@ -1,4 +1,4 @@
-import AppState from "../core/AppState";
+import AppState from "../AppState";
 import React from "react";
 
 type IndicatorsProps = {

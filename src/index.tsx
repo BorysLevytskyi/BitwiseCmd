@@ -1,61 +1,41 @@
-import AppState from './core/AppState';
-import appStateStore from './core/appStateStore';
-import cmd from './core/cmd';
-import commands from './commands';
-import AppRoot from './AppRoot';
-import hash from './core/hash';
+import cmd, { CommandInput } from './shell/cmd';
+import AppRoot from './shell/components/AppRoot';
 import log from 'loglevel';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import networkingAppModule from './networking/module';
+import expressionAppModule from './expression/module';
+import shellModule from './shell/module';
+import bootstrapAppData from './shell/startup';
+import UnknownInputResultView from './shell/components/UnknownInputResultView';
 
-const env = window.location.host === "bitwisecmd.com" ? 'prod' : 'stage';
-setupLogger(env);
+const appData = bootstrapAppData();
 
-const appState = createAppState(env);
-
-commands.initialize(cmd, appState);
-
+initializeModules();
 executeStartupCommands();
 
-var root = <AppRoot appState={appState} />;
+var root = <AppRoot appState={appData.appState} />;
 ReactDOM.render(root, document.getElementById('root'));
 
 log.debug("started");
 
-function createAppState(env:string) {
-    var stateData = appStateStore.getPersistedData();
-    const appState = new AppState(stateData, env);
-    appStateStore.watch(appState);
-    log.debug("appState initialized", appState);
-    return appState;
-}
-
-function setupLogger(env: Env) {
-    if(env != 'prod'){
-        log.setLevel("debug");
-        log.debug(`Log level is set to debug. Env: ${env}`)
-    } else {
-        log.setLevel("warn");
-    }
-}
-
 function executeStartupCommands() {
-    var hashArgs = hash.getArgs(window.location.hash);
-
-    var startupCommands = ['help', '127.0.0.1 192.168.0.0/8', '1|2&6','4 0b1000000 0x80'];
-
-    if(appState.wasOldVersion) {
-        startupCommands = ["whatsnew"];
-    }
-
-    if(hashArgs.length > 0) {
-        startupCommands = hashArgs;
-    }
-
-    log.debug('Executing startup commands', startupCommands);
-
-    startupCommands.forEach(cmd.execute.bind(cmd));
+    log.debug("Executing startup commands", appData.startupCommands);
+    appData.startupCommands.forEach(cmd.execute.bind(cmd));
 }
 
-type Env = 'prod' | 'stage';
+function  initializeModules() {
+    shellModule.setup(appData.appState, cmd);
+    networkingAppModule.setup(appData.appState, cmd);
+    expressionAppModule.setup(appData.appState, cmd);
+
+    // Last command handler reports that input is unknown
+    cmd.command({
+        canHandle: () => true,
+        handle: (c: CommandInput) => appData.appState.addCommandResult(c.input, <UnknownInputResultView input={c.input}/>)
+    });
+}
+
+
+

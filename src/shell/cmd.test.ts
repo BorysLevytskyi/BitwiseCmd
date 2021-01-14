@@ -1,5 +1,4 @@
 import { CmdShell, ICommandHandler } from "./cmd";
-import { func } from "prop-types";
 
 describe("CmdShell", () => {
     it("simple command", () => {

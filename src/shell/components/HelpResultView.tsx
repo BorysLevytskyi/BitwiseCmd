@@ -1,5 +1,5 @@
 import React from 'react';
-import CommandLink from '../CommandLink';
+import CommandLink from '../../core/components/CommandLink';
 import './HelpResultView.css';
 
 function HelpResultView() {

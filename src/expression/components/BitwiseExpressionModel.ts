@@ -1,5 +1,5 @@
-import { NumericOperand, ListOfNumbersExpression, BitwiseOperationExpression, ExpressionOperand } from '../../../expression/expression';
-import { ExpressionInputItem, ExpressionInput } from '../../../expression/expression-interfaces';
+import { NumericOperand, ListOfNumbersExpression, BitwiseOperationExpression, ExpressionOperand } from '../expression';
+import { ExpressionInputItem, ExpressionInput } from '../expression-interfaces';
 
 type Config = {
     emphasizeBytes: boolean;

@@ -1,5 +1,5 @@
 import React from 'react';
-import AppState from '../core/AppState';
+import AppState from '../AppState';
 
 
 type DisplayResultProps = {

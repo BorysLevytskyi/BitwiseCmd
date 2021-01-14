@@ -1,5 +1,5 @@
 import React from 'react';
-import cmd from '../core/cmd';
+import cmd from '../../shell/cmd';
 
 type CommandLinkProps = {
     command?:string;

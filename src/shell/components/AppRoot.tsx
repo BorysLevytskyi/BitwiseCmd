@@ -1,11 +1,11 @@
 import React from 'react';
-import InputBox from './components/InputBox';
-import DisplayResultView from './components/DisplayResultView';
-import AppState, { CommandResultView } from './core/AppState';
-import cmd from './core/cmd';
+import InputBox from './InputBox';
+import DisplayResultView from './DisplayResultView';
+import AppState, { CommandResultView } from '../AppState';
+import cmd from '../cmd';
 import log from 'loglevel';
-import Indicators from './components/Indicators';
-import hash from './core/hash';
+import Indicators from './Indicators';
+import hash from '../../core/hash';
 
 type AppRootProps = {
     appState: AppState,    
@@ -33,7 +33,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
     }
 
     getResultViews() : JSX.Element[] {
-        log.debug('getting result views')
+
         var results = this.state.commandResults.map((r, i) => 
             <DisplayResultView key={r.key}  input={r.input} inputHash={hash.encodeHash(r.input)} appState={this.props.appState}>
                 {r.view}
