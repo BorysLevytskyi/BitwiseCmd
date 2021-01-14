@@ -22,7 +22,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
             <tbody>
                 {this.props.ipAddresses.map((ip, i) => <tr key={i}>
                         <td className="label"><strong>{ip.toString()}</strong></td>
-                        <td>
+                        <td className="bin">
                             {this.bin(ip.firstByte, 1, ip)}<span className="soft">.</span>
                             {this.bin(ip.secondByte, 2, ip)}<span className="soft">.</span>
                             {this.bin(ip.thirdByte, 3, ip)}<span className="soft">.</span>
