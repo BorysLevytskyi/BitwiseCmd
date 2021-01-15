@@ -1,11 +1,7 @@
 import AppState from "../AppState";
 import React from "react";
 
-type IndicatorsProps = {
-    appState: AppState
-};
-
-function Indicators(props:  IndicatorsProps) {
+function DebugIndicators(props:  {appState: AppState}) {
 
     const list = [];
     const state = props.appState;
@@ -30,4 +26,4 @@ function Indicators(props:  IndicatorsProps) {
         </div>
 }
 
-export default Indicators;
+export default DebugIndicators;

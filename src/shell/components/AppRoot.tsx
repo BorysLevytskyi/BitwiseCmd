@@ -4,7 +4,7 @@ import DisplayResultView from './DisplayResultView';
 import AppState, { CommandResultView } from '../AppState';
 import cmd from '../cmd';
 import log from 'loglevel';
-import Indicators from './Indicators';
+import DebugIndicators from './DebugIndicators';
 import hash from '../../core/hash';
 import TopLinks from './TopLinks';
 
@@ -49,7 +49,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
 
     render() {
         return <div className={`app-root ${this.state.uiTheme}`}>
-                    <Indicators appState={this.props.appState} />
+                    <DebugIndicators appState={this.props.appState} />
                     <div className="header">
                         <h1>Bitwise<span className="header-cmd">Cmd</span>
                         </h1>
