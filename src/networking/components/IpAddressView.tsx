@@ -37,6 +37,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
         return <table className="expression">
                 <thead>
                     <tr>
+                        <th></th>
                         <th className='first-decimal'>{ip.firstByte}</th>
                         <th className='second-decimal'>{ip.secondByte}</th>
                         <th className='third-decimal'>{ip.thirdByte}</th>
@@ -45,6 +46,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
                 </thead>
                 <tbody>
                     <tr>
+                        <td className="label">{ip.toString()}</td>
                         <td className='first-bin'>{this.bin(ip.firstByte, 1, ip)}</td>
                         <td className='second-bin'>{this.bin(ip.secondByte, 2, ip)}</td>
                         <td className='third-bin'>{this.bin(ip.thirdByte, 3, ip)}</td>

@@ -1,5 +1,6 @@
 import formatter from '../core/formatter';
-
+import IpAddressView from './components/IpAddressView';
+import {createSubnetMaskByte, zeroOutBits} from '../core/byte';
 
 export type OctetNumber = 1 | 2 | 3 | 4;
 export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
@@ -128,7 +129,7 @@ export class IpAddressWithSubnetMask {
 
     createSubnetMaskIp() : IpAddress {
 
-        const mask = (bits: number) => 255<<(8-bits)&255;
+        const mask = createSubnetMaskByte;
 
         if(this.maskBits <= 8) {
             return new IpAddress(mask(this.maskBits), 0, 0, 0);
@@ -163,6 +164,10 @@ export class IpAddress {
         return `${this.firstByte}.${this.secondByte}.${this.thirdByte}.${this.fourthByte}`;
     }
 
+    clone() : IpAddress {
+        return new IpAddress(this.firstByte, this.secondByte, this.thirdByte, this.fourthByte);
+    }
+
     setOctet(octet: OctetNumber, value : number)  {
         switch(octet) {
             case 1:
@@ -185,6 +190,27 @@ export class SubnetDefinition {
     definition: IpAddressWithSubnetMask;
     constructor(definition : IpAddressWithSubnetMask) {
         this.definition = definition;
+    }
+
+    getNetworkAddress() {
+
+        // Cannot use solely bitwise operation because 244 << 24 is a neative number in JS
+        const flip = (maskBits: number, byte: number) => zeroOutBits(byte, 8-maskBits);
+
+        const maskBits = this.definition.maskBits;
+        const ip = this.definition.ipAddress;
+
+        if(maskBits <= 8) {
+            return new IpAddress(flip(maskBits, ip.firstByte), 0, 0, 0);
+        }
+        else if(maskBits <= 16) {
+            return new IpAddress(ip.firstByte, flip(maskBits-8, ip.secondByte), 0, 0);
+        }
+        else if(maskBits <= 24) {
+            return new IpAddress(ip.firstByte, ip.secondByte, flip(maskBits-16, ip.thirdByte), 0);
+        }
+        else 
+            return new IpAddress(ip.firstByte, ip.secondByte, ip.thirdByte, flip(maskBits-24, ip.fourthByte));
     }
 
     toString() {

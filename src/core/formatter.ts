@@ -14,6 +14,12 @@ export default {
         }
 
         return sb.join('');
+    },
+    bin(number: number) {
+        return this.formatString(number, 'bin');
+    },
+    emBin(number: number) {
+        return this.padLeft(this.bin(number), 8, '0');
     }
 };
 
