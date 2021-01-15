@@ -6,9 +6,11 @@ export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
 export type ParsedIpObject = IpAddress | IpAddressWithSubnetMask;
 
 const ipAddressParser = {
-    parse: function(input: string) : ParsedIpObject[] | ParsingError | null {
+    parse: function(input: string) : ParsedIpObject[] | SubnetDefinition | ParsingError | null {
 
-        const matches = this.getMaches(input);
+        const result = this.parseCommand(input);
+
+        const matches = this.getMaches(result.nextInput);
         const correctInputs = matches.filter(m => m.matches != null);
         const incorrectInputs = matches.filter(m => m.matches == null);
         
@@ -26,8 +28,25 @@ const ipAddressParser = {
             return parsingErrors[0] as ParsingError;
         }
 
+        if(result.command != null) {
+            const result = this.createSubnetDefinition(parsedObjects as ParsedIpObject[]);
+            
+            if(result instanceof ParsingError)
+                return result;
+
+            return  result;
+        } 
+
         return parsedObjects as ParsedIpObject[];
-        
+    },
+
+    parseCommand(input : string) : { command: null | string, nextInput: string } {
+
+        const command = 'subnet';
+        if(input.startsWith(command)) 
+            return { command, nextInput: input.substring(command.length)}
+
+        return { command: null, nextInput: input };
     },
 
     getMaches(input : string) : { matches: RegExpExecArray | null, input: string }[] {
@@ -72,6 +91,18 @@ const ipAddressParser = {
         }
 
         return ipAddress;
+    },
+
+    createSubnetDefinition(items: ParsedIpObject[]) : SubnetDefinition | ParsingError {
+        if(items.length != 1)
+            return new ParsingError("Incorrect network definition");
+        
+        const first = items[0];
+        if(first instanceof IpAddressWithSubnetMask) {
+            return new SubnetDefinition(first);
+        }
+
+        return new ParsingError("Network definition requires subnet mask");
     }
 }
 
@@ -147,6 +178,17 @@ export class IpAddress {
                 this.fourthByte = value;
                 break;
         }
+    }
+}
+
+export class SubnetDefinition {
+    definition: IpAddressWithSubnetMask;
+    constructor(definition : IpAddressWithSubnetMask) {
+        this.definition = definition;
+    }
+
+    toString() {
+        return this.definition.toString();
     }
 }
 

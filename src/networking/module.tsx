@@ -3,8 +3,9 @@ import AppState from '../shell/AppState';
 import { CmdShell, CommandInput } from '../shell/cmd';
 import ErrorResultView from '../shell/components/ErrorResultView';
 import IpAddressView from './components/IpAddressView';
-import { ipAddressParser, ParsingError, IpAddress, ParsedIpObject, IpAddressWithSubnetMask } from './ip';
+import { ipAddressParser, ParsingError, IpAddress, ParsedIpObject, IpAddressWithSubnetMask, SubnetDefinition } from './ip';
 import log from 'loglevel';
+import SubnetView from './components/SubnetView';
 
 const networkingAppModule = {
     setup: function(appState: AppState, cmd: CmdShell) {
@@ -20,6 +21,11 @@ const networkingAppModule = {
 
                 if(result instanceof ParsingError) {
                     appState.addCommandResult(c.input, <ErrorResultView errorMessage={result.errorMessage} />);
+                    return;
+                }
+
+                if(result instanceof SubnetDefinition) {
+                    appState.addCommandResult(c.input, <SubnetView subnet={result} />);
                     return;
                 }
 

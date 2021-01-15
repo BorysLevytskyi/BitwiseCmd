@@ -1,4 +1,4 @@
-import {IpAddress, ipAddressParser, getNetworkClass, ParsingError, IpAddressWithSubnetMask, ParsedIpObject} from './ip';
+import {IpAddress, ipAddressParser, getNetworkClass, ParsingError, IpAddressWithSubnetMask, ParsedIpObject, SubnetDefinition} from './ip';
 
 
 describe('parser tests', () => {
@@ -53,6 +53,13 @@ describe('parser tests', () => {
         const second = (actual as ParsedIpObject[])[1];
         expect(second).toBeInstanceOf(IpAddress);
         expect(second!.toString()).toBe('255.255.1.1');
+    });
+
+    it('parses subnet command', () => {
+        const actual = ipAddressParser.parse('subnet 192.168.1.1/23');
+        expect(actual).toBeInstanceOf(SubnetDefinition);
+        const subnet = actual as SubnetDefinition;
+        expect(subnet.toString()).toBe('192.168.1.1/23');
     });
 });
 

@@ -3,11 +3,14 @@ import hash from '../core/hash';
 import AppState from './AppState';
 import { Env } from './interfaces';
 import appStateStore from './appStateStore';
+import CommandLink from '../core/components/CommandLink';
 
 export type StartupAppData = {
     appState: AppState,
     startupCommands: string[]
 }
+
+const DEFAULT_COMMANDS = ['help', '127.0.0.1 192.168.0.0/8', '1|2&6','4 0b1000000 0x80'];
 
 function bootstrapAppData() : StartupAppData {
     const env = window.location.host === "bitwisecmd.com" ? 'prod' : 'stage';
@@ -35,7 +38,10 @@ function createAppState(env:string) {
 function getStartupCommands(appState : AppState) : string[] {
     var hashArgs = hash.getArgs(window.location.hash);
 
-    var startupCommands = ['help', '127.0.0.1 192.168.0.0/8', '1|2&6','4 0b1000000 0x80'];
+    var startupCommands = loadStoredCommands();
+
+    if(startupCommands.length == 0) 
+        startupCommands = DEFAULT_COMMANDS;
 
     if(appState.wasOldVersion) {
         startupCommands = ["whatsnew"];
@@ -48,6 +54,11 @@ function getStartupCommands(appState : AppState) : string[] {
     log.debug('Executing startup commands', startupCommands);
 
     return startupCommands;
+}
+
+function loadStoredCommands() : string[] {
+    const json = localStorage.getItem('StartupCommand');
+    return json != null ? [json] : []; 
 }
 
 function setupLogger(env: Env) {
