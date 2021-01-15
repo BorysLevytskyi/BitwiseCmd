@@ -5,21 +5,44 @@ import { IpAddress, SubnetDefinition } from '../ip';
 import './SubnetView.css';
 
 function SubnetView({subnet} : {subnet : SubnetDefinition}) {
-    const maskLen = subnet.definition.maskBits;
+    const maskLen = subnet.input.maskBits;
 
-    return <table className="expression subnet-view">
-        <thead>
-            <tr>
-                    <th className="label"></th>
-                    <th className="class-part">Mask</th>
-                    <th className="address-space">Address Space</th>
-                </tr>
-        </thead>
-        <tbody>
-                <SubnetRow addr={subnet.getNetworkAddress()} maskLen={maskLen} descr="Network Address"/>
-                <SubnetRow addr={subnet.definition.ipAddress} maskLen={maskLen} descr="Host Address"/>
-        </tbody>
-    </table>
+    return <React.Fragment>
+        <table className="expression subnet-view">
+            <thead>
+                <tr className='soft'>
+                        <th></th>
+                        <th></th>
+                        <th className="class-part small-text part">Mask</th>
+                        <th className="address-space small-text part" colSpan={2}>Address Space</th>
+                    </tr>
+            </thead>
+            <tbody>
+                    <SubnetRow addr={subnet.input.ipAddress} maskLen={maskLen} descr="Address"/>
+                    <SubnetRow addr={subnet.getNetworkAddress()} maskLen={maskLen} descr="Network"/>
+                    {/* TODO: <SubnetRow addr={subnet.getBroadcastAddress()} maskLen={maskLen} descr="Broadcast"/> */}
+                    <SubnetRow addr={subnet.input.createSubnetMaskIp()} maskLen={maskLen} descr="Net Mask"/>
+                    <tr>
+                        <td className="description soft">
+                            <span>Mask Length</span>
+                        </td>
+                        <td>
+                            {subnet.input.maskBits}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="description soft">
+                            <span>Network Size</span>
+                        </td>
+                        <td>
+                            {subnet.getAdressSpaceSize()}
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <div>
+    </div>
+    </React.Fragment>;
 }
 
 function SubnetRow(props: { addr: IpAddress, descr: string, maskLen: number }) {
@@ -32,8 +55,9 @@ function SubnetRow(props: { addr: IpAddress, descr: string, maskLen: number }) {
     const spacePart = addrBin.substr(maskLen);
 
     return <tr>
-                <td className="label">
-                    {addr.toString()}
+            <td className="description soft">{descr}</td>
+                <td className="ip">
+                   {addr.toString()}
                 </td>
                 <td className="class-part">
                 <BinaryStringView binaryString={classPart} />
@@ -41,7 +65,6 @@ function SubnetRow(props: { addr: IpAddress, descr: string, maskLen: number }) {
             <td className="address-space">
                 <BinaryStringView binaryString={spacePart} allowFlipBits={true} />
             </td>
-            <td className="description soft">{descr}</td>
         </tr>;
 }
 

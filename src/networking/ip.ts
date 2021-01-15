@@ -187,9 +187,9 @@ export class IpAddress {
 }
 
 export class SubnetDefinition {
-    definition: IpAddressWithSubnetMask;
+    input: IpAddressWithSubnetMask;
     constructor(definition : IpAddressWithSubnetMask) {
-        this.definition = definition;
+        this.input = definition;
     }
 
     getNetworkAddress() {
@@ -197,8 +197,8 @@ export class SubnetDefinition {
         // Cannot use solely bitwise operation because 244 << 24 is a neative number in JS
         const flip = (maskBits: number, byte: number) => zeroOutBits(byte, 8-maskBits);
 
-        const maskBits = this.definition.maskBits;
-        const ip = this.definition.ipAddress;
+        const maskBits = this.input.maskBits;
+        const ip = this.input.ipAddress;
 
         if(maskBits <= 8) {
             return new IpAddress(flip(maskBits, ip.firstByte), 0, 0, 0);
@@ -213,8 +213,13 @@ export class SubnetDefinition {
             return new IpAddress(ip.firstByte, ip.secondByte, ip.thirdByte, flip(maskBits-24, ip.fourthByte));
     }
 
+    getAdressSpaceSize(): number {
+        const spaceLengthInBits = 32 - this.input.maskBits;
+        return Math.pow(2, spaceLengthInBits) - 2; // 0 - network address, 1 - multicast address
+    }
+
     toString() {
-        return this.definition.toString();
+        return this.input.toString();
     }
 }
 
