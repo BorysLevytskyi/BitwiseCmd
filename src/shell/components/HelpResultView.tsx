@@ -24,9 +24,9 @@ function HelpResultView() {
                                 <div className="section">
                                     <strong className="section-title  soft">Color Theme Commands</strong>
                                 <ul>
-                                    <li><code><CommandLink text="light" /></code> — set Light theme</li>
-                                    <li><code><CommandLink text="dark" /></code> — set Dark theme</li>
-                                    <li><code><CommandLink text="midnight" /></code> — set Midnight theme</li>
+                                    <li><code><CommandLink text="light" /></code> — set Light color theme</li>
+                                    <li><code><CommandLink text="dark" /></code> — set Dark color theme</li>
+                                    <li><code><CommandLink text="midnight" /></code> — set Midnight color theme</li>
                                 </ul>
                                 </div>
                                 <div className="section">
