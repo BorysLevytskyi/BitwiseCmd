@@ -1,5 +1,19 @@
-import { OctetNumber } from './ip';
+export type OctetNumber = 1 | 2 | 3 | 4;
+export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
 
+export class IpAddressWithSubnetMask {
+    maskBits: number;
+    ipAddress: IpAddress;
+
+    constructor(ipAddress: IpAddress, maskBits: number) {
+        this.ipAddress = ipAddress;
+        this.maskBits = maskBits;
+    }
+
+    toString() {
+        return `${this.ipAddress.toString()}/${this.maskBits}`;
+    }
+}
 
 export class IpAddress {
 
@@ -40,3 +54,20 @@ export class IpAddress {
         }
     }
 }
+
+export class SubnetCommand {
+    input: IpAddressWithSubnetMask;
+    constructor(definition: IpAddressWithSubnetMask) {
+        this.input = definition;
+    }
+
+    getAdressSpaceSize(): number {
+        const spaceLengthInBits = 32 - this.input.maskBits;
+        return Math.pow(2, spaceLengthInBits) - 2; // 0 - network address, 1 - multicast address
+    }
+
+    toString() {
+        return this.input.toString();
+    }
+}
+

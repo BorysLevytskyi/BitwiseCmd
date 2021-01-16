@@ -1,9 +1,9 @@
 import React from 'react';
-import { OctetNumber, getNetworkClass } from '../ip';
-import { IpAddress } from "../IpAddress";
 import formatter from '../../core/formatter'
 import BinaryStringView from '../../core/components/BinaryString';
 import './IpAddressView.css';
+import { IpAddress, OctetNumber } from '../models';
+
 type IpAddressViewProps = {
     ipAddresses: IpAddress[]
 };

@@ -1,14 +1,12 @@
 import React from 'react';
 import BinaryStringView from '../../core/components/BinaryString';
-import { SubnetDefinition } from "../SubnetDefinition";
-import { IpAddress } from "../IpAddress";
 import './SubnetView.css';
 import { getNetworkAddress, getBroadCastAddress, createSubnetMaskIp } from '../subnet-utils';
 import { chunkifyString } from '../../core/utils';
 import IpAddressBinaryString from './IpAddressBinaryString';
+import { IpAddress, SubnetCommand } from '../models';
 
-function SubnetView({subnet} : {subnet : SubnetDefinition}) {
-    const maskLen = subnet.input.maskBits;
+function SubnetView({subnet} : {subnet : SubnetCommand}) {
 
     return <React.Fragment>
         <table className="expression subnet-view">

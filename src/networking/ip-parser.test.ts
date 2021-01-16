@@ -1,8 +1,5 @@
-import IpAddressView from './components/IpAddressView';
-import {ipAddressParser, getNetworkClass, ParsingError, ParsedIpObject} from './ip';
-import { IpAddressWithSubnetMask } from "./IpAddressWithSubnetMask";
-import { SubnetDefinition } from "./SubnetDefinition";
-import { IpAddress } from "./IpAddress";
+import ipAddressParser, { ParsedIpObject, ParsingError } from './ip-parser';
+import { IpAddressWithSubnetMask, IpAddress, SubnetCommand } from "./models";
 
 
 describe('parser tests', () => {
@@ -61,42 +58,8 @@ describe('parser tests', () => {
 
     it('parses subnet command', () => {
         const actual = ipAddressParser.parse('subnet 192.168.1.1/23');
-        expect(actual).toBeInstanceOf(SubnetDefinition);
-        const subnet = actual as SubnetDefinition;
+        expect(actual).toBeInstanceOf(SubnetCommand);
+        const subnet = actual as SubnetCommand;
         expect(subnet.toString()).toBe('192.168.1.1/23');
-    });
-});
-
-describe('getNetworkClass tests', () => {
-    it('detects class a', () => {
-        expect(getNetworkClass(new IpAddress(1, 0, 0, 0))).toBe('a');
-        expect(getNetworkClass(new IpAddress(55, 0, 0, 0))).toBe('a');
-        expect(getNetworkClass(new IpAddress(97, 0, 0, 0))).toBe('a');
-        expect(getNetworkClass(new IpAddress(127, 0, 0, 0))).toBe('a');
-    });
-
-    it('detects class b', () => {
-        expect(getNetworkClass(new IpAddress(128, 0, 0, 0))).toBe('b');
-        expect(getNetworkClass(new IpAddress(134, 0, 0, 0))).toBe('b');
-        expect(getNetworkClass(new IpAddress(180, 0, 0, 0))).toBe('b');
-        expect(getNetworkClass(new IpAddress(191, 0, 0, 0))).toBe('b');
-    });
-
-    it('detects class c', () => {
-        expect(getNetworkClass(new IpAddress(192, 0, 0, 0))).toBe('c');
-        expect(getNetworkClass(new IpAddress(218, 0, 0, 0))).toBe('c');
-        expect(getNetworkClass(new IpAddress(223, 0, 0, 0))).toBe('c');
-    });
-
-    it('detects class d', () => {
-        expect(getNetworkClass(new IpAddress(224, 0, 0, 0))).toBe('d');
-        expect(getNetworkClass(new IpAddress(234, 0, 0, 0))).toBe('d');
-        expect(getNetworkClass(new IpAddress(239, 0, 0, 0))).toBe('d');
-    });
-
-    it('detects class e', () => {
-        expect(getNetworkClass(new IpAddress(240, 0, 0, 0))).toBe('e');
-        expect(getNetworkClass(new IpAddress(241, 0, 0, 0))).toBe('e');
-        expect(getNetworkClass(new IpAddress(255, 0, 0, 0))).toBe('e');
     });
 });

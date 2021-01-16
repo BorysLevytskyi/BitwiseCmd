@@ -1,5 +1,6 @@
 import AppState from "../AppState";
 import React from "react";
+import './DebugIndicators.css';
 
 function DebugIndicators(props:  {appState: AppState}) {
 
@@ -21,8 +22,8 @@ function DebugIndicators(props:  {appState: AppState}) {
     if(list.length == 0)
         return null;
 
-    return <div>
-            {list.map(i => <span>{i}&nbsp;</span>)}
+    return <div className="debug-indicators">
+            {list.map(i => <span title={i}>[{i.substring(0,1)}]&nbsp;</span>)}
         </div>
 }
 

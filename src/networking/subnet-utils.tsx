@@ -1,7 +1,6 @@
 import { createSubnetMaskByte } from "../core/byte";
-import { IpAddress } from "./IpAddress";
 import { flipBitsToOne, flipBitsToZero } from '../core/byte';
-import { IpAddressWithSubnetMask } from "./IpAddressWithSubnetMask";
+import { IpAddress, IpAddressWithSubnetMask, NetworkClass } from "./models";
 
 function createSubnetMaskIp(ipm: IpAddressWithSubnetMask) : IpAddress {
 
@@ -50,6 +49,35 @@ function flipSubnetMaskBits(ipm: IpAddressWithSubnetMask, flipper : FlipFunction
     else
         return new IpAddress(ip.firstByte, ip.secondByte, ip.thirdByte, flip(maskBits - 24, ip.fourthByte));
 }
+
+function getNetworkClass (ipAddress: IpAddress) : NetworkClass {
+    const byte = ipAddress.firstByte;
+
+    const firstBitOne = (byte & 128) === 128;
+    const firstBitZero = (byte & 128) === 0;
+    const secondBitOne = (byte & 64) === 64;
+
+    const thirdBitOne = (byte & 32) === 32;
+    const thirdBitZero = (byte & 32) === 0;
+
+    const forthBitZero = (byte & 16) === 0;
+    const forthBitOne = (byte & 16) === 16;
+
+    // e: 1111
+
+    if(firstBitOne && secondBitOne && thirdBitOne && forthBitOne)
+        return 'e';
+
+    if(firstBitOne && secondBitOne && thirdBitOne && forthBitZero) // Start bits: 1110;
+        return 'd';
+
+    if(firstBitOne && secondBitOne && thirdBitZero) // Start bits: 110;
+        return 'c';
+   
+    return firstBitOne ? 'b' : 'a';
+};
+
+
 type FlipFunction = (byte: number, numberOfBits: number) => number; 
 
-export {createSubnetMaskIp, getBroadCastAddress, getNetworkAddress};
+export {createSubnetMaskIp, getBroadCastAddress, getNetworkAddress, getNetworkClass};

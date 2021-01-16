@@ -1,15 +1,10 @@
-import formatter from '../core/formatter';
-import IpAddressView from './components/IpAddressView';
-import { IpAddress } from './IpAddress';
-import { SubnetDefinition } from './SubnetDefinition';
-import { IpAddressWithSubnetMask } from './IpAddressWithSubnetMask';
+import { IpAddress, IpAddressWithSubnetMask, SubnetCommand } from './models';
 
-export type OctetNumber = 1 | 2 | 3 | 4;
-export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
 export type ParsedIpObject = IpAddress | IpAddressWithSubnetMask;
 
+
 const ipAddressParser = {
-    parse: function(input: string) : ParsedIpObject[] | SubnetDefinition | ParsingError | null {
+    parse: function(input: string) : ParsedIpObject[] | SubnetCommand | ParsingError | null {
 
         const result = this.parseCommand(input);
 
@@ -96,13 +91,13 @@ const ipAddressParser = {
         return ipAddress;
     },
 
-    createSubnetDefinition(items: ParsedIpObject[]) : SubnetDefinition | ParsingError {
+    createSubnetDefinition(items: ParsedIpObject[]) : SubnetCommand | ParsingError {
         if(items.length != 1)
             return new ParsingError("Incorrect network definition");
         
         const first = items[0];
         if(first instanceof IpAddressWithSubnetMask) {
-            return new SubnetDefinition(first);
+            return new SubnetCommand(first);
         }
 
         return new ParsingError("Network definition requires subnet mask");
@@ -116,32 +111,5 @@ export class ParsingError {
     }
 }
 
-const getNetworkClass = function (ipAddress: IpAddress) : NetworkClass {
-    const byte = ipAddress.firstByte;
-    const bineryRep = formatter.formatString(ipAddress.firstByte, 'bin');
 
-    const firstBitOne = (byte & 128) === 128;
-    const firstBitZero = (byte & 128) === 0;
-    const secondBitOne = (byte & 64) === 64;
-
-    const thirdBitOne = (byte & 32) === 32;
-    const thirdBitZero = (byte & 32) === 0;
-
-    const forthBitZero = (byte & 16) === 0;
-    const forthBitOne = (byte & 16) === 16;
-
-    // e: 1111
-
-    if(firstBitOne && secondBitOne && thirdBitOne && forthBitOne)
-        return 'e';
-
-    if(firstBitOne && secondBitOne && thirdBitOne && forthBitZero) // Start bits: 1110;
-        return 'd';
-
-    if(firstBitOne && secondBitOne && thirdBitZero) // Start bits: 110;
-        return 'c';
-   
-    return firstBitOne ? 'b' : 'a';
-};
-
-export {ipAddressParser, getNetworkClass};
+export default ipAddressParser;

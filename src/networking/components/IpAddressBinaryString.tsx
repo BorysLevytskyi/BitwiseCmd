@@ -1,7 +1,7 @@
 import React from 'react';
 import BinaryStringView from '../../core/components/BinaryString';
-import { IpAddress } from '../IpAddress';
 import formatter from '../../core/formatter';
+import { IpAddress } from '../models';
 
 function IpAddressBinaryString({ip}: {ip:IpAddress}) {
 
