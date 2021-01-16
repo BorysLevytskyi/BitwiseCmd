@@ -14,15 +14,7 @@ function SubnetView({subnet} : {subnet : SubnetCommand}) {
                     <SubnetRow ip={subnet.input.ipAddress} descr="Address"/>
                     <SubnetRow ip={getNetworkAddress(subnet.input)} descr="Network"/>
                     <SubnetRow ip={createSubnetMaskIp(subnet.input)} descr="Net Mask"/>
-                    <SubnetRow ip={getBroadCastAddress(subnet.input)} descr="Broadcast"/>
-                    <tr>
-                        <td className="description soft">
-                            <span>Mask Length</span>
-                        </td>
-                        <td>
-                            {subnet.input.maskBits}
-                        </td>
-                    </tr>
+                    <SubnetRow ip={getBroadCastAddress(subnet.input)} descr="Broadcast"/>                  
                     <tr>
                         <td className="description soft">
                             <span>Network Size</span>

@@ -7,6 +7,11 @@ function WhatsnewResultView() {
         return <div className="changelog">
                     <h3>Changelog</h3>
                     <div className="item item-new">
+                        <p><span className="soft date">Jun 16th, 2021</span> <br/>
+                            Added support of <code>subnet</code> command to display information about subnet ip adress such. Try it out: <CommandLink text="subnet 192.168.24.1/14" />
+                        </p>                       
+                    </div>
+                    <div className="item">
                         <p><span className="soft date">Jun 14th, 2021</span> <br/>
                         Added support of ip addresses and subnet masks notatioans. Try them out: 
                         </p>
