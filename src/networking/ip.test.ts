@@ -1,5 +1,8 @@
 import IpAddressView from './components/IpAddressView';
-import {IpAddress, ipAddressParser, getNetworkClass, ParsingError, IpAddressWithSubnetMask, ParsedIpObject, SubnetDefinition} from './ip';
+import {ipAddressParser, getNetworkClass, ParsingError, ParsedIpObject} from './ip';
+import { IpAddressWithSubnetMask } from "./IpAddressWithSubnetMask";
+import { SubnetDefinition } from "./SubnetDefinition";
+import { IpAddress } from "./IpAddress";
 
 
 describe('parser tests', () => {
@@ -97,42 +100,3 @@ describe('getNetworkClass tests', () => {
         expect(getNetworkClass(new IpAddress(255, 0, 0, 0))).toBe('e');
     });
 });
-
-describe('IpAddressWithSubnetMask tests', () => {
-
-    it('creates subnetmask ip', () => {
-        const ip = new IpAddress(127, 0, 0, 1);
-        expect(new IpAddressWithSubnetMask(ip, 1).createSubnetMaskIp().toString()).toBe('128.0.0.0');
-        expect(new IpAddressWithSubnetMask(ip, 8).createSubnetMaskIp().toString()).toBe('255.0.0.0');
-        expect(new IpAddressWithSubnetMask(ip, 10).createSubnetMaskIp().toString()).toBe('255.192.0.0');
-        expect(new IpAddressWithSubnetMask(ip, 20).createSubnetMaskIp().toString()).toBe('255.255.240.0');
-        expect(new IpAddressWithSubnetMask(ip, 30).createSubnetMaskIp().toString()).toBe('255.255.255.252');
-        expect(new IpAddressWithSubnetMask(ip, 32).createSubnetMaskIp().toString()).toBe('255.255.255.255');
-    });
-});
-
-describe('SubnetDefinition', function() {
-
-    const subnet = (f:number, s:number, t:number, fr:number, m:number) => new SubnetDefinition(
-        new IpAddressWithSubnetMask(
-            new IpAddress(f,s,t,fr), 
-            m));
-
-    it("get network address - second byte", () => {
-        expect(subnet(192,188,107,11, 12).getNetworkAddress().toString())
-            .toBe('192.176.0.0');
-    
-        expect(subnet(192,168,123,1, 20) .getNetworkAddress().toString())
-            .toBe('192.168.112.0');
-
-        expect(subnet(192,168,123,1, 23).getNetworkAddress().toString())
-            .toBe('192.168.122.0');
-            
-        expect(subnet(192,168,5,125, 28).getNetworkAddress().toString())
-            .toBe('192.168.5.112');
-        
-        expect(subnet(255,255,255,253, 30).getNetworkAddress().toString())
-            .toBe('255.255.255.252');
-            
-    });
-})

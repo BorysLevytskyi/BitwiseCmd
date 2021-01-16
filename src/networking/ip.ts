@@ -1,6 +1,8 @@
 import formatter from '../core/formatter';
 import IpAddressView from './components/IpAddressView';
-import {createSubnetMaskByte, zeroOutBits} from '../core/byte';
+import { IpAddress } from './IpAddress';
+import { SubnetDefinition } from './SubnetDefinition';
+import { IpAddressWithSubnetMask } from './IpAddressWithSubnetMask';
 
 export type OctetNumber = 1 | 2 | 3 | 4;
 export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
@@ -113,117 +115,6 @@ export class ParsingError {
         this.errorMessage = message;
     }
 }
-
-export class IpAddressWithSubnetMask {
-    maskBits: number;
-    ipAddress: IpAddress;
-    
-    constructor(ipAddress : IpAddress, maskBits : number) {
-        this.ipAddress = ipAddress;
-        this.maskBits = maskBits;
-    }
-
-    toString() {
-        return `${this.ipAddress.toString()}/${this.maskBits}`;
-    }
-
-    createSubnetMaskIp() : IpAddress {
-
-        const mask = createSubnetMaskByte;
-
-        if(this.maskBits <= 8) {
-            return new IpAddress(mask(this.maskBits), 0, 0, 0);
-        }
-        else if(this.maskBits <= 16) {
-            return new IpAddress(255, mask(this.maskBits-8), 0, 0);
-        }
-        else if(this.maskBits <= 24) {
-            return new IpAddress(255, 255, mask(this.maskBits-16), 0);
-        }
-        else {
-            return new IpAddress(255, 255, 255, mask(this.maskBits-24));
-        }
-    }
-}
-
-export class IpAddress {
-
-    firstByte : number;
-    secondByte: number;
-    thirdByte : number;
-    fourthByte: number
-
-    constructor(firstByte : number, secondByte: number, thirdByte : number, fourthByte: number) {
-        this.firstByte = firstByte;
-        this.secondByte = secondByte;
-        this.thirdByte = thirdByte;
-        this.fourthByte = fourthByte;
-    }
-
-    toString() : string {
-        return `${this.firstByte}.${this.secondByte}.${this.thirdByte}.${this.fourthByte}`;
-    }
-
-    clone() : IpAddress {
-        return new IpAddress(this.firstByte, this.secondByte, this.thirdByte, this.fourthByte);
-    }
-
-    setOctet(octet: OctetNumber, value : number)  {
-        switch(octet) {
-            case 1:
-                this.firstByte = value;
-                break;
-            case 2:
-                this.secondByte = value;
-                break;
-            case 3:
-                this.thirdByte = value;
-                break;
-            case 4:
-                this.fourthByte = value;
-                break;
-        }
-    }
-}
-
-export class SubnetDefinition {
-    input: IpAddressWithSubnetMask;
-    constructor(definition : IpAddressWithSubnetMask) {
-        this.input = definition;
-    }
-
-    getNetworkAddress() {
-
-        // Cannot use solely bitwise operation because 244 << 24 is a neative number in JS
-        const flip = (maskBits: number, byte: number) => zeroOutBits(byte, 8-maskBits);
-
-        const maskBits = this.input.maskBits;
-        const ip = this.input.ipAddress;
-
-        if(maskBits <= 8) {
-            return new IpAddress(flip(maskBits, ip.firstByte), 0, 0, 0);
-        }
-        else if(maskBits <= 16) {
-            return new IpAddress(ip.firstByte, flip(maskBits-8, ip.secondByte), 0, 0);
-        }
-        else if(maskBits <= 24) {
-            return new IpAddress(ip.firstByte, ip.secondByte, flip(maskBits-16, ip.thirdByte), 0);
-        }
-        else 
-            return new IpAddress(ip.firstByte, ip.secondByte, ip.thirdByte, flip(maskBits-24, ip.fourthByte));
-    }
-
-    getAdressSpaceSize(): number {
-        const spaceLengthInBits = 32 - this.input.maskBits;
-        return Math.pow(2, spaceLengthInBits) - 2; // 0 - network address, 1 - multicast address
-    }
-
-    toString() {
-        return this.input.toString();
-    }
-}
-
-
 
 const getNetworkClass = function (ipAddress: IpAddress) : NetworkClass {
     const byte = ipAddress.firstByte;

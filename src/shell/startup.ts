@@ -10,6 +10,7 @@ export type StartupAppData = {
     startupCommands: string[]
 }
 
+const STARTUP_COMMAND_KEY = 'StartupCommand';
 const DEFAULT_COMMANDS = ['help', '127.0.0.1 192.168.0.0/8', '1|2&6','4 0b1000000 0x80'];
 
 function bootstrapAppData() : StartupAppData {
@@ -57,7 +58,7 @@ function getStartupCommands(appState : AppState) : string[] {
 }
 
 function loadStoredCommands() : string[] {
-    const json = localStorage.getItem('StartupCommand');
+    const json = localStorage.getItem(STARTUP_COMMAND_KEY);
     return json != null ? [json] : []; 
 }
 
@@ -70,4 +71,5 @@ function setupLogger(env: Env) {
     }
 }
 
+export {STARTUP_COMMAND_KEY};
 export default bootstrapAppData;

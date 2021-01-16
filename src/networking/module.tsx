@@ -3,9 +3,13 @@ import AppState from '../shell/AppState';
 import { CmdShell, CommandInput } from '../shell/cmd';
 import ErrorResultView from '../shell/components/ErrorResultView';
 import IpAddressView from './components/IpAddressView';
-import { ipAddressParser, ParsingError, IpAddress, ParsedIpObject, IpAddressWithSubnetMask, SubnetDefinition } from './ip';
+import { ipAddressParser, ParsingError, ParsedIpObject } from './ip';
+import { IpAddressWithSubnetMask } from "./IpAddressWithSubnetMask";
+import { SubnetDefinition } from "./SubnetDefinition";
+import { IpAddress } from "./IpAddress";
 import log from 'loglevel';
 import SubnetView from './components/SubnetView';
+import { createSubnetMaskIp } from './subnet-utils';
 
 const networkingAppModule = {
     setup: function(appState: AppState, cmd: CmdShell) {
@@ -35,7 +39,7 @@ const networkingAppModule = {
                     if(r instanceof IpAddressWithSubnetMask)
                     {
                         ipAddresses.push(r.ipAddress);
-                        ipAddresses.push(r.createSubnetMaskIp());
+                        ipAddresses.push(createSubnetMaskIp(r));
                     }
                     else if(r instanceof IpAddress) {
                         ipAddresses.push(r);

@@ -51,7 +51,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         const css = allowFlipBits ? ' flipable' : ''
 
         return bitChars.map((c, i) => {
-            var className = c == '0' ? `zero${css}` : `one${css}`;
+            var className = c == '1' ? `one${css}` : `zero${css}`;
             return <span className={className} key={i} onClick={e => this.onBitClick(i, e)}>{c}</span>
         });
     }

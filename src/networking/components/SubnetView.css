@@ -1,15 +1,14 @@
 .subnet-view .description {
-    padding-right: 15px;
     vertical-align: middle;
     text-align: right;
 }
 
-.subnet-view {
-    margin-bottom: 20px;
+.subnet-view td {
+    padding-right: 15px;
 }
 
-.subnet-view th { 
-    font-weight: normal;
+.subnet-view {
+    margin-bottom: 20px;
 }
 
 .subnet-view .part {

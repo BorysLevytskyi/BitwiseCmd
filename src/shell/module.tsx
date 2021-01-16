@@ -7,6 +7,7 @@ import ErrorResultView from './components/ErrorResultView';
 import HelpResultView from './components/HelpResultView';
 import TextResultView from './components/TextResultView';
 import WhatsnewResultView from './components/WhatsNewResultView';
+import {STARTUP_COMMAND_KEY} from './startup';
 
 const shellModule = {
     setup: function(appState: AppState, cmd: CmdShell) {
@@ -28,6 +29,35 @@ const shellModule = {
             appState.toggleDebugMode();
             appState.addCommandResult(c.input, <TextResultView text={`Debug Mode: ${appState.debugMode}`}/>);
         }); 
+
+        if(appState.env !== 'prod') {
+            
+            // Default command for development purposes
+            cmd.command({
+                canHandle: (s: string) => s.indexOf('default') === 0,
+                handle: (s: CommandInput) => {
+
+                    const executeCommand = (c: string) => {
+                        console.log(c);
+
+                        if(c.length === 0) {
+                            return "Default comand: " + localStorage.getItem(STARTUP_COMMAND_KEY);
+                        }
+                        else if(c === 'clear') {
+                            localStorage.removeItem(STARTUP_COMMAND_KEY);
+                            return "Default startup command cleared";
+                        }
+                        
+                        localStorage.setItem(STARTUP_COMMAND_KEY, c);
+                        return `Default startup command saved: ${c}`;
+                    };
+
+                    const command = s.input.substring(7).trim();
+                    const result = executeCommand(command);
+                    appState.addCommandResult(s.input, <TextResultView text={result} />);
+                } 
+            });
+        };
 
         cmd.onError((input: string, err: Error) => appState.addCommandResult(input, <ErrorResultView errorMessage={err.toString()} />));
     }
