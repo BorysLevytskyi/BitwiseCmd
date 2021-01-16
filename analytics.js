@@ -1,5 +1,9 @@
 (function() {
 
+    var SEND_ANALYTICS_FOR_NON_PROD = false;
+
+    window.bitwiseCmdAnalyticsHandler = function() {return false};
+
     var key = 'TrackAnalytics';
     var disableAnalytics = localStorage.getItem(key) === 'false' ||  window.location.hash.indexOf('-notrack') > -1
 
@@ -9,7 +13,7 @@
         return;
     }
 
-    if(window.location.host !== 'bitwisecmd.com') {
+    if(window.location.host !== 'bitwisecmd.com' && !SEND_ANALYTICS_FOR_NON_PROD) {
         console.log("Analytics not tracked. Non-prod host")
         return;
     }
@@ -21,4 +25,9 @@
 
     ga('create', 'UA-61569164-1', 'auto');
     ga('send', 'pageview');
+
+    window.bitwiseCmdAnalyticsHandler = function(evt) {
+        ga('send', Object.assign({hitType: 'event'}, evt));
+        return true;
+    }
 })();
