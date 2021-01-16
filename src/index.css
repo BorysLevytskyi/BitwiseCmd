@@ -41,6 +41,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .error { color: maroon; }
 
 .soft { opacity: 0.7 }
+.small-text { font-size: 0.8em;}
 
 #view { padding: 10px}
 

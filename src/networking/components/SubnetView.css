@@ -1,0 +1,16 @@
+.subnet-view .description {
+    vertical-align: middle;
+    text-align: right;
+}
+
+.subnet-view td {
+    padding-right: 15px;
+}
+
+.subnet-view {
+    margin-bottom: 20px;
+}
+
+.subnet-view .part {
+    border-bottom: solid 1px;
+}
