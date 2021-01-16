@@ -18,8 +18,6 @@ export default class DisplayResultView extends React.Component<DisplayResultProp
                                 <span className="cur">
                                     &gt;</span>{this.props.input}
                                     <a className="hashLink" title="Link for this expression" href={window.location.pathname + '#' + this.props.inputHash}>#</a>
-                                    &nbsp;
-                                    <a className="hashLink" title="Remove this result" href="javascript:void(0)">[x]</a>
                             </div>
                         <div className="content">
                             {this.props.children}
