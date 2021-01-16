@@ -73,7 +73,7 @@ const ipAddressParser = {
         const fourth = parseInt(matches[4]);
 
         if(invalid(first) || invalid(second) || invalid(third) || invalid(fourth))
-            return new ParsingError(`${input} value doesn't fall within the valid range of the IP address space`);
+            return new ParsingError(`${input} doesn't represent a valid IP address space`);
 
         const ipAddress = new IpAddress(first, second, third, fourth);
 
