@@ -1,4 +1,4 @@
-export default {
+const formatter = {
     formatString: function(num: number, kind: string) : string {
         return num.toString(getBase(kind || "bin"));
     },
@@ -32,3 +32,7 @@ function getBase(kind:string) : number {
 
     throw new Error("Unsupported kind: " + kind);
 }
+
+export default formatter;
+const emBin = formatter.emBin;
+export {emBin};

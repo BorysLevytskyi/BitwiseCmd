@@ -1,3 +1,5 @@
+import {emBin} from "../core/formatter";
+
 export type OctetNumber = 1 | 2 | 3 | 4;
 export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
 
@@ -31,6 +33,11 @@ export class IpAddress {
 
     toString(): string {
         return `${this.firstByte}.${this.secondByte}.${this.thirdByte}.${this.fourthByte}`;
+    }
+
+    toBinaryString() {
+        
+        return `${emBin(this.firstByte)}).${emBin(this.secondByte)}.${emBin(this.thirdByte)}.${emBin(this.fourthByte)}`;
     }
 
     clone(): IpAddress {
