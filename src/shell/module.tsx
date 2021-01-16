@@ -1,5 +1,6 @@
 import React from 'react';
 import uuid from 'uuid';
+import { sendAnalyticsEvent } from './analytics';
 import AppState from './AppState';
 import { CmdShell, CommandInput } from './cmd';
 import AboutResultView from './components/AboutResultView';
@@ -29,6 +30,13 @@ const shellModule = {
             appState.toggleDebugMode();
             appState.addCommandResult(c.input, <TextResultView text={`Debug Mode: ${appState.debugMode}`}/>);
         }); 
+
+        cmd.command("track", (c:CommandInput) => {
+            sendAnalyticsEvent({
+                eventCategory: 'General',
+                eventAction: 'AnalyticsTest'
+            });
+        });
 
         if(appState.env !== 'prod') {
             
