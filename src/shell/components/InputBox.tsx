@@ -29,7 +29,8 @@ export default class InputBox extends React.Component<IInputBoxProps> {
                       onKeyUp={e => this.onKeyUp(e)}
                       onKeyDown={e => this.onKeyDown(e)}
                       className="expressionInput mono"
-                      placeholder="type expression like '1>>2' or 'help' "/>;
+                      placeholder="type expression like '1>>2' or 'help' "
+                      autoComplete="off"/>;
     }
 
     onKeyUp(e: any) {
