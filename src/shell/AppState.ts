@@ -7,6 +7,7 @@ export type PersistedAppData = {
     uiTheme: string;
     version: number;
     debugMode: boolean | null;
+    pageVisistsCount: number;
 }
 
 export type CommandResultView = {
@@ -27,7 +28,8 @@ export default class AppState {
     commandResults: CommandResultView[];
     persistedVersion: number;
     wasOldVersion: boolean;
-    env: string;    
+    env: string;
+    pageVisitsCount: number;
 
     constructor(persistData : PersistedAppData, env: string) {
         this.commandResults = [];
@@ -39,6 +41,7 @@ export default class AppState {
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
         this.debugMode = env !== 'prod' || persistData.debugMode === true;
+        this.pageVisitsCount = persistData.pageVisistsCount || 0;
     }
 
     addCommandResult(input : string, view : JSX.Element) {
@@ -76,12 +79,18 @@ export default class AppState {
         this.triggerChanged();
     }
 
+    registerVisit() {
+        this.pageVisitsCount++;
+        this.triggerChanged();
+    }
+
     getPersistData() : PersistedAppData {
         return {
             emphasizeBytes: this.emphasizeBytes,
             uiTheme: this.uiTheme,
             version: this.version,
-            debugMode: this.debugMode
+            debugMode: this.debugMode,
+            pageVisistsCount: this.pageVisitsCount
         }
     }
 };

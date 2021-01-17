@@ -19,6 +19,8 @@ ReactDOM.render(root, document.getElementById('root'));
 
 executeStartupCommands();
 
+appData.appState.registerVisit();
+
 log.debug("started");
 
 function executeStartupCommands() {
