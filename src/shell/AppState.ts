@@ -8,6 +8,7 @@ export type PersistedAppData = {
     version: number;
     debugMode: boolean | null;
     pageVisistsCount: number;
+    donationClicked: boolean
 }
 
 export type CommandResultView = {
@@ -19,7 +20,7 @@ export type CommandResultView = {
 export type AppStateChangeHandler = (state: AppState) => void;
 
 export default class AppState {
-
+    
     version: number = APP_VERSION;
     emphasizeBytes: boolean;
     debugMode: boolean = false;
@@ -30,6 +31,7 @@ export default class AppState {
     wasOldVersion: boolean;
     env: string;
     pageVisitsCount: number;
+    donationClicked: boolean;
 
     constructor(persistData : PersistedAppData, env: string) {
         this.commandResults = [];
@@ -42,6 +44,7 @@ export default class AppState {
         this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
         this.debugMode = env !== 'prod' || persistData.debugMode === true;
         this.pageVisitsCount = persistData.pageVisistsCount || 0;
+        this.donationClicked = persistData.donationClicked;
     }
 
     addCommandResult(input : string, view : JSX.Element) {
@@ -84,13 +87,22 @@ export default class AppState {
         this.triggerChanged();
     }
 
+    onDonationClicked() : boolean{
+        if(this.donationClicked === true) return false;
+
+        this.donationClicked = true;
+        this.triggerChanged();
+        return true;
+    }
+
     getPersistData() : PersistedAppData {
         return {
             emphasizeBytes: this.emphasizeBytes,
             uiTheme: this.uiTheme,
             version: this.version,
             debugMode: this.debugMode,
-            pageVisistsCount: this.pageVisitsCount
+            pageVisistsCount: this.pageVisitsCount,
+            donationClicked: this.donationClicked
         }
     }
 };

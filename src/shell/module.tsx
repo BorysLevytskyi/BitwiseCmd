@@ -31,6 +31,18 @@ const shellModule = {
             appState.addCommandResult(c.input, <TextResultView text={`Debug Mode: ${appState.debugMode}`}/>);
         }); 
 
+        cmd.command("donate", (c:CommandInput) => {
+
+            if(appState.onDonationClicked()) {
+                sendAnalyticsEvent({eventCategory: "DonationButton", eventAction: "Clicked"})
+            }
+            else {
+                sendAnalyticsEvent({eventCategory: "DonationButton", eventAction: "ClickedAgain"})
+            }
+
+            appState.addCommandResult(c.input, <TextResultView text={`Thank you for your interest in donation. This feature is under constraction. I'll let you know when it will be done.`}/>);
+        });
+
         cmd.command("track", (c:CommandInput) => {
             sendAnalyticsEvent({
                 eventCategory: 'General',

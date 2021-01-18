@@ -1,5 +1,5 @@
 
 .top-links { position: absolute; right: 2em; top: 1em; list-style-type: none; margin: 0 }
 .top-links li { float: left; }
-.top-links a { display: inline-block; padding: 10px 15px}
+.top-links a { display: inline-block; padding: 5px 10px}
 .top-links .icon { margin-right: 5px; vertical-align: middle; }
