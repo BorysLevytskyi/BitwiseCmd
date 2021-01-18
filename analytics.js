@@ -9,12 +9,12 @@
 
     if(disableAnalytics) {
         localStorage.setItem(key, "false");
-        console.log('Analytics tracking disabled.');
+        console.log('Analytics tracking disabled by local storage.');
         return;
     }
 
     if(window.location.host !== 'bitwisecmd.com' && !SEND_ANALYTICS_FOR_NON_PROD) {
-        console.log("Analytics not tracked. Non-prod host")
+        console.log("Analytics not tracked. Non-prod host. SEND_ANALYTICS_FOR_NON_PROD="+SEND_ANALYTICS_FOR_NON_PROD);
         return;
     }
 
