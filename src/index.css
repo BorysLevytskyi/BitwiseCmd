@@ -61,6 +61,9 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .hashLink:hover { color: #888 }
 .light ul.top-links li:hover { background: #ddd }
 .light .error { color: #da586d }
+.light button { color: black}
+.light button:hover { background: #ddd}
+.light button:disabled { color: #888; background-color: inherit; }
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -76,6 +79,9 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .hashLink:hover { color: #999 }
 .dark ul.top-links li:hover { background: #333 }
 .dark .error { color: #da586d}
+.dark button { color: white}
+.dark button:hover { background: #333}
+.dark button:disabled { color: #999; background-color: inherit; }
 
 /*
     Midnight Theme
@@ -95,6 +101,17 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight ul.top-links li:hover { background: #132537 }
 .midnight .error { color:#da586d}
 .midnight .changelog .item-new .date { font-weight: bold }
+.midnight button { color: white}
+.midnight button:hover { background: #132537}
+.midnight button:disabled { color: #85a0ad; background-color: inherit; }
+
+button { 
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+button:focus {outline:0;}
 
 /* Top Links Shrink */
 @media (max-width: 800px) {

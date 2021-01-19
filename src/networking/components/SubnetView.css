@@ -14,3 +14,9 @@
 .subnet-view .part {
     border-bottom: solid 1px;
 }
+
+.subnet-view button {
+    margin:0 3px;
+}
+
+.subnet-view .ip-address-col { min-width: 8.5em;}
