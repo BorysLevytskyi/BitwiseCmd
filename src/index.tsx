@@ -25,7 +25,7 @@ log.debug("started");
 
 function executeStartupCommands() {
     log.debug("Executing startup commands", appData.startupCommands);
-    appData.startupCommands.forEach(cmd.execute.bind(cmd));
+    appData.startupCommands.forEach(c => cmd.execute(c, {doNotTrack: true}));
 }
 
 function  initializeModules() {

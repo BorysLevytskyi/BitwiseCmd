@@ -1,6 +1,6 @@
 import React from 'react';
 import AppState from '../shell/AppState';
-import { CmdShell, CommandInput } from '../shell/cmd';
+import { CmdShell, CommandInput, CommandOptions } from '../shell/cmd';
 import ErrorResultView from '../shell/components/ErrorResultView';
 import IpAddressView from './components/IpAddressView';
 import ipAddressParser, {ParsingError, ParsedIpObject} from './ip-parser';
@@ -8,6 +8,7 @@ import { IpAddress, IpAddressWithSubnetMask, SubnetCommand } from "./models";
 import log from 'loglevel';
 import SubnetView from './components/SubnetView';
 import { createSubnetMaskIp } from './subnet-utils';
+import {sendAnalyticsEvent} from '../shell/analytics';
 
 const networkingAppModule = {
     setup: function(appState: AppState, cmd: CmdShell) {
@@ -28,6 +29,7 @@ const networkingAppModule = {
 
                 if(result instanceof SubnetCommand) {
                     appState.addCommandResult(c.input, <SubnetView subnet={result} />);
+                    trackCommand('SubnetCommand', c.options);
                     return;
                 }
 
@@ -43,12 +45,23 @@ const networkingAppModule = {
                         ipAddresses.push(r);
                     }
                 });
+
+                trackCommand("IpAddressesInput", c.options);
             
                 appState.addCommandResult(c.input, <IpAddressView ipAddresses={ipAddresses} />);
             }
         });
 
         log.debug();
+    }
+}
+
+function trackCommand(action: string, ops: CommandOptions) {
+    if(ops.doNotTrack !== true) {
+        sendAnalyticsEvent({
+            eventCategory: "NetworkingCommand",
+            eventAction: action
+        });
     }
 }
 

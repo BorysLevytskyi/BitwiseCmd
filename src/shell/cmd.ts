@@ -3,10 +3,19 @@ import log from 'loglevel';
 
 export type CommandInput = {
     input: string;
+    options: CommandOptions
+}
+
+export type CommandOptions = {
+    doNotTrack: boolean;
 }
 
 type HandleFunction = (input: CommandInput) => void;
 type InputErrorHandler = (input:string, error: Error) => void;
+
+const DEFUALT_COMMAND_OPTIONS : CommandOptions = {
+    doNotTrack: false
+};
 
 export interface ICommandHandler {
     canHandle (input:string) : boolean;
@@ -23,19 +32,21 @@ export class CmdShell {
         this.errorHandler = null;
     };
 
-    execute (rawInput: string) {
+    execute (rawInput: string, ops?: CommandOptions ) {
 
-        log.debug(`Executing command: ${rawInput}`)
+        log.debug(`Executing command: ${rawInput}`);
+
+        ops = ops || Object.assign({}, DEFUALT_COMMAND_OPTIONS);
 
         var input = rawInput.trim().toLowerCase();
         var handler = this.findHandler(input);
 
         if(handler != null) {
             if(this.debugMode) {
-                this.invokeHandler(input, handler);
+                this.invokeHandler(input, handler, ops);
             } else {
                 try {
-                    this.invokeHandler(input, handler);
+                    this.invokeHandler(input, handler, ops);
                 } catch (e) {
                      this.handleError(input, e);
                 }
@@ -87,9 +98,9 @@ export class CmdShell {
         return this.handlers.filter(h => h.canHandle(input))[0];
     };
 
-    invokeHandler (input : string, handler : ICommandHandler) {
+    invokeHandler (input : string, handler : ICommandHandler, options: CommandOptions) {
 
-        var cmdResult = handler.handle({ input: input});
+        var cmdResult = handler.handle({ input: input, options });
         if(cmdResult != null) {
             log.debug(cmdResult);
         }
