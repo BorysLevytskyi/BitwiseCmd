@@ -8,10 +8,10 @@ import CommandLink from '../../core/components/CommandLink';
 function TopLinks() {
     return <ul className="top-links">                
                 <li>
-                    <CommandLink text="donate" icon={faDonate} />
+                    <CommandLink text="donate" icon={faDonate} textClassName="link-text" />
                 </li>
                 <li>
-                    <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><FontAwesomeIcon className="icon" icon={faGithub} size="lg" />github</a>
+                    <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><FontAwesomeIcon className="icon" icon={faGithub} size="lg" /><span className="link-text">github</span></a>
                 </li>
                 <li>
                     <a href="https://twitter.com/BitwiseCmd"><FontAwesomeIcon className="icon" icon={faTwitter} size="lg" /><span className="link-text">twitter</span></a>

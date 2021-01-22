@@ -115,24 +115,25 @@ button:focus {outline:0;}
 
 /* Top Links Shrink */
 @media (max-width: 800px) {
-
     .top-links .link-text { display: none }
+    .debug-indicators { display: none;}
+    .app-root {padding: 10px; }
 }
 
 .social-container{ position:fixed; bottom:20px; right:20px }
 
 /* Remove margin space on body. Inline top links with header */
 @media (max-width: 700px) {
-    body { padding: 10px; }
-    .expressionInput { width: 500px; }
+    /*.expressionInput { width: 450px; }   */
 }
 
 /* Further shrink */
 @media (max-width: 500px) {
-    .expressionInput { width: 350px; }
+    .expressionInput { width: 400px; }
     .top-links a { display: inline-block; padding: 5px 10px}
 }
 
-@media (max-width: 350px) {
-    .expressionInput { width: 200px; }
+@media (max-width: 450px) {
+
+    .expressionInput { width: 350px; }
 }
