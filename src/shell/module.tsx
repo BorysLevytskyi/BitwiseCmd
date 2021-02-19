@@ -4,6 +4,7 @@ import { sendAnalyticsEvent } from './analytics';
 import AppState from './AppState';
 import { CmdShell, CommandInput } from './cmd';
 import AboutResultView from './components/AboutResultView';
+import DonateResultView from './components/DonateResultView';
 import ErrorResultView from './components/ErrorResultView';
 import HelpResultView from './components/HelpResultView';
 import TextResultView from './components/TextResultView';
@@ -40,7 +41,7 @@ const shellModule = {
                 sendAnalyticsEvent({eventCategory: "DonationButton", eventAction: "ClickedAgain"})
             }
 
-            appState.addCommandResult(c.input, <TextResultView text={`Thank you for your interest in donation. This feature is under constraction. I'll let you know when it will be done.`}/>);
+            appState.addCommandResult(c.input, <DonateResultView />);
         });
 
         cmd.command("track", (c:CommandInput) => {

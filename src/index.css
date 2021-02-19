@@ -18,6 +18,8 @@ code { font-size: 1.2em; font-weight: bold; }
 .mono { font-family: monospace; font-size: 1.3em }
 .expressionInput { width: 500px; padding: 3px; border: none; outline: none; }
 
+.hidden { display: none;}
+
 .result { margin: 10px 10px 30px; }
 .result .input { margin-bottom: 10px; }
 .result .content { padding-left: 10px}

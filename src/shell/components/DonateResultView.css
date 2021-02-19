@@ -1,0 +1,3 @@
+.donate-result-view .copy-button { cursor: pointer; padding: 5px}
+.donate-result-view .copy-button svg { margin-right: 5px;}
+.donate-result-view .qrcode-container { background: white; display: inline-block; padding: 10px}
