@@ -15,7 +15,7 @@ function DonateResultView() {
     return <div className="donate-result-view">
         <p>Thank you for your interest in donation. At this point BitwiseCmd can only accept Bitcoin donations.</p>
         <p>
-            <span>BTC Address:</span> <strong>{addr}</strong> <button onClick={() => copy()} title="copy" className={`copy-button ${copyCss}`}><FontAwesomeIcon icon={faClipboard} size="lg" />Copy</button> <span className={`soft ${copiedCss}`}>copied</span>
+            <span>BTC Address:</span> <strong>{addr}</strong> <button onClick={() => copy()} title="Copy this address into the Cliboard" className={`copy-button ${copyCss}`}><FontAwesomeIcon icon={faClipboard} size="lg" />Copy</button> <span className={`soft ${copiedCss}`}>copied</span>
         </p>
         <p className="qrcode-container">
             <svg shape-rendering="crispEdges" height="200" width="200" viewBox="0 0 29 29" className="qrcode">
@@ -29,7 +29,7 @@ function DonateResultView() {
         navigator.clipboard.writeText(addr);
         setState('copied');
         setTimeout(() => setState('default'), 3000);
-        sendAnalyticsEvent({eventCategory: "BtcAddressCopyButton", eventAction: "Clicked"})
+        sendAnalyticsEvent({eventCategory: "Donation", eventAction: "CopyBTCAddressCopyClicked"})
     }
 }
 

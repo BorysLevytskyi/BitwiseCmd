@@ -35,10 +35,10 @@ const shellModule = {
         cmd.command("donate", (c:CommandInput) => {
 
             if(appState.onDonationClicked()) {
-                sendAnalyticsEvent({eventCategory: "DonationButton", eventAction: "Clicked"})
+                sendAnalyticsEvent({eventCategory: "Donation", eventAction: "DonateButtonClicked"})
             }
             else {
-                sendAnalyticsEvent({eventCategory: "DonationButton", eventAction: "ClickedAgain"})
+                sendAnalyticsEvent({eventCategory: "Donation", eventAction: "DonateButtonClickedAgain"})
             }
 
             appState.addCommandResult(c.input, <DonateResultView />);
