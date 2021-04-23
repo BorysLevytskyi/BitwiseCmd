@@ -32,7 +32,7 @@ function SubnetView(props : {subnet : SubnetCommand}) {
                             <span>Network Size</span>
                         </td>
                         <td data-test-name="decimal">
-                            {subnet.getAdressSpaceSize()}
+                            {subnet.input.getAdressSpaceSize()}
                         </td>
                     </tr>
                     <tr>

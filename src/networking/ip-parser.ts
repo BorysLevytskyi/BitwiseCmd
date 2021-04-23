@@ -1,10 +1,18 @@
-import { IpAddress, IpAddressWithSubnetMask, SubnetCommand } from './models';
+import { IpAddress, IpAddressWithSubnetMask, SubnetCommand, VpcCommand } from './models';
 
 export type ParsedIpObject = IpAddress | IpAddressWithSubnetMask;
 
+export type ParsingResult = ParsedIpObject[] | 
+                            SubnetCommand | 
+                            ParsingError | 
+                            VpcCommand |
+                            null;
+
+const CMD_SUBNET = 'subnet';
+const CMD_VPC = 'vpc';
 
 const ipAddressParser = {
-    parse: function(input: string) : ParsedIpObject[] | SubnetCommand | ParsingError | null {
+    parse: function(input: string) : ParsingResult {
 
         const result = this.parseCommand(input);
 
@@ -27,12 +35,12 @@ const ipAddressParser = {
         }
 
         if(result.command != null) {
-            const result = this.createSubnetDefinition(parsedObjects as ParsedIpObject[]);
+            const cmd = 
+             result.command == CMD_SUBNET 
+                ? this.createSubnetDefinition(parsedObjects as ParsedIpObject[])
+                : this.createVpcDefinition(parsedObjects as ParsedIpObject[]);
             
-            if(result instanceof ParsingError)
-                return result;
-
-            return  result;
+            return  cmd;
         } 
 
         return parsedObjects as ParsedIpObject[];
@@ -40,9 +48,14 @@ const ipAddressParser = {
 
     parseCommand(input : string) : { command: null | string, nextInput: string } {
 
-        const command = 'subnet';
-        if(input.startsWith(command)) 
-            return { command, nextInput: input.substring(command.length)}
+        
+
+        if(input.startsWith(CMD_SUBNET)) 
+            return { command: CMD_SUBNET, nextInput: input.substring(CMD_SUBNET.length)};
+
+        if(input.startsWith(CMD_VPC)) {
+            return {command: CMD_VPC, nextInput: input.substring(CMD_VPC.length)};
+        }
 
         return { command: null, nextInput: input };
     },
@@ -101,6 +114,19 @@ const ipAddressParser = {
         }
 
         return new ParsingError("Network definition requires subnet mask");
+    },
+
+    createVpcDefinition(items: ParsedIpObject[]) : VpcCommand | ParsingError {
+
+        if(items.length != 1)
+            return new ParsingError("Incorrect VPC definition");
+        
+        const first = items[0];
+        if(first instanceof IpAddressWithSubnetMask) {
+            return new VpcCommand(first);
+        }
+
+        return new ParsingError("VPC definition requires subnet mask");
     }
 }
 
@@ -110,6 +136,5 @@ export class ParsingError {
         this.errorMessage = message;
     }
 }
-
 
 export default ipAddressParser;

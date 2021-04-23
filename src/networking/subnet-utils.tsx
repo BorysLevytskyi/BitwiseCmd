@@ -29,6 +29,11 @@ function getBroadCastAddress(ipm: IpAddressWithSubnetMask) : IpAddress {
     return flipSubnetMaskBits(ipm, flipBitsToOne, 255);
 }
 
+function  getAddressSpaceSize(maskSize: number) {
+    const spaceLengthInBits = 32 - maskSize;
+    return Math.pow(2, spaceLengthInBits) - 2; // 0 - network address, 1 - multicast address
+}
+
 function flipSubnetMaskBits(ipm: IpAddressWithSubnetMask, flipper : FlipFunction, fullByte: number) {
     // Cannot treat ip address as a single number operation because 244 << 24 results in a negative number in JS
     const flip = (maskBits: number, byte: number) => flipper(byte, 8 - maskBits);
@@ -80,4 +85,4 @@ function getNetworkClass (ipAddress: IpAddress) : NetworkClass {
 
 type FlipFunction = (byte: number, numberOfBits: number) => number; 
 
-export {createSubnetMaskIp, getBroadCastAddress, getNetworkAddress, getNetworkClass};
+export {createSubnetMaskIp, getBroadCastAddress, getNetworkAddress, getNetworkClass, getAddressSpaceSize};

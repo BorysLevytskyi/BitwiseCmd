@@ -107,6 +107,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight .zero { color: #85a0ad;}
 .midnight .prefix { color: #85a0ad}
 .midnight  .other { color: #9FBAC7;}
+.midnight .accent-background { background-color: #3b5268;}
 .midnight .hashLink, .dark .hashLink:visited { color: #85a0ad }
 .midnight .hashLink:hover { color: #9FBAC7 }
 .midnight ul.top-links li:hover { background: #132537 }

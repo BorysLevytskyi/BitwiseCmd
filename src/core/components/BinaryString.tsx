@@ -12,7 +12,7 @@ export type FlipBitEventArg = {
     index: number;
     binaryString: string;
     $event: any;
-    newBinaryString: string,    
+    newBinaryString: string
 };
 
 export default class BinaryStringView extends React.Component<BinaryStringViewProps> {

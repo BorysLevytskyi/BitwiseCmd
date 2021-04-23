@@ -33,6 +33,8 @@ function getBase(kind:string) : number {
     throw new Error("Unsupported kind: " + kind);
 }
 
+const emBin = formatter.emBin.bind(formatter);
+const padLeft = formatter.padLeft.bind(formatter);
+
+export {emBin, padLeft}
 export default formatter;
-const emBin = formatter.emBin;
-export {emBin};

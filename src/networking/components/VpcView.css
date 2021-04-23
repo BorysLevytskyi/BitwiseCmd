@@ -1,0 +1,23 @@
+.vpc-view .description {
+    vertical-align: middle;
+    text-align: right;
+}
+
+.vpc-view td {
+    padding-right: 15px;
+}
+
+.vpc-view {
+    margin-bottom: 20px;
+}
+
+.vpc-view .part {
+    border-bottom: solid 1px;
+}
+
+
+.vpc-view button {
+    margin:0 3px;
+}
+
+.vpc-view .ip-address-col { min-width: 8.5em;}

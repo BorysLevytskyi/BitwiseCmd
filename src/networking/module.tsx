@@ -4,11 +4,13 @@ import { CmdShell, CommandInput, CommandOptions } from '../shell/cmd';
 import ErrorResultView from '../shell/components/ErrorResultView';
 import IpAddressView from './components/IpAddressView';
 import ipAddressParser, {ParsingError, ParsedIpObject} from './ip-parser';
-import { IpAddress, IpAddressWithSubnetMask, SubnetCommand } from "./models";
+import { IpAddress, IpAddressWithSubnetMask, SubnetCommand, VpcCommand } from "./models";
 import log from 'loglevel';
 import SubnetView from './components/SubnetView';
 import { createSubnetMaskIp } from './subnet-utils';
 import {sendAnalyticsEvent} from '../shell/analytics';
+import TextResultView from '../shell/components/TextResultView';
+import VpcView from './components/VpcView';
 
 const networkingAppModule = {
     setup: function(appState: AppState, cmd: CmdShell) {
@@ -33,6 +35,12 @@ const networkingAppModule = {
                     return;
                 }
 
+                if(result instanceof VpcCommand) {
+                    appState.addCommandResult(c.input, <VpcView vpc={result} />);
+                    trackCommand('VpcCommand', c.options);
+                    return;
+                }
+
                 const ipAddresses : IpAddress[] = [];
                 
                 (result as ParsedIpObject[]).forEach(r => {
@@ -43,7 +51,7 @@ const networkingAppModule = {
                     }
                     else if(r instanceof IpAddress) {
                         ipAddresses.push(r);
-                    }
+                    }                    
                 });
 
                 trackCommand("IpAddressesInput", c.options);

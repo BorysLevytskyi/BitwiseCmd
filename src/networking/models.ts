@@ -1,4 +1,6 @@
 import {emBin} from "../core/formatter";
+import { numberParser } from "../expression/numberParser";
+import { getAddressSpaceSize } from "./subnet-utils";
 
 export type OctetNumber = 1 | 2 | 3 | 4;
 export type NetworkClass = 'a' | 'b' | 'c' | 'd' | 'e';
@@ -10,6 +12,11 @@ export class IpAddressWithSubnetMask {
     constructor(ipAddress: IpAddress, maskBits: number) {
         this.ipAddress = ipAddress;
         this.maskBits = maskBits;
+    }
+
+    getAdressSpaceSize(): number {
+        const spaceLengthInBits = 32 - this.maskBits;
+        return getAddressSpaceSize(spaceLengthInBits);
     }
 
     toString() {
@@ -35,9 +42,12 @@ export class IpAddress {
         return `${this.firstByte}.${this.secondByte}.${this.thirdByte}.${this.fourthByte}`;
     }
 
-    toBinaryString() {
+    toBinaryString(skipDots?: boolean) {
         
-        return `${emBin(this.firstByte)}).${emBin(this.secondByte)}.${emBin(this.thirdByte)}.${emBin(this.fourthByte)}`;
+        if(!skipDots)
+            return `${emBin(this.firstByte)}.${emBin(this.secondByte)}.${emBin(this.thirdByte)}.${emBin(this.fourthByte)}`;
+        else 
+            return `${emBin(this.firstByte)}${emBin(this.secondByte)}${emBin(this.thirdByte)}${emBin(this.fourthByte)}`;
     }
 
     clone(): IpAddress {
@@ -63,18 +73,25 @@ export class IpAddress {
 }
 
 export class SubnetCommand {
-    input: IpAddressWithSubnetMask;
+    input: IpAddressWithSubnetMask; // TODO: rename to cidr
     constructor(definition: IpAddressWithSubnetMask) {
         this.input = definition;
     }
-
-    getAdressSpaceSize(): number {
-        const spaceLengthInBits = 32 - this.input.maskBits;
-        return Math.pow(2, spaceLengthInBits) - 2; // 0 - network address, 1 - multicast address
-    }
-
+    
     toString() {
         return this.input.toString();
     }
 }
 
+export class VpcCommand {
+    cidr: IpAddressWithSubnetMask;
+    subnetBits: number;
+    constructor(cidr: IpAddressWithSubnetMask) {
+        this.cidr = cidr;
+        this.subnetBits = 3;
+    }
+
+    toString() {
+        return this.cidr.toString();
+    }
+}

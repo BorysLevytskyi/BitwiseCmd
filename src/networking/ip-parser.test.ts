@@ -1,5 +1,5 @@
 import ipAddressParser, { ParsedIpObject, ParsingError } from './ip-parser';
-import { IpAddressWithSubnetMask, IpAddress, SubnetCommand } from "./models";
+import { IpAddressWithSubnetMask, IpAddress, SubnetCommand, VpcCommand } from "./models";
 
 
 describe('parser tests', () => {
@@ -61,5 +61,12 @@ describe('parser tests', () => {
         expect(actual).toBeInstanceOf(SubnetCommand);
         const subnet = actual as SubnetCommand;
         expect(subnet.toString()).toBe('192.168.1.1/23');
+    });
+
+    it('parses vpc command', () => {
+        const actual = ipAddressParser.parse('vpc 192.168.1.1/23');
+        expect(actual).toBeInstanceOf(VpcCommand);
+        const vpc = actual as VpcCommand;
+        expect(vpc.toString()).toBe('192.168.1.1/23');
     });
 });
