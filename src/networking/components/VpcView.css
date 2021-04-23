@@ -3,10 +3,6 @@
     text-align: right;
 }
 
-.vpc-view td {
-    padding-right: 15px;
-}
-
 .vpc-view {
     margin-bottom: 20px;
 }
@@ -15,9 +11,24 @@
     border-bottom: solid 1px;
 }
 
+.vpc-view .address-space button {
+    margin: 0;
+}
+
+.vpc-view .address-space {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.vpc-view .address-space-label {
+    font-size: 0.8em;
+    vertical-align: center;
+}
 
 .vpc-view button {
     margin:0 3px;
 }
 
-.vpc-view .ip-address-col { min-width: 8.5em;}
+.vpc-details {
+    margin-top: 20px;
+}
