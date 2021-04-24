@@ -2,18 +2,21 @@
 import React from "react";
 
 export type ToggleProps = {
-    text: string,
+    text?: string,
     isOn: boolean,
     title: string,
     elementId?: string
     onClick: () => void
 };
 
-function Toggle(props:  ToggleProps) {
+const Toggle: React.FunctionComponent<ToggleProps> = (props) => {
+
     return <span id={props.elementId} 
         className={"indicator " + getIndicator(props.isOn)} 
         title={props.title} 
-        onClick={() => props.onClick()}>{props.text}</span>
+        onClick={() => props.onClick()}>
+            { !props.children ? props.text : props.children }
+        </span>
 }
 
 function getIndicator(value : boolean) {

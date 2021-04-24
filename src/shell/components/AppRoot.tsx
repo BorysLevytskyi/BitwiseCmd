@@ -38,7 +38,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
     getResultViews() : JSX.Element[] {
 
         var results = this.state.commandResults.map((r, i) => 
-            <DisplayResultView key={r.key}  input={r.input} inputHash={hash.encodeHash(r.input)} appState={this.props.appState}>
+            <DisplayResultView resultIndex={i} resultKey={r.key} key={r.key} input={r.input} inputHash={hash.encodeHash(r.input)} appState={this.props.appState}>
                 {r.view}
             </DisplayResultView>);
         return results;

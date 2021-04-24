@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-const APP_VERSION = 6;
+const APP_VERSION = 7;
 
 export type PersistedAppData = {
     emphasizeBytes: boolean;
@@ -56,6 +56,14 @@ export default class AppState {
 
     clearCommandResults() {
         this.commandResults = [];
+        this.triggerChanged();
+    }
+
+    removeResult(index: number) {
+        if(index < 0 || index >= this.commandResults.length)
+            return;
+
+        this.commandResults.splice(index, 1);
         this.triggerChanged();
     }
 

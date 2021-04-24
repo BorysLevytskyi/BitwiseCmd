@@ -7,6 +7,14 @@ function WhatsnewResultView() {
         return <div className="changelog">
                     <h3>Changelog</h3>
                     <div className="item item-new">
+                        <p><span className="soft date">Jul 24th, 2021</span> <br/>
+                            <ul>
+                                <li>Added support of <code>vpc</code> command to see hpw VPC network address is divided bettwen VPC, Subnets and Hosts. Try it out: <CommandLink text="vpc 192.168.24.1/24" /></li>
+                                <li>Added ability to remove individual results</li>
+                            </ul>
+                        </p>                       
+                    </div>
+                    <div className="item">
                         <p><span className="soft date">Jun 16th, 2021</span> <br/>
                             Added support of <code>subnet</code> command to display information about subnet ip adress such. Try it out: <CommandLink text="subnet 192.168.24.1/14" />
                         </p>                       

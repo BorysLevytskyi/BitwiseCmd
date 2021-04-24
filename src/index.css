@@ -25,8 +25,8 @@ code { font-size: 1.2em; font-weight: bold; }
 .result .content { padding-left: 10px}
 .result .cur { margin-right: 5px; }
 
-.hashLink { text-decoration: none; margin-left: 5px; visibility: hidden }
-.hashLink:hover { text-decoration: underline; margin-left: 5px; }
+.hashLink { text-decoration: none; margin-left: 5px; visibility: hidden; margin-right: 0; padding: 0; text-decoration: none; }
+.hashLink:hover { text-decoration: underline; margin-left: 5px; background: none; }
 .result:hover .hashLink { visibility: visible }
 
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
@@ -48,7 +48,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
 .help p { margin-top: 0 }
 
-.indicator { padding: 2px 5px;  font-family: monospace; font-size: 1.3em; background: transparent; border: none; cursor: pointer }
+.indicator { padding: 0px 5px; background: transparent; border: none; cursor: pointer; vertical-align: middle; }
 .error { color: maroon; }
 
 .soft { opacity: 0.7 }
@@ -68,13 +68,13 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .on { color: #121212; }
 .light .prefix { color: #888}
 .light .other { color: #bbb }
-.light .hashLink, .light .hashLink:visited { color: #ddd }
+.light .hashLink, .light .hashLink:visited { color: #ddd; }
 .light .hashLink:hover { color: #888 }
 .light ul.top-links li:hover { background: #ddd }
 .light .error { color: #da586d }
-.light button { color: black}
-.light button:hover { background: #ddd}
-.light button:disabled { color: #888; background-color: inherit; }
+.light button.btn { color: black}
+.light button.btn:hover { background: #ddd}
+.light button.btn:disabled { color: #888; background-color: inherit; }
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -90,9 +90,9 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .hashLink:hover { color: #999 }
 .dark ul.top-links li:hover { background: #333 }
 .dark .error { color: #da586d}
-.dark button { color: white}
-.dark button:hover { background: #333}
-.dark button:disabled { color: #999; background-color: inherit; }
+.dark button.btn { color: white}
+.dark button.btn:hover { background: #333}
+.dark button.btn:disabled { color: #999; background-color: inherit; }
 
 /*
     Midnight Theme
@@ -113,9 +113,9 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight ul.top-links li:hover { background: #132537 }
 .midnight .error { color:#da586d}
 .midnight .changelog .item-new .date { font-weight: bold }
-.midnight button { color: white}
-.midnight button:hover { background: #132537}
-.midnight button:disabled { color: #85a0ad; background-color: inherit; }
+.midnight button.btn { color: white}
+.midnight button.btn:hover { background: #132537}
+.midnight button.btn:disabled { color: #85a0ad; background-color: inherit; }
 
 button { 
     border: none;

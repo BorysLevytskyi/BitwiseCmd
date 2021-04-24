@@ -14,8 +14,7 @@ export class IpAddressWithSubnetMask {
     }
 
     getAdressSpaceSize(): number {
-        const spaceLengthInBits = 32 - this.maskBits;
-        return getAddressSpaceSize(spaceLengthInBits);
+        return getAddressSpaceSize(this.maskBits);
     }
 
     toString() {

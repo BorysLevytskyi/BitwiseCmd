@@ -23,7 +23,7 @@ function DebugIndicators(props:  {appState: AppState}) {
         return null;
 
     return <div className="debug-indicators">
-            {list.map(i => <span title={i}>[{i.substring(0,1)}]&nbsp;</span>)}
+            {list.map(i => <span title={i} key={i}>[{i.substring(0,1)}]&nbsp;</span>)}
         </div>
 }
 

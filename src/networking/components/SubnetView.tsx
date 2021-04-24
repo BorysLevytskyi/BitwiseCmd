@@ -41,9 +41,9 @@ function SubnetView(props : {subnet : SubnetCommand}) {
                         </td>
                         <td data-test-name="decimal">
                            
-                            <button onClick={decrementMask} disabled={subnet.cidr.maskBits === 0} title="Decrease mask size">-</button>
+                            <button className="btn" onClick={decrementMask} disabled={subnet.cidr.maskBits === 0} title="Decrease mask size">-</button>
                             <span>{subnet.cidr.maskBits}</span>
-                            <button onClick={incrementMask} disabled={subnet.cidr.maskBits === 32} title="Increase mask size">+</button>
+                            <button className="btn"onClick={incrementMask} disabled={subnet.cidr.maskBits === 32} title="Increase mask size">+</button>
                         </td>
                     </tr>
             </tbody>

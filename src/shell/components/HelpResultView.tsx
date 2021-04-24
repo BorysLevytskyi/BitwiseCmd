@@ -20,6 +20,7 @@ function HelpResultView() {
                                     <li><code><CommandLink text="127.0.0.1" /></code> — enter single or multiple ip addresses (separated by space) to see their binary represenation</li>
                                     <li><code><CommandLink text="192.168.0.1/8" /></code> — subnet mask notiations are support as well</li>
                                     <li><code><CommandLink text="subnet 192.168.24.1/14" /></code> — display information about subnet (network address, broadcast address, etc.)</li>
+                                    <li><code><CommandLink text="vpc 192.168.24.1/24" /></code> — see how VPC network address bits are divided between VPC address, Subnets and Hosts</li>
                                 </ul>
                                 </div>
                                 <div className="section">
