@@ -7,6 +7,7 @@ import log from 'loglevel';
 import DebugIndicators from './DebugIndicators';
 import hash from '../../core/hash';
 import TopLinks from './TopLinks';
+import Toggle from './Toggle';
 
 
 type AppRootProps = {
@@ -60,7 +61,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
 
                         <span className="configPnl">
-                            <span id="emphasizeBytes" data-cmd="em" className={"indicator " + this.getIndicator(this.state.emphasizeBytes)} title="Toggle Emphasize Bytes" onClick={() => this.toggleEmphasizeBytes()}>[em]</span>
+                            <Toggle elementId="emphasizeBytes" text="[em]" isOn={this.state.emphasizeBytes} onClick={() => this.toggleEmphasizeBytes()} title="Toggle Emphasize Bytes"  />                            
                         </span>
                     </div>
 

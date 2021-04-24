@@ -74,7 +74,7 @@ export default class AppState {
 
     setUiTheme(theme: string) {
          this.uiTheme = theme;
-         this.triggerChanged();    
+         this.triggerChanged();
     }
 
     toggleDebugMode() {

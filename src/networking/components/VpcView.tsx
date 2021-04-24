@@ -7,18 +7,14 @@ import IpAddressBinaryString from './IpAddressBinaryString';
 import { IpAddress, IpAddressWithSubnetMask, SubnetCommand, VpcCommand } from '../models';
 import formatter, { padLeft } from '../../core/formatter';
 
-type ViewMode = "color" | "table";
+
+const MAX_NON_HOSTS_BITS = 30; // leave two bits for hosts min
 
 function SubnetView(props : {vpc : VpcCommand}) {
-
-    const mode : ViewMode = "color";
 
     const [vpc, setVpc] = useState(VpcModel.create(props.vpc));
 
     const subnetMaskSize = vpc.cidr.maskBits + vpc.subnetBits;
-    const vpcPart = getNetworkAddress(vpc.cidr).toBinaryString(true).substring(0, vpc.cidr.maskBits);
-    const subnetsPart = padLeft("0", vpc.subnetBits, "0");
-    const lastPart = padLeft("0", 32 - (vpc.cidr.maskBits + vpc.subnetBits), "0");
     const maxSubnets = Math.pow(2, vpc.subnetBits);
     const hostsPerSubnet = getAddressSpaceSize(subnetMaskSize);
     const networkAddress = getNetworkAddress(vpc.cidr);
@@ -33,60 +29,27 @@ function SubnetView(props : {vpc : VpcCommand}) {
 
     return <React.Fragment>
         
-        <div className="expression vpc-view">
-        <div style={{display: mode === "color" ? '': 'none'}}>
-            <BinaryStringView binaryString={split.vpc} disableHighlight={true} className="address-space soft" />
-            <BinaryStringView binaryString={split.subnet} disableHighlight={true} className="address-space subnet-part"/>
-            <BinaryStringView binaryString={split.hosts} disableHighlight={true} className="address-space host-part" />
-        </div>
-            <div style={{display: mode === "color" ? 'none': ''}}>
-                <table>
-                    <tr>
-                        <td className="address-space-label">
-                            VPC
-                        </td>
-                        <td className="address-space-label">
-                            Subnets
-                        </td>
-                        <td className="address-space-label">
-                            Hosts
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button onClick={decrVpc} disabled={vpc.cidr.maskBits <= 1} title="Increase vpc space">-</button>
-                                <BinaryStringView binaryString={vpcPart}  className="address-space" />
-                            <button onClick={incrVpc} disabled={subnetMaskSize >= 30} title="Decrease vpc space">+</button>
-                        </td>
-                        <td>
-                            <button onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Increase subnet space">-</button>
-                                <BinaryStringView binaryString={subnetsPart} className="address-space" />
-                            <button onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= 30} title="Decrease subnet space">+</button>
-                        </td>
-                        <td>
-                            <BinaryStringView binaryString={lastPart} className="address-space" />
-                        </td>
-                    </tr>
-                   
-                </table>
+            <div className="expression vpc-view">
+           
+            <div className="address-container">
+                <div>
+                    <span>VPC Network Address</span>
+                </div>
+                <BinaryStringView binaryString={split.vpc} disableHighlight={true} className="address-space soft" />
+                <BinaryStringView binaryString={split.subnet} disableHighlight={true} className="address-space subnet-part"/>
+                <BinaryStringView binaryString={split.hosts} disableHighlight={true} className="address-space host-part" />
+                <span className="address-space decimal-part">{networkAddress.toString()}</span>
             </div>
+
             <table className="vpc-details">
-                <tr>
-                    <td className="soft">
-                        VPC Network Address: 
-                    </td>
-                    <td>
-                          {getNetworkAddress(vpc.cidr).toString()}
-                    </td>
-                </tr>              
                 <tr>
                     <td className="soft">
                         VPC CIDR Mask: 
                     </td>
                     <td>
-                        <button onClick={decrVpc} disabled={vpc.cidr.maskBits <= 1} title="Increase vpc space">-</button>
+                        <button onClick={decrVpc} disabled={vpc.cidr.maskBits <= 1} title="Decrease vpc address bits">-</button>
                          /{vpc.cidr.maskBits}
-                         <button onClick={incrVpc} disabled={subnetMaskSize >= 30} title="Decrease vpc space">+</button>
+                         <button onClick={incrVpc} disabled={subnetMaskSize >= MAX_NON_HOSTS_BITS} title="Increse vpc address bits">+</button>
                     </td>
                 </tr>
                 <tr>
@@ -94,9 +57,9 @@ function SubnetView(props : {vpc : VpcCommand}) {
                         Subnet CIDR Mask:
                     </td>
                     <td>
-                        <button onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Increase subnet space">-</button>
+                        <button onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Increase subnet bits">-</button>
                         /{subnetMaskSize}
-                        <button onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= 30} title="Decrease subnet space">+</button>
+                        <button onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= MAX_NON_HOSTS_BITS} title="Increase subnet bits">+</button>
                     </td>
                 </tr>
                 <tr>
@@ -104,7 +67,9 @@ function SubnetView(props : {vpc : VpcCommand}) {
                         Max Subnets in VPC:
                     </td>
                     <td>
-                    {maxSubnets}
+                        <button onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Decrease subnet bits">-</button>
+                        {maxSubnets}
+                        <button onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= MAX_NON_HOSTS_BITS} title="Increase subnet bits">+</button>
                     </td>
                 </tr>
                 <tr>
@@ -128,7 +93,7 @@ function SubnetView(props : {vpc : VpcCommand}) {
     </React.Fragment>;
 }
 
-function VpcRow(props: { ip: IpAddress, descr: string}) {
+function Indicator2(props: { ip: IpAddress, descr: string}) {
 
     const {ip, descr} = props;
 

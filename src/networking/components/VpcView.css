@@ -19,6 +19,10 @@
     color:mediumseagreen;
 }
 
+.vpc-view .decimal-part {
+    margin-left: 10px;
+}
+
 .vpc-view .part {
     border-bottom: solid 1px;
 }
@@ -41,6 +45,6 @@
     margin:0 3px;
 }
 
-.vpc-details {
-    margin-top: 20px;
+.vpc-view .address-container {
+    margin: 20px 0;
 }
