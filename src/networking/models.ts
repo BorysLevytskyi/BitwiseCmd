@@ -1,5 +1,4 @@
 import {emBin} from "../core/formatter";
-import { numberParser } from "../expression/numberParser";
 import { getAddressSpaceSize } from "./subnet-utils";
 
 export type OctetNumber = 1 | 2 | 3 | 4;
@@ -73,13 +72,13 @@ export class IpAddress {
 }
 
 export class SubnetCommand {
-    input: IpAddressWithSubnetMask; // TODO: rename to cidr
-    constructor(definition: IpAddressWithSubnetMask) {
-        this.input = definition;
+    cidr: IpAddressWithSubnetMask; // TODO: rename to cidr
+    constructor(cidr: IpAddressWithSubnetMask) {
+        this.cidr = cidr;
     }
     
     toString() {
-        return this.input.toString();
+        return this.cidr.toString();
     }
 }
 

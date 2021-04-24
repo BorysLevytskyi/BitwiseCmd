@@ -20,6 +20,35 @@ const formatter = {
     },
     emBin(number: number) {
         return this.padLeft(this.bin(number), 8, '0');
+    },
+    
+    splitByMasks(ipAddrBin: string, mask1: number, mask2: number) : {vpc: string, subnet: string, hosts:string} {
+
+        var res = [];
+        var tmp : string[] = [];
+        var mask = 0;
+        var b = mask1;
+
+        ipAddrBin.split('').forEach(ch => {
+            
+            tmp.push(ch);
+
+            if(ch === ".") {
+                return;
+            }
+
+            mask++;
+
+            if(mask == b) {
+                b = mask2;
+                res.push(tmp.join(''));
+                tmp = [];
+            }
+        });
+
+        if(tmp.length > 0) res.push(tmp.join(''));
+
+        return { vpc: res[0], subnet: res[1], hosts: res[2]};
     }
 };
 

@@ -5,7 +5,8 @@ export type BinaryStringViewProps = {
     binaryString: string;
     onFlipBit?: (input: FlipBitEventArg) => void;
     emphasizeBytes?: boolean;
-    className?:string
+    className?:string;
+    disableHighlight?:boolean
 };
 
 export type FlipBitEventArg = {
@@ -50,8 +51,15 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         const allowFlipBits = this.props.allowFlipBits || false;
         const css = allowFlipBits ? ' flipable' : ''
 
+        const disableHighlight = this.props.disableHighlight || false;
+
         return bitChars.map((c, i) => {
+
             var className = c == '1' ? `one${css}` : `zero${css}`;
+
+            if(disableHighlight) 
+                className = css;
+
             return <span className={className} key={i} onClick={e => this.onBitClick(i, e)}>{c}</span>
         });
     }

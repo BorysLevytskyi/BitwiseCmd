@@ -7,6 +7,18 @@
     margin-bottom: 20px;
 }
 
+.vpc-view  {
+    margin-bottom: 20px;
+}
+
+.vpc-view .host-part {
+    color: teal;
+}
+
+.vpc-view .subnet-part {
+    color:mediumseagreen;
+}
+
 .vpc-view .part {
     border-bottom: solid 1px;
 }
