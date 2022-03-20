@@ -3,7 +3,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEnvelope, faDonate } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter, faGithub} from "@fortawesome/free-brands-svg-icons";
 import './TopLinks.css';
-import CommandLink from '../../core/components/CommandLink';
 import cmd from '../cmd';
 
 function TopLinks() {
@@ -11,7 +10,7 @@ function TopLinks() {
     return <ul className="top-links">                
                 <li>
                     <a href='https://www.paypal.com/donate/?hosted_button_id=3GREJYC4T5AJ8' onClick={onDonate} target="_blank">
-                        <span className={faDonate.iconName}>donate</span>                    
+                        <FontAwesomeIcon className='icon' icon={faDonate} size="lg" />donate
                     </a>
                 </li>
                 <li>
