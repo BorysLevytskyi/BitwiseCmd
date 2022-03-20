@@ -47,7 +47,6 @@
   },
   "devDependencies": {
     "@types/enzyme-adapter-react-16": "^1.0.5",
-    "http-server": "^0.12.3",
-    "wdio-jasmine-framework": "^0.3.8"
+    "http-server": "^0.12.3"
   }
 }
