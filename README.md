@@ -1,44 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://bitwisecmd.com is a web-based bitwise calculation tool which main goal is to help peopel understand how bitwise operaiton works by visualise them.
 
-## Available Scripts
+I initially created a tool in 2012 to help me better understand how Flags enums work in C#. I've decided to share it with other people by converting it into the web application in 2015. And of course I couldn't resist the temptation to write my own JavaScript framework similar to Angular JS. I released the first version after 4 days of working from home while being on the sick live and having a mild feaver. It had templating engine and DI container. Since then I rewrote it in React because suprise-suprise supporting framework that you wrote yourself is not as easy as one might think. Espcially if you return to it after long pause. Still, I regret nothig. You can see [here](https://github.com/BorysLevytskyi/BitwiseCmd/blob/a01ca1c67040312e7c7774705b0fe48296da10ac/src/index.html#L134-L145) and [here](https://github.com/BorysLevytskyi/BitwiseCmd/blob/a01ca1c67040312e7c7774705b0fe48296da10ac/src/js/app.js) how application looked like back then (spoiler: very similar to AngularJS).
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/)
+After some time I got into learning about networking in AWS. I needed to understand how IP subnet masks and CIDR notations work. Again, it was about bitwise operations. So I've extended BitwiseCmd with additional commands such as `subnet`, `vpc`, and support of IP address inputs.
