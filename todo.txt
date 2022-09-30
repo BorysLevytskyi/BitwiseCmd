@@ -1,5 +1,0 @@
-- Bug: ~1|~2
-- add Firefox tests
-- support for list of ip addresses
-- support of subnet masks e.g. 127.0.0.1/24
-
