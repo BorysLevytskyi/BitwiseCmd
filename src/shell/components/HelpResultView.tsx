@@ -15,7 +15,7 @@ function HelpResultView() {
                                 </ul>
                                 </div>
                                 <div className="section">
-                                    <strong className="section-title  soft">IP Address Commands</strong>
+                                    <strong className="section-title  soft">IP Address & Networking Commands</strong>
                                 <ul>
                                     <li><code><CommandLink text="127.0.0.1" /></code> — enter single or multiple ip addresses (separated by space) to see their binary represenation</li>
                                     <li><code><CommandLink text="192.168.0.1/8" /></code> — subnet mask notiations are support as well</li>
