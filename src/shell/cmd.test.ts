@@ -8,8 +8,8 @@ describe("CmdShell", () => {
             test2() { }
         };
 
-        spyOn(handler, "test1");
-        spyOn(handler, "test2");
+        jest.spyOn(handler, "test1");
+        jest.spyOn(handler, "test2");
 
         var sut = new CmdShell();
         sut.command("test1", handler.test1);
@@ -32,7 +32,7 @@ describe("CmdShell", () => {
             handle: function (input: string)  { }
         };
 
-        spyOn(handler, "handle");
+        jest.spyOn(handler, "handle");
 
         var sut = new CmdShell();
         sut.command(handler);

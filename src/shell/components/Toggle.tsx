@@ -6,7 +6,8 @@ export type ToggleProps = {
     isOn: boolean,
     title: string,
     elementId?: string
-    onClick: () => void
+    onClick: () => void,
+    children?: React.ReactNode
 };
 
 const Toggle: React.FunctionComponent<ToggleProps> = (props) => {
