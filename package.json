@@ -3,25 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.2",
-    "@fortawesome/fontawesome-svg-core": "^1.2.34",
-    "@fortawesome/free-brands-svg-icons": "^5.15.2",
-    "@fortawesome/free-solid-svg-icons": "^5.15.2",
-    "@fortawesome/react-fontawesome": "^0.1.14",
-    "@types/enzyme": "^3.9.4",
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.0.10",
-    "@types/react": "^16.8.22",
-    "@types/react-dom": "^16.8.4",
-    "@types/uuid": "^3.4.4",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
-    "react-test-renderer": "^16.8.6",
-    "typescript": "^3.5.2",
-    "uuid": "^3.3.2"
+    "@fortawesome/fontawesome-free": "^6.4.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.25",
+    "@types/react": "^18.2.4",
+    "@types/react-dom": "^18.2.3",
+    "@types/uuid": "^9.0.1",
+    "loglevel": "^1.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "uuid": "^9.0.0",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -31,7 +32,10 @@
     "serve-build": "npx http-server ./build -p 3030"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -46,7 +50,6 @@
     ]
   },
   "devDependencies": {
-    "@types/enzyme-adapter-react-16": "^1.0.5",
-    "http-server": "^0.12.3"
+    "http-server": "^14.1.1"
   }
 }

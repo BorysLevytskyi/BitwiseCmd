@@ -48,7 +48,7 @@ export class CmdShell {
                 try {
                     this.invokeHandler(input, handler, ops);
                 } catch (e) {
-                     this.handleError(input, e);
+                     this.handleError(input, e as Error);
                 }
             }
         }
