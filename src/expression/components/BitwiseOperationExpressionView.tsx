@@ -85,8 +85,9 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                 </tr>;;
     }
 
-    getBinaryString() : string {            
-        return this.props.expressionItem.evaluate().toBinaryString();
+    getBinaryString() : string {       
+        var binary = this.props.expressionItem.evaluate().toBinaryString();
+        return binary;
     }
 
     getLabel(): string {
