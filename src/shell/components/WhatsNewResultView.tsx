@@ -6,6 +6,12 @@ function WhatsnewResultView() {
     
         return <div className="changelog">
                     <h3>Changelog</h3>
+                    <div className='item item-new'>
+                        <p>
+                            <span className="soft date">Jul 24th, 2021</span> <br/>
+                            Fixed <a href="https://github.com/BorysLevytskyi/BitwiseCmd/issues/13">bug</a> with incorrect binary representation of 64 bit numbers. <u>Negative 64 bit numbers currently are not supported by BitwiseCmd</u>.
+                        </p>
+                    </div>
                     <div className="item item-new">
                         <p><span className="soft date">Jul 24th, 2021</span> <br/>
                             <ul>
