@@ -27,6 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "release": "react-scripts build & gh-pages -d build --message Release",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "serve-build": "npx http-server ./build -p 3030"
@@ -50,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "http-server": "^14.1.1"
   }
 }
