@@ -1,5 +1,5 @@
 import React from 'react';
-import uuid from 'uuid';
+import {v4 as uuid} from 'uuid';
 import { sendAnalyticsEvent } from './analytics';
 import AppState from './AppState';
 import { CmdShell, CommandInput } from './cmd';

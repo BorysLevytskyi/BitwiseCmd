@@ -10,7 +10,8 @@ type DisplayResultProps = {
     input: string,
     resultKey: number,
     resultIndex: number,
-    onRemove?: (i: number) => void;
+    onRemove?: (i: number) => void,
+    children: JSX.Element
 }
 
 const DisplayResultView: React.FunctionComponent<DisplayResultProps> = (props) => {

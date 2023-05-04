@@ -1,3 +1,4 @@
+import { OperationCanceledException } from "typescript";
 import { parser, ListOfNumbersExpression, BitwiseOperationExpression, NumericOperand, ExpressionOperand } from "./expression";
 
 describe("expression parser", () => {
@@ -21,11 +22,16 @@ describe("expression parser", () => {
         const second = result.expressionItems[1];
 
         expect(first).toBeInstanceOf(NumericOperand);
-        expect(first.value).toBe(1);
+
+        expect((first as NumericOperand).value).toBe(1);
 
         expect(second).toBeInstanceOf(ExpressionOperand);
-        expect(second.sign).toBe("^");
-        expect(second.operand.value).toBe(2);
+        var secondOp = second as ExpressionOperand;
+        expect(secondOp.sign).toBe("^");
+
+        expect(secondOp.operand).toBeInstanceOf(NumericOperand);
+        var childOp = secondOp.operand as NumericOperand;
+        expect(childOp.value).toBe(2);
     });
 
     it("bug", () => {       
