@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-const APP_VERSION = 7;
+const APP_VERSION = 8;
 
 export type PersistedAppData = {
     emphasizeBytes: boolean;

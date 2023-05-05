@@ -1,11 +1,13 @@
 import calc from './calc';
 import { BitwiseOperationExpression, NumericOperand, ExpressionOperand } from '../expression/expression';
+import exp from 'constants';
 
 describe("calc", () => {
     it('calculates number of bits', () => {
         expect(calc.numberOfBits(1)).toBe(1);
         expect(calc.numberOfBits(2)).toBe(2);
         expect(calc.numberOfBits(3)).toBe(2);
+        expect(calc.numberOfBits(68719476735)).toBe(36);
     });
     
     it('calculates max number of bits', () => {

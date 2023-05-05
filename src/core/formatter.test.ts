@@ -7,6 +7,14 @@ describe("formatter", () => {
         expect(formatter.formatString(15, "bin")).toBe("1111");
     });
 
+    it('formats large binary number correctly', () => {
+        var decimal = 68719476735;
+        var binary = formatter.bin(68719476735);
+        var hex = formatter.formatString(decimal, 'hex');
+        expect(binary).toBe('111111111111111111111111111111111111');
+        expect(hex).toBe('fffffffff');
+    })
+
     it('pads left', () => {
         expect(formatter.padLeft("1", 3, " ")).toBe("  1");
     });

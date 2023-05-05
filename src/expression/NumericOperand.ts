@@ -3,6 +3,10 @@ import { ExpressionInputItem, NumberBase } from './expression-interfaces';
 
 var globalId : number = 1;
 
+const INT_MAX_VALUE = 2147483647;
+
+export {INT_MAX_VALUE};
+
 // Represents numeric value
 export default class NumericOperand implements ExpressionInputItem {
     id: number;
@@ -17,6 +21,9 @@ export default class NumericOperand implements ExpressionInputItem {
         this.base = base || "dec";
         this.lengthInBits = NumericOperand.getBitLength(this.value);
         this.isExpression = false;
+
+        if(value < 0 && !NumericOperand.is32Bit(value))
+            throw new Error("BitwiseCmd currently doesn't support 64 bit negative numbers such as " + value);
     }
             
     getLengthInBits() {
@@ -102,7 +109,10 @@ export default class NumericOperand implements ExpressionInputItem {
                 var hexVal = Math.abs(value).toString(16);
                 return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
             case 'bin':
-                return (value>>>0).toString(2);
+                // >>> 0 is used to get an actual bit representation of the negative numbers
+                // https://stackoverflow.com/questions/5747123/strange-javascript-operator-expr-0
+                const is32Bit = NumericOperand.is32Bit(value);
+                return (is32Bit && value < 0 ? (value >>> 0) : value).toString(2);
             case 'dec':
                 return value.toString(10);
             default:
@@ -113,4 +123,8 @@ export default class NumericOperand implements ExpressionInputItem {
      static toHexString (hex : string) {
             return hex.indexOf('-') === 0 ? '-0x' + hex.substr(1) : '0x' + hex;
      };
+
+     static is32Bit(n: number) {
+        return Math.abs(n) <= INT_MAX_VALUE
+     }
 }
