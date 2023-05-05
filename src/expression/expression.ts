@@ -1,10 +1,10 @@
-import NumericOperand from './NumericOperand';
+import ScalarOperand from './ScalarOperand';
 import ExpressionOperand from './ExpressionOperand'
 import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
 import { ExpressionInput, ExpressionInputItem, NumberBase } from './expression-interfaces';
 
-export { default as NumericOperand } from './NumericOperand';
+export { default as ScalarOperand } from './ScalarOperand';
 export { default as ExpressionOperand } from './ExpressionOperand';
 export { default as ListOfNumbersExpression } from './ListOfNumbersExpression';
 export { default as BitwiseOperationExpression } from './BitwiseOperationExpression';
@@ -46,12 +46,12 @@ class ExpressionParser {
         return null;
     };
     
-    parseOperand (input : string) : NumericOperand {
-        return NumericOperand.parse(input);
+    parseOperand (input : string) : ScalarOperand {
+        return ScalarOperand.parse(input);
     };
 
-    createOperand (number : number, base : NumberBase) : NumericOperand {
-        return NumericOperand.create(number, base);
+    createOperand (number : number, base : NumberBase) : ScalarOperand {
+        return ScalarOperand.create(number, base);
     };
 
     addFactory (factory: IExpressionParserFactory) {
@@ -69,7 +69,7 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
         
         return input.split(' ')
             .filter(p => p.length > 0)
-            .map(p => NumericOperand.tryParse(p))
+            .map(p => ScalarOperand.tryParse(p))
             .filter(n => n == null)
             .length == 0;
     };
@@ -78,7 +78,7 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
         
         const numbers = input.split(' ')
             .filter(p => p.length > 0)
-            .map(m => NumericOperand.parse(m));
+            .map(m => ScalarOperand.parse(m));
 
         return new ListOfNumbersExpression(input, numbers);
     }
@@ -116,16 +116,16 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
 
         var parsed = null;
         if(num.indexOf('~') == 0) {
-            parsed = new ExpressionOperand(num, NumericOperand.parse(num.substring(1)), '~');
+            parsed = new ExpressionOperand(num, ScalarOperand.parse(num.substring(1)), '~');
         }
         else {
-            parsed = NumericOperand.parse(num);
+            parsed = ScalarOperand.parse(num);
         }
 
         if(sign == null) {
             return parsed as ExpressionOperand;
         } else {
-            return new ExpressionOperand(input, parsed as NumericOperand, sign);
+            return new ExpressionOperand(input, parsed as ScalarOperand, sign);
         }
     };
 

@@ -1,4 +1,4 @@
-import NumericOperand from './NumericOperand';
+import ScalarOperand from './ScalarOperand';
 import { ExpressionInputItem } from './expression-interfaces';
 
 export default class ExpressionOperand implements ExpressionInputItem {
@@ -18,7 +18,7 @@ export default class ExpressionOperand implements ExpressionInputItem {
         this.isNotExpression = this.sign === '~';
     }
         
-    evaluate(operand?: NumericOperand) : NumericOperand {
+    evaluate(operand?: ScalarOperand) : ScalarOperand {
         if (operand instanceof ExpressionOperand) {
             throw new Error('value shouldnt be expression'); 
         }
@@ -35,10 +35,10 @@ export default class ExpressionOperand implements ExpressionInputItem {
             str = operand.value + this.sign + evaluatedOperand.value;
         }
 
-        return NumericOperand.create(eval(str), evaluatedOperand.base);
+        return ScalarOperand.create(eval(str), evaluatedOperand.base);
     }
 
-    getUnderlyingOperand() : NumericOperand {
+    getUnderlyingOperand() : ScalarOperand {
         return this.operand.getUnderlyingOperand();
     }
 

@@ -3,7 +3,7 @@ import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseExpressionViewModel from './BitwiseExpressionModel';
 import { ExpressionInput, ExpressionInputItem } from '../expression-interfaces';
-import { ExpressionOperand, NumericOperand } from '../expression';
+import { ExpressionOperand, ScalarOperand } from '../expression';
 
 type BitwiseOperationExpressionViewProps = {
     expression: ExpressionInput;
@@ -114,7 +114,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return this.props.expressionItem.evaluate().toOtherKindString();
     }
 
-    getLabelString (op: NumericOperand) : string {
+    getLabelString (op: ScalarOperand) : string {
         return op.toString(op.base == 'bin' ? 'dec' : op.base);
     }
 

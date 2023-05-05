@@ -1,5 +1,5 @@
 import calc from './calc';
-import { BitwiseOperationExpression, NumericOperand, ExpressionOperand } from '../expression/expression';
+import { BitwiseOperationExpression, ScalarOperand, ExpressionOperand } from '../expression/expression';
 import exp from 'constants';
 
 describe("calc", () => {
@@ -18,9 +18,9 @@ describe("calc", () => {
         var result = calc.calcExpression(new BitwiseOperationExpression(
             "1|2&3",
             [
-                new NumericOperand(1),
-                new ExpressionOperand("|2", new NumericOperand(2), "|"),
-                new ExpressionOperand("&3", new NumericOperand(3), "&"),
+                new ScalarOperand(1),
+                new ExpressionOperand("|2", new ScalarOperand(2), "|"),
+                new ExpressionOperand("&3", new ScalarOperand(3), "&"),
             ]
         ));
         

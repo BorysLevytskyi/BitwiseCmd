@@ -1,4 +1,4 @@
-import { NumericOperand } from "./expression";
+import { ScalarOperand } from "./expression";
 
 export interface ExpressionInput
 {
@@ -8,8 +8,8 @@ export interface ExpressionInput
 export interface ExpressionInputItem 
 {
     isExpression: boolean;   
-    getUnderlyingOperand: () => NumericOperand;
-    evaluate(operand? : NumericOperand): NumericOperand;
+    getUnderlyingOperand: () => ScalarOperand;
+    evaluate(operand? : ScalarOperand): ScalarOperand;
 }
 
 export type NumberBase = 'dec' | 'hex' | 'bin';

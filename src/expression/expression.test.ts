@@ -1,5 +1,5 @@
 import { OperationCanceledException } from "typescript";
-import { parser, ListOfNumbersExpression, BitwiseOperationExpression, NumericOperand, ExpressionOperand } from "./expression";
+import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarOperand, ExpressionOperand } from "./expression";
 
 describe("expression parser", () => {
 
@@ -37,16 +37,16 @@ describe("expression parser", () => {
         const first = result.expressionItems[0];
         const second = result.expressionItems[1];
 
-        expect(first).toBeInstanceOf(NumericOperand);
+        expect(first).toBeInstanceOf(ScalarOperand);
 
-        expect((first as NumericOperand).value).toBe(1);
+        expect((first as ScalarOperand).value).toBe(1);
 
         expect(second).toBeInstanceOf(ExpressionOperand);
         var secondOp = second as ExpressionOperand;
         expect(secondOp.sign).toBe("^");
 
-        expect(secondOp.operand).toBeInstanceOf(NumericOperand);
-        var childOp = secondOp.operand as NumericOperand;
+        expect(secondOp.operand).toBeInstanceOf(ScalarOperand);
+        var childOp = secondOp.operand as ScalarOperand;
         expect(childOp.value).toBe(2);
     });
 
