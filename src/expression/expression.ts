@@ -61,26 +61,24 @@ class ExpressionParser {
 
 class ListOfNumbersExpressionFactory implements IExpressionParserFactory
 {
-    regex: RegExp;
-
     constructor() {
-        this.regex = /^(-?(?:\d+|0x[\d,a-f]+|0b[0-1])\s?)+$/;
     }
 
     canCreate (input: string): boolean {
-        return this.regex.test(input);
+        if(input.length == 0) return false;
+        
+        return input.split(' ')
+            .filter(p => p.length > 0)
+            .map(p => NumericOperand.tryParse(p))
+            .filter(n => n == null)
+            .length == 0;
     };
 
     create (input : string) : ExpressionInput {
-        var matches = this.regex.exec(input) as RegExpExecArray;
-        var numbers = [] as NumericOperand[];
-        var input = matches.input;
-
-        input.split(' ').forEach((n: string) => {
-            if(n.trim().length > 0) {
-                numbers.push(NumericOperand.parse(n.trim()));
-            }
-        });
+        
+        const numbers = input.split(' ')
+            .filter(p => p.length > 0)
+            .map(m => NumericOperand.parse(m));
 
         return new ListOfNumbersExpression(input, numbers);
     }

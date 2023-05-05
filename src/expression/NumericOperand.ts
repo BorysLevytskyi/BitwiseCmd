@@ -94,10 +94,21 @@ export default class NumericOperand implements ExpressionInputItem {
 
     static parse(input: string) : NumericOperand {
                     
+        var parsed = NumericOperand.tryParse(input);
+
+        if(parsed == null) {
+            throw new Error(input + " is not a valid number");
+        }
+
+        return parsed;
+    }
+
+    static tryParse(input: string) : NumericOperand | null {
+                    
         var parsed = numberParser.parse(input);
 
         if(!parsed) {
-            throw new Error(input + " is not a valid number");
+            return null;
         }
 
         return new NumericOperand(parsed.value, parsed.base);
