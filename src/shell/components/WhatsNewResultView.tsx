@@ -8,11 +8,11 @@ function WhatsnewResultView() {
                     <h3>Changelog</h3>
                     <div className='item item-new'>
                         <p>
-                            <span className="soft date">Jul 24th, 2021</span> <br/>
+                            <span className="soft date">May 5th, 2023</span> <br/>
                             Fixed <a href="https://github.com/BorysLevytskyi/BitwiseCmd/issues/13">bug</a> with incorrect binary representation of 64 bit numbers. <u>Negative 64 bit numbers currently are not supported by BitwiseCmd</u>.
                         </p>
                     </div>
-                    <div className="item item-new">
+                    <div className="item">
                         <p><span className="soft date">Jul 24th, 2021</span> <br/>
                             <ul>
                                 <li>Added support of <code>vpc</code> command to see hpw VPC network address is divided bettwen VPC, Subnets and Hosts. Try it out: <CommandLink text="vpc 192.168.24.1/24" /></li>
