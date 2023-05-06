@@ -25,18 +25,18 @@ const networkingAppModule = {
                     return;
 
                 if(result instanceof ParsingError) {
-                    appState.addCommandResult(c.input, <ErrorResultView errorMessage={result.errorMessage} />);
+                    appState.addCommandResult(c.input, () => <ErrorResultView errorMessage={(result as ParsingError).errorMessage} />);
                     return;
                 }
 
                 if(result instanceof SubnetCommand) {
-                    appState.addCommandResult(c.input, <SubnetView subnet={result} />);
+                    appState.addCommandResult(c.input, () => <SubnetView subnet={result as SubnetCommand} />);
                     trackCommand('SubnetCommand', c.options);
                     return;
                 }
 
                 if(result instanceof VpcCommand) {
-                    appState.addCommandResult(c.input, <VpcView vpc={result} />);
+                    appState.addCommandResult(c.input, () => <VpcView vpc={result as VpcCommand} />);
                     trackCommand('VpcCommand', c.options);
                     return;
                 }
@@ -56,7 +56,7 @@ const networkingAppModule = {
 
                 trackCommand("IpAddressesInput", c.options);
             
-                appState.addCommandResult(c.input, <IpAddressView ipAddresses={ipAddresses} />);
+                appState.addCommandResult(c.input, () => <IpAddressView ipAddresses={ipAddresses} />);
             }
         });
 

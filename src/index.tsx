@@ -36,7 +36,7 @@ function  initializeModules() {
     // Last command handler reports that input is unknown
     cmd.command({
         canHandle: () => true,
-        handle: (c: CommandInput) => appData.appState.addCommandResult(c.input, <UnknownInputResultView input={c.input}/>)
+        handle: (c: CommandInput) => appData.appState.addCommandResult(c.input, () => <UnknownInputResultView input={c.input}/>)
     });
 }
 

@@ -14,10 +14,12 @@ export type PersistedAppData = {
 export type CommandResultView = {
     key: number,
     input: string,
-    view: JSX.Element
+    view: ViewFactory
 };
 
 export type AppStateChangeHandler = (state: AppState) => void;
+
+type ViewFactory = () => JSX.Element;
 
 export default class AppState {
     
@@ -47,7 +49,7 @@ export default class AppState {
         this.donationClicked = persistData.donationClicked;
     }
 
-    addCommandResult(input : string, view : JSX.Element) {
+    addCommandResult(input : string, view : ViewFactory) {
         const key = generateKey();
         this.commandResults.unshift({key, input, view});
         log.debug(`command result added: ${input}`);

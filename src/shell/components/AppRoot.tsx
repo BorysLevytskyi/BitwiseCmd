@@ -28,6 +28,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
     }
 
     refresh() {
+        console.log('refresh');
         this.setState(this.props.appState);
     }
     
@@ -39,7 +40,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
 
         var results = this.state.commandResults.map((r, i) => 
             <DisplayResultView resultIndex={i} resultKey={r.key} key={r.key} input={r.input} inputHash={hash.encodeHash(r.input)} appState={this.props.appState}>
-                {r.view}
+                {r.view()}
             </DisplayResultView>);
         return results;
     }

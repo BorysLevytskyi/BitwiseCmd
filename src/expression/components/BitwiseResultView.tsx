@@ -5,26 +5,23 @@ import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { Expression, ExpressionToken } from '../expression-interfaces';
 import { OperatorToken, ScalarToken } from '../expression';
 
-type BitwiseOperationExpressionViewProps = {
+type BitwiseResultViewProps = {
     expression: Expression;
     emphasizeBytes: boolean;
 }
 
-type BitwiseOperationExpressionViewState = {
+type BitwiseResultViewState = {
 
 }
 
-export default class BitwiseResultView extends React.Component<BitwiseOperationExpressionViewProps, BitwiseOperationExpressionViewState>  {
-    constructor(props: BitwiseOperationExpressionViewProps) {
+export default class BitwiseResultView extends React.Component<BitwiseResultViewProps, BitwiseResultViewState>  {
+    constructor(props: BitwiseResultViewProps) {
         super(props);
         this.state = {};
     }
     render() {
         var rows = this.getRows();
-        if(!rows) {
-            return null;
-        }
-
+        
         return <table className="expression">
                     <tbody>
                             {rows}
@@ -32,7 +29,7 @@ export default class BitwiseResultView extends React.Component<BitwiseOperationE
                 </table>
     }
 
-    getRows() : JSX.Element[] | null {
+    getRows() : JSX.Element[] {
         var model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
 
         return model.items.map((itm, i) => 

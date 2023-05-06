@@ -17,19 +17,19 @@ const shellModule = {
         cmd.debugMode = appState.debugMode;
         appState.onChange(() => cmd.debugMode = appState.debugMode);
         
-        cmd.command("help", (c: CommandInput) => appState.addCommandResult(c.input, <HelpResultView />));
+        cmd.command("help", (c: CommandInput) => appState.addCommandResult(c.input, () => <HelpResultView />));
         cmd.command("clear", () => appState.clearCommandResults());
         cmd.command("em", () => appState.toggleEmphasizeBytes());
         cmd.command("dark", () => appState.setUiTheme('dark'));
         cmd.command("light", () => appState.setUiTheme('light'));
         cmd.command("midnight", () => appState.setUiTheme('midnight'));
-        cmd.command("about", (c: CommandInput) => appState.addCommandResult(c.input, <AboutResultView />));
-        cmd.command("whatsnew", (c: CommandInput) => appState.addCommandResult(c.input, <WhatsnewResultView />));
-        cmd.command("guid", (c: CommandInput) => appState.addCommandResult(c.input, <TextResultView text={uuid()} />));
+        cmd.command("about", (c: CommandInput) => appState.addCommandResult(c.input, () => <AboutResultView />));
+        cmd.command("whatsnew", (c: CommandInput) => appState.addCommandResult(c.input, () => <WhatsnewResultView />));
+        cmd.command("guid", (c: CommandInput) => appState.addCommandResult(c.input, () => <TextResultView text={uuid()} />));
         cmd.command("-notrack", () => {});
         cmd.command("-debug", (c: CommandInput) => {
             appState.toggleDebugMode();
-            appState.addCommandResult(c.input, <TextResultView text={`Debug Mode: ${appState.debugMode}`}/>);
+            appState.addCommandResult(c.input, () => <TextResultView text={`Debug Mode: ${appState.debugMode}`}/>);
         }); 
 
         cmd.command("donate", (c:CommandInput) => {
@@ -73,12 +73,12 @@ const shellModule = {
 
                     const command = s.input.substring(7).trim();
                     const result = executeCommand(command);
-                    appState.addCommandResult(s.input, <TextResultView text={result} />);
+                    appState.addCommandResult(s.input, () => <TextResultView text={result} />);
                 } 
             });
         };
 
-        cmd.onError((input: string, err: Error) => appState.addCommandResult(input, <ErrorResultView errorMessage={err.toString()} />));
+        cmd.onError((input: string, err: Error) => appState.addCommandResult(input, () => <ErrorResultView errorMessage={err.toString()} />));
     }
 }
 
