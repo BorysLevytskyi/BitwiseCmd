@@ -1,15 +1,15 @@
-import { ScalarOperand } from "./expression";
+import { ScalarExpression } from "./expression";
 
 export interface ExpressionInput
 {
     expressionString: string;
 }
 
-export interface ExpressionInputItem 
+export interface Expression 
 {
-    isExpression: boolean;   
-    getUnderlyingOperand: () => ScalarOperand;
-    evaluate(operand? : ScalarOperand): ScalarOperand;
+    isOperator: boolean;   
+    getUnderlyingScalarOperand: () => ScalarExpression;
+    evaluate(operand? : ScalarExpression): ScalarExpression;
 }
 
 export type NumberBase = 'dec' | 'hex' | 'bin';

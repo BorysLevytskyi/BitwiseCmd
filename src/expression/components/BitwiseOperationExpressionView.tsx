@@ -2,8 +2,8 @@ import React from 'react';
 import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseExpressionViewModel from './BitwiseExpressionModel';
-import { ExpressionInput, ExpressionInputItem } from '../expression-interfaces';
-import { ExpressionOperand, ScalarOperand } from '../expression';
+import { ExpressionInput, Expression } from '../expression-interfaces';
+import { OperatorExpression, ScalarExpression } from '../expression';
 
 type BitwiseOperationExpressionViewProps = {
     expression: ExpressionInput;
@@ -59,7 +59,7 @@ type ExpressionRowProps = {
     maxNumberOfBits: number, 
     emphasizeBytes: boolean, 
     allowFlipBits: boolean, 
-    expressionItem: ExpressionInputItem,
+    expressionItem: Expression,
     onBitFlipped: any
 }
 
@@ -94,18 +94,18 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
 
         // For expressions like |~2 
         // TODO: find a better way...
-        if(this.props.expressionItem.isExpression) {
-            const ex = this.props.expressionItem as ExpressionOperand;
-            return ex.sign + this.getLabelString(ex.getUnderlyingOperand());
+        if(this.props.expressionItem.isOperator) {
+            const ex = this.props.expressionItem as OperatorExpression;
+            return ex.sign + this.getLabelString(ex.getUnderlyingScalarOperand());
         }
 
-        return this.getLabelString(this.props.expressionItem.getUnderlyingOperand());         
+        return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());         
     }
 
     getOther() {
 
-        if(this.props.expressionItem.isExpression) {
-            const ex = this.props.expressionItem as ExpressionOperand;
+        if(this.props.expressionItem.isOperator) {
+            const ex = this.props.expressionItem as OperatorExpression;
             const op = ex.evaluate();
 
             return op.toString();
@@ -114,13 +114,13 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return this.props.expressionItem.evaluate().toOtherKindString();
     }
 
-    getLabelString (op: ScalarOperand) : string {
+    getLabelString (op: ScalarExpression) : string {
         return op.toString(op.base == 'bin' ? 'dec' : op.base);
     }
 
      flipBit(args: FlipBitEventArg) {    
 
-        const op  = this.props.expressionItem.getUnderlyingOperand();
+        const op  = this.props.expressionItem.getUnderlyingScalarOperand();
         const { index, binaryString } = args;
 
         var arr = binaryString.split('');

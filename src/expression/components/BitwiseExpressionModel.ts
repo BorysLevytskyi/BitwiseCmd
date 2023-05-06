@@ -1,5 +1,5 @@
-import { ScalarOperand, ListOfNumbersExpression, BitwiseOperationExpression, ExpressionOperand } from '../expression';
-import { ExpressionInputItem, ExpressionInput } from '../expression-interfaces';
+import { ScalarExpression, ListOfNumbersExpression, BitwiseOperationExpression, OperatorExpression } from '../expression';
+import { Expression, ExpressionInput } from '../expression-interfaces';
 
 type Config = {
     emphasizeBytes: boolean;
@@ -9,7 +9,7 @@ type Config = {
 type ExpressionItemModel = {
     sign: string;
     css: string;
-    expressionItem: ExpressionInputItem;
+    expressionItem: Expression;
     allowFlipBits: boolean;
     label: string;
 }
@@ -37,21 +37,21 @@ export default class BitwiseExpressionViewModel {
 
     static buildMultiple (expr : BitwiseOperationExpression, config : Config) {
 
-        var op = expr.expressionItems[0],
-            i = 0, len = expr.expressionItems.length,
+        var op = expr.children[0],
+            i = 0, len = expr.children.length,
             ex, m = new BitwiseExpressionViewModel(config);
 
-        var prev : ScalarOperand | null = null;
+        var prev : ScalarExpression | null = null;
 
         for (;i<len;i++) {
-            ex = expr.expressionItems[i];
-            if(ex instanceof ScalarOperand) {
+            ex = expr.children[i];
+            if(ex instanceof ScalarExpression) {
                 m.addOperandRow(ex);
                 prev = ex;
                 continue;
             }
 
-            var eo = ex as ExpressionOperand;
+            var eo = ex as OperatorExpression;
 
             // If it a single NOT expression
             if(eo.isNotExpression) {
@@ -61,11 +61,11 @@ export default class BitwiseExpressionViewModel {
                 prev = notResult;
             }
             else if(eo.isShiftExpression){
-                prev = eo.evaluate(prev as ScalarOperand);
+                prev = eo.evaluate(prev as ScalarExpression);
                 m.addShiftExpressionResultRow(eo, prev);
             } else {
 
-                prev = eo.evaluate(prev as ScalarOperand);
+                prev = eo.evaluate(prev as ScalarExpression);
                 m.addExpressionOperandRow(eo);
                 m.addExpressionResultRow(prev);
             }
@@ -75,7 +75,7 @@ export default class BitwiseExpressionViewModel {
         return m;
     };
 
-    static buildNot (expression: ExpressionOperand, config : Config) {
+    static buildNot (expression: OperatorExpression, config : Config) {
         
         var m = new BitwiseExpressionViewModel(config);
         m.addExpressionOperandRow(expression);
@@ -84,7 +84,7 @@ export default class BitwiseExpressionViewModel {
         return m;
     };
 
-    addOperandRow(operand: ScalarOperand) {
+    addOperandRow(operand: ScalarExpression) {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ 
             sign:'', 
@@ -95,8 +95,8 @@ export default class BitwiseExpressionViewModel {
         });
     };
 
-    addExpressionOperandRow(expression: ExpressionOperand) {
-        const resultNumber = expression.isNotExpression ? expression.evaluate() : expression.getUnderlyingOperand();
+    addExpressionOperandRow(expression: OperatorExpression) {
+        const resultNumber = expression.isNotExpression ? expression.evaluate() : expression.getUnderlyingScalarOperand();
         this.maxNumberOfBits = Math.max(resultNumber.getLengthInBits(), this.maxNumberOfBits);
         
         this.items.push({ 
@@ -108,7 +108,7 @@ export default class BitwiseExpressionViewModel {
         });
     };
 
-    addShiftExpressionResultRow(expression : ExpressionOperand, resultOperand : ScalarOperand) {
+    addShiftExpressionResultRow(expression : OperatorExpression, resultOperand : ScalarExpression) {
         this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({
             sign: expression.sign + expression.operand.toString(),
@@ -119,7 +119,7 @@ export default class BitwiseExpressionViewModel {
         });
     };
 
-    addExpressionResultRow(operand : ScalarOperand) {
+    addExpressionResultRow(operand : ScalarExpression) {
         this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
         this.items.push({ 
             sign:'=', 
@@ -130,7 +130,7 @@ export default class BitwiseExpressionViewModel {
         });
     };
 
-    getLabel (op: ScalarOperand) : string {
+    getLabel (op: ScalarExpression) : string {
         
         if(op.base == 'bin') {
             return op.toString("dec");

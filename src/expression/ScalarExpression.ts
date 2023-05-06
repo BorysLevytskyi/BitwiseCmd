@@ -1,5 +1,5 @@
 import {numberParser} from './numberParser';
-import { ExpressionInputItem, NumberBase } from './expression-interfaces';
+import { Expression as Expression, NumberBase } from './expression-interfaces';
 
 var globalId : number = 1;
 
@@ -8,21 +8,21 @@ const INT_MAX_VALUE = 2147483647;
 export {INT_MAX_VALUE};
 
 // Represents scalar numeric value
-export default class ScalarOperand implements ExpressionInputItem {
+export default class ScalarExpression implements Expression {
     id: number;
     value: number;
     base: NumberBase;
     lengthInBits: number;
-    isExpression: boolean;
+    isOperator: boolean;
 
     constructor(value : number, base?: NumberBase) {
         this.id = globalId++;
         this.value = value;
         this.base = base || "dec";
-        this.lengthInBits = ScalarOperand.getBitLength(this.value);
-        this.isExpression = false;
+        this.lengthInBits = ScalarExpression.getBitLength(this.value);
+        this.isOperator = false;
 
-        if(value < 0 && !ScalarOperand.is32Bit(value))
+        if(value < 0 && !ScalarExpression.is32Bit(value))
             throw new Error("BitwiseCmd currently doesn't support 64 bit negative numbers such as " + value);
     }
             
@@ -44,7 +44,7 @@ export default class ScalarOperand implements ExpressionInputItem {
     };
 
     toString(base?: NumberBase) : string {
-        return ScalarOperand.toBaseString(this.value, base || this.base);
+        return ScalarExpression.toBaseString(this.value, base || this.base);
     }
 
     toOtherKindString() : string {
@@ -65,14 +65,14 @@ export default class ScalarOperand implements ExpressionInputItem {
 
     setValue(value : number) {
         this.value = value;
-        this.lengthInBits = ScalarOperand.getBitLength(value);
+        this.lengthInBits = ScalarExpression.getBitLength(value);
     }
 
-    evaluate() : ScalarOperand {
+    evaluate() : ScalarExpression {
         return this;
     }
 
-    getUnderlyingOperand() : ScalarOperand  {
+    getUnderlyingScalarOperand() : ScalarExpression  {
         return this
     }
         
@@ -89,12 +89,12 @@ export default class ScalarOperand implements ExpressionInputItem {
     };
 
     static create(value : number, base? : NumberBase) {
-        return new ScalarOperand(value, base || "dec");
+        return new ScalarExpression(value, base || "dec");
     };
 
-    static parse(input: string) : ScalarOperand {
+    static parse(input: string) : ScalarExpression {
                     
-        var parsed = ScalarOperand.tryParse(input);
+        var parsed = ScalarExpression.tryParse(input);
 
         if(parsed == null) {
             throw new Error(input + " is not a valid number");
@@ -103,7 +103,7 @@ export default class ScalarOperand implements ExpressionInputItem {
         return parsed;
     }
 
-    static tryParse(input: string) : ScalarOperand | null {
+    static tryParse(input: string) : ScalarExpression | null {
                     
         var parsed = numberParser.parse(input);
 
@@ -111,7 +111,7 @@ export default class ScalarOperand implements ExpressionInputItem {
             return null;
         }
 
-        return new ScalarOperand(parsed.value, parsed.base);
+        return new ScalarExpression(parsed.value, parsed.base);
     }
 
     static toBaseString(value : number, base : NumberBase) : string {
@@ -122,7 +122,7 @@ export default class ScalarOperand implements ExpressionInputItem {
             case 'bin':
                 // >>> 0 is used to get an actual bit representation of the negative numbers
                 // https://stackoverflow.com/questions/5747123/strange-javascript-operator-expr-0
-                const is32Bit = ScalarOperand.is32Bit(value);
+                const is32Bit = ScalarExpression.is32Bit(value);
                 return (is32Bit && value < 0 ? (value >>> 0) : value).toString(2);
             case 'dec':
                 return value.toString(10);
