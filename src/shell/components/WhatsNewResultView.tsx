@@ -9,7 +9,7 @@ function WhatsnewResultView() {
                     <div className='item item-new'>
                         <p>
                             <span className="soft date">May 5th, 2023</span> <br/>
-                            Fixed <a href="https://github.com/BorysLevytskyi/BitwiseCmd/issues/13">bug</a> with incorrect binary representation of 64 bit numbers. <u>Negative 64 bit numbers currently are not supported by BitwiseCmd</u>.
+                            Fixed <a href="https://github.com/BorysLevytskyi/BitwiseCmd/issues/13">bug</a> with incorrect binary representation of 64 bit numbers.
                         </p>
                     </div>
                     <div className="item">
