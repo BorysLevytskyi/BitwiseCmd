@@ -1,4 +1,4 @@
-import { NumberBase } from "./expression-interfaces";
+import { NumberBase } from "../core/formatter";
 
 const decimalRegex = /^-?\d+$/;
 const hexRegex = /^-?0x[0-9,a-f]+$/i;

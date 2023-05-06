@@ -2,8 +2,8 @@ import React from 'react';
 import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseExpressionViewModel from './BitwiseExpressionModel';
-import { ExpressionInput, ExpressionInputItem } from '../expression-interfaces';
-import { ExpressionOperand, ScalarOperand } from '../expression';
+import { ExpressionInput, Expression } from '../expression-interfaces';
+import { OperatorExpression, ScalarExpression } from '../expression';
 
 type BitwiseOperationExpressionViewProps = {
     expression: ExpressionInput;
@@ -41,7 +41,7 @@ export default class BitwiseOperationExpressionView extends React.Component<Bitw
                 sign={itm.sign}
                 css={itm.css}
                 allowFlipBits={itm.allowFlipBits}
-                expressionItem={itm.expressionItem}
+                expressionItem={itm.expression}
                 emphasizeBytes={this.props.emphasizeBytes} 
                 maxNumberOfBits={model.maxNumberOfBits} 
                 onBitFlipped={() => this.onBitFlipped()} />);
@@ -59,7 +59,7 @@ type ExpressionRowProps = {
     maxNumberOfBits: number, 
     emphasizeBytes: boolean, 
     allowFlipBits: boolean, 
-    expressionItem: ExpressionInputItem,
+    expressionItem: Expression,
     onBitFlipped: any
 }
 
@@ -81,46 +81,48 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                             allowFlipBits={allowFlipBits} 
                             onFlipBit={args => this.flipBit(args)}/>
                     </td>
-                    <td className="other">{this.getOther()}</td>
+                    <td className="other">{this.getAlternative()}</td>
                 </tr>;;
     }
 
     getBinaryString() : string {       
-        var binary = this.props.expressionItem.evaluate().toBinaryString();
-        return binary;
+        var v = this.props.expressionItem.evaluate();
+        return formatter.numberToString(v.value, 'bin');
     }
 
     getLabel(): string {
 
         // For expressions like |~2 
         // TODO: find a better way...
-        if(this.props.expressionItem.isExpression) {
-            const ex = this.props.expressionItem as ExpressionOperand;
-            return ex.sign + this.getLabelString(ex.getUnderlyingOperand());
+        if(this.props.expressionItem.isOperator) {
+            const ex = this.props.expressionItem as OperatorExpression;
+            return ex.sign + this.getLabelString(ex.getUnderlyingScalarOperand());
         }
 
-        return this.getLabelString(this.props.expressionItem.getUnderlyingOperand());         
+        return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());         
     }
 
-    getOther() {
+    getAlternative() {
 
-        if(this.props.expressionItem.isExpression) {
-            const ex = this.props.expressionItem as ExpressionOperand;
-            const op = ex.evaluate();
+        if(this.props.expressionItem.isOperator) {
+            const ex = this.props.expressionItem as OperatorExpression;
+            const res = ex.evaluate();
 
-            return op.toString();
+            return formatter.numberToString(res.value, res.base);
         }
 
-        return this.props.expressionItem.evaluate().toOtherKindString();
+        const v = this.props.expressionItem.evaluate();
+        const altBase = formatter.getAlternativeBase(v.base);
+        return formatter.numberToString(v.value, altBase);
     }
 
-    getLabelString (op: ScalarOperand) : string {
-        return op.toString(op.base == 'bin' ? 'dec' : op.base);
+    getLabelString (op: ScalarExpression) : string {
+        return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 
      flipBit(args: FlipBitEventArg) {    
 
-        const op  = this.props.expressionItem.getUnderlyingOperand();
+        const op  = this.props.expressionItem.getUnderlyingScalarOperand();
         const { index, binaryString } = args;
 
         var arr = binaryString.split('');

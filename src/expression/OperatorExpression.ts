@@ -1,25 +1,25 @@
-import ScalarOperand from './ScalarOperand';
-import { ExpressionInputItem } from './expression-interfaces';
+import ScalarExpression from './ScalarExpression';
+import { Expression } from './expression-interfaces';
 
-export default class ExpressionOperand implements ExpressionInputItem {
+export default class OperatorExpression implements Expression {
     expressionString: string;
-    operand: ExpressionInputItem;
+    operand: Expression;
     sign: string;
-    isExpression: boolean;
+    isOperator: boolean;
     isShiftExpression: boolean;
     isNotExpression: boolean;
 
-    constructor(expressionString : string, operand : ExpressionInputItem, sign : string) {
+    constructor(expressionString : string, operand : Expression, sign : string) {
         this.expressionString = expressionString;
         this.operand = operand;
         this.sign = sign;
-        this.isExpression = true;
+        this.isOperator = true;
         this.isShiftExpression = this.sign.indexOf('<') >= 0 || this.sign.indexOf('>')>= 0;
         this.isNotExpression = this.sign === '~';
     }
         
-    evaluate(operand?: ScalarOperand) : ScalarOperand {
-        if (operand instanceof ExpressionOperand) {
+    evaluate(operand?: ScalarExpression) : ScalarExpression {
+        if (operand instanceof OperatorExpression) {
             throw new Error('value shouldnt be expression'); 
         }
 
@@ -35,11 +35,11 @@ export default class ExpressionOperand implements ExpressionInputItem {
             str = operand.value + this.sign + evaluatedOperand.value;
         }
 
-        return ScalarOperand.create(eval(str), evaluatedOperand.base);
+        return ScalarExpression.create(eval(str), evaluatedOperand.base);
     }
 
-    getUnderlyingOperand() : ScalarOperand {
-        return this.operand.getUnderlyingOperand();
+    getUnderlyingScalarOperand() : ScalarExpression {
+        return this.operand.getUnderlyingScalarOperand();
     }
 
     toString(): string {

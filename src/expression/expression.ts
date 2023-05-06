@@ -1,11 +1,12 @@
-import ScalarOperand from './ScalarOperand';
-import ExpressionOperand from './ExpressionOperand'
+import ScalarExpression from './ScalarExpression';
+import OperatorExpression from './OperatorExpression'
 import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
-import { ExpressionInput, ExpressionInputItem, NumberBase } from './expression-interfaces';
+import { ExpressionInput, Expression } from './expression-interfaces';
+import { NumberBase } from '../core/formatter';
 
-export { default as ScalarOperand } from './ScalarOperand';
-export { default as ExpressionOperand } from './ExpressionOperand';
+export { default as ScalarExpression } from './ScalarExpression';
+export { default as OperatorExpression } from './OperatorExpression';
 export { default as ListOfNumbersExpression } from './ListOfNumbersExpression';
 export { default as BitwiseOperationExpression } from './BitwiseOperationExpression';
 
@@ -46,12 +47,12 @@ class ExpressionParser {
         return null;
     };
     
-    parseOperand (input : string) : ScalarOperand {
-        return ScalarOperand.parse(input);
+    parseOperand (input : string) : ScalarExpression {
+        return ScalarExpression.parse(input);
     };
 
-    createOperand (number : number, base : NumberBase) : ScalarOperand {
-        return ScalarOperand.create(number, base);
+    createOperand (number : number, base : NumberBase) : ScalarExpression {
+        return ScalarExpression.create(number, base);
     };
 
     addFactory (factory: IExpressionParserFactory) {
@@ -69,7 +70,7 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
         
         return input.split(' ')
             .filter(p => p.length > 0)
-            .map(p => ScalarOperand.tryParse(p))
+            .map(p => ScalarExpression.tryParse(p))
             .filter(n => n == null)
             .length == 0;
     };
@@ -78,7 +79,7 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
         
         const numbers = input.split(' ')
             .filter(p => p.length > 0)
-            .map(m => ScalarOperand.parse(m));
+            .map(m => ScalarExpression.parse(m));
 
         return new ListOfNumbersExpression(input, numbers);
     }
@@ -99,7 +100,7 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
     };
 
     create (input: string) : ExpressionInput {
-        var m, operands : ExpressionInputItem[] = [],
+        var m, operands : Expression[] = [],
             normalizedString = this.normalizeString(input);
 
         while ((m = this.regex.exec(normalizedString)) != null) {
@@ -109,23 +110,23 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
         return new BitwiseOperationExpression(normalizedString, operands)
     };
 
-    parseMatch (m:any): ExpressionInputItem {
+    parseMatch (m:any): Expression {
         var input = m[0],
             sign = m[1],
             num = m[2];
 
         var parsed = null;
         if(num.indexOf('~') == 0) {
-            parsed = new ExpressionOperand(num, ScalarOperand.parse(num.substring(1)), '~');
+            parsed = new OperatorExpression(num, ScalarExpression.parse(num.substring(1)), '~');
         }
         else {
-            parsed = ScalarOperand.parse(num);
+            parsed = ScalarExpression.parse(num);
         }
 
         if(sign == null) {
-            return parsed as ExpressionOperand;
+            return parsed as OperatorExpression;
         } else {
-            return new ExpressionOperand(input, parsed as ScalarOperand, sign);
+            return new OperatorExpression(input, parsed as ScalarExpression, sign);
         }
     };
 

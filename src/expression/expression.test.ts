@@ -1,5 +1,5 @@
 import { OperationCanceledException } from "typescript";
-import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarOperand, ExpressionOperand } from "./expression";
+import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarExpression, OperatorExpression } from "./expression";
 
 describe("expression parser", () => {
 
@@ -26,32 +26,32 @@ describe("expression parser", () => {
         expect(actual).toBeInstanceOf(BitwiseOperationExpression);
 
         const expr = actual as BitwiseOperationExpression;
-        expect(expr.expressionItems[0].getUnderlyingOperand().value).toBe(305419896);
-        expect(expr.expressionItems[1].getUnderlyingOperand().value).toBe(2863311360);
+        expect(expr.children[0].getUnderlyingScalarOperand().value).toBe(305419896);
+        expect(expr.children[1].getUnderlyingScalarOperand().value).toBe(2863311360);
     })
 
     it("pares multiple operand expression", () => {       
         const result = parser.parse("1^2") as BitwiseOperationExpression;
-        expect(result.expressionItems.length).toBe(2);
+        expect(result.children.length).toBe(2);
 
-        const first = result.expressionItems[0];
-        const second = result.expressionItems[1];
+        const first = result.children[0];
+        const second = result.children[1];
 
-        expect(first).toBeInstanceOf(ScalarOperand);
+        expect(first).toBeInstanceOf(ScalarExpression);
 
-        expect((first as ScalarOperand).value).toBe(1);
+        expect((first as ScalarExpression).value).toBe(1);
 
-        expect(second).toBeInstanceOf(ExpressionOperand);
-        var secondOp = second as ExpressionOperand;
+        expect(second).toBeInstanceOf(OperatorExpression);
+        var secondOp = second as OperatorExpression;
         expect(secondOp.sign).toBe("^");
 
-        expect(secondOp.operand).toBeInstanceOf(ScalarOperand);
-        var childOp = secondOp.operand as ScalarOperand;
+        expect(secondOp.operand).toBeInstanceOf(ScalarExpression);
+        var childOp = secondOp.operand as ScalarExpression;
         expect(childOp.value).toBe(2);
     });
 
     it("bug", () => {       
         var result = parser.parse("1|~2") as BitwiseOperationExpression;
-        expect(result.expressionItems.length).toBe(2);
+        expect(result.children.length).toBe(2);
     });
 })

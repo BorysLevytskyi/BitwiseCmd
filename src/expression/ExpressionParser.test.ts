@@ -1,7 +1,6 @@
-import { Expression, NumericLiteral } from "typescript";
-import ExpressionOperand from "./ExpressionOperand";
-import { ScalarOperand } from "./expression";
-import { ExpressionInputItem } from "./expression-interfaces";
+import OperatorExpression from "./OperatorExpression";
+import { ScalarExpression } from "./expression";
+import { Expression } from "./expression-interfaces";
 import { type } from "os";
 import { InputType } from "zlib";
 import exp from "constants";
@@ -17,7 +16,6 @@ type TokenDef = {
 const decimalRegex = /^-?\d+/;
 const hexRegex = /^-?0x[0-9,a-f]+/i;
 const binRegex = /^-?0b[0-1]+/i;
-const operatorRegex = /^<<|>>|<<<|\&|\|\^|~/;
 
 type Token = {
     value: string,
