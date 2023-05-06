@@ -16,14 +16,14 @@ export default class ScalarExpression implements Expression {
     isOperator: boolean;
 
     constructor(value : number, base?: NumberBase) {
+        
+        ScalarExpression.validateValue(value);
+
         this.id = globalId++;
         this.value = value;
         this.base = base || "dec";
         this.lengthInBits = ScalarExpression.getBitLength(this.value);
         this.isOperator = false;
-
-        if(value < 0 && !ScalarExpression.is32Bit(value))
-            throw new Error("BitwiseCmd currently doesn't support 64 bit negative numbers such as " + value);
     }
             
     getLengthInBits() {
@@ -64,6 +64,7 @@ export default class ScalarExpression implements Expression {
     }
 
     setValue(value : number) {
+        ScalarExpression.validateValue(value);
         this.value = value;
         this.lengthInBits = ScalarExpression.getBitLength(value);
     }
@@ -114,7 +115,16 @@ export default class ScalarExpression implements Expression {
         return new ScalarExpression(parsed.value, parsed.base);
     }
 
+    static validateValue(value : number) {
+        
+        if(value < 0 && !ScalarExpression.is32Bit(value))
+            throw new Error("BitwiseCmd currently doesn't support 64 bit negative numbers such as " + value);
+    }
+
     static toBaseString(value : number, base : NumberBase) : string {
+        
+        ScalarExpression.validateValue(value);
+
         switch(base) {
             case 'hex':
                 var hexVal = Math.abs(value).toString(16);

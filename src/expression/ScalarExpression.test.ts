@@ -21,6 +21,6 @@ it('64 bit operand binary string', () => {
 });
 
 it('throws on negative 64 bit numbers', () => {
-    var bigN = -(INT_MAX_VALUE+1);
+    var bigN = -2147483648;
     expect(() => new ScalarExpression(bigN)).toThrowError("BitwiseCmd currently doesn't support 64 bit negative numbers such as " + bigN);
 })
