@@ -4,7 +4,6 @@ import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
 import { ExpressionInput, Expression } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
-import { Match } from '@testing-library/react';
 
 export { default as ScalarExpression } from './ScalarExpression';
 export { default as OperatorExpression } from './OperatorExpression';

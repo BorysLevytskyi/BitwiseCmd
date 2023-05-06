@@ -1,7 +1,7 @@
 import React from 'react';
 import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
-import BitwiseExpressionViewModel from './BitwiseExpressionModel';
+import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { ExpressionInput, Expression } from '../expression-interfaces';
 import { OperatorExpression, ScalarExpression } from '../expression';
 
@@ -14,7 +14,7 @@ type BitwiseOperationExpressionViewState = {
 
 }
 
-export default class BitwiseOperationExpressionView extends React.Component<BitwiseOperationExpressionViewProps, BitwiseOperationExpressionViewState>  {
+export default class BitwiseResultView extends React.Component<BitwiseOperationExpressionViewProps, BitwiseOperationExpressionViewState>  {
     constructor(props: BitwiseOperationExpressionViewProps) {
         super(props);
         this.state = {};
@@ -33,7 +33,7 @@ export default class BitwiseOperationExpressionView extends React.Component<Bitw
     }
 
     getRows() : JSX.Element[] | null {
-        var model = BitwiseExpressionViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
+        var model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
 
         return model.items.map((itm, i) => 
             <ExpressionRow 

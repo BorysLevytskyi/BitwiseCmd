@@ -16,7 +16,7 @@ type ExpressionItemModel = {
     label: string;
 }
 
-export default class BitwiseExpressionViewModel {
+export default class BitwiseResultViewModel {
 
     emphasizeBytes: boolean;
     items: ExpressionItemModel[];
@@ -31,17 +31,17 @@ export default class BitwiseExpressionViewModel {
     }
 
     static buildListOfNumbers(expr : ListOfNumbersExpression, config : Config) {
-        var model = new BitwiseExpressionViewModel(config);
+        var model = new BitwiseResultViewModel(config);
         expr.children.forEach(op => model.addScalarRow(op));
-        model.maxNumberOfBits = BitwiseExpressionViewModel.applyEmphasizeBytes(model.maxNumberOfBits, model.emphasizeBytes);
+        model.maxNumberOfBits = BitwiseResultViewModel.applyEmphasizeBytes(model.maxNumberOfBits, model.emphasizeBytes);
         return model;
     }
 
-    static buildMultiple (expr : BitwiseOperationExpression, config : Config) {
+    static buildBitwiseOperation (expr : BitwiseOperationExpression, config : Config) {
 
         var op = expr.children[0],
             i = 0, len = expr.children.length,
-            ex, m = new BitwiseExpressionViewModel(config);
+            ex, m = new BitwiseResultViewModel(config);
 
         var prev : ScalarExpression | null = null;
 
@@ -57,7 +57,7 @@ export default class BitwiseExpressionViewModel {
 
             // If it a single NOT expression
             if(eo.isNotExpression) {
-                m.addExpressionOperandRow(eo);
+                m.addOperatorRow(eo);
                 var notResult = eo.evaluate();
                 m.addExpressionResultRow(notResult);
                 prev = notResult;
@@ -68,21 +68,12 @@ export default class BitwiseExpressionViewModel {
             } else {
 
                 prev = eo.evaluate(prev as ScalarExpression);
-                m.addExpressionOperandRow(eo);
+                m.addOperatorRow(eo);
                 m.addExpressionResultRow(prev);
             }
         }
 
-        m.maxNumberOfBits = BitwiseExpressionViewModel.applyEmphasizeBytes(m.maxNumberOfBits, m.emphasizeBytes);
-        return m;
-    };
-
-    static buildNot (expression: OperatorExpression, config : Config) {
-        
-        var m = new BitwiseExpressionViewModel(config);
-        m.addExpressionOperandRow(expression);
-        m.addExpressionResultRow(expression.evaluate());
-        m.maxNumberOfBits = BitwiseExpressionViewModel.applyEmphasizeBytes(m.maxNumberOfBits, m.emphasizeBytes);
+        m.maxNumberOfBits = BitwiseResultViewModel.applyEmphasizeBytes(m.maxNumberOfBits, m.emphasizeBytes);
         return m;
     };
 
@@ -98,7 +89,7 @@ export default class BitwiseExpressionViewModel {
         });
     };
 
-    addExpressionOperandRow(expr: OperatorExpression) {
+    addOperatorRow(expr: OperatorExpression) {
         
         const resultNumber = expr.isNotExpression ? expr.evaluate() : expr.getUnderlyingScalarOperand();
         const bits = calc.numberOfBitsDisplayed(resultNumber.value);
@@ -157,16 +148,16 @@ export default class BitwiseExpressionViewModel {
         return bits;
     };
 
-    static createModel(expr : ExpressionInput, emphasizeBytes: boolean) : BitwiseExpressionViewModel {
+    static createModel(expr : ExpressionInput, emphasizeBytes: boolean) : BitwiseResultViewModel {
         if(expr instanceof ListOfNumbersExpression) {
-            return BitwiseExpressionViewModel.buildListOfNumbers(expr, { 
+            return BitwiseResultViewModel.buildListOfNumbers(expr, { 
                 emphasizeBytes: emphasizeBytes, 
                 allowFlipBits: true 
             });
         }
 
         if(expr instanceof BitwiseOperationExpression) {
-            return BitwiseExpressionViewModel.buildMultiple(expr, { 
+            return BitwiseResultViewModel.buildBitwiseOperation(expr, { 
                 emphasizeBytes: emphasizeBytes,
                 allowFlipBits: false 
             });
