@@ -1,4 +1,4 @@
-import ScalarExpression, { INT_MAX_VALUE } from './ScalarExpression';
+import ScalarExpression from './ScalarExpression';
 
 it('parsed from string', () => {
     var op = ScalarExpression.parse('123');
@@ -19,8 +19,3 @@ it('negtive value binary string', () => {
 it('64 bit operand binary string', () => {
     expect(ScalarExpression.toBaseString(68719476735, 'bin')).toBe('111111111111111111111111111111111111');
 });
-
-it('throws on negative 64 bit numbers', () => {
-    var bigN = -2147483648;
-    expect(() => new ScalarExpression(bigN)).toThrowError("BitwiseCmd currently doesn't support 64 bit negative numbers such as " + bigN);
-})

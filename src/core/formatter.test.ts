@@ -13,7 +13,13 @@ describe("formatter", () => {
         var hex = formatter.formatString(decimal, 'hex');
         expect(binary).toBe('111111111111111111111111111111111111');
         expect(hex).toBe('fffffffff');
-    })
+    });
+
+    it('formats negative binary numbers', () => {
+        expect(formatter.formatString(-1, 'bin')).toBe("11111111111111111111111111111111");
+        expect(formatter.formatString(-0, 'bin')).toBe("0");
+        expect(formatter.formatString(-2147483647, 'bin')).toBe("10000000000000000000000000000001");       
+    });
 
     it('pads left', () => {
         expect(formatter.padLeft("1", 3, " ")).toBe("  1");

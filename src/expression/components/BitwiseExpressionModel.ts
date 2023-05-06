@@ -1,5 +1,6 @@
 import { ScalarExpression, ListOfNumbersExpression, BitwiseOperationExpression, OperatorExpression } from '../expression';
 import { Expression, ExpressionInput } from '../expression-interfaces';
+import calc from '../../core/calc';
 
 type Config = {
     emphasizeBytes: boolean;
@@ -9,7 +10,7 @@ type Config = {
 type ExpressionItemModel = {
     sign: string;
     css: string;
-    expressionItem: Expression;
+    expression: Expression;
     allowFlipBits: boolean;
     label: string;
 }
@@ -30,8 +31,8 @@ export default class BitwiseExpressionViewModel {
 
     static buildListOfNumbers(expr : ListOfNumbersExpression, config : Config) {
         var model = new BitwiseExpressionViewModel(config);
-        expr.numbers.forEach(op => model.addOperandRow(op));
-        model.maxNumberOfBits = BitwiseExpressionViewModel.getNumberOfBits(model.maxNumberOfBits, model.emphasizeBytes);
+        expr.numbers.forEach(op => model.addScalarRow(op));
+        model.maxNumberOfBits = BitwiseExpressionViewModel.applyEmphasizeBytes(model.maxNumberOfBits, model.emphasizeBytes);
         return model;
     }
 
@@ -46,7 +47,7 @@ export default class BitwiseExpressionViewModel {
         for (;i<len;i++) {
             ex = expr.children[i];
             if(ex instanceof ScalarExpression) {
-                m.addOperandRow(ex);
+                m.addScalarRow(ex);
                 prev = ex;
                 continue;
             }
@@ -71,7 +72,7 @@ export default class BitwiseExpressionViewModel {
             }
         }
 
-        m.maxNumberOfBits = BitwiseExpressionViewModel.getNumberOfBits(m.maxNumberOfBits, m.emphasizeBytes);
+        m.maxNumberOfBits = BitwiseExpressionViewModel.applyEmphasizeBytes(m.maxNumberOfBits, m.emphasizeBytes);
         return m;
     };
 
@@ -80,51 +81,56 @@ export default class BitwiseExpressionViewModel {
         var m = new BitwiseExpressionViewModel(config);
         m.addExpressionOperandRow(expression);
         m.addExpressionResultRow(expression.evaluate());
-        m.maxNumberOfBits = BitwiseExpressionViewModel.getNumberOfBits(m.maxNumberOfBits, m.emphasizeBytes);
+        m.maxNumberOfBits = BitwiseExpressionViewModel.applyEmphasizeBytes(m.maxNumberOfBits, m.emphasizeBytes);
         return m;
     };
 
-    addOperandRow(operand: ScalarExpression) {
-        this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
+    addScalarRow(expr: ScalarExpression) {
+        const bits = calc.numberOfBitsDisplayed(expr.value);
+        this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         this.items.push({ 
             sign:'', 
             css: '',
-            expressionItem: operand,
+            expression: expr,
             allowFlipBits: this.allowFlipBits,
             label: ''
         });
     };
 
-    addExpressionOperandRow(expression: OperatorExpression) {
-        const resultNumber = expression.isNotExpression ? expression.evaluate() : expression.getUnderlyingScalarOperand();
-        this.maxNumberOfBits = Math.max(resultNumber.getLengthInBits(), this.maxNumberOfBits);
+    addExpressionOperandRow(expr: OperatorExpression) {
+        
+        const resultNumber = expr.isNotExpression ? expr.evaluate() : expr.getUnderlyingScalarOperand();
+        const bits = calc.numberOfBitsDisplayed(resultNumber.value);
+        this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         
         this.items.push({ 
-            sign: expression.sign, 
+            sign: expr.sign, 
             css: '',
             label: this.getLabel(resultNumber),
-            expressionItem: expression.operand,
+            expression: expr.operand,
             allowFlipBits: this.allowFlipBits
         });
     };
 
-    addShiftExpressionResultRow(expression : OperatorExpression, resultOperand : ScalarExpression) {
-        this.maxNumberOfBits = Math.max(resultOperand.getLengthInBits(), this.maxNumberOfBits);
+    addShiftExpressionResultRow(expr : OperatorExpression, resultExpr : ScalarExpression) {
+        const bits = calc.numberOfBitsDisplayed(resultExpr.value);
+        this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         this.items.push({
-            sign: expression.sign + expression.operand.toString(),
+            sign: expr.sign + expr.operand.toString(),
             css: 'expression-result',
-            expressionItem: resultOperand,
+            expression: resultExpr,
             allowFlipBits: false,
             label: ''
         });
     };
 
-    addExpressionResultRow(operand : ScalarExpression) {
-        this.maxNumberOfBits = Math.max(operand.getLengthInBits(), this.maxNumberOfBits);
+    addExpressionResultRow(expr : ScalarExpression) {
+        const bits = calc.numberOfBitsDisplayed(expr.value);
+        this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         this.items.push({ 
             sign:'=', 
             css: 'expression-result',
-            expressionItem: operand, 
+            expression: expr, 
             allowFlipBits: false,
             label: '',
         });
@@ -139,8 +145,8 @@ export default class BitwiseExpressionViewModel {
         return op.toString();
     }
 
-    // TODO: move this method elsewhere. It is also used in LisOfNumbersExpressionView.js
-    static getNumberOfBits = function (bits : number, emphasizeBytes : boolean) : number {
+    static applyEmphasizeBytes = function (bits : number, emphasizeBytes : boolean) : number {
+        
         if(emphasizeBytes && bits % 8 != 0) {
              if(bits < 8) {
                  return 8;

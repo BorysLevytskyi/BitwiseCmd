@@ -1,20 +1,21 @@
 import { ExpressionInput } from "../expression/expression-interfaces";
+import { INT_MAX_VALUE } from "./const";
 
 export default {
-    numberOfBits: function (num: number) : number {
+    numberOfBitsDisplayed: function (num: number) : number {
         if(num < 0) {
-            return 32;
+            return Math.abs(num) <= INT_MAX_VALUE ? 32 : 64;
         }
 
         return Math.floor(Math.log(num) / Math.log(2)) + 1;
     },
 
-    maxNumberOfBits: function (arr: number[]) {
+    maxNumberOfBitsDisplayed: function (arr: number[]) {
 
         var counts = [], num;
         for (var i = 0; i < arr.length; i++) {
             num = arr[i];
-            counts.push(this.numberOfBits(num));
+            counts.push(this.numberOfBitsDisplayed(num));
         }
 
         return Math.max.apply(null, counts);

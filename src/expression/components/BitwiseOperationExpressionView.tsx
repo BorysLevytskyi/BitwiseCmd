@@ -41,7 +41,7 @@ export default class BitwiseOperationExpressionView extends React.Component<Bitw
                 sign={itm.sign}
                 css={itm.css}
                 allowFlipBits={itm.allowFlipBits}
-                expressionItem={itm.expressionItem}
+                expressionItem={itm.expression}
                 emphasizeBytes={this.props.emphasizeBytes} 
                 maxNumberOfBits={model.maxNumberOfBits} 
                 onBitFlipped={() => this.onBitFlipped()} />);
