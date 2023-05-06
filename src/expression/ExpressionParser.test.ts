@@ -1,6 +1,6 @@
-import OperatorExpression from "./OperatorExpression";
-import { ScalarExpression } from "./expression";
-import { Expression } from "./expression-interfaces";
+import OperatorToken from "./OperatorToken";
+import { ScalarToken } from "./expression";
+import { ExpressionToken } from "./expression-interfaces";
 import { type } from "os";
 import { InputType } from "zlib";
 import exp from "constants";

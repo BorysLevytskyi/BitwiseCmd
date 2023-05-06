@@ -14,7 +14,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
     render() {        
         return <table className="expression">
             <tbody>
-                {this.props.ipAddresses.map((ip, i) => <tr key={i}>
+                {this.props.ipAddresses.map((ip, i) => <tr key={i} className='row-with-bits'>
                         <td className="label"><strong>{ip.toString()}</strong></td>
                         <td className="bin">
                             {this.bin(ip.firstByte, 1, ip)}<span className="soft">.</span>

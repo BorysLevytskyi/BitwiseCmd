@@ -2,11 +2,11 @@ import React from 'react';
 import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseResultViewModel from './BitwiseResultViewModel';
-import { ExpressionInput, Expression } from '../expression-interfaces';
-import { OperatorExpression, ScalarExpression } from '../expression';
+import { Expression, ExpressionToken } from '../expression-interfaces';
+import { OperatorToken, ScalarToken } from '../expression';
 
 type BitwiseOperationExpressionViewProps = {
-    expression: ExpressionInput;
+    expression: Expression;
     emphasizeBytes: boolean;
 }
 
@@ -59,7 +59,7 @@ type ExpressionRowProps = {
     maxNumberOfBits: number, 
     emphasizeBytes: boolean, 
     allowFlipBits: boolean, 
-    expressionItem: Expression,
+    expressionItem: ExpressionToken,
     onBitFlipped: any
 }
 
@@ -71,7 +71,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
         
-        return <tr className={css}>
+        return <tr className={"row-with-bits " + css}>
                     <td className="sign">{sign}</td>
                     <td className="label">{this.getLabel()}</td>
                     <td className="bin">
@@ -95,7 +95,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         // For expressions like |~2 
         // TODO: find a better way...
         if(this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as OperatorExpression;
+            const ex = this.props.expressionItem as OperatorToken;
             return ex.operator + this.getLabelString(ex.getUnderlyingScalarOperand());
         }
 
@@ -105,7 +105,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getAlternative() {
 
         if(this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as OperatorExpression;
+            const ex = this.props.expressionItem as OperatorToken;
             const res = ex.evaluate();
 
             return formatter.numberToString(res.value, res.base);
@@ -116,7 +116,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return formatter.numberToString(v.value, altBase);
     }
 
-    getLabelString (op: ScalarExpression) : string {
+    getLabelString (op: ScalarToken) : string {
         return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 

@@ -1,5 +1,5 @@
 import {numberParser} from './numberParser';
-import { Expression as Expression } from './expression-interfaces';
+import { ExpressionToken as ExpressionToken } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT_MAX_VALUE } from '../core/const';
 
@@ -7,7 +7,7 @@ var globalId : number = 1;
 
 
 // Represents scalar numeric value
-export default class ScalarExpression implements Expression {
+export default class ScalarToken implements ExpressionToken {
     id: number;
     value: number;
     base: NumberBase;
@@ -25,21 +25,21 @@ export default class ScalarExpression implements Expression {
         this.value = value;
     }
 
-    evaluate() : ScalarExpression {
+    evaluate() : ScalarToken {
         return this;
     }
 
-    getUnderlyingScalarOperand() : ScalarExpression  {
+    getUnderlyingScalarOperand() : ScalarToken  {
         return this
     }
 
     static create(value : number, base? : NumberBase) {
-        return new ScalarExpression(value, base || "dec");
+        return new ScalarToken(value, base || "dec");
     };
 
-    static parse(input: string) : ScalarExpression {
+    static parse(input: string) : ScalarToken {
                     
-        var parsed = ScalarExpression.tryParse(input);
+        var parsed = ScalarToken.tryParse(input);
 
         if(parsed == null) {
             throw new Error(input + " is not a valid number");
@@ -48,7 +48,7 @@ export default class ScalarExpression implements Expression {
         return parsed;
     }
 
-    static tryParse(input: string) : ScalarExpression | null {
+    static tryParse(input: string) : ScalarToken | null {
                     
         var parsed = numberParser.parse(input);
 
@@ -56,7 +56,7 @@ export default class ScalarExpression implements Expression {
             return null;
         }
 
-        return new ScalarExpression(parsed.value, parsed.base);
+        return new ScalarToken(parsed.value, parsed.base);
     }
   
 }

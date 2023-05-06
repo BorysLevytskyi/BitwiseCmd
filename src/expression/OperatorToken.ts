@@ -1,18 +1,18 @@
 import { INT_MAX_VALUE } from '../core/const';
 import formatter from '../core/formatter';
-import ScalarExpression from './ScalarExpression';
-import { Expression } from './expression-interfaces';
+import ScalarToken from './ScalarToken';
+import { ExpressionToken } from './expression-interfaces';
 
-export default class OperatorExpression implements Expression {
-    operand: Expression;
+export default class OperatorToken implements ExpressionToken {
+    operand: ExpressionToken;
     operator: string;
     isOperator: boolean;
     isShiftExpression: boolean;
     isNotExpression: boolean;
 
-    constructor(operand : Expression, operator : string) {
+    constructor(operand : ExpressionToken, operator : string) {
 
-        if(operand instanceof ScalarExpression) {            
+        if(operand instanceof ScalarToken) {            
             const o = operand.getUnderlyingScalarOperand();
             if(Math.abs(o.value) > INT_MAX_VALUE) {
                 const n = formatter.numberToString(o.value, o.base);
@@ -27,8 +27,8 @@ export default class OperatorExpression implements Expression {
         this.isNotExpression = this.operator === '~';
     }
         
-    evaluate(operand?: ScalarExpression) : ScalarExpression {
-        if (operand instanceof OperatorExpression) {
+    evaluate(operand?: ScalarToken) : ScalarToken {
+        if (operand instanceof OperatorToken) {
             throw new Error('value shouldnt be expression'); 
         }
 
@@ -44,10 +44,10 @@ export default class OperatorExpression implements Expression {
             str = operand.value + this.operator + evaluatedOperand.value;
         }
 
-        return ScalarExpression.create(eval(str), evaluatedOperand.base);
+        return ScalarToken.create(eval(str), evaluatedOperand.base);
     }
 
-    getUnderlyingScalarOperand() : ScalarExpression {
+    getUnderlyingScalarOperand() : ScalarToken {
         return this.operand.getUnderlyingScalarOperand();
     }
 

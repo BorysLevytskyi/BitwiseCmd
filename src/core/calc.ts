@@ -1,5 +1,5 @@
 import { dblClick } from "@testing-library/user-event/dist/click";
-import { ExpressionInput } from "../expression/expression-interfaces";
+import { Expression } from "../expression/expression-interfaces";
 import { INT_MAX_VALUE } from "./const";
 import { start } from "repl";
 
@@ -23,7 +23,7 @@ export default {
         return Math.max.apply(null, counts);
     },
 
-    calcExpression: function (expr: ExpressionInput) {
+    calcExpression: function (expr: Expression) {
         return eval(expr.expressionString);
     },
 

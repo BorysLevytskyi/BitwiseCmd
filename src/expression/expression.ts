@@ -1,18 +1,18 @@
-import ScalarExpression from './ScalarExpression';
-import OperatorExpression from './OperatorExpression'
+import ScalarToken from './ScalarToken';
+import OperatorToken from './OperatorToken'
 import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
-import { ExpressionInput, Expression } from './expression-interfaces';
+import { Expression, ExpressionToken } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 
-export { default as ScalarExpression } from './ScalarExpression';
-export { default as OperatorExpression } from './OperatorExpression';
+export { default as ScalarToken } from './ScalarToken';
+export { default as OperatorToken } from './OperatorToken';
 export { default as ListOfNumbersExpression } from './ListOfNumbersExpression';
 export { default as BitwiseOperationExpression } from './BitwiseOperationExpression';
 
 interface IExpressionParserFactory {
     canCreate: (input: string) => boolean;
-    create: (input: string) => ExpressionInput;
+    create: (input: string) => Expression;
 };
 
 class ExpressionParser {
@@ -32,7 +32,7 @@ class ExpressionParser {
         return false;
     };
 
-    parse (input: string) : ExpressionInput | null {
+    parse (input: string) : Expression | null {
         var trimmed = input.replace(/^\s+|\s+$/, '');
         var i = 0, l = this.factories.length, factory;
 
@@ -47,12 +47,12 @@ class ExpressionParser {
         return null;
     };
     
-    parseOperand (input : string) : ScalarExpression {
-        return ScalarExpression.parse(input);
+    parseOperand (input : string) : ScalarToken {
+        return ScalarToken.parse(input);
     };
 
-    createOperand (number : number, base : NumberBase) : ScalarExpression {
-        return ScalarExpression.create(number, base);
+    createOperand (number : number, base : NumberBase) : ScalarToken {
+        return ScalarToken.create(number, base);
     };
 
     addFactory (factory: IExpressionParserFactory) {
@@ -70,16 +70,16 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
         
         return input.split(' ')
             .filter(p => p.length > 0)
-            .map(p => ScalarExpression.tryParse(p))
+            .map(p => ScalarToken.tryParse(p))
             .filter(n => n == null)
             .length == 0;
     };
 
-    create (input : string) : ExpressionInput {
+    create (input : string) : Expression {
         
         const numbers = input.split(' ')
             .filter(p => p.length > 0)
-            .map(m => ScalarExpression.parse(m));
+            .map(m => ScalarToken.parse(m));
 
         return new ListOfNumbersExpression(input, numbers);
     }
@@ -99,9 +99,9 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
         return this.fullRegex.test(this.normalizeString(input));
     };
 
-    create (input: string) : ExpressionInput {
+    create (input: string) : Expression {
         var m : RegExpExecArray | null;
-        const operands : Expression[] = [];
+        const operands : ExpressionToken[] = [];
         const normalizedString = this.normalizeString(input);
 
         this.regex.lastIndex = 0;
@@ -113,23 +113,23 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
         return new BitwiseOperationExpression(normalizedString, operands)
     };
 
-    parseMatch (m:any): Expression {
+    parseMatch (m:any): ExpressionToken {
         var input = m[0],
             operator = m[1],
             num = m[2];
 
         var parsed = null;
         if(num.indexOf('~') == 0) {
-            parsed = new OperatorExpression(ScalarExpression.parse(num.substring(1)), '~');
+            parsed = new OperatorToken(ScalarToken.parse(num.substring(1)), '~');
         }
         else {
-            parsed = ScalarExpression.parse(num);
+            parsed = ScalarToken.parse(num);
         }
 
         if(operator == null) {
-            return parsed as OperatorExpression;
+            return parsed as OperatorToken;
         } else {
-            return new OperatorExpression(parsed as ScalarExpression, operator);
+            return new OperatorToken(parsed as ScalarToken, operator);
         }
     };
 
