@@ -42,14 +42,15 @@ export class CmdShell {
         var handler = this.findHandler(input);
 
         if(handler != null) {
-            if(this.debugMode) {
+            // if(this.debugMode) {
+            //     this.invokeHandler(input, handler, ops);
+            //     return
+            // }
+
+            try {
                 this.invokeHandler(input, handler, ops);
-            } else {
-                try {
-                    this.invokeHandler(input, handler, ops);
-                } catch (e) {
-                     this.handleError(input, e as Error);
-                }
+            } catch (e) {
+                 this.handleError(input, e as Error);
             }
         }
         else {
@@ -107,6 +108,7 @@ export class CmdShell {
     };
 
     handleError (input: string, err: Error) {
+        
         if(this.debugMode)
             console.error(input, err);
 

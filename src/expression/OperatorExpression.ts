@@ -1,21 +1,30 @@
+import { INT_MAX_VALUE } from '../core/const';
+import formatter from '../core/formatter';
 import ScalarExpression from './ScalarExpression';
 import { Expression } from './expression-interfaces';
 
 export default class OperatorExpression implements Expression {
-    expressionString: string;
     operand: Expression;
-    sign: string;
+    operator: string;
     isOperator: boolean;
     isShiftExpression: boolean;
     isNotExpression: boolean;
 
-    constructor(expressionString : string, operand : Expression, sign : string) {
-        this.expressionString = expressionString;
+    constructor(operand : Expression, operator : string) {
+
+        if(operand instanceof ScalarExpression) {            
+            const o = operand.getUnderlyingScalarOperand();
+            if(Math.abs(o.value) > INT_MAX_VALUE) {
+                const n = formatter.numberToString(o.value, o.base);
+                throw new Error(`${n} has more than 32 bits. JavaScript converts all numbers to 32-bit integers when applying bitwise operators. BitwiseCmd currently uses the JavaScript engine of your browser for results calculation and supports numbers in the range from ${-INT_MAX_VALUE} to ${INT_MAX_VALUE}.`);
+            }
+        }
+
         this.operand = operand;
-        this.sign = sign;
+        this.operator = operator;
         this.isOperator = true;
-        this.isShiftExpression = this.sign.indexOf('<') >= 0 || this.sign.indexOf('>')>= 0;
-        this.isNotExpression = this.sign === '~';
+        this.isShiftExpression = this.operator.indexOf('<') >= 0 || this.operator.indexOf('>')>= 0;
+        this.isNotExpression = this.operator === '~';
     }
         
     evaluate(operand?: ScalarExpression) : ScalarExpression {
@@ -26,13 +35,13 @@ export default class OperatorExpression implements Expression {
         var evaluatedOperand = this.operand.evaluate();
 
         var str = '';
-        if(this.sign == '~'){
+        if(this.operator == '~'){
             str = '~' + evaluatedOperand.value;
         } else {
             if(operand == null)
-            throw new Error("Other is required for expression: " + this.expressionString)
+                throw new Error("Other is required for this expression");
 
-            str = operand.value + this.sign + evaluatedOperand.value;
+            str = operand.value + this.operator + evaluatedOperand.value;
         }
 
         return ScalarExpression.create(eval(str), evaluatedOperand.base);
@@ -43,6 +52,6 @@ export default class OperatorExpression implements Expression {
     }
 
     toString(): string {
-        return this.sign + this.operand.toString();
+        return this.operator + this.operand.toString();
     }
 }

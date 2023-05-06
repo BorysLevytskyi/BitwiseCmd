@@ -96,7 +96,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         // TODO: find a better way...
         if(this.props.expressionItem.isOperator) {
             const ex = this.props.expressionItem as OperatorExpression;
-            return ex.sign + this.getLabelString(ex.getUnderlyingScalarOperand());
+            return ex.operator + this.getLabelString(ex.getUnderlyingScalarOperand());
         }
 
         return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());         

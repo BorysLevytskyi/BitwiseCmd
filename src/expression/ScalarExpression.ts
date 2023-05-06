@@ -1,6 +1,7 @@
 import {numberParser} from './numberParser';
 import { Expression as Expression } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
+import { INT_MAX_VALUE } from '../core/const';
 
 var globalId : number = 1;
 

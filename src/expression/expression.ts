@@ -4,6 +4,7 @@ import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
 import { ExpressionInput, Expression } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
+import { Match } from '@testing-library/react';
 
 export { default as ScalarExpression } from './ScalarExpression';
 export { default as OperatorExpression } from './OperatorExpression';
@@ -100,33 +101,36 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
     };
 
     create (input: string) : ExpressionInput {
-        var m, operands : Expression[] = [],
-            normalizedString = this.normalizeString(input);
+        var m : RegExpExecArray | null;
+        const operands : Expression[] = [];
+        const normalizedString = this.normalizeString(input);
+
+        this.regex.lastIndex = 0;
 
         while ((m = this.regex.exec(normalizedString)) != null) {
             operands.push(this.parseMatch(m));
         }
-
+                
         return new BitwiseOperationExpression(normalizedString, operands)
     };
 
     parseMatch (m:any): Expression {
         var input = m[0],
-            sign = m[1],
+            operator = m[1],
             num = m[2];
 
         var parsed = null;
         if(num.indexOf('~') == 0) {
-            parsed = new OperatorExpression(num, ScalarExpression.parse(num.substring(1)), '~');
+            parsed = new OperatorExpression(ScalarExpression.parse(num.substring(1)), '~');
         }
         else {
             parsed = ScalarExpression.parse(num);
         }
 
-        if(sign == null) {
+        if(operator == null) {
             return parsed as OperatorExpression;
         } else {
-            return new OperatorExpression(input, parsed as ScalarExpression, sign);
+            return new OperatorExpression(parsed as ScalarExpression, operator);
         }
     };
 

@@ -17,13 +17,14 @@ describe("calc", () => {
         expect(calc.maxNumberOfBitsDisplayed([1, 2, 3, 10])).toBe(4);
     });
 
-    it('calculates expression', () => {        
+    it('calculates expression', () => {
+                
         var result = calc.calcExpression(new BitwiseOperationExpression(
             "1|2&3",
             [
                 new ScalarExpression(1),
-                new OperatorExpression("|2", new ScalarExpression(2), "|"),
-                new OperatorExpression("&3", new ScalarExpression(3), "&"),
+                new OperatorExpression(new ScalarExpression(2), "|"),
+                new OperatorExpression(new ScalarExpression(3), "&"),
             ]
         ));
         

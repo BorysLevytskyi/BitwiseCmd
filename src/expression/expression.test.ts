@@ -1,4 +1,3 @@
-import { OperationCanceledException } from "typescript";
 import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarExpression, OperatorExpression } from "./expression";
 
 describe("expression parser", () => {
@@ -21,11 +20,11 @@ describe("expression parser", () => {
     });
 
     it("parses big binary bitwise expression", () => {
-        const input = "0b00010010001101000101011001111000 | 0b10101010101010101010101000000000";
+        const input = "0b00010010001101000101011001111000 0b10101010101010101010101000000000";
         const actual = parser.parse(input);
-        expect(actual).toBeInstanceOf(BitwiseOperationExpression);
+        expect(actual).toBeInstanceOf(ListOfNumbersExpression);
 
-        const expr = actual as BitwiseOperationExpression;
+        const expr = actual as ListOfNumbersExpression;
         expect(expr.children[0].getUnderlyingScalarOperand().value).toBe(305419896);
         expect(expr.children[1].getUnderlyingScalarOperand().value).toBe(2863311360);
     })
@@ -43,7 +42,7 @@ describe("expression parser", () => {
 
         expect(second).toBeInstanceOf(OperatorExpression);
         var secondOp = second as OperatorExpression;
-        expect(secondOp.sign).toBe("^");
+        expect(secondOp.operator).toBe("^");
 
         expect(secondOp.operand).toBeInstanceOf(ScalarExpression);
         var childOp = secondOp.operand as ScalarExpression;

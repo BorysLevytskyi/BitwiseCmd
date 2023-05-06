@@ -32,7 +32,7 @@ export default class BitwiseExpressionViewModel {
 
     static buildListOfNumbers(expr : ListOfNumbersExpression, config : Config) {
         var model = new BitwiseExpressionViewModel(config);
-        expr.numbers.forEach(op => model.addScalarRow(op));
+        expr.children.forEach(op => model.addScalarRow(op));
         model.maxNumberOfBits = BitwiseExpressionViewModel.applyEmphasizeBytes(model.maxNumberOfBits, model.emphasizeBytes);
         return model;
     }
@@ -105,7 +105,7 @@ export default class BitwiseExpressionViewModel {
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         
         this.items.push({ 
-            sign: expr.sign, 
+            sign: expr.operator, 
             css: '',
             label: this.getLabel(resultNumber),
             expression: expr.operand,
@@ -118,7 +118,7 @@ export default class BitwiseExpressionViewModel {
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         const child = expr.operand.getUnderlyingScalarOperand();
         this.items.push({
-            sign: expr.sign + formatter.numberToString(child.value, child.base),
+            sign: expr.operator + formatter.numberToString(child.value, child.base),
             css: 'expression-result',
             expression: resultExpr,
             allowFlipBits: false,
