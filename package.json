@@ -26,8 +26,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build & npx http-server ./build -p 3030",
-    "release": "react-scripts build & gh-pages -d build --message Release",
+    "build": "react-scripts build && npx http-server ./build -p 3030",
+    "release": "react-scripts build && gh-pages -d build --message Release",
     "deploy": "gh-pages -d build --message Release",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

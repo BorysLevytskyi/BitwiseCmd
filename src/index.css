@@ -13,6 +13,7 @@ html { height: 100% }
 
 code { font-size: 1.2em; font-weight: bold; }
 
+.icon { margin-right: 5px; vertical-align: middle; }
 .header-cmd { color: #c5c5c5 }
 
 .mono { font-family: monospace; font-size: 1.3em }
@@ -46,7 +47,7 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .help { padding: 10px; }
 .help ul { list-style-type: none; margin: 0; padding: 0;  }
-.help p { margin-top: 0 }
+.help p { margin-top: 0.5em }
 
 .indicator { padding: 0px 5px; background: transparent; border: none; cursor: pointer; vertical-align: middle; }
 .error { color: maroon; }
