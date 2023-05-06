@@ -44,7 +44,7 @@ export class IpAddressView extends React.Component<IpAddressViewProps>
 };
 
 function fmt(num: number) : string {
-    return formatter.padLeft(formatter.formatString(num, 'bin'), 8, '0');
+    return formatter.padLeft(formatter.numberToString(num, 'bin'), 8, '0');
 }
 
 export default IpAddressView;

@@ -2,7 +2,8 @@ import ScalarExpression from './ScalarExpression';
 import OperatorExpression from './OperatorExpression'
 import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
-import { ExpressionInput, Expression, NumberBase } from './expression-interfaces';
+import { ExpressionInput, Expression } from './expression-interfaces';
+import { NumberBase } from '../core/formatter';
 
 export { default as ScalarExpression } from './ScalarExpression';
 export { default as OperatorExpression } from './OperatorExpression';

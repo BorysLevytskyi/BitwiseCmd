@@ -1,19 +1,27 @@
 import { INT_MAX_VALUE } from "./const";
+export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    formatStringOld: function(num: number, kind: string) : string {
-        return num.toString(getBase(kind || "bin"));
-    },
-    formatString: function(num: number, kind: string) : string {
-        
-        if(num < 0 && kind === 'bin') {
-            const n = Math.abs(num);
-            const padding = n > INT_MAX_VALUE ? 64 : 32;
-            const pos = n.toString(2).padStart(padding, '0');
-            return findTwosComplement(pos);
+    numberToString: function(value: number, kind: NumberBase) : string {
+     
+        switch(kind) {
+            case 'hex':
+                var hexVal = Math.abs(value).toString(16);
+                return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
+            case 'bin':          
+                if(value < 0) {
+                    const n = Math.abs(value);
+                    const padding = n > INT_MAX_VALUE ? 64 : 32;
+                    const pos = n.toString(2).padStart(padding, '0');
+                    return findTwosComplement(pos);
+                }
+                
+                return value.toString(getBase(kind || "bin"));
+            case 'dec':
+                return value.toString(10);
+            default:
+                throw new Error("Unexpected kind: " + kind)
         }
-
-        return num.toString(getBase(kind || "bin"));
     },
     padLeft: function (str: string, length: number, symbol: string) : string {
         var sb = Array.prototype.slice.call(str), symbol = symbol || "0";
@@ -29,7 +37,7 @@ const formatter = {
         return sb.join('');
     },
     bin(number: number) {
-        return this.formatString(number, 'bin');
+        return this.numberToString(number, 'bin');
     },
     emBin(number: number) {
         return this.padLeft(this.bin(number), 8, '0');
@@ -62,6 +70,15 @@ const formatter = {
         if(tmp.length > 0) res.push(tmp.join(''));
 
         return { vpc: res[0], subnet: res[1], hosts: res[2]};
+    },
+    getAlternativeBase: (base: NumberBase) : NumberBase => {
+        switch(base) {
+            case 'dec': 
+            case 'bin':
+                return 'hex';
+            case 'hex': return 'dec';
+            default : throw new Error(base + " kind doesn't have opposite kind")
+        }
     }
 };
 

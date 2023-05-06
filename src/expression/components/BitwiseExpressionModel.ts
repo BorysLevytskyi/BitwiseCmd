@@ -1,6 +1,7 @@
 import { ScalarExpression, ListOfNumbersExpression, BitwiseOperationExpression, OperatorExpression } from '../expression';
 import { Expression, ExpressionInput } from '../expression-interfaces';
 import calc from '../../core/calc';
+import formatter from '../../core/formatter';
 
 type Config = {
     emphasizeBytes: boolean;
@@ -111,12 +112,13 @@ export default class BitwiseExpressionViewModel {
             allowFlipBits: this.allowFlipBits
         });
     };
-
+ 
     addShiftExpressionResultRow(expr : OperatorExpression, resultExpr : ScalarExpression) {
         const bits = calc.numberOfBitsDisplayed(resultExpr.value);
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
+        const child = expr.operand.getUnderlyingScalarOperand();
         this.items.push({
-            sign: expr.sign + expr.operand.toString(),
+            sign: expr.sign + formatter.numberToString(child.value, child.base),
             css: 'expression-result',
             expression: resultExpr,
             allowFlipBits: false,
@@ -137,15 +139,11 @@ export default class BitwiseExpressionViewModel {
     };
 
     getLabel (op: ScalarExpression) : string {
-        
-        if(op.base == 'bin') {
-            return op.toString("dec");
-        }
 
-        return op.toString();
+        return formatter.numberToString(op.value, op.base === 'bin' ? 'dec' : op.base)
     }
 
-    static applyEmphasizeBytes = function (bits : number, emphasizeBytes : boolean) : number {
+    static applyEmphasizeBytes (bits : number, emphasizeBytes : boolean) : number {
         
         if(emphasizeBytes && bits % 8 != 0) {
              if(bits < 8) {

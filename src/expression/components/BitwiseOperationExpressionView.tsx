@@ -81,13 +81,13 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                             allowFlipBits={allowFlipBits} 
                             onFlipBit={args => this.flipBit(args)}/>
                     </td>
-                    <td className="other">{this.getOther()}</td>
+                    <td className="other">{this.getAlternative()}</td>
                 </tr>;;
     }
 
     getBinaryString() : string {       
-        var binary = this.props.expressionItem.evaluate().toBinaryString();
-        return binary;
+        var v = this.props.expressionItem.evaluate();
+        return formatter.numberToString(v.value, 'bin');
     }
 
     getLabel(): string {
@@ -102,20 +102,22 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());         
     }
 
-    getOther() {
+    getAlternative() {
 
         if(this.props.expressionItem.isOperator) {
             const ex = this.props.expressionItem as OperatorExpression;
-            const op = ex.evaluate();
+            const res = ex.evaluate();
 
-            return op.toString();
+            return formatter.numberToString(res.value, res.base);
         }
 
-        return this.props.expressionItem.evaluate().toOtherKindString();
+        const v = this.props.expressionItem.evaluate();
+        const altBase = formatter.getAlternativeBase(v.base);
+        return formatter.numberToString(v.value, altBase);
     }
 
     getLabelString (op: ScalarExpression) : string {
-        return op.toString(op.base == 'bin' ? 'dec' : op.base);
+        return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 
      flipBit(args: FlipBitEventArg) {    

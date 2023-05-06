@@ -12,6 +12,3 @@ export interface Expression
     evaluate(operand? : ScalarExpression): ScalarExpression;
 }
 
-export type NumberBase = 'dec' | 'hex' | 'bin';
-
-

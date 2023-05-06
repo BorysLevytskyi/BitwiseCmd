@@ -1,8 +1,6 @@
 import React from 'react';
 import CommandLink from '../../core/components/CommandLink';
 import './HelpResultView.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 function HelpResultView() {
 
@@ -14,11 +12,7 @@ function HelpResultView() {
                     <ul>
                         <li><code><CommandLink text="23 | 34" /></code> — type bitwise expression to see the result in binary</li>
                         <li><code><CommandLink text="23 34" /></code> — type one or more numbers to see their binary representations</li>
-                    </ul>
-                    <p>
-                        <FontAwesomeIcon icon={faInfoCircle} className='icon' />
-                        <u>Negative</u> 64-bit numbers (lower than int32 min value of <code>-2,147,483,647</code>) are not supported.
-                    </p>
+                    </ul>                   
                 </div>
                 <div className="section">
                     <strong className="section-title  soft">IP Address & Networking Commands</strong>
