@@ -28,7 +28,6 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
     }
 
     refresh() {
-        console.log('refresh');
         this.setState(this.props.appState);
     }
     
