@@ -7,7 +7,8 @@ export type BinaryStringViewProps = {
     onFlipBit?: (input: FlipBitEventArg) => void;
     emphasizeBytes?: boolean;
     className?:string;
-    disableHighlight?:boolean
+    disableHighlight?:boolean,
+    bitSize?: number
 };
 
 export type FlipBitEventArg = {
@@ -39,7 +40,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
     }
 
     getChildren() {
-        var bits = this.createBits(this.props.binaryString.split(''));
+        var bits = this.createBits(this.props.binaryString.split(''), this.props.bitSize);
         
         if(this.props.emphasizeBytes) {
             return this.splitIntoBytes(bits);
@@ -48,7 +49,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         return bits;
     }
 
-    createBits(bitChars:string[]) : JSX.Element[] {
+    createBits(bitChars:string[], bitSize?: number) : JSX.Element[] {
         const allowFlipBits = this.props.allowFlipBits || false;
         const css = allowFlipBits ? ' flipable' : ''
 
@@ -59,12 +60,11 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
             var className = c == '1' ? `one${css}` : `zero${css}`;
             var tooltip = '';
 
-            if(i === 0 && bitChars.length == 32) {
+            if(i === 0 && bitSize != null && bitChars.length == bitSize) {
                 className += ' sign-bit';
                 tooltip = 'Signature bit. 0 means a positive number and 1 means a negative.'
             }
                 
-
             if(disableHighlight) 
                 className = css;
 

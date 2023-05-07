@@ -7,6 +7,11 @@ describe("formatter", () => {
         expect(formatter.numberToString(15, "bin")).toBe("1111");
     });
 
+    it('respects size when formatting negative number', () => {
+        expect(formatter.bin(-1)).toBe("11111111111111111111111111111111");
+        expect(formatter.bin(BigInt(-1))).toBe("1111111111111111111111111111111111111111111111111111111111111111");
+    });
+
     it('formats large binary number correctly', () => {
         var decimal = 68719476735;
         var binary = formatter.bin(68719476735);

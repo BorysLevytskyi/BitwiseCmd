@@ -1,3 +1,4 @@
+import { type } from "os";
 import { Expression } from "../expression/expression-interfaces";
 import { INT_MAX_VALUE } from "./const";
 import formatter from "./formatter";
@@ -31,7 +32,8 @@ export default {
     },
 
     flippedBit: function(num: number|bigint, index: number): number  {
-        const size = 32;
+        
+        const size = typeof num == "bigint" ? 64 : 32;
         const bin = formatter.bin(num).padStart(size, '0');
         const staysNegative = (bin[0] == "1" && index > 0);
         const becomesNegative = (bin[0] == "0" && index == 0);

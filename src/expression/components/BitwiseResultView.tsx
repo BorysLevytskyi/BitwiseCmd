@@ -44,6 +44,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 key={i} 
                 sign={itm.sign}
                 css={itm.css}
+                bitSize={itm.bitSize}
                 allowFlipBits={itm.allowFlipBits}
                 expressionItem={itm.expression}
                 emphasizeBytes={this.props.emphasizeBytes} 
@@ -60,6 +61,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
 type ExpressionRowProps = {
     sign: string, 
     css: string, 
+    bitSize: number,
     maxNumberOfBits: number, 
     emphasizeBytes: boolean, 
     allowFlipBits: boolean, 
@@ -83,6 +85,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                             emphasizeBytes={emphasizeBytes} 
                             binaryString={formatter.padLeft(this.getBinaryString(), maxNumberOfBits, '0')} 
                             allowFlipBits={allowFlipBits} 
+                            bitSize={this.props.bitSize}
                             onFlipBit={args => this.flipBit(args)}/>
                     </td>
                     <td className="other">{this.getAlternative()}</td>
@@ -129,7 +132,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const op  = this.props.expressionItem.getUnderlyingScalarOperand();
         const { index, binaryString } = args;
 
-        const pad = 32 - binaryString.length;
+        const pad = op.bitSize() - binaryString.length;
         const newValue = calc.flippedBit(op.value, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();

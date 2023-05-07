@@ -2,6 +2,7 @@ import { ScalarToken, ListOfNumbersExpression, BitwiseOperationExpression, Opera
 import { ExpressionToken, Expression } from '../expression-interfaces';
 import calc from '../../core/calc';
 import formatter from '../../core/formatter';
+import exp from 'constants';
 
 type Config = {
     emphasizeBytes: boolean;
@@ -14,6 +15,7 @@ type ExpressionRowModel = {
     expression: ExpressionToken;
     allowFlipBits: boolean;
     label: string;
+    bitSize: number;
 }
 
 export default class BitwiseResultViewModel {
@@ -85,7 +87,8 @@ export default class BitwiseResultViewModel {
             css: '',
             expression: expr,
             allowFlipBits: this.allowFlipBits,
-            label: ''
+            label: '',
+            bitSize: bits,
         });
     };
 
@@ -100,7 +103,8 @@ export default class BitwiseResultViewModel {
             css: '',
             label: this.getLabel(resultNumber),
             expression: expr.operand,
-            allowFlipBits: this.allowFlipBits
+            allowFlipBits: this.allowFlipBits,
+            bitSize: resultNumber.bitSize()
         });
     };
  
@@ -113,7 +117,8 @@ export default class BitwiseResultViewModel {
             css: 'expression-result',
             expression: resultExpr,
             allowFlipBits: false,
-            label: ''
+            label: '',
+            bitSize: resultExpr.bitSize()
         });
     };
 
@@ -126,6 +131,7 @@ export default class BitwiseResultViewModel {
             expression: expr, 
             allowFlipBits: false,
             label: '',
+            bitSize: expr.bitSize()
         });
     };
 

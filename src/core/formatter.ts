@@ -11,9 +11,9 @@ const formatter = {
             case 'bin':          
                 
                 if(num < 0) {
-                    const n = calc.abs(num);
-                    const pos = n.toString(2).padStart(32, '0');
-                    return calc.applyTwosComplement(pos);
+                    const size = calc.numberOfBitsDisplayed(num);
+                    const absBin = calc.abs(num).toString(2).padStart(size, '0');
+                    return calc.applyTwosComplement(absBin);
                 }
                 
                 return num.toString(getBase(base || "bin"));

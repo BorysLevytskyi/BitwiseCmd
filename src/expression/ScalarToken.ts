@@ -11,7 +11,6 @@ export default class ScalarToken implements ExpressionToken {
     value: number | bigint;
     base: NumberBase;
     isOperator: boolean;
-    is32BitLimit: boolean; 
 
     constructor(value : number | bigint, base?: NumberBase, is32Limit?: boolean) {
         
@@ -19,7 +18,10 @@ export default class ScalarToken implements ExpressionToken {
         this.value = value;
         this.base = base || "dec";
         this.isOperator = false;
-        this.is32BitLimit = is32Limit || false;
+    }
+
+    bitSize() : number {
+        return this.isBigInt() ? 64 : 32;
     }
 
     isBigInt() : boolean {
