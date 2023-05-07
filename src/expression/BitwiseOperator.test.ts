@@ -1,10 +1,10 @@
-import ScalarToken from "./ScalarToken";
-import OperatorToken from './OperatorToken';
+import ScalarValue from "./ScalarValue";
+import BitwiseOperator from './BitwiseOperator';
 import { INT32_MAX_VALUE } from "../core/const";
 
 it('can apply ~ operand', () => {
-    var op = new ScalarToken(10, 'dec');
-    var expr = new OperatorToken(op, "~");
+    var op = new ScalarValue(10, 'dec');
+    var expr = new BitwiseOperator(op, "~");
     
     var result = expr.evaluate();
     expect(result.value).toBe(-11);
@@ -12,9 +12,9 @@ it('can apply ~ operand', () => {
 });
 
 it('can apply & operand', () => {
-    var op1 = new ScalarToken(3, 'dec');
-    var op2 = new ScalarToken(4, 'dec');
-    var expr = new OperatorToken(op1, "|");
+    var op1 = new ScalarValue(3, 'dec');
+    var op2 = new ScalarValue(4, 'dec');
+    var expr = new BitwiseOperator(op1, "|");
     var result = expr.evaluate(op2);
     expect(result.value).toBe(7);
     expect(result.base).toBe('dec');

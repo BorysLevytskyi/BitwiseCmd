@@ -1,13 +1,13 @@
 import calc from "../core/calc";
-import ScalarToken from "./ScalarToken";
-import { Expression, ExpressionToken } from "./expression-interfaces";
+import ScalarValue from "./ScalarValue";
+import { Expression, ExpressionElement } from "./expression-interfaces";
 
 export default class ListOfNumbersExpression implements Expression {
-    children: ScalarToken[];
+    children: ScalarValue[];
     expressionString: string;
     maxBitsLength: number;
 
-    constructor(expressionString: string, numbers: ScalarToken[]) {
+    constructor(expressionString: string, numbers: ScalarValue[]) {
         this.expressionString = expressionString;
         this.children = numbers;
         this.maxBitsLength = numbers.map(n => calc.numberOfBitsDisplayed(n.value)).reduce((n , c) => n >= c ? n : c, 0);

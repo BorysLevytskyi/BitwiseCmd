@@ -1,5 +1,5 @@
 import {numberParser} from './numberParser';
-import { ExpressionToken as ExpressionToken } from './expression-interfaces';
+import { ExpressionElement as ExpressionElement } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE } from '../core/const';
 import { NumberType } from '../core/types';
@@ -8,7 +8,7 @@ var globalId : number = 1;
 
 
 // Represents scalar numeric value
-export default class ScalarToken implements ExpressionToken {
+export default class ScalarValue implements ExpressionElement {
     id: number;
     value: NumberType;
     base: NumberBase;
@@ -16,7 +16,7 @@ export default class ScalarToken implements ExpressionToken {
 
     constructor(value : NumberType, base?: NumberBase, is32Limit?: boolean) {
         
-        ScalarToken.validateSupported(value);
+        ScalarValue.validateSupported(value);
 
         this.id = globalId++;
         this.value = value;
@@ -36,11 +36,11 @@ export default class ScalarToken implements ExpressionToken {
         this.value = value;
     }
 
-    evaluate() : ScalarToken {
+    evaluate() : ScalarValue {
         return this;
     }
 
-    getUnderlyingScalarOperand() : ScalarToken  {
+    getUnderlyingScalarOperand() : ScalarValue  {
         return this
     }
 
@@ -55,9 +55,9 @@ export default class ScalarToken implements ExpressionToken {
         }
     }
 
-    static parse(input: string) : ScalarToken {
+    static parse(input: string) : ScalarValue {
                     
-        var parsed = ScalarToken.tryParse(input);
+        var parsed = ScalarValue.tryParse(input);
 
         if(parsed == null) {
             throw new Error(input + " is not a valid number");
@@ -66,7 +66,7 @@ export default class ScalarToken implements ExpressionToken {
         return parsed;
     }
 
-    static tryParse(input: string) : ScalarToken | null {
+    static tryParse(input: string) : ScalarValue | null {
                     
         var parsed = numberParser.parse(input);
 
@@ -74,6 +74,6 @@ export default class ScalarToken implements ExpressionToken {
             return null;
         }
 
-        return new ScalarToken(parsed.value, parsed.base);
+        return new ScalarValue(parsed.value, parsed.base);
     }
 }

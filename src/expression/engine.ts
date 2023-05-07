@@ -1,15 +1,15 @@
 import { NumberType } from "../core/types";
-import ScalarToken from "./ScalarToken";
+import ScalarValue from "./ScalarValue";
 
 const engine = {
-    applyNotOperator(operand: ScalarToken) : ScalarToken {
-        return new ScalarToken(~operand.value, operand.base);
+    applyNotOperator(operand: ScalarValue) : ScalarValue {
+        return new ScalarValue(~operand.value, operand.base);
     },
-    applyOperator(op1 : ScalarToken, operator: string, op2 : ScalarToken) : ScalarToken {
+    applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) : ScalarValue {
        
         const result = evalute(op1.value, operator, op2.value);
 
-        return new ScalarToken(result, op2.base);
+        return new ScalarValue(result, op2.base);
     }
 };
 

@@ -1,5 +1,5 @@
-import { ScalarToken, ListOfNumbersExpression, BitwiseOperationExpression, OperatorToken } from '../expression';
-import { ExpressionToken, Expression } from '../expression-interfaces';
+import { ScalarValue, ListOfNumbersExpression, BitwiseOperationExpression, BitwiseOperator } from '../expression';
+import { ExpressionElement, Expression } from '../expression-interfaces';
 import calc from '../../core/calc';
 import formatter from '../../core/formatter';
 import exp from 'constants';
@@ -12,7 +12,7 @@ type Config = {
 type ExpressionRowModel = {
     sign: string;
     css: string;
-    expression: ExpressionToken;
+    expression: ExpressionElement;
     allowFlipBits: boolean;
     label: string;
     bitSize: number;
@@ -45,17 +45,17 @@ export default class BitwiseResultViewModel {
             i = 0, len = expr.children.length,
             ex, m = new BitwiseResultViewModel(config);
 
-        var prev : ScalarToken | null = null;
+        var prev : ScalarValue | null = null;
 
         for (;i<len;i++) {
             ex = expr.children[i];
-            if(ex instanceof ScalarToken) {
+            if(ex instanceof ScalarValue) {
                 m.addScalarRow(ex);
                 prev = ex;
                 continue;
             }
 
-            var eo = ex as OperatorToken;
+            var eo = ex as BitwiseOperator;
 
             // If it a single NOT expression
             if(eo.isNotExpression) {
@@ -65,11 +65,11 @@ export default class BitwiseResultViewModel {
                 prev = notResult;
             }
             else if(eo.isShiftExpression){
-                prev = eo.evaluate(prev as ScalarToken);
+                prev = eo.evaluate(prev as ScalarValue);
                 m.addShiftExpressionResultRow(eo, prev);
             } else {
 
-                prev = eo.evaluate(prev as ScalarToken);
+                prev = eo.evaluate(prev as ScalarValue);
                 m.addOperatorRow(eo);
                 m.addExpressionResultRow(prev);
             }
@@ -79,7 +79,7 @@ export default class BitwiseResultViewModel {
         return m;
     };
 
-    addScalarRow(expr: ScalarToken) {
+    addScalarRow(expr: ScalarValue) {
         const bits = calc.numberOfBitsDisplayed(expr.value);
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         this.items.push({ 
@@ -92,7 +92,7 @@ export default class BitwiseResultViewModel {
         });
     };
 
-    addOperatorRow(expr: OperatorToken) {
+    addOperatorRow(expr: BitwiseOperator) {
         
         const resultNumber = expr.isNotExpression ? expr.evaluate() : expr.getUnderlyingScalarOperand();
         const bits = calc.numberOfBitsDisplayed(resultNumber.value);
@@ -109,7 +109,7 @@ export default class BitwiseResultViewModel {
         });
     };
  
-    addShiftExpressionResultRow(expr : OperatorToken, resultExpr : ScalarToken) {
+    addShiftExpressionResultRow(expr : BitwiseOperator, resultExpr : ScalarValue) {
         const bits = calc.numberOfBitsDisplayed(resultExpr.value);
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         const child = expr.operand.getUnderlyingScalarOperand();
@@ -123,7 +123,7 @@ export default class BitwiseResultViewModel {
         });
     };
 
-    addExpressionResultRow(expr : ScalarToken) {
+    addExpressionResultRow(expr : ScalarValue) {
         const bits = calc.numberOfBitsDisplayed(expr.value);
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         this.items.push({ 
@@ -136,7 +136,7 @@ export default class BitwiseResultViewModel {
         });
     };
 
-    getLabel (op: ScalarToken) : string {
+    getLabel (op: ScalarValue) : string {
 
         return formatter.numberToString(op.value, op.base === 'bin' ? 'dec' : op.base)
     }

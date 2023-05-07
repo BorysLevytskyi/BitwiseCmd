@@ -2,8 +2,8 @@ import React from 'react';
 import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseResultViewModel from './BitwiseResultViewModel';
-import { Expression, ExpressionToken } from '../expression-interfaces';
-import { OperatorToken, ScalarToken } from '../expression';
+import { Expression, ExpressionElement } from '../expression-interfaces';
+import { BitwiseOperator, ScalarValue } from '../expression';
 import calc from '../../core/calc';
 
 type BitwiseResultViewProps = {
@@ -65,7 +65,7 @@ type ExpressionRowProps = {
     maxNumberOfBits: number,
     emphasizeBytes: boolean,
     allowFlipBits: boolean,
-    expressionItem: ExpressionToken,
+    expressionItem: ExpressionElement,
     onBitFlipped: any
 }
 
@@ -104,7 +104,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         // For expressions like |~2 
         // TODO: find a better way...
         if (this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as OperatorToken;
+            const ex = this.props.expressionItem as BitwiseOperator;
             return ex.operator + this.getLabelString(ex.getUnderlyingScalarOperand());
         }
 
@@ -114,7 +114,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getAlternative() {
 
         if (this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as OperatorToken;
+            const ex = this.props.expressionItem as BitwiseOperator;
             const res = ex.evaluate();
 
             return formatter.numberToString(res.value, res.base);
@@ -125,7 +125,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return formatter.numberToString(v.value, altBase);
     }
 
-    getLabelString(op: ScalarToken): string {
+    getLabelString(op: ScalarValue): string {
         return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 

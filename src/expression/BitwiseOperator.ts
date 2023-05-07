@@ -1,18 +1,15 @@
-import calc from '../core/calc';
-import { INT32_MAX_VALUE } from '../core/const';
-import formatter from '../core/formatter';
-import ScalarToken from './ScalarToken';
+import ScalarValue from './ScalarValue';
 import engine from './engine';
-import { ExpressionToken } from './expression-interfaces';
+import { ExpressionElement } from './expression-interfaces';
 
-export default class OperatorToken implements ExpressionToken {
-    operand: ExpressionToken;
+export default class BitwiseOperator implements ExpressionElement {
+    operand: ExpressionElement;
     operator: string;
     isOperator: boolean;
     isShiftExpression: boolean;
     isNotExpression: boolean;
 
-    constructor(operand : ExpressionToken, operator : string) {
+    constructor(operand : ExpressionElement, operator : string) {
 
         this.operand = operand;
         this.operator = operator;
@@ -21,9 +18,9 @@ export default class OperatorToken implements ExpressionToken {
         this.isNotExpression = this.operator === '~';
     }
         
-    evaluate(operand?: ScalarToken) : ScalarToken {
+    evaluate(operand?: ScalarValue) : ScalarValue {
         
-        if (operand instanceof OperatorToken)
+        if (operand instanceof BitwiseOperator)
             throw new Error('operand must be scalar value'); 
         
         if( this.operator != "~" && operand == null)
@@ -36,7 +33,7 @@ export default class OperatorToken implements ExpressionToken {
             : engine.applyOperator(operand!, this.operator, evaluatedOperand);
     }
 
-    getUnderlyingScalarOperand() : ScalarToken {
+    getUnderlyingScalarOperand() : ScalarValue {
         return this.operand.getUnderlyingScalarOperand();
     }
 
