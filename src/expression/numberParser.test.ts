@@ -15,29 +15,29 @@ describe("parser", () => {
     });
 
     it('parses bigint numbers', () => {
-        const dec = numberParser.parse('10n');
+        const dec = numberParser.parse('10L');
         expect(dec).not.toBeNull();
 
         expect(dec?.value).toBe(BigInt(10));
         expect(typeof dec?.value).toBe("bigint");
         expect(dec?.base).toBe('dec');
-        expect(dec?.input).toBe('10n');
+        expect(dec?.input).toBe('10L');
         
-        const bin = numberParser.parse('0b10n');
+        const bin = numberParser.parse('0b10l');
         expect(bin).not.toBeNull();
 
         expect(bin?.value).toBe(BigInt(2));
         expect(typeof bin?.value).toBe("bigint");
         expect(bin?.base).toBe('bin');
-        expect(bin?.input).toBe('0b10n');
+        expect(bin?.input).toBe('0b10l');
 
-        const hex = numberParser.parse('0xfn');
+        const hex = numberParser.parse('0xfL');
         expect(hex).not.toBeNull();
 
         expect(hex?.value.toString()).toBe(BigInt(15).toString());
         expect(typeof hex?.value).toBe("bigint");
         expect(hex?.base).toBe('hex');
-        expect(hex?.input).toBe('0xfn');
+        expect(hex?.input).toBe('0xfL');
     });
 
 
@@ -99,6 +99,8 @@ describe("parser", () => {
     });
 
     it('parses big int', () => {
-        expect(numberParser.parse('1n')?.value).toBe(BigInt(1));
+        var v =  numberParser.parse('1l')?.value
+        expect(typeof v).toBe("bigint");
+        expect(v?.toString()).toBe("1");
     })
 });

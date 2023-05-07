@@ -1,9 +1,9 @@
 import { INT32_MAX_VALUE, INT32_MIN_VAlUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
 
-const decimalRegex = /^-?\d+n?$/;
-const hexRegex = /^-?0x[0-9,a-f]+n?$/i;
-const binRegex = /^-?0b[0-1]+n?$/i;
+const decimalRegex = /^-?\d+[l,L]?$/;
+const hexRegex = /^-?0x[0-9,a-f]+[l,L]?$/i;
+const binRegex = /^-?0b[0-1]+[l,L]?$/i;
 
 interface ParserConfig {
     regex: RegExp,
@@ -67,10 +67,10 @@ const MIN_SAFE_INTn = BigInt(INT32_MIN_VAlUE);
 
 function parseIntSafe(input : string, radix: number)  : number | bigint {
     
-    const bigIntStr = input.replace('-', '').replace('n', '');
+const bigIntStr = input.replace('-', '').replace('l', '').replace('L', '');
     let bigInt = BigInt(bigIntStr);
     const isNegative = input.startsWith('-');
-    const isBigInt = input.endsWith('n');
+    const isBigInt = input.toLowerCase().endsWith('l');
 
     if(isNegative) bigInt *= BigInt(-1);
 

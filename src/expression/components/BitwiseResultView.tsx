@@ -151,7 +151,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
 
         if (op.isBigInt())
         {
-            const title = `BigInt JavaScript type is used to reprsent this number. All bitwise operations that involve this number have their operands converted to BigInt. BitwiseCmd treats this number as 64-bit number`;
+            const title = `BigInt JavaScript type is used to reprsent this number. All bitwise operations that involve this number have their operands converted to BigInt. BitwiseCmd treats this number as 64-bit number.`;
 
             return <span title={title} style={{cursor:"help"}}>(64-bit BigInt)</span>;
         }
