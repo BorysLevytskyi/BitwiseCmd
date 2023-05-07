@@ -25,16 +25,21 @@ export default {
         return eval(expr.expressionString);
     },
 
-    flippedBit: function(bin: string, index: number): number  {
+    flippedBit: function(s: string, index: number): number  {
         
-        // Negative number
-        if(bin.length == 32 && bin[0] == "0") {
-            const reversed = this.applyTwosComplement(bin);
-            console.log("reversed",reversed);
-            return -parseInt(reversed, 2);
-        }
+        const bin = s.padStart(32, '0');
+        const staysNegative = (bin[0] == "1" && index > 0);
+        const becomesNegative = (bin[0] == "0" && index == 0);
+        
+        let m = 1;
+        let flipped = bin.substring(0, index) + flip(bin[index]) + bin.substring(index+1);
 
-        return 0;
+        if(staysNegative || becomesNegative) {
+            flipped = this.applyTwosComplement(flipped);
+            m=-1;
+        }
+       
+        return parseInt(flipped, 2)*m;
     },
 
     applyTwosComplement: (bin:string):string => {
@@ -54,6 +59,10 @@ export default {
         }
     
         return flipped.join('') + bin.substring(lastIndex) ;
+    },
+
+    flipAllBits: (bin: string): string => {
+        return bin.split('').map(b => b=="1"?"0":"1").join("");
     },
 
     bitwise: {
@@ -94,6 +103,6 @@ export default {
     }
 };
 
-function flip(bit:string) { 
+function flip(bit:string):string { 
     return bit === "0" ? "1" : "0";
 }

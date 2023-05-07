@@ -1,4 +1,5 @@
 import React from 'react';
+import './BinaryString.css';
 
 export type BinaryStringViewProps = {
     allowFlipBits?: boolean;
@@ -56,11 +57,18 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         return bitChars.map((c, i) => {
 
             var className = c == '1' ? `one${css}` : `zero${css}`;
+            var tooltip = '';
+
+            if(i === 0 && bitChars.length == 32) {
+                className += ' sign-bit';
+                tooltip = 'Signature bit. 0 means a positive number and 1 means a negative.'
+            }
+                
 
             if(disableHighlight) 
                 className = css;
 
-            return <span className={className} key={i} onClick={e => this.onBitClick(i, e)}>{c}</span>
+            return <span className={className} title={tooltip} key={i} onClick={e => this.onBitClick(i, e)}>{c}</span>
         });
     }
 

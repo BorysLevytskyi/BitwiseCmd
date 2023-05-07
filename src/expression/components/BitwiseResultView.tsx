@@ -4,6 +4,7 @@ import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryS
 import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { Expression, ExpressionToken } from '../expression-interfaces';
 import { OperatorToken, ScalarToken } from '../expression';
+import calc from '../../core/calc';
 
 type BitwiseResultViewProps = {
     expression: Expression;
@@ -15,10 +16,14 @@ type BitwiseResultViewState = {
 }
 
 export default class BitwiseResultView extends React.Component<BitwiseResultViewProps, BitwiseResultViewState>  {
+    maxSeenLengthNumberOfBits: number;
+
     constructor(props: BitwiseResultViewProps) {
         super(props);
         this.state = {};
+        this.maxSeenLengthNumberOfBits = 0;
     }
+
     render() {
         var rows = this.getRows();
         
@@ -30,8 +35,10 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
     }
 
     getRows() : JSX.Element[] {
-        var model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
 
+        var model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
+        this.maxSeenLengthNumberOfBits = Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
+        
         return model.items.map((itm, i) => 
             <ExpressionRow 
                 key={i} 
@@ -40,7 +47,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 allowFlipBits={itm.allowFlipBits}
                 expressionItem={itm.expression}
                 emphasizeBytes={this.props.emphasizeBytes} 
-                maxNumberOfBits={model.maxNumberOfBits} 
+                maxNumberOfBits={this.maxSeenLengthNumberOfBits} 
                 onBitFlipped={() => this.onBitFlipped()} />);
     }
 
@@ -122,13 +129,9 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const op  = this.props.expressionItem.getUnderlyingScalarOperand();
         const { index, binaryString } = args;
 
-        var arr = binaryString.split('');
-        arr[index] = arr[index] == '0' ? '1' : '0';
-        var bin = arr.join('');
-
-        var newValue = parseInt(bin, 2);
+        const pad = 32 - binaryString.length;
+        const newValue = calc.flippedBit(binaryString, pad + index);
         op.setValue(newValue);
-
         this.props.onBitFlipped();
     }
 }
