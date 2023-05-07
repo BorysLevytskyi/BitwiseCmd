@@ -1,3 +1,4 @@
+import exp from 'constants';
 import calc from '../core/calc';
 import {numberParser, ParsedNumber} from './numberParser';
 
@@ -13,15 +14,30 @@ describe("parser", () => {
         expect(number.input).toBe('10');
     });
 
-    it('parses bigint decimal number', () => {
-        const result = numberParser.parse('10n');
-        expect(result).not.toBeNull();
+    it('parses bigint numbers', () => {
+        const dec = numberParser.parse('10n');
+        expect(dec).not.toBeNull();
 
-        var number = result as ParsedNumber;
-        expect(number.value).toBe(BigInt(10));
-        expect(typeof number.value).toBe("bigint");
-        expect(number.base).toBe('dec');
-        expect(number.input).toBe('10n');
+        expect(dec?.value).toBe(BigInt(10));
+        expect(typeof dec?.value).toBe("bigint");
+        expect(dec?.base).toBe('dec');
+        expect(dec?.input).toBe('10n');
+        
+        const bin = numberParser.parse('0b10n');
+        expect(bin).not.toBeNull();
+
+        expect(bin?.value).toBe(BigInt(2));
+        expect(typeof bin?.value).toBe("bigint");
+        expect(bin?.base).toBe('bin');
+        expect(bin?.input).toBe('0b10n');
+
+        const hex = numberParser.parse('0xfn');
+        expect(hex).not.toBeNull();
+
+        expect(hex?.value.toString()).toBe(BigInt(15).toString());
+        expect(typeof hex?.value).toBe("bigint");
+        expect(hex?.base).toBe('hex');
+        expect(hex?.input).toBe('0xfn');
     });
 
 

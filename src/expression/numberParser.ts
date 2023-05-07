@@ -1,10 +1,8 @@
 import { NumberBase } from "../core/formatter";
 
-const decimalBigIntRegex = /^-?\d+n$/;
-const decimalRegex = /^-?\d+$/;
-const hexRegex = /^-?0x[0-9,a-f]+$/i;
-const binRegex = /^-?0b[0-1]+$/i;
-const operatorRegex = /^<<|>>|<<<|\&|\|\^|~$/;
+const decimalRegex = /^-?\d+n?$/;
+const hexRegex = /^-?0x[0-9,a-f]+n?$/i;
+const binRegex = /^-?0b[0-1]+n?$/i;
 
 interface ParserConfig {
     regex: RegExp,
@@ -19,7 +17,6 @@ export interface ParsedNumber {
 }
 
 var knownParsers : ParserConfig[] = [
-    { regex: decimalBigIntRegex, base: 'dec', parse: (s) => BigInt(s.substring(0, s.length-1)) },
     { regex: decimalRegex, base: 'dec', parse:(s) => parseIntSafe(s, 10, '') },
     { regex: hexRegex, base: 'hex', parse:(s) => parseIntSafe(s, 16)},
     { regex: binRegex, base: 'bin', parse:(s) => parseIntSafe(s, 2) }];
@@ -69,10 +66,14 @@ const MIN_SAFE_INTn = BigInt(Number.MIN_SAFE_INTEGER);
 
 function parseIntSafe(input : string, radix: number)  : number | bigint {
     
-    let bigInt = BigInt(input.replace('-', ''));
+    const bigIntStr = input.replace('-', '').replace('n', '');
+    let bigInt = BigInt(bigIntStr);
     const isNegative = input.startsWith('-');
+    const isBigInt = input.endsWith('n');
 
     if(isNegative) bigInt *= BigInt(-1);
+
+    if(isBigInt) return bigInt;
 
     if(bigInt > MAX_SAFE_INTn)
         return bigInt;
