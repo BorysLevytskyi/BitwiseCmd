@@ -1,6 +1,4 @@
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import ScalarToken from "./ScalarToken";
-import exp from "constants";
 
 
 it('supports bigint', () => {

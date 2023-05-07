@@ -1,10 +1,9 @@
-import { type } from "os";
 import { Expression } from "../expression/expression-interfaces";
-import { INT32_MAX_VALUE } from "./const";
 import formatter from "./formatter";
+import { NumberType } from "./types";
 
 export default {
-    abs (num : number | bigint) : number | bigint {
+    abs (num : NumberType) : NumberType {
         return num >= 0 ? num : -num;
     },
     numberOfBitsDisplayed: function (num: number|bigint) : number {

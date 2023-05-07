@@ -1,4 +1,5 @@
 import calc from "./calc";
+import { NumberType } from "./types";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
@@ -36,10 +37,10 @@ const formatter = {
 
         return sb.join('');
     },
-    bin(number: number | bigint) {
+    bin(number: NumberType) {
         return this.numberToString(number, 'bin');
     },
-    emBin(number: number | bigint) {
+    emBin(number: NumberType) {
         return this.padLeft(this.bin(number), 8, '0');
     },
     

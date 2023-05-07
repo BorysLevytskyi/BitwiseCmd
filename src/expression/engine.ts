@@ -1,3 +1,4 @@
+import { NumberType } from "../core/types";
 import ScalarToken from "./ScalarToken";
 
 const engine = {
@@ -12,22 +13,22 @@ const engine = {
     }
 };
 
-function evalute(op1 : number | bigint, operator: string, op2 : number | bigint) : number | bigint{
+function evalute(op1 : NumberType, operator: string, op2 : NumberType) : NumberType{
     const a = equalizeType(op2, op1) as any;
     const b = equalizeType(op1, op2) as any;
     
     switch(operator) {
-        case ">>": return (a >> b) as (number | bigint);
-        case ">>>": return (a >>> b) as (number | bigint);
-        case "<<": return (a << b) as (number | bigint);
-        case "&": return (b & a) as (number | bigint);
-        case "|": return (b | a) as (number | bigint);
-        case "^": return (b ^ a) as (number | bigint);
+        case ">>": return (a >> b) as (NumberType);
+        case ">>>": return (a >>> b) as (NumberType);
+        case "<<": return (a << b) as (NumberType);
+        case "&": return (b & a) as (NumberType);
+        case "|": return (b | a) as (NumberType);
+        case "^": return (b ^ a) as (NumberType);
         default: throw new Error(operator + " operator is not supported");
     }
 }
 
-function equalizeType(source : number | bigint, dest : number | bigint) : number | bigint {
+function equalizeType(source : NumberType, dest : NumberType) : NumberType {
     
     return typeof source == 'bigint' && typeof dest != 'bigint'
         ? BigInt(dest)

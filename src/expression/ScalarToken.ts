@@ -2,6 +2,7 @@ import {numberParser} from './numberParser';
 import { ExpressionToken as ExpressionToken } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE } from '../core/const';
+import { NumberType } from '../core/types';
 
 var globalId : number = 1;
 
@@ -9,11 +10,11 @@ var globalId : number = 1;
 // Represents scalar numeric value
 export default class ScalarToken implements ExpressionToken {
     id: number;
-    value: number | bigint;
+    value: NumberType;
     base: NumberBase;
     isOperator: boolean;
 
-    constructor(value : number | bigint, base?: NumberBase, is32Limit?: boolean) {
+    constructor(value : NumberType, base?: NumberBase, is32Limit?: boolean) {
         
         ScalarToken.validateSupported(value);
 
@@ -31,7 +32,7 @@ export default class ScalarToken implements ExpressionToken {
         return typeof this.value === 'bigint';
     }
             
-    setValue(value : number | bigint) {
+    setValue(value : NumberType) {
         this.value = value;
     }
 
@@ -43,7 +44,7 @@ export default class ScalarToken implements ExpressionToken {
         return this
     }
 
-    static validateSupported(num : number | bigint) {
+    static validateSupported(num : NumberType) {
         
         if(typeof num == "bigint" && (num < INT64_MIN_VALUE || num > INT64_MAX_VALUE)) {
             throw new Error(`64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}`);
