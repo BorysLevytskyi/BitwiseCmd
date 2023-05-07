@@ -1,3 +1,4 @@
+import calc from '../core/calc';
 import {numberParser, ParsedNumber} from './numberParser';
 
 describe("parser", () => {
@@ -37,6 +38,22 @@ describe("parser", () => {
 
         const hex = numberParser.parse("0x" + unsafeInt.toString(16));
         expect(hex?.value).toEqual(unsafeInt);
+        expect(hex?.base).toEqual('hex');
+    });
+
+    it('switches to bigint if value exceeds max safe negative int', () => {
+        const unsafeInt = BigInt(Number.MIN_SAFE_INTEGER)-BigInt(1);
+        
+        const dec = numberParser.parse(unsafeInt.toString());
+        expect(dec?.value.toString()).toEqual(unsafeInt.toString());
+        expect(dec?.base).toBe('dec');
+
+        const bin = numberParser.parse("-0b" + unsafeInt.toString(2).replace('-', ''));
+        expect(bin?.value.toString()).toEqual(unsafeInt.toString());
+        expect(bin?.base).toEqual('bin');
+
+        const hex = numberParser.parse("-0x" + unsafeInt.toString(16).replace('-',''));
+        expect(hex?.value.toString()).toEqual(unsafeInt.toString());
         expect(hex?.base).toEqual('hex');
     });
 

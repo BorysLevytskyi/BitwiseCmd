@@ -21,8 +21,8 @@ export interface ParsedNumber {
 var knownParsers : ParserConfig[] = [
     { regex: decimalBigIntRegex, base: 'dec', parse: (s) => BigInt(s.substring(0, s.length-1)) },
     { regex: decimalRegex, base: 'dec', parse:(s) => parseIntSafe(s, 10, '') },
-    { regex: hexRegex, base: 'hex', parse:(s) => parseIntSafe(s.replace('0x', ''), 16, '0x')},
-    { regex: binRegex, base: 'bin', parse:(s) => parseIntSafe(s.replace('0b', ''), 2, '0b') }];
+    { regex: hexRegex, base: 'hex', parse:(s) => parseIntSafe(s, 16)},
+    { regex: binRegex, base: 'bin', parse:(s) => parseIntSafe(s, 2) }];
 
 
 class NumberParser {
@@ -64,15 +64,23 @@ class NumberParser {
     }
 }
 
-const MAX_RELIABLE_INTn = BigInt(Number.MAX_SAFE_INTEGER);
+const MAX_SAFE_INTn = BigInt(Number.MAX_SAFE_INTEGER);
+const MIN_SAFE_INTn = BigInt(Number.MIN_SAFE_INTEGER);
 
-function parseIntSafe(input : string, radix: number, prefix: string)  : number | bigint {
-    const bigIntVersion = BigInt(prefix + input);
+function parseIntSafe(input : string, radix: number)  : number | bigint {
+    
+    let bigInt = BigInt(input.replace('-', ''));
+    const isNegative = input.startsWith('-');
 
-    if(bigIntVersion > MAX_RELIABLE_INTn)
-        return bigIntVersion;
+    if(isNegative) bigInt *= BigInt(-1);
 
-    return parseInt(input, radix);
+    if(bigInt > MAX_SAFE_INTn)
+        return bigInt;
+
+    if(bigInt < MIN_SAFE_INTn)
+        return bigInt;
+
+    return parseInt(input.replace(/0(x|b)/, ''), radix);
 }
 
 const numberParser = new NumberParser(knownParsers);
