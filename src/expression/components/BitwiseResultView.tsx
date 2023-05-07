@@ -130,7 +130,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const { index, binaryString } = args;
 
         const pad = 32 - binaryString.length;
-        const newValue = calc.flippedBit(binaryString, pad + index);
+        const newValue = calc.flippedBit(op.value, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();
     }

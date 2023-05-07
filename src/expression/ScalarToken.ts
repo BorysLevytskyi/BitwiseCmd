@@ -12,13 +12,15 @@ export default class ScalarToken implements ExpressionToken {
     value: number;
     base: NumberBase;
     isOperator: boolean;
+    is32BitLimit: boolean; 
 
-    constructor(value : number, base?: NumberBase) {
+    constructor(value : number, base?: NumberBase, is32Limit?: boolean) {
         
         this.id = globalId++;
         this.value = value;
         this.base = base || "dec";
         this.isOperator = false;
+        this.is32BitLimit = is32Limit || false;
     }
             
     setValue(value : number) {
@@ -32,10 +34,6 @@ export default class ScalarToken implements ExpressionToken {
     getUnderlyingScalarOperand() : ScalarToken  {
         return this
     }
-
-    static create(value : number, base? : NumberBase) {
-        return new ScalarToken(value, base || "dec");
-    };
 
     static parse(input: string) : ScalarToken {
                     

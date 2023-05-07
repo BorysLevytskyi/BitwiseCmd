@@ -3,7 +3,6 @@ import OperatorToken from './OperatorToken'
 import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
 import { Expression, ExpressionToken } from './expression-interfaces';
-import { NumberBase } from '../core/formatter';
 
 export { default as ScalarToken } from './ScalarToken';
 export { default as OperatorToken } from './OperatorToken';
@@ -45,14 +44,6 @@ class ExpressionParser {
         }
 
         return null;
-    };
-    
-    parseOperand (input : string) : ScalarToken {
-        return ScalarToken.parse(input);
-    };
-
-    createOperand (number : number, base : NumberBase) : ScalarToken {
-        return ScalarToken.create(number, base);
     };
 
     addFactory (factory: IExpressionParserFactory) {

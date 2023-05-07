@@ -44,7 +44,9 @@ export default class OperatorToken implements ExpressionToken {
             str = operand.value + this.operator + evaluatedOperand.value;
         }
 
-        return ScalarToken.create(eval(str), evaluatedOperand.base);
+        // JavaScript casts all numbers to 32 bit integers when applying bitwise operators
+        const is32BitLimit = true; 
+        return new ScalarToken(eval(str), evaluatedOperand.base, is32BitLimit);
     }
 
     getUnderlyingScalarOperand() : ScalarToken {

@@ -31,12 +31,12 @@ describe("calc", () => {
     });
 
     it('calculates flipped bit', () => {
-        expect(calc.flippedBit("0", 31)).toBe(1);
-        expect(calc.flippedBit("1", 31)).toBe(0);
-        expect(calc.flippedBit("11111111111111111111111111111111", 31)).toBe(-2);
-        expect(calc.flippedBit("01111111111111111111111111111111", 0)).toBe(-1);
-        expect(calc.flippedBit("11111111111111111111111111111111", 0)).toBe(2147483647);
-        expect(calc.flippedBit("01111111111111111111111111111111", 30)).toBe(2147483645);
+        expect(calc.flippedBit(0, 31)).toBe(1);
+        expect(calc.flippedBit(1, 31)).toBe(0);
+        expect(calc.flippedBit(-1, 31)).toBe(-2);
+        expect(calc.flippedBit(2147483647, 0)).toBe(-1);
+        expect(calc.flippedBit(-1, 0)).toBe(2147483647);
+        expect(calc.flippedBit(2147483647, 30)).toBe(2147483645);
     });
 
     it('applies twos complement', () => {
