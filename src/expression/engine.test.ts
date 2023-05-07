@@ -25,17 +25,17 @@ describe('evaluate', () => {
         
     });
 
-    it('allows second operator to be a number when shifting big-int', () => {
-        const a = new ScalarToken(BigInt(1));
-        const b = new ScalarToken(1);
+    it('promotes either of operands to BigInt if the other one is', () => {
+        const bint = new ScalarToken(BigInt(1));
+        const int = new ScalarToken(1);
         
-        const rshift = engine.applyOperator(a, ">>", b);
+        const rshift = engine.applyOperator(bint, ">>", int);
         expect(rshift.isBigInt()).toBe(true);
         expect(rshift.value.toString()).toBe('0');
 
-        const lshift = engine.applyOperator(a, "<<", b);
+        const lshift = engine.applyOperator(int, "<<", bint);
         expect(lshift.isBigInt()).toBe(true);
         expect(lshift.value.toString()).toBe('2');
-    })
+    });
 
 });

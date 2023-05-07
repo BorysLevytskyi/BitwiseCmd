@@ -89,7 +89,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                     onFlipBit={args => this.flipBit(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info" data-test-name='ignore'>{this.getInfo()}</td>
+            <td className="info" data-test-name='ignore'>{this.getInfo(maxNumberOfBits)}</td>
         </tr>;;
     }
 
@@ -139,12 +139,24 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         this.props.onBitFlipped();
     }
 
-    getInfo() {
-        if (!this.props.expressionItem.getUnderlyingScalarOperand().isBigInt())
-            return null;
+    getInfo(maxNumberOfBits:number) {
+        var op = this.props.expressionItem.getUnderlyingScalarOperand();
 
-        const title = `BigInt is used to reprsent this number. The number is either to big or to small to be stored using regular JavaScript Number type (see Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER) or this number was entered with n-notation (e.g. 123n)`;
+        if (op.isBigInt())
+        {
+            const title = `BigInt JavaScript type is used to reprsent this number. All bitwise operations that involve this number have their operands converted to BigInt. BitwiseCmd treats this number as 64-bit number`;
 
-        return <span title={title} style={{cursor:"help"}}>(BigInt)</span>;
+            return <span title={title} style={{cursor:"help"}}>(64-bit BigInt)</span>;
+        }
+
+        if(op.bitSize() == 32 && maxNumberOfBits == 32)
+        {
+            const title = "BitwiseCmd treats this number as 32-bit integer. First bit is a sign bit. Try clicking on the first bit and see what will happen.";
+
+            return <span title={title} style={{cursor:"help"}}>(32-bit Number)</span>;
+        }
+
+        return null;
+        
     }
 }

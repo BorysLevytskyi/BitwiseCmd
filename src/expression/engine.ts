@@ -13,7 +13,7 @@ const engine = {
 };
 
 function evalute(op1 : number | bigint, operator: string, op2 : number | bigint) : number | bigint{
-    const a = op1 as any;
+    const a = equalizeType(op2, op1) as any;
     const b = equalizeType(op1, op2) as any;
     
     switch(operator) {
@@ -28,10 +28,8 @@ function evalute(op1 : number | bigint, operator: string, op2 : number | bigint)
 }
 
 function equalizeType(source : number | bigint, dest : number | bigint) : number | bigint {
-    const src = typeof source;
-    const dst = typeof dest;
-
-    return src == 'bigint' && dst == 'number'
+    
+    return typeof source == 'bigint' && typeof dest != 'bigint'
         ? BigInt(dest)
         : dest;
 }
