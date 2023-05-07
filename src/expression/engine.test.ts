@@ -25,7 +25,17 @@ describe('evaluate', () => {
         
     });
 
-    it('throws whne mixing numbers in big ints', () => {
-        expect(() => engine.applyOperator(new ScalarToken(BigInt(1)), "<<", new ScalarToken(1))).toThrowError("Cannot mix BigInt and other types, use explicit conversions")
-    });
+    it('allows second operator to be a number when shifting big-int', () => {
+        const a = new ScalarToken(BigInt(1));
+        const b = new ScalarToken(1);
+        
+        const rshift = engine.applyOperator(a, ">>", b);
+        expect(rshift.isBigInt()).toBe(true);
+        expect(rshift.value.toString()).toBe('0');
+
+        const lshift = engine.applyOperator(a, "<<", b);
+        expect(lshift.isBigInt()).toBe(true);
+        expect(lshift.value.toString()).toBe('2');
+    })
+
 });

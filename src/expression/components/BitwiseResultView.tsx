@@ -89,7 +89,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                     onFlipBit={args => this.flipBit(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info">{this.getInfo()}</td>
+            <td className="info" data-test-name='ignore'>{this.getInfo()}</td>
         </tr>;;
     }
 
@@ -143,7 +143,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         if (!this.props.expressionItem.getUnderlyingScalarOperand().isBigInt())
             return null;
 
-        const title = `BigInt is used to reprsent this number. The number is either to big to be stored using regular JavaScript Number type (see Number.MAX_SAFE_INTEGER or this number was entered with n-notation (e.g. 123n)`;
+        const title = `BigInt is used to reprsent this number. The number is either to big or to small to be stored using regular JavaScript Number type (see Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER) or this number was entered with n-notation (e.g. 123n)`;
 
         return <span title={title} style={{cursor:"help"}}>(BigInt)</span>;
     }

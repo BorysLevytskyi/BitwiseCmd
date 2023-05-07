@@ -1,5 +1,5 @@
 import calc from '../core/calc';
-import { INT_MAX_VALUE } from '../core/const';
+import { INT32_MAX_VALUE } from '../core/const';
 import formatter from '../core/formatter';
 import ScalarToken from './ScalarToken';
 import engine from './engine';

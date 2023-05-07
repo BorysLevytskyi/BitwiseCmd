@@ -1,3 +1,4 @@
+import { INT32_MAX_VALUE, INT32_MIN_VAlUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
 
 const decimalRegex = /^-?\d+n?$/;
@@ -17,7 +18,7 @@ export interface ParsedNumber {
 }
 
 var knownParsers : ParserConfig[] = [
-    { regex: decimalRegex, base: 'dec', parse:(s) => parseIntSafe(s, 10, '') },
+    { regex: decimalRegex, base: 'dec', parse:(s) => parseIntSafe(s, 10) },
     { regex: hexRegex, base: 'hex', parse:(s) => parseIntSafe(s, 16)},
     { regex: binRegex, base: 'bin', parse:(s) => parseIntSafe(s, 2) }];
 
@@ -61,8 +62,8 @@ class NumberParser {
     }
 }
 
-const MAX_SAFE_INTn = BigInt(Number.MAX_SAFE_INTEGER);
-const MIN_SAFE_INTn = BigInt(Number.MIN_SAFE_INTEGER);
+const MAX_SAFE_INTn = BigInt(INT32_MAX_VALUE);
+const MIN_SAFE_INTn = BigInt(INT32_MIN_VAlUE);
 
 function parseIntSafe(input : string, radix: number)  : number | bigint {
     

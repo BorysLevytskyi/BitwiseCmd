@@ -1,6 +1,6 @@
 import calc from './calc';
 import { BitwiseOperationExpression, ScalarToken, OperatorToken } from '../expression/expression';
-import { INT_MAX_VALUE } from './const';
+import { INT32_MAX_VALUE } from './const';
 import exp from 'constants';
 
 describe("calc", () => {
@@ -10,8 +10,8 @@ describe("calc", () => {
         expect(calc.numberOfBitsDisplayed(2)).toBe(2);
         expect(calc.numberOfBitsDisplayed(3)).toBe(2);
         expect(calc.numberOfBitsDisplayed(68719476735)).toBe(36);
-        expect(calc.numberOfBitsDisplayed(-INT_MAX_VALUE)).toBe(32);
-        expect(calc.numberOfBitsDisplayed(-(BigInt(INT_MAX_VALUE+1)))).toBe(64);
+        expect(calc.numberOfBitsDisplayed(-INT32_MAX_VALUE)).toBe(32);
+        expect(calc.numberOfBitsDisplayed(-(BigInt(INT32_MAX_VALUE+1)))).toBe(64);
     });
     
     it('calculates max number of bits', () => {

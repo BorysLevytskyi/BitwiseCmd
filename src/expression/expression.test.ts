@@ -25,8 +25,8 @@ describe("expression parser", () => {
         expect(actual).toBeInstanceOf(ListOfNumbersExpression);
 
         const expr = actual as ListOfNumbersExpression;
-        expect(expr.children[0].getUnderlyingScalarOperand().value).toBe(305419896);
-        expect(expr.children[1].getUnderlyingScalarOperand().value).toBe(2863311360);
+        expect(expr.children[0].getUnderlyingScalarOperand().value.toString()).toBe('305419896');
+        expect(expr.children[1].getUnderlyingScalarOperand().value.toString()).toBe('2863311360');
     })
 
     it("pares multiple operand expression", () => {       
@@ -46,7 +46,7 @@ describe("expression parser", () => {
 
         expect(secondOp.operand).toBeInstanceOf(ScalarToken);
         var childOp = secondOp.operand as ScalarToken;
-        expect(childOp.value).toBe(2);
+        expect(childOp.value.toString()).toBe('2');
     });
 
     it("bug", () => {       

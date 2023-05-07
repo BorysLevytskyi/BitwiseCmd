@@ -1,6 +1,6 @@
 import { type } from "os";
 import { Expression } from "../expression/expression-interfaces";
-import { INT_MAX_VALUE } from "./const";
+import { INT32_MAX_VALUE } from "./const";
 import formatter from "./formatter";
 
 export default {

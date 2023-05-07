@@ -1,6 +1,6 @@
 import ScalarToken from "./ScalarToken";
 import OperatorToken from './OperatorToken';
-import { INT_MAX_VALUE } from "../core/const";
+import { INT32_MAX_VALUE } from "../core/const";
 
 it('can apply ~ operand', () => {
     var op = new ScalarToken(10, 'dec');
