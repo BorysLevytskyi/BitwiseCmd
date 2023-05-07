@@ -1,5 +1,6 @@
 import { NumberBase } from "../core/formatter";
 
+const decimalBigIntRegex = /^-?\d+n$/;
 const decimalRegex = /^-?\d+$/;
 const hexRegex = /^-?0x[0-9,a-f]+$/i;
 const binRegex = /^-?0b[0-1]+$/i;
@@ -7,21 +8,21 @@ const operatorRegex = /^<<|>>|<<<|\&|\|\^|~$/;
 
 interface ParserConfig {
     regex: RegExp,
-    radix: number,
     base: NumberBase,
-    prefix: string|RegExp
+    parse: (input: string) => number | bigint 
 }
 
 export interface ParsedNumber {
-    value: number;
+    value: number|bigint;
     base: NumberBase;
     input: string;
 }
 
 var knownParsers : ParserConfig[] = [
-    { regex: decimalRegex, radix: 10, base: 'dec', prefix: '^$' },
-    { regex: hexRegex, radix: 16, base: 'hex', prefix:/0x/i },
-    { regex: binRegex, radix: 2, base: 'bin', prefix:/0b/i }];
+    { regex: decimalBigIntRegex, base: 'dec', parse: (s) => BigInt(s.substring(0, s.length-1)) },
+    { regex: decimalRegex, base: 'dec', parse:(s) => parseInt(s, 10) },
+    { regex: hexRegex, base: 'hex', parse:(s) => parseInt(s.replace('0x', ''), 16)},
+    { regex: binRegex, base: 'bin', parse:(s) => parseInt(s.replace('0b', ''), 2) }];
 
 
 class NumberParser {
@@ -53,7 +54,7 @@ class NumberParser {
             return null;
         }
             
-        var value = parseInt(rawInput.replace(parser.prefix, ''), parser.radix);
+        var value = parser.parse(rawInput);
     
         return  {
             value: value,

@@ -1,6 +1,8 @@
+import calc from '../core/calc';
 import { INT_MAX_VALUE } from '../core/const';
 import formatter from '../core/formatter';
 import ScalarToken from './ScalarToken';
+import engine from './engine';
 import { ExpressionToken } from './expression-interfaces';
 
 export default class OperatorToken implements ExpressionToken {
@@ -12,14 +14,6 @@ export default class OperatorToken implements ExpressionToken {
 
     constructor(operand : ExpressionToken, operator : string) {
 
-        if(operand instanceof ScalarToken) {            
-            const o = operand.getUnderlyingScalarOperand();
-            if(Math.abs(o.value) > INT_MAX_VALUE) {
-                const n = formatter.numberToString(o.value, o.base);
-                throw new Error(`${n} has more than 32 bits. JavaScript converts all numbers to 32-bit integers when applying bitwise operators. BitwiseCmd currently uses the JavaScript engine of your browser for results calculation and supports numbers in the range from ${-INT_MAX_VALUE} to ${INT_MAX_VALUE}.`);
-            }
-        }
-
         this.operand = operand;
         this.operator = operator;
         this.isOperator = true;
@@ -28,25 +22,18 @@ export default class OperatorToken implements ExpressionToken {
     }
         
     evaluate(operand?: ScalarToken) : ScalarToken {
-        if (operand instanceof OperatorToken) {
-            throw new Error('value shouldnt be expression'); 
-        }
+        
+        if (operand instanceof OperatorToken)
+            throw new Error('operand must be scalar value'); 
+        
+        if( this.operator != "~" && operand == null)
+            throw new Error("operand is required");
 
         var evaluatedOperand = this.operand.evaluate();
 
-        var str = '';
-        if(this.operator == '~'){
-            str = '~' + evaluatedOperand.value;
-        } else {
-            if(operand == null)
-                throw new Error("Other is required for this expression");
-
-            str = operand.value + this.operator + evaluatedOperand.value;
-        }
-
-        // JavaScript casts all numbers to 32 bit integers when applying bitwise operators
-        const is32BitLimit = true; 
-        return new ScalarToken(eval(str), evaluatedOperand.base, is32BitLimit);
+        return this.operator == "~"
+            ? engine.applyNotOperator(this.operand.getUnderlyingScalarOperand())
+            : engine.applyOperator(operand!, this.operator, evaluatedOperand);
     }
 
     getUnderlyingScalarOperand() : ScalarToken {

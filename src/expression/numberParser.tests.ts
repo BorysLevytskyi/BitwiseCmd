@@ -11,6 +11,17 @@ describe("parser", () => {
         expect(number.input).toBe('10');
     });
 
+    it('parses bigint decimal number', () => {
+        const result = numberParser.parse('10n');
+        expect(result).not.toBeNull();
+
+        var number = result as ParsedNumber;
+        expect(number.value).toBe(10);
+        expect(typeof number.value).toBe("bigint");
+        expect(number.base).toBe('dec');
+        expect(number.input).toBe('10');
+    });
+
     it('parses hex number', () => {
         const result = numberParser.parse('0xab');
         expect(result).not.toBeNull();
@@ -35,4 +46,8 @@ describe("parser", () => {
         expect(numberParser.parse('abc')).toBeNull();
         expect(numberParser.parse('')).toBeNull();
     });
+
+    it('parses big int', () => {
+        expect(numberParser.parse('1n')?.value).toBe(BigInt(1));
+    })
 });

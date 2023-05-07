@@ -1,28 +1,26 @@
-import { subscribe } from "diagnostics_channel";
-import { INT_MAX_VALUE } from "./const";
-import { faRedRiver } from "@fortawesome/free-brands-svg-icons";
 import calc from "./calc";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    numberToString: function(value: number, kind: NumberBase) : string {
+    numberToString: function(num: number|bigint, base: NumberBase) : string {
      
-        switch(kind) {
+        switch(base) {
             case 'hex':
-                var hexVal = Math.abs(value).toString(16);
-                return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
+                var hexVal = calc.abs(num).toString(16);
+                return num >= 0 ? '0x' + hexVal : '-0x' + hexVal;
             case 'bin':          
-                if(value < 0) {
-                    const n = Math.abs(value);
+                
+                if(num < 0) {
+                    const n = calc.abs(num);
                     const pos = n.toString(2).padStart(32, '0');
                     return calc.applyTwosComplement(pos);
                 }
                 
-                return value.toString(getBase(kind || "bin"));
+                return num.toString(getBase(base || "bin"));
             case 'dec':
-                return value.toString(10);
+                return num.toString(10) + (typeof num === "bigint" ? "n" : "");
             default:
-                throw new Error("Unexpected kind: " + kind)
+                throw new Error("Unexpected kind: " + base)
         }
     },
     padLeft: function (str: string, length: number, symbol: string) : string {
@@ -38,10 +36,10 @@ const formatter = {
 
         return sb.join('');
     },
-    bin(number: number) {
+    bin(number: number | bigint) {
         return this.numberToString(number, 'bin');
     },
-    emBin(number: number) {
+    emBin(number: number | bigint) {
         return this.padLeft(this.bin(number), 8, '0');
     },
     

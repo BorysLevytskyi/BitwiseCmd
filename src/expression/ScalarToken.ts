@@ -1,7 +1,6 @@
 import {numberParser} from './numberParser';
 import { ExpressionToken as ExpressionToken } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
-import { INT_MAX_VALUE } from '../core/const';
 
 var globalId : number = 1;
 
@@ -9,18 +8,22 @@ var globalId : number = 1;
 // Represents scalar numeric value
 export default class ScalarToken implements ExpressionToken {
     id: number;
-    value: number;
+    value: number | bigint;
     base: NumberBase;
     isOperator: boolean;
     is32BitLimit: boolean; 
 
-    constructor(value : number, base?: NumberBase, is32Limit?: boolean) {
+    constructor(value : number | bigint, base?: NumberBase, is32Limit?: boolean) {
         
         this.id = globalId++;
         this.value = value;
         this.base = base || "dec";
         this.isOperator = false;
         this.is32BitLimit = is32Limit || false;
+    }
+
+    isBigInt() : boolean {
+        return typeof this.value === 'bigint';
     }
             
     setValue(value : number) {
@@ -56,5 +59,4 @@ export default class ScalarToken implements ExpressionToken {
 
         return new ScalarToken(parsed.value, parsed.base);
     }
-  
 }

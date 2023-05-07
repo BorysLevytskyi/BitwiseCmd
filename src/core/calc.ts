@@ -3,12 +3,16 @@ import { INT_MAX_VALUE } from "./const";
 import formatter from "./formatter";
 
 export default {
-    numberOfBitsDisplayed: function (num: number) : number {
+    abs (num : number | bigint) : number | bigint {
+        return num >= 0 ? num : -num;
+    },
+    numberOfBitsDisplayed: function (num: number|bigint) : number {
+        
         if(num < 0) {
-            return Math.abs(num) <= INT_MAX_VALUE ? 32 : 64;
-        }
+            return typeof num == 'bigint' ? 64 : 32
+        };
 
-        return Math.floor(Math.log(num) / Math.log(2)) + 1;
+        return num.toString(2).length;
     },
 
     maxNumberOfBitsDisplayed: function (arr: number[]) {
@@ -26,7 +30,7 @@ export default {
         return eval(expr.expressionString);
     },
 
-    flippedBit: function(num: number, index: number): number  {
+    flippedBit: function(num: number|bigint, index: number): number  {
         const size = 32;
         const bin = formatter.bin(num).padStart(size, '0');
         const staysNegative = (bin[0] == "1" && index > 0);

@@ -5,11 +5,12 @@ import { INT_MAX_VALUE } from './const';
 describe("calc", () => {
     it('calculates number of bits', () => {
         expect(calc.numberOfBitsDisplayed(1)).toBe(1);
+        expect(calc.numberOfBitsDisplayed(BigInt(-1))).toBe(64);
         expect(calc.numberOfBitsDisplayed(2)).toBe(2);
         expect(calc.numberOfBitsDisplayed(3)).toBe(2);
         expect(calc.numberOfBitsDisplayed(68719476735)).toBe(36);
         expect(calc.numberOfBitsDisplayed(-INT_MAX_VALUE)).toBe(32);
-        expect(calc.numberOfBitsDisplayed(-(INT_MAX_VALUE+1))).toBe(64);
+        expect(calc.numberOfBitsDisplayed(-(BigInt(INT_MAX_VALUE+1)))).toBe(64);
     });
     
     it('calculates max number of bits', () => {
