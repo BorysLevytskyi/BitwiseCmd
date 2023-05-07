@@ -132,14 +132,14 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     flipBit(args: FlipBitEventArg) {
 
         const op = this.props.expressionItem.getUnderlyingScalarOperand();
-        const { index, binaryString } = args;
+        const { bitIndex: index, binaryStringLength: totalLength } = args;
 
-        if(binaryString.length > op.bitSize()) {
+        if(totalLength > op.bitSize() && (totalLength - index) > op.bitSize()) {
             op.setValue(calc.promoteToBigInt(op.value as number));
         }
 
         console.log(op.bitSize());
-        const pad = op.bitSize() - binaryString.length;
+        const pad = op.bitSize() - totalLength;
         console.log(pad + index);
         const newValue = calc.flipBit(op.value, pad + index);
         op.setValue(newValue);
