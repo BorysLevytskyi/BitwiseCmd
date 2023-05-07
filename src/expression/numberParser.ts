@@ -20,9 +20,9 @@ export interface ParsedNumber {
 
 var knownParsers : ParserConfig[] = [
     { regex: decimalBigIntRegex, base: 'dec', parse: (s) => BigInt(s.substring(0, s.length-1)) },
-    { regex: decimalRegex, base: 'dec', parse:(s) => parseInt(s, 10) },
-    { regex: hexRegex, base: 'hex', parse:(s) => parseInt(s.replace('0x', ''), 16)},
-    { regex: binRegex, base: 'bin', parse:(s) => parseInt(s.replace('0b', ''), 2) }];
+    { regex: decimalRegex, base: 'dec', parse:(s) => parseIntSafe(s, 10, '') },
+    { regex: hexRegex, base: 'hex', parse:(s) => parseIntSafe(s.replace('0x', ''), 16, '0x')},
+    { regex: binRegex, base: 'bin', parse:(s) => parseIntSafe(s.replace('0b', ''), 2, '0b') }];
 
 
 class NumberParser {
@@ -62,6 +62,17 @@ class NumberParser {
             input: rawInput
         }    
     }
+}
+
+const MAX_RELIABLE_INTn = BigInt(Number.MAX_SAFE_INTEGER);
+
+function parseIntSafe(input : string, radix: number, prefix: string)  : number | bigint {
+    const bigIntVersion = BigInt(prefix + input);
+
+    if(bigIntVersion > MAX_RELIABLE_INTn)
+        return bigIntVersion;
+
+    return parseInt(input, radix);
 }
 
 const numberParser = new NumberParser(knownParsers);

@@ -15,7 +15,7 @@ const formatter = {
                     const absBin = calc.abs(num).toString(2).padStart(size, '0');
                     return calc.applyTwosComplement(absBin);
                 }
-                console.log(num.toString() + " " + num.toString(2))
+                
                 return num.toString(2);
             case 'dec':
                 return num.toString(10) + (typeof num === "bigint" ? "n" : "");

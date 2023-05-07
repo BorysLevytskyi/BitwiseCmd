@@ -1,6 +1,7 @@
 import {numberParser, ParsedNumber} from './numberParser';
 
 describe("parser", () => {
+
     it('parses decimal number', () => {
         const result = numberParser.parse('10');
         expect(result).not.toBeNull();
@@ -16,10 +17,27 @@ describe("parser", () => {
         expect(result).not.toBeNull();
 
         var number = result as ParsedNumber;
-        expect(number.value).toBe(10);
+        expect(number.value).toBe(BigInt(10));
         expect(typeof number.value).toBe("bigint");
         expect(number.base).toBe('dec');
-        expect(number.input).toBe('10');
+        expect(number.input).toBe('10n');
+    });
+
+
+    it('switches to bigint if value exceeds max safe int', () => {
+        const unsafeInt = BigInt(Number.MAX_SAFE_INTEGER)+BigInt(1);
+        
+        const dec = numberParser.parse(unsafeInt.toString());
+        expect(dec?.value).toEqual(unsafeInt);
+        expect(dec?.base).toBe('dec');
+
+        const bin = numberParser.parse("0b" + unsafeInt.toString(2));
+        expect(bin?.value).toEqual(unsafeInt);
+        expect(bin?.base).toEqual('bin');
+
+        const hex = numberParser.parse("0x" + unsafeInt.toString(16));
+        expect(hex?.value).toEqual(unsafeInt);
+        expect(hex?.base).toEqual('hex');
     });
 
     it('parses hex number', () => {
