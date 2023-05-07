@@ -26,29 +26,29 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
 
     render() {
         var rows = this.getRows();
-        
+
         return <table className="expression">
-                    <tbody>
-                            {rows}
-                    </tbody>
-                </table>
+            <tbody>
+                {rows}
+            </tbody>
+        </table>
     }
 
-    getRows() : JSX.Element[] {
+    getRows(): JSX.Element[] {
 
         var model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
         this.maxSeenLengthNumberOfBits = Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
-        
-        return model.items.map((itm, i) => 
-            <ExpressionRow 
-                key={i} 
+
+        return model.items.map((itm, i) =>
+            <ExpressionRow
+                key={i}
                 sign={itm.sign}
                 css={itm.css}
                 bitSize={itm.bitSize}
                 allowFlipBits={itm.allowFlipBits}
                 expressionItem={itm.expression}
-                emphasizeBytes={this.props.emphasizeBytes} 
-                maxNumberOfBits={this.maxSeenLengthNumberOfBits} 
+                emphasizeBytes={this.props.emphasizeBytes}
+                maxNumberOfBits={this.maxSeenLengthNumberOfBits}
                 onBitFlipped={() => this.onBitFlipped()} />);
     }
 
@@ -59,40 +59,41 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
 }
 
 type ExpressionRowProps = {
-    sign: string, 
-    css: string, 
+    sign: string,
+    css: string,
     bitSize: number,
-    maxNumberOfBits: number, 
-    emphasizeBytes: boolean, 
-    allowFlipBits: boolean, 
+    maxNumberOfBits: number,
+    emphasizeBytes: boolean,
+    allowFlipBits: boolean,
     expressionItem: ExpressionToken,
     onBitFlipped: any
 }
 
 class ExpressionRow extends React.Component<ExpressionRowProps> {
     constructor(props: ExpressionRowProps) {
-       super(props);
-       this.state = { operand: null };
-   }
+        super(props);
+        this.state = { operand: null };
+    }
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
-        
+
         return <tr className={"row-with-bits " + css}>
-                    <td className="sign">{sign}</td>
-                    <td className="label">{this.getLabel()}</td>
-                    <td className="bin">
-                        <BinaryStringView
-                            emphasizeBytes={emphasizeBytes} 
-                            binaryString={formatter.padLeft(this.getBinaryString(), maxNumberOfBits, '0')} 
-                            allowFlipBits={allowFlipBits} 
-                            bitSize={this.props.bitSize}
-                            onFlipBit={args => this.flipBit(args)}/>
-                    </td>
-                    <td className="other">{this.getAlternative()}</td>
-                </tr>;;
+            <td className="sign">{sign}</td>
+            <td className="label">{this.getLabel()}</td>
+            <td className="bin">
+                <BinaryStringView
+                    emphasizeBytes={emphasizeBytes}
+                    binaryString={formatter.padLeft(this.getBinaryString(), maxNumberOfBits, '0')}
+                    allowFlipBits={allowFlipBits}
+                    bitSize={this.props.bitSize}
+                    onFlipBit={args => this.flipBit(args)} />
+            </td>
+            <td className="other">{this.getAlternative()}</td>
+            <td className="info">{this.getInfo()}</td>
+        </tr>;;
     }
 
-    getBinaryString() : string {       
+    getBinaryString(): string {
         var v = this.props.expressionItem.evaluate();
         return formatter.numberToString(v.value, 'bin');
     }
@@ -101,17 +102,17 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
 
         // For expressions like |~2 
         // TODO: find a better way...
-        if(this.props.expressionItem.isOperator) {
+        if (this.props.expressionItem.isOperator) {
             const ex = this.props.expressionItem as OperatorToken;
             return ex.operator + this.getLabelString(ex.getUnderlyingScalarOperand());
         }
 
-        return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());         
+        return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());
     }
 
     getAlternative() {
 
-        if(this.props.expressionItem.isOperator) {
+        if (this.props.expressionItem.isOperator) {
             const ex = this.props.expressionItem as OperatorToken;
             const res = ex.evaluate();
 
@@ -123,18 +124,27 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return formatter.numberToString(v.value, altBase);
     }
 
-    getLabelString (op: ScalarToken) : string {
+    getLabelString(op: ScalarToken): string {
         return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 
-     flipBit(args: FlipBitEventArg) {    
+    flipBit(args: FlipBitEventArg) {
 
-        const op  = this.props.expressionItem.getUnderlyingScalarOperand();
+        const op = this.props.expressionItem.getUnderlyingScalarOperand();
         const { index, binaryString } = args;
 
         const pad = op.bitSize() - binaryString.length;
         const newValue = calc.flippedBit(op.value, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();
+    }
+
+    getInfo() {
+        if (!this.props.expressionItem.getUnderlyingScalarOperand().isBigInt())
+            return null;
+
+        const title = `BigInt is used to reprsent this number. The number is either to big to be stored using regular JavaScript Number type (see Number.MAX_SAFE_INTEGER or this number was entered with n-notation (e.g. 123n)`;
+
+        return <span title={title} style={{cursor:"help"}}>(BigInt)</span>;
     }
 }

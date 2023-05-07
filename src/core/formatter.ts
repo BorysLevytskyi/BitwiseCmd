@@ -18,7 +18,7 @@ const formatter = {
                 
                 return num.toString(2);
             case 'dec':
-                return num.toString(10) + (typeof num === "bigint" ? "n" : "");
+                return num.toString(10);
             default:
                 throw new Error("Unexpected kind: " + base)
         }

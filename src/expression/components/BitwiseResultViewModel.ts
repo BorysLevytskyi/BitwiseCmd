@@ -88,7 +88,7 @@ export default class BitwiseResultViewModel {
             expression: expr,
             allowFlipBits: this.allowFlipBits,
             label: '',
-            bitSize: bits,
+            bitSize: expr.bitSize(),
         });
     };
 
@@ -96,6 +96,7 @@ export default class BitwiseResultViewModel {
         
         const resultNumber = expr.isNotExpression ? expr.evaluate() : expr.getUnderlyingScalarOperand();
         const bits = calc.numberOfBitsDisplayed(resultNumber.value);
+        
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         
         this.items.push({ 

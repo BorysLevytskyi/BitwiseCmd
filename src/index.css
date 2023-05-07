@@ -32,6 +32,7 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
 .expression .bin { letter-spacing: 3px; }
+.expression .info { font-size: 0.9em; color: teal; }
 .expression .byte { margin: 0 3px; }
 .expression-result td { border-top: dotted 1px gray; }
 .expression { font-size: 1.5em; font-family: monospace }
