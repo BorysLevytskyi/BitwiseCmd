@@ -28,7 +28,7 @@ export default class ScalarToken implements ExpressionToken {
         return typeof this.value === 'bigint';
     }
             
-    setValue(value : number) {
+    setValue(value : number | bigint) {
         this.value = value;
     }
 

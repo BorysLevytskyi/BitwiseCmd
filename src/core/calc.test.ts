@@ -1,6 +1,7 @@
 import calc from './calc';
 import { BitwiseOperationExpression, ScalarToken, OperatorToken } from '../expression/expression';
 import { INT_MAX_VALUE } from './const';
+import exp from 'constants';
 
 describe("calc", () => {
     it('calculates number of bits', () => {
@@ -29,6 +30,20 @@ describe("calc", () => {
         ));
         
         expect(result).toBe(3);
+    });
+
+    it('calculates flipped bit 32-bit number', () => {
+        expect(calc.flippedBit(0, 31)).toBe(1);
+        expect(calc.flippedBit(1, 31)).toBe(0);
+        expect(calc.flippedBit(-1, 31)).toBe(-2);
+        expect(calc.flippedBit(2147483647, 0)).toBe(-1);
+        expect(calc.flippedBit(-1, 0)).toBe(2147483647);
+        expect(calc.flippedBit(2147483647, 30)).toBe(2147483645);
+    });
+
+    it('caulate flipped bit 64-bit nubmer', () => {
+        const int64max = BigInt("9223372036854775807");
+        expect(calc.flippedBit(BigInt(int64max), 0)).toBe(BigInt(-1));
     });
 
     it('calculates flipped bit', () => {

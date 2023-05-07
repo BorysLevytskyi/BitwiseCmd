@@ -31,8 +31,9 @@ export default {
         return eval(expr.expressionString);
     },
 
-    flippedBit: function(num: number|bigint, index: number): number  {
-        
+    flippedBit: function(num: number|bigint, index: number): number|bigint  {
+
+        const is64bit = typeof num == 'bigint';
         const size = typeof num == "bigint" ? 64 : 32;
         const bin = formatter.bin(num).padStart(size, '0');
         const staysNegative = (bin[0] == "1" && index > 0);
@@ -46,7 +47,7 @@ export default {
             m=-1;
         }
        
-        return parseInt(flipped, 2)*m;
+        return is64bit ? BigInt("0b"+ flipped)*BigInt(m) : parseInt(flipped, 2)*m;
     },
 
     applyTwosComplement: (bin:string):string => {
