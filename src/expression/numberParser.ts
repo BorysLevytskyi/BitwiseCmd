@@ -1,4 +1,4 @@
-import { INT32_MAX_VALUE, INT32_MIN_VAlUE } from "../core/const";
+import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
 
 const decimalRegex = /^-?\d+[l,L]?$/;
@@ -63,7 +63,7 @@ class NumberParser {
 }
 
 const MAX_SAFE_INTn = BigInt(INT32_MAX_VALUE);
-const MIN_SAFE_INTn = BigInt(INT32_MIN_VAlUE);
+const MIN_SAFE_INTn = BigInt(INT32_MIN_VALUE);
 
 function parseIntSafe(input : string, radix: number)  : number | bigint {
     
