@@ -31,23 +31,34 @@ export default {
         return eval(expr.expressionString);
     },
 
-    flippedBit: function(num: number|bigint, index: number): number|bigint  {
+    flipBit: function(num: number|bigint, index: number): number|bigint  {
 
         const is64bit = typeof num == 'bigint';
         const size = typeof num == "bigint" ? 64 : 32;
         const bin = formatter.bin(num).padStart(size, '0');
         const staysNegative = (bin[0] == "1" && index > 0);
         const becomesNegative = (bin[0] == "0" && index == 0);
+
+        //console.log(bin);
         
         let m = 1;
         let flipped = bin.substring(0, index) + flip(bin[index]) + bin.substring(index+1);
+
+        //console.log(flipped);
 
         if(staysNegative || becomesNegative) {
             flipped = this.applyTwosComplement(flipped);
             m=-1;
         }
+
+        //console.log(flipped);
        
         return is64bit ? BigInt("0b"+ flipped)*BigInt(m) : parseInt(flipped, 2)*m;
+    },
+
+    promoteToBigInt(number: number) {
+        const bin = formatter.bin(number);
+        return BigInt("0b" + bin);
     },
 
     applyTwosComplement: (bin:string):string => {

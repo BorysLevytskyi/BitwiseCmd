@@ -33,26 +33,26 @@ describe("calc", () => {
     });
 
     it('calculates flipped bit 32-bit number', () => {
-        expect(calc.flippedBit(0, 31)).toBe(1);
-        expect(calc.flippedBit(1, 31)).toBe(0);
-        expect(calc.flippedBit(-1, 31)).toBe(-2);
-        expect(calc.flippedBit(2147483647, 0)).toBe(-1);
-        expect(calc.flippedBit(-1, 0)).toBe(2147483647);
-        expect(calc.flippedBit(2147483647, 30)).toBe(2147483645);
+        expect(calc.flipBit(0, 31)).toBe(1);
+        expect(calc.flipBit(1, 31)).toBe(0);
+        expect(calc.flipBit(-1, 31)).toBe(-2);
+        expect(calc.flipBit(2147483647, 0)).toBe(-1);
+        expect(calc.flipBit(-1, 0)).toBe(2147483647);
+        expect(calc.flipBit(2147483647, 30)).toBe(2147483645);
     });
 
     it('caulate flipped bit 64-bit nubmer', () => {
         const int64max = BigInt("9223372036854775807");
-        expect(calc.flippedBit(BigInt(int64max), 0)).toBe(BigInt(-1));
+        expect(calc.flipBit(BigInt(int64max), 0)).toBe(BigInt(-1));
     });
 
     it('calculates flipped bit', () => {
-        expect(calc.flippedBit(0, 31)).toBe(1);
-        expect(calc.flippedBit(1, 31)).toBe(0);
-        expect(calc.flippedBit(-1, 31)).toBe(-2);
-        expect(calc.flippedBit(2147483647, 0)).toBe(-1);
-        expect(calc.flippedBit(-1, 0)).toBe(2147483647);
-        expect(calc.flippedBit(2147483647, 30)).toBe(2147483645);
+        expect(calc.flipBit(0, 31)).toBe(1);
+        expect(calc.flipBit(1, 31)).toBe(0);
+        expect(calc.flipBit(-1, 31)).toBe(-2);
+        expect(calc.flipBit(2147483647, 0)).toBe(-1);
+        expect(calc.flipBit(-1, 0)).toBe(2147483647);
+        expect(calc.flipBit(2147483647, 30)).toBe(2147483645);
     });
 
     it('applies twos complement', () => {
@@ -62,6 +62,14 @@ describe("calc", () => {
         expect(calc.applyTwosComplement("0")).toBe("10");
         expect(calc.applyTwosComplement("10101100")).toBe("01010100");
         expect(calc.applyTwosComplement("01010100")).toBe("10101100"); // reverse
+    });
+
+    it('calcualte 31th bit in 64-bit int', () => {
+        expect(calc.flipBit(calc.promoteToBigInt(-1), 31).toString()).toBe("8589934591");
+    });
+
+    it('promotes to BigInt with the same bits', () => {
+        expect(calc.promoteToBigInt(-1).toString(2)).toBe("11111111111111111111111111111111");
     });
 });
 

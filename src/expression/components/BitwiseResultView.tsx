@@ -76,6 +76,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     }
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
+        const maxBits = Math.max()
 
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
@@ -133,8 +134,14 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const op = this.props.expressionItem.getUnderlyingScalarOperand();
         const { index, binaryString } = args;
 
+        if(binaryString.length > op.bitSize()) {
+            op.setValue(calc.promoteToBigInt(op.value as number));
+        }
+
+        console.log(op.bitSize());
         const pad = op.bitSize() - binaryString.length;
-        const newValue = calc.flippedBit(op.value, pad + index);
+        console.log(pad + index);
+        const newValue = calc.flipBit(op.value, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();
     }
@@ -149,7 +156,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
             return <span title={title} style={{cursor:"help"}}>(64-bit BigInt)</span>;
         }
 
-        if(op.bitSize() == 32 && maxNumberOfBits == 32)
+        if(op.bitSize() == 32 && maxNumberOfBits >= 32)
         {
             const title = "BitwiseCmd treats this number as 32-bit integer. First bit is a sign bit. Try clicking on the first bit and see what will happen.";
 
