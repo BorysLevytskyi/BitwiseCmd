@@ -1,8 +1,6 @@
 import calc from './calc';
 import { BitwiseOperationExpression, ScalarToken, OperatorToken } from '../expression/expression';
-import exp from 'constants';
 import { INT_MAX_VALUE } from './const';
-import formatter from './formatter';
 
 describe("calc", () => {
     it('calculates number of bits', () => {
@@ -31,12 +29,26 @@ describe("calc", () => {
         
         expect(result).toBe(3);
     });
+
+    it('calculates flipped bit', () => {
+        expect(calc.flippedBit("01111111111111111111111111111111", 0)).toBe(-1);
+        //expect(calc.flippedBit("11111111111111111111111111111111", 0)).toBe(2147483647);
+    });
+
+    it('applies twos complement', () => {
+        expect(calc.applyTwosComplement("010")).toBe("110");
+        expect(calc.applyTwosComplement("110")).toBe("010"); // reverse
+        expect(calc.applyTwosComplement("110")).toBe("010");
+        expect(calc.applyTwosComplement("0")).toBe("10");
+        expect(calc.applyTwosComplement("10101100")).toBe("01010100");
+        expect(calc.applyTwosComplement("01010100")).toBe("10101100"); // reverse
+    });
 });
 
-describe("binary ", () => {
+describe("bitwise ", () => {
 
 
-    it("bitwise NOT same as in node", () => {
+    it("NOT same as in node", () => {
         
         for(var i = -100; i<100;i++) {
             const expected = bin(~i);
@@ -45,7 +57,7 @@ describe("binary ", () => {
         } 
     });
 
-    it("bitwise OR same as in node", () => {
+    it("OR same as in node", () => {
         for(var x = -100; x<100;x++) {
             const y = 5+3%x+x%6*(-x); 
             const expected = bin(x | y);
@@ -55,7 +67,7 @@ describe("binary ", () => {
         } 
     });
 
-    it("bitwise AND same as in node", () => {
+    it("AND same as in node", () => {
         for(var x = -100; x<100;x++) {
             const y = 5+3%x+x%6*(-x); 
             const expected = bin(x & y);

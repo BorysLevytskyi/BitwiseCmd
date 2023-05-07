@@ -1,4 +1,7 @@
+import { subscribe } from "diagnostics_channel";
 import { INT_MAX_VALUE } from "./const";
+import { faRedRiver } from "@fortawesome/free-brands-svg-icons";
+import calc from "./calc";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
@@ -11,9 +14,8 @@ const formatter = {
             case 'bin':          
                 if(value < 0) {
                     const n = Math.abs(value);
-                    const padding = n > INT_MAX_VALUE ? 64 : 32;
-                    const pos = n.toString(2).padStart(padding, '0');
-                    return findTwosComplement(pos);
+                    const pos = n.toString(2).padStart(32, '0');
+                    return calc.applyTwosComplement(pos);
                 }
                 
                 return value.toString(getBase(kind || "bin"));
@@ -90,43 +92,6 @@ function getBase(kind:string) : number {
     }
 
     throw new Error("Unsupported kind: " + kind);
-}
-
-function flip(bit: string) : string {
-    switch(bit) {
-        case "1": return "0";
-        case "0": return "1";
-        default: throw new Error("unexpected bit value: " + bit);
-    }
-}
-
-function findTwosComplement(str:string):string {
-    var n = str.length;
-
-    // Traverse the string to get first '1' from
-    // the last of string
-    var i;
-    for (i = n - 1; i >= 0; i--)
-        if (str.charAt(i) == '1')
-            break;
-
-    // If there exists no '1' concat 1 at the
-    // starting of string
-    if (i == -1)
-        return "1" + str;
-
-    // Continue traversal after the position of
-    // first '1'
-    for (var k = i - 1; k >= 0; k--) {
-        // Just flip the values
-        if (str.charAt(k) == '1')
-            str = str.substring(0,k)+"0"+str.substring(k+1, str.length);
-        else
-            str = str.substring(0,k)+"1"+str.substring(k+1, str.length);
-    }
-
-    // return the modified string
-    return str.toString();
 }
 
 const emBin = formatter.emBin.bind(formatter);

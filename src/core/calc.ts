@@ -1,7 +1,5 @@
-import { dblClick } from "@testing-library/user-event/dist/click";
 import { Expression } from "../expression/expression-interfaces";
 import { INT_MAX_VALUE } from "./const";
-import { start } from "repl";
 
 export default {
     numberOfBitsDisplayed: function (num: number) : number {
@@ -25,6 +23,37 @@ export default {
 
     calcExpression: function (expr: Expression) {
         return eval(expr.expressionString);
+    },
+
+    flippedBit: function(bin: string, index: number): number  {
+        
+        // Negative number
+        if(bin.length == 32 && bin[0] == "0") {
+            const reversed = this.applyTwosComplement(bin);
+            console.log("reversed",reversed);
+            return -parseInt(reversed, 2);
+        }
+
+        return 0;
+    },
+
+    applyTwosComplement: (bin:string):string => {
+        var lastIndex = bin.lastIndexOf('1');
+    
+        // If there exists no '1' concat 1 at the
+        // starting of string
+        if (lastIndex == -1)
+            return "1" + bin;
+    
+        // Continue traversal backward after the position of
+        // first '1'
+        var flipped =[];
+        for (var i = lastIndex - 1; i >= 0; i--) {
+            // Just flip the values
+            flipped.unshift(bin.charAt(i) == "1" ? "0" : "1");
+        }
+    
+        return flipped.join('') + bin.substring(lastIndex) ;
     },
 
     bitwise: {
@@ -62,7 +91,6 @@ export default {
 
             return result.join('');
         }
-
     }
 };
 
