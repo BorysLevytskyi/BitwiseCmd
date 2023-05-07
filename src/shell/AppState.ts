@@ -44,7 +44,7 @@ export default class AppState {
         this.emphasizeBytes = persistData.emphasizeBytes || true;
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
-        this.debugMode = env !== 'prod' || persistData.debugMode === true;
+        this.debugMode = persistData.debugMode === true;
         this.pageVisitsCount = persistData.pageVisistsCount || 0;
         this.donationClicked = persistData.donationClicked;
     }
