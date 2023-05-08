@@ -101,4 +101,24 @@ describe("parser", () => {
         expect(typeof v?.value).toBe("bigint");
         expect(v?.value.toString()).toBe("1");
     });
+
+    xit('parses single', () => {
+        var v =  numberParser.parse('1s')?.value
+        expect(typeof v?.value).toBe("number");
+        expect(v?.maxBitSize).toBe(16);
+        expect(v?.value.toString()).toBe("1");
+
+        var v2 =  numberParser.parse('1i8')?.value
+        expect(v2).toEqual(v);
+    });
+
+    xit('parses byte', () => {
+        var v =  numberParser.parse('1b')?.value
+        expect(typeof v?.value).toBe("number");
+        expect(v?.maxBitSize).toBe(16);
+        expect(v?.value.toString()).toBe("1");
+
+        var v2 =  numberParser.parse('1i16')?.value
+        expect(v2).toEqual(v);
+    });
 });

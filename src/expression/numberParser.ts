@@ -5,9 +5,9 @@ import { BoundedNumber, asBoundedNumber } from "../core/types";
 // byte -i8 or b
 // single - i16 or s 
 
-const decimalRegex = /^-?\d+[l,L,S,s,B,b]?$/;
-const hexRegex = /^-?0x[0-9,a-f]+[l,L,S,s,B,b]?$/i;
-const binRegex = /^-?0b[0-1]+[l,L,S,s,B,b]?$/i;
+const decimalRegex = /^-?\d+[l,L]?$/;
+const hexRegex = /^-?0x[0-9,a-f]+[l,L]?$/i;
+const binRegex = /^-?0b[0-1]+[l,L]?$/i;
 
 interface ParserConfig {
     regex: RegExp,
