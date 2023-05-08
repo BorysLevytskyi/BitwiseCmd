@@ -1,5 +1,5 @@
 import formatter from "./formatter";
-import { BoundedNumber, JsNumber, maxBitSize, asBoundedNumber } from "./types";
+import { BoundedNumber, JsNumber,  asBoundedNumber } from "./types";
 import { asIntN } from "./utils";
 
 export default {
@@ -7,10 +7,6 @@ export default {
         return asBoundedNumber(num.value >= 0 ? num.value : -num.value);
     },
     
-    maxBitSize(num : JsNumber) : number {
-        return maxBitSize(num);
-    },
-
     numberOfBitsDisplayed: function (num: JsNumber) : number {
         
         if(num < 0) {
@@ -24,9 +20,9 @@ export default {
         return this._applySingle(asBoundedNumber(num), (bin) => this.bitwise.flipBit(bin, bitIndex));
     },
 
-    promoteTo64Bit(number: number) : BoundedNumber {
-        const bin = this.toBinaryString(asBoundedNumber(number));
-        return asBoundedNumber(BigInt("0b" + bin));
+    promoteTo64Bit(number: BoundedNumber) : BoundedNumber {
+        const bin = this.toBinaryString(number);
+        return {value: BigInt("0b" + bin), maxBitSize: 64};
     },
 
     applyTwosComplement: (bin:string):string => {

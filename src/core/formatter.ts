@@ -33,10 +33,10 @@ const formatter = {
 
         return sb.join('');
     },
-    bin(number: JsNumber) {
+    bin(number: BoundedNumber | JsNumber) {
         return this.numberToString(number, 'bin');
     },
-    emBin(number: JsNumber) {
+    emBin(number: BoundedNumber | JsNumber) {
         return this.padLeft(this.bin(number), 8, '0');
     },
     

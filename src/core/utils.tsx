@@ -1,4 +1,4 @@
-import { JsNumber } from "./types";
+import { BoundedNumber, JsNumber, isBoundedNumber } from "./types";
 
 function chunkifyString(input: string, chunkSize: number) : string[] {
     
@@ -11,7 +11,10 @@ function chunkifyString(input: string, chunkSize: number) : string[] {
     return result;
 }
 
-function asIntN(num: JsNumber) : number {
+function asIntN(num: JsNumber | BoundedNumber) : number {
+    if(isBoundedNumber(num))
+        return asIntN(num.value);
+
     return typeof num == "bigint" ? parseInt(num.toString()): num as number;
 }
 

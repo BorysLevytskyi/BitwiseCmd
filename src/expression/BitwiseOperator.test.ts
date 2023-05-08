@@ -1,6 +1,5 @@
 import ScalarValue from "./ScalarValue";
 import BitwiseOperator from './BitwiseOperator';
-import { INT32_MAX_VALUE } from "../core/const";
 
 it('can apply ~ operand', () => {
     var op = new ScalarValue(10, 'dec');

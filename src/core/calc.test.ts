@@ -29,7 +29,8 @@ describe('calc.flipBit', () => {
 
     
     it('calcualte 31th bit in 64-bit int', () => {
-        expect(calc.flipBit(calc.promoteTo64Bit(-1), 31).value.toString()).toBe("8589934591");
+        const n = asBoundedNumber(-1);
+        expect(calc.flipBit(calc.promoteTo64Bit(n), 31).value.toString()).toBe("8589934591");
     });
 
 });
@@ -60,8 +61,8 @@ describe('calc.applyTwosComplement', () => {
 describe('calc.lshift', () => {
 
     it('produces number when given number and vice vers', () => {
-        const number = calc.lshift({value:1, maxBitSize:32}, 1).value;
-        const bigInt = calc.lshift({value:BigInt(1), maxBitSize:32}, 1).value;
+        const number = calc.lshift({value: BigInt(1), maxBitSize:32}, 1).value;
+        const bigInt = calc.lshift({value: BigInt(1), maxBitSize:32}, 1).value;
 
         expect(typeof number).toBe('number');
         expect(number).toBe(2);
@@ -113,7 +114,8 @@ describe("calc misc", () => {
 
 
     it('promoteTo64Bit', () => {
-        expect(calc.promoteTo64Bit(-1).value.toString(2)).toBe("11111111111111111111111111111111");
+        const n = asBoundedNumber(-1);
+        expect(calc.promoteTo64Bit(n).value.toString(2)).toBe("11111111111111111111111111111111");
     });
 
     it('binaryRepresentation', () => {

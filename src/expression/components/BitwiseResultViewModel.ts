@@ -15,7 +15,7 @@ type ExpressionRowModel = {
     expression: ExpressionElement;
     allowFlipBits: boolean;
     label: string;
-    bitSize: number;
+    maxBitSize: number;
 }
 
 export default class BitwiseResultViewModel {
@@ -88,7 +88,7 @@ export default class BitwiseResultViewModel {
             expression: expr,
             allowFlipBits: this.allowFlipBits,
             label: '',
-            bitSize: expr.bitSize(),
+            maxBitSize: expr.maxBitSize,
         });
     };
 
@@ -105,7 +105,7 @@ export default class BitwiseResultViewModel {
             label: this.getLabel(resultNumber),
             expression: expr.operand,
             allowFlipBits: this.allowFlipBits,
-            bitSize: resultNumber.bitSize()
+            maxBitSize: resultNumber.maxBitSize
         });
     };
  
@@ -119,7 +119,7 @@ export default class BitwiseResultViewModel {
             expression: resultExpr,
             allowFlipBits: false,
             label: '',
-            bitSize: resultExpr.bitSize()
+            maxBitSize: resultExpr.maxBitSize
         });
     };
 
@@ -132,7 +132,7 @@ export default class BitwiseResultViewModel {
             expression: expr, 
             allowFlipBits: false,
             label: '',
-            bitSize: expr.bitSize()
+            maxBitSize: expr.maxBitSize
         });
     };
 

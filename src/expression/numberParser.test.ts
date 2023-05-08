@@ -1,3 +1,4 @@
+import { asIntN } from '../core/utils';
 import {numberParser, ParsedNumber} from './numberParser';
 
 describe("parser", () => {
@@ -7,7 +8,7 @@ describe("parser", () => {
         expect(result).not.toBeNull();
 
         var number = result as ParsedNumber;
-        expect(number.value.value).toBe(10);
+        expect(asIntN(number.value)).toBe(10);
         expect(number.base).toBe('dec');
         expect(number.input).toBe('10');
     });

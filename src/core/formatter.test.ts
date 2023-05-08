@@ -8,8 +8,9 @@ describe("formatter", () => {
     });
 
     it('respects size when formatting negative number', () => {
-        expect(formatter.bin(-1)).toBe("11111111111111111111111111111111");
-        expect(formatter.bin(BigInt(-1))).toBe("1111111111111111111111111111111111111111111111111111111111111111");
+        const n = BigInt(-1);
+        expect(formatter.bin({value: n, maxBitSize: 32})).toBe("11111111111111111111111111111111");
+        expect(formatter.bin({value: n, maxBitSize: 64})).toBe("1111111111111111111111111111111111111111111111111111111111111111");
     });
 
     it('formats large binary number correctly', () => {

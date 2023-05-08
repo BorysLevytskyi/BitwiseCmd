@@ -1,7 +1,6 @@
 import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarValue, BitwiseOperator } from "./expression";
 import { random } from "../core/utils";
 import { INT32_MAX_VALUE } from "../core/const";
-import { act } from "react-dom/test-utils";
 
 describe("expression parser", () => {
 
@@ -12,7 +11,6 @@ describe("expression parser", () => {
 
     it("doesn't list of numbers in case of bad numbers", () => {
         expect(parser.parse("1 2 z")).toBeNull();
-        //expect(parser.parse("-")).toBeNull();
         expect(parser.parse("")).toBeNull();
     });
 
@@ -41,7 +39,7 @@ describe("expression parser", () => {
 
         expect(first).toBeInstanceOf(ScalarValue);
 
-        expect((first as ScalarValue).value).toBe(1);
+        expect((first as ScalarValue).value.toString()).toBe("1");
 
         expect(second).toBeInstanceOf(BitwiseOperator);
         var secondOp = second as BitwiseOperator;
@@ -58,7 +56,7 @@ describe("expression parser", () => {
     });
 });
 
-describe("comparison with nodejs engone", () => {
+describe("comparison with nodejs engine", () => {
     
     it('set 32-bit', () => {
         
@@ -143,9 +141,6 @@ describe("comparison with nodejs engone", () => {
 
             var op1 = expr.children[0] as ScalarValue;
             var op2 = expr.children[1] as BitwiseOperator;
-
-            expect(op1.isBigInt()).toBe(isBigInt);
-            expect(op2.getUnderlyingScalarOperand().isBigInt()).toBe(isBigInt);
 
             actual = op2.evaluate(op1).value.toString();
             const equals = actual === expected;

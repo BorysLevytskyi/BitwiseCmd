@@ -56,7 +56,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 key={i}
                 sign={itm.sign}
                 css={itm.css}
-                bitSize={itm.bitSize}
+                bitSize={itm.maxBitSize}
                 allowFlipBits={itm.allowFlipBits}
                 expressionItem={itm.expression}
                 emphasizeBytes={this.props.emphasizeBytes}
@@ -146,11 +146,11 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const op = this.props.expressionItem.getUnderlyingScalarOperand();
         const { bitIndex: index, binaryStringLength: totalLength } = args;
 
-        if(totalLength > op.bitSize() && (totalLength - index) > op.bitSize()) {
-            op.setValue(calc.promoteTo64Bit(op.value as number));
+        if(totalLength > op.maxBitSize && (totalLength - index) > op.maxBitSize) {
+            op.setValue(calc.promoteTo64Bit(op));
         }
 
-        const pad = op.bitSize() - totalLength;
+        const pad = op.maxBitSize - totalLength;
         const newValue = calc.flipBit(op, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();
@@ -159,16 +159,9 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getInfo(maxNumberOfBits:number) {
         var op = this.props.expressionItem.getUnderlyingScalarOperand();
 
-        if (op.isBigInt())
+        if(op.maxBitSize <= maxNumberOfBits)
         {
-            const title = `BigInt JavaScript type is used to reprsent this number. All bitwise operations that involve this number have their operands converted to BigInt. BitwiseCmd treats this number as 64-bit number.`;
-
-            return <span title={title} style={{cursor:"help"}}>(64-bit BigInt)</span>;
-        }
-
-        if(op.bitSize() == 32 && maxNumberOfBits >= 32)
-        {
-            const title = "BitwiseCmd treats this number as 32-bit integer. First bit is a sign bit. Try clicking on the first bit and see what will happen.";
+            const title = `BitwiseCmd treats this number as ${op.maxBitSize}-bit integer. First bit is a sign bit. Try clicking on the first bit and see what will happen.`;
 
             return <span title={title} style={{cursor:"help"}}>(32-bit Number)</span>;
         }

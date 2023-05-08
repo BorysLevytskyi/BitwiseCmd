@@ -66,27 +66,17 @@ class NumberParser {
     }
 }
 
-const MAX_SAFE_INTn = BigInt(INT32_MAX_VALUE);
-const MIN_SAFE_INTn = BigInt(INT32_MIN_VALUE);
-
 function parseIntSafe(input : string, radix: number)  : BoundedNumber {
     
-    const bigIntStr = input.replace('-', '').replace('l', '').replace('L', '');
+    const lower = input.toLocaleLowerCase();
+    const bigIntStr = lower.replace('-', '').replace('l', '').replace('L', '');
+    const size = lower.endsWith('l') ? 64 : 16;
     let bigInt = BigInt(bigIntStr);
     const isNegative = input.startsWith('-');
-    const isBigInt = input.toLowerCase().endsWith('l');
 
     if(isNegative) bigInt *= BigInt(-1);
 
-    if(isBigInt) return asBoundedNumber(bigInt);
-
-    if(bigInt > MAX_SAFE_INTn)
-        return asBoundedNumber(bigInt);
-
-    if(bigInt < MIN_SAFE_INTn)
-        return asBoundedNumber(bigInt);
-
-    return asBoundedNumber(parseInt(input.replace(/0(x|b)/, ''), radix));
+    return { value: bigInt, maxBitSize: size };
 }
 
 const numberParser = new NumberParser(knownParsers);
