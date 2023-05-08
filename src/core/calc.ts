@@ -83,10 +83,14 @@ export default {
     rshift (num: BoundedNumber, numBytes : JsNumber) : BoundedNumber {
         
         const bytes = asIntN(numBytes);
-        
+        return this._apply(num, bin => this.bitwise.rshift(bin, bytes));
+    },
+
+    _apply(num: BoundedNumber, operation: (bin:string) => string) : BoundedNumber {
+
         let bin = this.toBinaryString(num).padStart(num.maxBitSize, '0');
 
-        bin = bin.substring(bytes) + "0".repeat(bytes);
+        bin = operation(bin);
 
         let m = BigInt(1);
     
@@ -100,13 +104,14 @@ export default {
     },
 
     bitwise: { 
-        not: (bin: string) : string  =>  {
+        rshift (bin: string, bytes: number):string {
+            return bin.substring(bytes) + "0".repeat(bytes);
+        },
+        not (bin: string) : string {
 
-            var padded = bin
+            return bin
                 .split('').map(c => flip(c))
                 .join("");
-                
-            return padded;
         },
         or: (bin1: string, bin2 : string) : string  =>  {
 
