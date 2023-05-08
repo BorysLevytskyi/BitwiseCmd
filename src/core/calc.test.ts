@@ -1,17 +1,17 @@
 import calc from './calc';
-import { BitwiseOperationExpression, ScalarToken, OperatorToken } from '../expression/expression';
+import { BitwiseOperationExpression, ScalarValue, BitwiseOperator } from '../expression/expression';
+import { INT32_MAX_VALUE } from './const';
 import exp from 'constants';
-import { INT_MAX_VALUE } from './const';
-import formatter from './formatter';
 
 describe("calc", () => {
     it('calculates number of bits', () => {
         expect(calc.numberOfBitsDisplayed(1)).toBe(1);
+        expect(calc.numberOfBitsDisplayed(BigInt(-1))).toBe(64);
         expect(calc.numberOfBitsDisplayed(2)).toBe(2);
         expect(calc.numberOfBitsDisplayed(3)).toBe(2);
         expect(calc.numberOfBitsDisplayed(68719476735)).toBe(36);
-        expect(calc.numberOfBitsDisplayed(-INT_MAX_VALUE)).toBe(32);
-        expect(calc.numberOfBitsDisplayed(-(INT_MAX_VALUE+1))).toBe(64);
+        expect(calc.numberOfBitsDisplayed(-INT32_MAX_VALUE)).toBe(32);
+        expect(calc.numberOfBitsDisplayed(-(BigInt(INT32_MAX_VALUE+1)))).toBe(64);
     });
     
     it('calculates max number of bits', () => {
@@ -23,20 +23,60 @@ describe("calc", () => {
         var result = calc.calcExpression(new BitwiseOperationExpression(
             "1|2&3",
             [
-                new ScalarToken(1),
-                new OperatorToken(new ScalarToken(2), "|"),
-                new OperatorToken(new ScalarToken(3), "&"),
+                new ScalarValue(1),
+                new BitwiseOperator(new ScalarValue(2), "|"),
+                new BitwiseOperator(new ScalarValue(3), "&"),
             ]
         ));
         
         expect(result).toBe(3);
     });
+
+    it('calculates flipped bit 32-bit number', () => {
+        expect(calc.flipBit(0, 31)).toBe(1);
+        expect(calc.flipBit(1, 31)).toBe(0);
+        expect(calc.flipBit(-1, 31)).toBe(-2);
+        expect(calc.flipBit(2147483647, 0)).toBe(-1);
+        expect(calc.flipBit(-1, 0)).toBe(2147483647);
+        expect(calc.flipBit(2147483647, 30)).toBe(2147483645);
+    });
+
+    it('caulate flipped bit 64-bit nubmer', () => {
+        const int64max = BigInt("9223372036854775807");
+        expect(calc.flipBit(BigInt(int64max), 0)).toBe(BigInt(-1));
+    });
+
+    it('calculates flipped bit', () => {
+        expect(calc.flipBit(0, 31)).toBe(1);
+        expect(calc.flipBit(1, 31)).toBe(0);
+        expect(calc.flipBit(-1, 31)).toBe(-2);
+        expect(calc.flipBit(2147483647, 0)).toBe(-1);
+        expect(calc.flipBit(-1, 0)).toBe(2147483647);
+        expect(calc.flipBit(2147483647, 30)).toBe(2147483645);
+    });
+
+    it('applies twos complement', () => {
+        expect(calc.applyTwosComplement("010")).toBe("110");
+        expect(calc.applyTwosComplement("110")).toBe("010"); // reverse
+        expect(calc.applyTwosComplement("110")).toBe("010");
+        expect(calc.applyTwosComplement("0")).toBe("10");
+        expect(calc.applyTwosComplement("10101100")).toBe("01010100");
+        expect(calc.applyTwosComplement("01010100")).toBe("10101100"); // reverse
+    });
+
+    it('calcualte 31th bit in 64-bit int', () => {
+        expect(calc.flipBit(calc.promoteToBigInt(-1), 31).toString()).toBe("8589934591");
+    });
+
+    it('promotes to BigInt with the same bits', () => {
+        expect(calc.promoteToBigInt(-1).toString(2)).toBe("11111111111111111111111111111111");
+    });
 });
 
-describe("binary ", () => {
+describe("bitwise ", () => {
 
 
-    it("bitwise NOT same as in node", () => {
+    it("NOT same as in node", () => {
         
         for(var i = -100; i<100;i++) {
             const expected = bin(~i);
@@ -45,7 +85,7 @@ describe("binary ", () => {
         } 
     });
 
-    it("bitwise OR same as in node", () => {
+    it("OR same as in node", () => {
         for(var x = -100; x<100;x++) {
             const y = 5+3%x+x%6*(-x); 
             const expected = bin(x | y);
@@ -55,7 +95,7 @@ describe("binary ", () => {
         } 
     });
 
-    it("bitwise AND same as in node", () => {
+    it("AND same as in node", () => {
         for(var x = -100; x<100;x++) {
             const y = 5+3%x+x%6*(-x); 
             const expected = bin(x & y);

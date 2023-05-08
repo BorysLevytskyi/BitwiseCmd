@@ -10,6 +10,7 @@ import HelpResultView from './components/HelpResultView';
 import TextResultView from './components/TextResultView';
 import WhatsnewResultView from './components/WhatsNewResultView';
 import {STARTUP_COMMAND_KEY} from './startup';
+import { INT32_MAX_VALUE, INT64_MAX_VALUE } from '../core/const';
 
 const shellModule = {
     setup: function(appState: AppState, cmd: CmdShell) {
@@ -31,6 +32,10 @@ const shellModule = {
             appState.toggleDebugMode();
             appState.addCommandResult(c.input, () => <TextResultView text={`Debug Mode: ${appState.debugMode}`}/>);
         }); 
+        cmd.command("-max", (c:CommandInput) => {
+            const text = `Int32 ${INT32_MAX_VALUE}\nInt64 ${INT64_MAX_VALUE}`
+            appState.addCommandResult(c.input, () => <TextResultView text={text} />)
+        })
 
         cmd.command("donate", (c:CommandInput) => {
 

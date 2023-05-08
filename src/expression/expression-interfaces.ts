@@ -1,14 +1,14 @@
-import { ScalarToken } from "./expression";
+import { ScalarValue } from "./expression";
 
 export interface Expression
 {
     expressionString: string;
 }
 
-export interface ExpressionToken 
+export interface ExpressionElement 
 {
     isOperator: boolean;   
-    getUnderlyingScalarOperand: () => ScalarToken;
-    evaluate(operand? : ScalarToken): ScalarToken;
+    getUnderlyingScalarOperand: () => ScalarValue;
+    evaluate(operand? : ScalarValue): ScalarValue;
 }
 

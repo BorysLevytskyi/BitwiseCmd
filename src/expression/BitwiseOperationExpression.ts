@@ -1,11 +1,11 @@
-import { Expression, ExpressionToken } from "./expression-interfaces";
+import { Expression, ExpressionElement } from "./expression-interfaces";
 
 export default class BitwiseOperationExpression implements Expression {
     
     expressionString: string;
-    children: ExpressionToken[];
+    children: ExpressionElement[];
 
-    constructor(expressionString: string, children: ExpressionToken[]) {
+    constructor(expressionString: string, children: ExpressionElement[]) {
         this.expressionString = expressionString;
         this.children = children;
     }

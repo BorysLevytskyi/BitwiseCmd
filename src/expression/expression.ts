@@ -1,12 +1,11 @@
-import ScalarToken from './ScalarToken';
-import OperatorToken from './OperatorToken'
+import ScalarValue from './ScalarValue';
+import BitwiseOperator from './BitwiseOperator'
 import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
-import { Expression, ExpressionToken } from './expression-interfaces';
-import { NumberBase } from '../core/formatter';
+import { Expression, ExpressionElement } from './expression-interfaces';
 
-export { default as ScalarToken } from './ScalarToken';
-export { default as OperatorToken } from './OperatorToken';
+export { default as ScalarValue } from './ScalarValue';
+export { default as BitwiseOperator } from './BitwiseOperator';
 export { default as ListOfNumbersExpression } from './ListOfNumbersExpression';
 export { default as BitwiseOperationExpression } from './BitwiseOperationExpression';
 
@@ -46,14 +45,6 @@ class ExpressionParser {
 
         return null;
     };
-    
-    parseOperand (input : string) : ScalarToken {
-        return ScalarToken.parse(input);
-    };
-
-    createOperand (number : number, base : NumberBase) : ScalarToken {
-        return ScalarToken.create(number, base);
-    };
 
     addFactory (factory: IExpressionParserFactory) {
       this.factories.push(factory);
@@ -70,7 +61,7 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
         
         return input.split(' ')
             .filter(p => p.length > 0)
-            .map(p => ScalarToken.tryParse(p))
+            .map(p => ScalarValue.tryParse(p))
             .filter(n => n == null)
             .length == 0;
     };
@@ -79,7 +70,7 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
         
         const numbers = input.split(' ')
             .filter(p => p.length > 0)
-            .map(m => ScalarToken.parse(m));
+            .map(m => ScalarValue.parse(m));
 
         return new ListOfNumbersExpression(input, numbers);
     }
@@ -90,8 +81,8 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
     regex: RegExp;
 
     constructor() {
-        this.fullRegex = /^((<<|>>|>>>|\||\&|\^)?(~?-?([b,x,a-f,0-9]+)))+$/;
-        this.regex = /(<<|>>|>>>|\||\&|\^)?(~?-?(?:[b,x,a-f,0-9]+))/g;
+        this.fullRegex = /^((<<|>>|>>>|\||\&|\^)?(~?-?([b,x,l,L,a-f,0-9]+)))+$/;
+        this.regex = /(<<|>>|>>>|\||\&|\^)?(~?-?(?:[b,x,l,L,a-f,0-9]+))/g;
     }
 
     canCreate (input: string) : boolean {
@@ -101,7 +92,7 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
 
     create (input: string) : Expression {
         var m : RegExpExecArray | null;
-        const operands : ExpressionToken[] = [];
+        const operands : ExpressionElement[] = [];
         const normalizedString = this.normalizeString(input);
 
         this.regex.lastIndex = 0;
@@ -113,23 +104,23 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
         return new BitwiseOperationExpression(normalizedString, operands)
     };
 
-    parseMatch (m:any): ExpressionToken {
+    parseMatch (m:any): ExpressionElement {
         var input = m[0],
             operator = m[1],
             num = m[2];
 
         var parsed = null;
         if(num.indexOf('~') == 0) {
-            parsed = new OperatorToken(ScalarToken.parse(num.substring(1)), '~');
+            parsed = new BitwiseOperator(ScalarValue.parse(num.substring(1)), '~');
         }
         else {
-            parsed = ScalarToken.parse(num);
+            parsed = ScalarValue.parse(num);
         }
 
         if(operator == null) {
-            return parsed as OperatorToken;
+            return parsed as BitwiseOperator;
         } else {
-            return new OperatorToken(parsed as ScalarToken, operator);
+            return new BitwiseOperator(parsed as ScalarValue, operator);
         }
     };
 

@@ -1,4 +1,4 @@
-import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarToken, OperatorToken } from "./expression";
+import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarValue, BitwiseOperator } from "./expression";
 
 describe("expression parser", () => {
 
@@ -25,8 +25,8 @@ describe("expression parser", () => {
         expect(actual).toBeInstanceOf(ListOfNumbersExpression);
 
         const expr = actual as ListOfNumbersExpression;
-        expect(expr.children[0].getUnderlyingScalarOperand().value).toBe(305419896);
-        expect(expr.children[1].getUnderlyingScalarOperand().value).toBe(2863311360);
+        expect(expr.children[0].getUnderlyingScalarOperand().value.toString()).toBe('305419896');
+        expect(expr.children[1].getUnderlyingScalarOperand().value.toString()).toBe('2863311360');
     })
 
     it("pares multiple operand expression", () => {       
@@ -36,17 +36,17 @@ describe("expression parser", () => {
         const first = result.children[0];
         const second = result.children[1];
 
-        expect(first).toBeInstanceOf(ScalarToken);
+        expect(first).toBeInstanceOf(ScalarValue);
 
-        expect((first as ScalarToken).value).toBe(1);
+        expect((first as ScalarValue).value).toBe(1);
 
-        expect(second).toBeInstanceOf(OperatorToken);
-        var secondOp = second as OperatorToken;
+        expect(second).toBeInstanceOf(BitwiseOperator);
+        var secondOp = second as BitwiseOperator;
         expect(secondOp.operator).toBe("^");
 
-        expect(secondOp.operand).toBeInstanceOf(ScalarToken);
-        var childOp = secondOp.operand as ScalarToken;
-        expect(childOp.value).toBe(2);
+        expect(secondOp.operand).toBeInstanceOf(ScalarValue);
+        var childOp = secondOp.operand as ScalarValue;
+        expect(childOp.value.toString()).toBe('2');
     });
 
     it("bug", () => {       

@@ -1,26 +1,27 @@
-import { INT_MAX_VALUE } from "./const";
+import calc from "./calc";
+import { NumberType } from "./types";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    numberToString: function(value: number, kind: NumberBase) : string {
+    numberToString: function(num: number|bigint, base: NumberBase) : string {
      
-        switch(kind) {
+        switch(base) {
             case 'hex':
-                var hexVal = Math.abs(value).toString(16);
-                return value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
+                var hexVal = calc.abs(num).toString(16);
+                return num >= 0 ? '0x' + hexVal : '-0x' + hexVal;
             case 'bin':          
-                if(value < 0) {
-                    const n = Math.abs(value);
-                    const padding = n > INT_MAX_VALUE ? 64 : 32;
-                    const pos = n.toString(2).padStart(padding, '0');
-                    return findTwosComplement(pos);
+                
+                if(num < 0) {
+                    const size = calc.numberOfBitsDisplayed(num);
+                    const absBin = calc.abs(num).toString(2).padStart(size, '0');
+                    return calc.applyTwosComplement(absBin);
                 }
                 
-                return value.toString(getBase(kind || "bin"));
+                return num.toString(2);
             case 'dec':
-                return value.toString(10);
+                return num.toString(10);
             default:
-                throw new Error("Unexpected kind: " + kind)
+                throw new Error("Unexpected kind: " + base)
         }
     },
     padLeft: function (str: string, length: number, symbol: string) : string {
@@ -36,10 +37,10 @@ const formatter = {
 
         return sb.join('');
     },
-    bin(number: number) {
+    bin(number: NumberType) {
         return this.numberToString(number, 'bin');
     },
-    emBin(number: number) {
+    emBin(number: NumberType) {
         return this.padLeft(this.bin(number), 8, '0');
     },
     
@@ -90,43 +91,6 @@ function getBase(kind:string) : number {
     }
 
     throw new Error("Unsupported kind: " + kind);
-}
-
-function flip(bit: string) : string {
-    switch(bit) {
-        case "1": return "0";
-        case "0": return "1";
-        default: throw new Error("unexpected bit value: " + bit);
-    }
-}
-
-function findTwosComplement(str:string):string {
-    var n = str.length;
-
-    // Traverse the string to get first '1' from
-    // the last of string
-    var i;
-    for (i = n - 1; i >= 0; i--)
-        if (str.charAt(i) == '1')
-            break;
-
-    // If there exists no '1' concat 1 at the
-    // starting of string
-    if (i == -1)
-        return "1" + str;
-
-    // Continue traversal after the position of
-    // first '1'
-    for (var k = i - 1; k >= 0; k--) {
-        // Just flip the values
-        if (str.charAt(k) == '1')
-            str = str.substring(0,k)+"0"+str.substring(k+1, str.length);
-        else
-            str = str.substring(0,k)+"1"+str.substring(k+1, str.length);
-    }
-
-    // return the modified string
-    return str.toString();
 }
 
 const emBin = formatter.emBin.bind(formatter);
