@@ -80,10 +80,10 @@ export default {
         return r;
     },
 
-    rshift (num: BoundedNumber, numBytes : JsNumber) : BoundedNumber {
+    lshift (num: BoundedNumber, numBytes : JsNumber) : BoundedNumber {
         
         const bytes = asIntN(numBytes);
-        return this._apply(num, bin => this.bitwise.rshift(bin, bytes));
+        return this._apply(num, bin => this.bitwise.lshift(bin, bytes));
     },
 
     _apply(num: BoundedNumber, operation: (bin:string) => string) : BoundedNumber {
@@ -104,8 +104,16 @@ export default {
     },
 
     bitwise: { 
-        rshift (bin: string, bytes: number):string {
+        lshift (bin: string, bytes: number):string {
             return bin.substring(bytes) + "0".repeat(bytes);
+        },
+        rshift (bin: string, bytes: number):string {
+            const pad = bin[0].repeat(bytes);
+            return pad + bin.substring(0, bin.length - bytes);
+        },
+        urshift (bin: string, bytes: number):string {
+            const pad = '0'.repeat(bytes);
+            return pad + bin.substring(0, bin.length - bytes);
         },
         not (bin: string) : string {
 
@@ -113,7 +121,10 @@ export default {
                 .split('').map(c => flip(c))
                 .join("");
         },
-        or: (bin1: string, bin2 : string) : string  =>  {
+        or (bin1: string, bin2 : string) : string  {
+
+            if(bin1.length != bin2.length)
+                throw new Error("Binary strings must have the same length");
 
             const result = [];
             for(var i=0; i<bin1.length; i++) {
@@ -126,7 +137,7 @@ export default {
 
             return result.join('');
         },
-        and: (bin1: string, bin2 : string) : string  =>  {
+        and (bin1: string, bin2 : string) : string  {
 
             const result = [];
             for(var i=0; i<bin1.length; i++) {
@@ -135,6 +146,18 @@ export default {
                 const b2 = bin2[i] === "1";
 
                 result.push(b1 && b2 ? "1" : "0");
+            }
+
+            return result.join('');
+        },
+        xor (bin1: string, bin2:string) : string {
+            const result = [];
+            for(var i=0; i<bin1.length; i++) {
+                
+                const b1 = bin1[i] === "1";
+                const b2 = bin2[i] === "1";
+
+                result.push(b1 != b2 ? "1" : "0");
             }
 
             return result.join('');

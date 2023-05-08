@@ -24,7 +24,7 @@ function evalute(op1 : JsNumber, operator: string, op2 : JsNumber) : JsNumber{
     switch(operator) {
         case ">>": return (a >> b) as (JsNumber);
         case ">>>": return (a >>> b) as (JsNumber);
-        case "<<": return calc.rshift(asBoundedNumber(o1), o2).value;
+        case "<<": return calc.lshift(asBoundedNumber(o1), o2).value;
         case "&": return (b & a) as (JsNumber);
         case "|": return (b | a) as (JsNumber);
         case "^": return (b ^ a) as (JsNumber);

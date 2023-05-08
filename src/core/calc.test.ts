@@ -60,8 +60,8 @@ describe('calc.applyTwosComplement', () => {
 describe('calc.rshift', () => {
 
     it('produces number when given number and vice vers', () => {
-        const number = calc.rshift({value:1, maxBitSize:32}, 1).value;
-        const bigInt = calc.rshift({value:BigInt(1), maxBitSize:32}, 1).value;
+        const number = calc.lshift({value:1, maxBitSize:32}, 1).value;
+        const bigInt = calc.lshift({value:BigInt(1), maxBitSize:32}, 1).value;
 
         expect(typeof number).toBe('number');
         expect(number).toBe(2);
@@ -72,30 +72,30 @@ describe('calc.rshift', () => {
 
     it('supports scalar values', () => {
         const operand = new ScalarValue(1);
-        expect(calc.rshift(operand, 1).value).toBe(2);
+        expect(calc.lshift(operand, 1).value).toBe(2);
     });
 
     it("respects bit size", () => {
-        expect(calc.rshift({value: BigInt("0b0100"), maxBitSize: 4}, 2).value.toString()).toBe("0");
+        expect(calc.lshift({value: BigInt("0b0100"), maxBitSize: 4}, 2).value.toString()).toBe("0");
     });
 
     it('transitions number to negative', ()=> {
         // 4-bit space
-        expect(calc.rshift({value: BigInt("0b0100"), maxBitSize: 4}, 1).value.toString()).toBe("-8");
+        expect(calc.lshift({value: BigInt("0b0100"), maxBitSize: 4}, 1).value.toString()).toBe("-8");
         
         // 5-bit space
-        expect(calc.rshift({value: BigInt("0b00100"), maxBitSize: 5}, 1).value.toString()).toBe("8");
-        expect(calc.rshift({value: BigInt("0b01000"), maxBitSize: 5}, 1).value.toString()).toBe("-16");
+        expect(calc.lshift({value: BigInt("0b00100"), maxBitSize: 5}, 1).value.toString()).toBe("8");
+        expect(calc.lshift({value: BigInt("0b01000"), maxBitSize: 5}, 1).value.toString()).toBe("-16");
 
         // 32-bit
-        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 32}, 1).value.toString()).toBe("-2");
-        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 32}, 2).value.toString()).toBe("-4");
+        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 32}, 1).value.toString()).toBe("-2");
+        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 32}, 2).value.toString()).toBe("-4");
 
         // 64-bit
-        expect(calc.rshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 1).value.toString()).toBe("-2");
-        expect(calc.rshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 2).value.toString()).toBe("-4");
-        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 64}, 1).value.toString()).toBe("4294967294");
-        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 64}, 2).value.toString()).toBe("8589934588");
+        expect(calc.lshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 1).value.toString()).toBe("-2");
+        expect(calc.lshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 2).value.toString()).toBe("-4");
+        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 64}, 1).value.toString()).toBe("4294967294");
+        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 64}, 2).value.toString()).toBe("8589934588");
 
     });
 });
@@ -115,7 +115,58 @@ describe("calc misc", () => {
     
 });
 
-describe("bitwise ", () => {
+describe("calc.bitwise.", () => {
+    it("not", () => {
+        expect(calc.bitwise.not("0101")).toBe("1010");
+        expect(calc.bitwise.not("11111")).toBe("00000")
+    });
+
+    it("or", () => {
+        expect(calc.bitwise.or("1", "1")).toBe("1");
+        expect(calc.bitwise.or("1", "0")).toBe("1");
+        expect(calc.bitwise.or("0", "0")).toBe("0");
+        expect(calc.bitwise.or("10101", "01111")).toBe("11111");
+    });
+
+    it("and", () => {
+        expect(calc.bitwise.and("1", "1")).toBe("1");
+        expect(calc.bitwise.and("1", "0")).toBe("0");
+        expect(calc.bitwise.and("0", "0")).toBe("0");
+        expect(calc.bitwise.and("10101", "11011")).toBe("10001");
+    });
+
+    it("xor", () => {
+        expect(calc.bitwise.xor("1", "1")).toBe("0");
+        expect(calc.bitwise.xor("1", "0")).toBe("1");
+        expect(calc.bitwise.xor("0", "0")).toBe("0");
+        expect(calc.bitwise.xor("10101", "11011")).toBe("01110");
+    });
+
+    it("lshift", () => {
+        expect(calc.bitwise.lshift("1", 1)).toBe("0");
+        expect(calc.bitwise.lshift("01", 1)).toBe("10");
+        expect(calc.bitwise.lshift("01101", 4)).toBe("10000");
+        expect(calc.bitwise.lshift("000001", 4)).toBe("010000");
+    });
+
+    it("rshift", () => {
+        expect(calc.bitwise.rshift("1", 1)).toBe("1");
+        expect(calc.bitwise.rshift("01", 1)).toBe("00");
+        expect(calc.bitwise.rshift("0101", 2)).toBe("0001");
+        expect(calc.bitwise.rshift("1000", 3)).toBe("1111");
+        expect(calc.bitwise.rshift("1101", 1)).toBe("1110");
+    });
+
+    it("urshift", () => {
+        expect(calc.bitwise.urshift("1", 1)).toBe("0");
+        expect(calc.bitwise.urshift("01", 1)).toBe("00");
+        expect(calc.bitwise.urshift("0101", 2)).toBe("0001");
+        expect(calc.bitwise.urshift("1000", 3)).toBe("0001");
+        expect(calc.bitwise.urshift("1101", 1)).toBe("0110");
+    });
+})
+
+describe("bitwise comparison", () => {
     it("NOT same as in node", () => {
         
         for(var i = -100; i<100;i++) {
