@@ -71,10 +71,10 @@ describe("comparison with nodejs engone", () => {
             "2<<7"
         ];
 
-        inputs.forEach(testBinary);
+        inputs.forEach(i => testBinary(i, i, false));
     });
 
-    it('random 32-bit', () => {
+    it('random: two inbary strings 64-bit', () => {
         
         const signs = ["|", "&", "^", "<<", ">>", ">>>"]
 
@@ -83,35 +83,59 @@ describe("comparison with nodejs engone", () => {
             const isShift = sign.length > 1;
             const op1 = random(-INT32_MAX_VALUE, INT32_MAX_VALUE);
             const op2 = isShift ? random(0, 31) : random(-INT32_MAX_VALUE, INT32_MAX_VALUE);
+            
             const input = op1.toString() + sign + op2.toString();
-            testBinary(input);
+            
+            testBinary(input, input, false);
+        }
+    });
+
+    it('random: two inbary strings 64-bit', () => {
+        
+        const signs = ["|", "&", "^"]
+
+        for(var i =0; i<1000; i++){
+            const sign = signs[random(0, signs.length-1)];
+            const isShift = sign.length > 1;
+            const op1 = random(-Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+            const op2 = isShift ? random(0, 63) : Number.MAX_SAFE_INTEGER;
+            
+            const actualInput = `${op1}l${sign}${op2}l`;
+            const expectedInput = `BigInt("${op1}")${sign}BigInt("${op2}")`; 
+
+            testBinary(expectedInput, actualInput, true);
         }
     });
     
-    function testBinary(input: string) {
-        const expected = eval(input).toString();
+    function testBinary(expectedInput:string, actualInput: string, isBigInt: boolean) {
+        
+        const expected = eval(expectedInput).toString();
+        
         let actual = "";
+        
         try
         {
-            var expr = parser.parse(input) as BitwiseOperationExpression;
+            var expr = parser.parse(actualInput) as BitwiseOperationExpression;
 
             var op1 = expr.children[0] as ScalarValue;
             var op2 = expr.children[1] as BitwiseOperator;
 
-            expect(op1.isBigInt()).toBe(false);
-            expect(op2.getUnderlyingScalarOperand().isBigInt()).toBe(false);
+            expect(op1.isBigInt()).toBe(isBigInt);
+            expect(op2.getUnderlyingScalarOperand().isBigInt()).toBe(isBigInt);
 
             actual = op2.evaluate(op1).value.toString();
             const equals = actual === expected;
 
             if(!equals)
             {
-                console.log(`${input}\nop1:${typeof op1.value}\nop2:${typeof op2.getUnderlyingScalarOperand().value}`);
+                console.log(`Expected:${expectedInput}\n$Actual:${actualInput}\nop1:${typeof op1.value}\nop2:${typeof op2.getUnderlyingScalarOperand().value}`);
             }
         }
         catch(err) 
         {
-            console.log(input);
+
+            console.log(`Error:\nExpected:${expectedInput}\nActual:${actualInput}\n${typeof actualInput}`);
+
             throw err;
         }
         
