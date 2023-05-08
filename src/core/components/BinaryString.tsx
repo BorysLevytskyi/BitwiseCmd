@@ -53,10 +53,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
 
         let signBitIndex = -1;
 
-        if(bitChars.length === bitSize)
-            signBitIndex = 0;
-
-        if(bitSize != null && bitChars.length > bitSize)
+        if(bitSize != null && bitChars.length >= bitSize)
             signBitIndex = bitChars.length - bitSize!;
 
         return bitChars.map((c, i) => {
