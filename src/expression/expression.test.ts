@@ -1,6 +1,7 @@
 import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarValue, BitwiseOperator } from "./expression";
 import { random } from "../core/utils";
 import { INT32_MAX_VALUE } from "../core/const";
+import { act } from "react-dom/test-utils";
 
 describe("expression parser", () => {
 
@@ -87,6 +88,29 @@ describe("comparison with nodejs engone", () => {
             const input = op1.toString() + sign + op2.toString();
             
             testBinary(input, input, false);
+        }
+    });
+
+    it('random: 64 and 32-bit', () => {
+
+        for(var i =0; i<1000; i++){
+           
+            const num = random(-Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+            const expectedInput = "~" + num.toString();
+            const actualInput = num > INT32_MAX_VALUE ? `~BigInt("${num}")` : expectedInput;
+            const expected = eval(actualInput).toString();
+
+            const expr = parser.parse(expectedInput) as BitwiseOperationExpression;
+            const bo = (expr.children[0] as BitwiseOperator);
+            const res = bo.evaluate();
+            const actual = res.value.toString();
+
+            if(actual != expected) {
+                const uop = bo.getUnderlyingScalarOperand();
+                console.log(`${expectedInput}\n${actualInput}\n${uop.value} ${typeof uop.value} ${uop.maxBitSize}\n${res.value} ${typeof res.value} ${res.maxBitSize}`)
+            }
+
+            expect(actual).toBe(expected);   
         }
     });
 

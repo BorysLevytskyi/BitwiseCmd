@@ -120,6 +120,11 @@ describe("calc misc", () => {
         expect(calc.toBinaryString(asBoundedNumber(2147483647))).toBe("1111111111111111111111111111111");
         expect(calc.toBinaryString(new ScalarValue(2147483647))).toBe("1111111111111111111111111111111");
     });
+
+    it('not 64bit', () => {
+        const actual = calc.not(asBoundedNumber(BigInt("8920390230576132"))).value.toString();
+        expect(actual).toBe("-8920390230576133");
+    });
 });
 
 describe("calc.bitwise.", () => {
