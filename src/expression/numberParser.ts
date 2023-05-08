@@ -1,6 +1,6 @@
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
-import { NumberType } from "../core/types";
+import { JsNumber } from "../core/types";
 
 const decimalRegex = /^-?\d+[l,L]?$/;
 const hexRegex = /^-?0x[0-9,a-f]+[l,L]?$/i;
@@ -9,11 +9,11 @@ const binRegex = /^-?0b[0-1]+[l,L]?$/i;
 interface ParserConfig {
     regex: RegExp,
     base: NumberBase,
-    parse: (input: string) => NumberType 
+    parse: (input: string) => JsNumber 
 }
 
 export interface ParsedNumber {
-    value: NumberType;
+    value: JsNumber;
     base: NumberBase;
     input: string;
 }
@@ -66,7 +66,7 @@ class NumberParser {
 const MAX_SAFE_INTn = BigInt(INT32_MAX_VALUE);
 const MIN_SAFE_INTn = BigInt(INT32_MIN_VALUE);
 
-function parseIntSafe(input : string, radix: number)  : NumberType {
+function parseIntSafe(input : string, radix: number)  : JsNumber {
     
 const bigIntStr = input.replace('-', '').replace('l', '').replace('L', '');
     let bigInt = BigInt(bigIntStr);

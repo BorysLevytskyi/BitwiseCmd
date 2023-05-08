@@ -1,1 +1,1 @@
-export type NumberType = number | bigint;
+export type JsNumber = number | bigint;

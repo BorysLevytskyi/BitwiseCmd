@@ -1,5 +1,5 @@
 import calc from "../core/calc";
-import { NumberType } from "../core/types";
+import { JsNumber } from "../core/types";
 import ScalarValue from "./ScalarValue";
 
 const engine = {
@@ -14,22 +14,22 @@ const engine = {
     }
 };
 
-function evalute(op1 : NumberType, operator: string, op2 : NumberType) : NumberType{
+function evalute(op1 : JsNumber, operator: string, op2 : JsNumber) : JsNumber{
     const a = equalizeType(op2, op1) as any;
     const b = equalizeType(op1, op2) as any;
     
     switch(operator) {
-        case ">>": return (a >> b) as (NumberType);
-        case ">>>": return (a >>> b) as (NumberType);
+        case ">>": return (a >> b) as (JsNumber);
+        case ">>>": return (a >>> b) as (JsNumber);
         case "<<": return calc.rshift(a, b, calc.maxBitSize(a));
-        case "&": return (b & a) as (NumberType);
-        case "|": return (b | a) as (NumberType);
-        case "^": return (b ^ a) as (NumberType);
+        case "&": return (b & a) as (JsNumber);
+        case "|": return (b | a) as (JsNumber);
+        case "^": return (b ^ a) as (JsNumber);
         default: throw new Error(operator + " operator is not supported");
     }
 }
 
-function equalizeType(source : NumberType, dest : NumberType) : NumberType {
+function equalizeType(source : JsNumber, dest : JsNumber) : JsNumber {
     
     return typeof source == 'bigint' && typeof dest != 'bigint'
         ? BigInt(dest)

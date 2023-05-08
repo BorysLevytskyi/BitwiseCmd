@@ -2,7 +2,7 @@ import {numberParser} from './numberParser';
 import { ExpressionElement as ExpressionElement } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE } from '../core/const';
-import { NumberType } from '../core/types';
+import { JsNumber } from '../core/types';
 
 var globalId : number = 1;
 
@@ -10,11 +10,11 @@ var globalId : number = 1;
 // Represents scalar numeric value
 export default class ScalarValue implements ExpressionElement {
     id: number;
-    value: NumberType;
+    value: JsNumber;
     base: NumberBase;
     isOperator: boolean;
 
-    constructor(value : NumberType, base?: NumberBase, is32Limit?: boolean) {
+    constructor(value : JsNumber, base?: NumberBase, is32Limit?: boolean) {
         
         ScalarValue.validateSupported(value);
 
@@ -32,7 +32,7 @@ export default class ScalarValue implements ExpressionElement {
         return typeof this.value === 'bigint';
     }
             
-    setValue(value : NumberType) {
+    setValue(value : JsNumber) {
         this.value = value;
     }
 
@@ -44,7 +44,7 @@ export default class ScalarValue implements ExpressionElement {
         return this
     }
 
-    static validateSupported(num : NumberType) {
+    static validateSupported(num : JsNumber) {
         
         if(typeof num == "bigint" && (num < INT64_MIN_VALUE || num > INT64_MAX_VALUE)) {
             throw new Error(`64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}`);

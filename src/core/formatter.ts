@@ -1,9 +1,9 @@
 import calc from "./calc";
-import { NumberType } from "./types";
+import { JsNumber } from "./types";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    numberToString: function(num: NumberType, base: NumberBase) : string {
+    numberToString: function(num: JsNumber, base: NumberBase) : string {
      
         switch(base) {
             case 'hex':
@@ -30,10 +30,10 @@ const formatter = {
 
         return sb.join('');
     },
-    bin(number: NumberType) {
+    bin(number: JsNumber) {
         return this.numberToString(number, 'bin');
     },
-    emBin(number: NumberType) {
+    emBin(number: JsNumber) {
         return this.padLeft(this.bin(number), 8, '0');
     },
     

@@ -1,19 +1,19 @@
 import { type } from "os";
 import { Expression } from "../expression/expression-interfaces";
 import formatter from "./formatter";
-import { NumberType } from "./types";
+import { JsNumber } from "./types";
 import { asIntN } from "./utils";
 
 export default {
-    abs (num : NumberType) : NumberType {
+    abs (num : JsNumber) : JsNumber {
         return num >= 0 ? num : -num;
     },
     
-    maxBitSize(num : NumberType) : number {
+    maxBitSize(num : JsNumber) : number {
         return typeof num == "bigint" ? 64 : 32;
     },
 
-    numberOfBitsDisplayed: function (num: NumberType) : number {
+    numberOfBitsDisplayed: function (num: JsNumber) : number {
         
         if(num < 0) {
             return typeof num == 'bigint' ? 64 : 32
@@ -33,7 +33,7 @@ export default {
         return Math.max.apply(null, counts);
     },
 
-    flipBit: function(num: NumberType, index: number): NumberType  {
+    flipBit: function(num: JsNumber, index: number): JsNumber  {
 
         const is64bit = typeof num == 'bigint';
         const size = typeof num == "bigint" ? 64 : 32;
@@ -80,7 +80,7 @@ export default {
         return bin.split('').map(b => b=="1"?"0":"1").join("");
     },
 
-    binaryRepresentation(num : NumberType, bitSize?: number) : string {
+    binaryRepresentation(num : JsNumber, bitSize?: number) : string {
         
         bitSize = bitSize || typeof num == "bigint" ? 64 : 32;
         const bin = this.abs(num).toString(2);
@@ -93,7 +93,7 @@ export default {
             : bin;
     },
 
-    rshift (num: NumberType, numBytes : NumberType, bitSize: number) : NumberType {
+    rshift (num: JsNumber, numBytes : JsNumber, bitSize: number) : JsNumber {
         
         const bytes = asIntN(numBytes);
         

@@ -1,4 +1,4 @@
-import { NumberType } from "./types";
+import { JsNumber } from "./types";
 
 function chunkifyString(input: string, chunkSize: number) : string[] {
     
@@ -11,7 +11,7 @@ function chunkifyString(input: string, chunkSize: number) : string[] {
     return result;
 }
 
-function asIntN(num: NumberType) : number {
+function asIntN(num: JsNumber) : number {
     return typeof num == "bigint" ? parseInt(num.toString()): num as number;
 }
 
