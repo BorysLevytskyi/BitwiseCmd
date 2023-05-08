@@ -1,6 +1,7 @@
 import { type } from "os";
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "./const";
 import { asIntN } from "./utils";
+import formatter from "./formatter";
 
 export type JsNumber = number | bigint;
 
@@ -17,8 +18,8 @@ export class BoundedInt {
         return this.value.toString();
     }
 
-    toString() {
-        return this.value.toString();
+    toString(base?:number) {
+        return formatter.numberToString(this, base || 10);
     }
     
     num() {

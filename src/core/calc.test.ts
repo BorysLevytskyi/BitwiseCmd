@@ -98,12 +98,12 @@ xdescribe('calc.lshift', () => {
     });
 });
 
-xdescribe("calc misc", () => {
+describe("calc misc", () => {
 
 
     it('promoteTo64Bit', () => {
         const n = asBoundedNumber(-1);
-        expect(calc.promoteTo64Bit(n).toString(2)).toBe("11111111111111111111111111111111");
+        expect(calc.toBinaryString(calc.promoteTo64Bit(n))).toBe("11111111111111111111111111111111");
     });
 
     it('binaryRepresentation', () => {
