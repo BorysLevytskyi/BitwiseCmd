@@ -20,25 +20,8 @@ export default {
         return num.toString(2).length;
     },
 
-    flipBit: function(num: BoundedNumber | JsNumber, index: number): BoundedNumber  {
-
-        num = asBoundedNumber(num);
-        const is64bit = num.maxBitSize == 64;
-        const size = num.maxBitSize;
-        const bin = formatter.bin(num.value).padStart(size, '0');
-        const staysNegative = (bin[0] == "1" && index > 0);
-        const becomesNegative = (bin[0] == "0" && index == 0);
-        
-        let m = 1;
-        let flipped = bin.substring(0, index) + flip(bin[index]) + bin.substring(index+1);
-
-        if(staysNegative || becomesNegative) {
-            flipped = this.applyTwosComplement(flipped);
-            m=-1;
-        }
-       
-        const n : JsNumber = is64bit ? BigInt("0b"+ flipped)*BigInt(m) : parseInt(flipped, 2)*m;
-        return asBoundedNumber(n);
+    flipBit: function(num: BoundedNumber | JsNumber, bitIndex: number): BoundedNumber  {
+        return this._apply(asBoundedNumber(num), (bin) => this.bitwise.flipBit(bin, bitIndex));
     },
 
     promoteTo64Bit(number: number) : BoundedNumber {
@@ -81,9 +64,15 @@ export default {
     },
 
     lshift (num: BoundedNumber, numBytes : JsNumber) : BoundedNumber {
-        
-        const bytes = asIntN(numBytes);
-        return this._apply(num, bin => this.bitwise.lshift(bin, bytes));
+        return this._apply(num, bin => this.bitwise.lshift(bin, asIntN(numBytes)));
+    },
+
+    rshift (num : BoundedNumber, numBytes : JsNumber) : BoundedNumber {
+        return this._apply(num, bin => this.bitwise.rshift(bin, asIntN(numBytes)));
+    },
+
+    urshift (num : BoundedNumber, numBytes : JsNumber) : BoundedNumber {
+        return this._apply(num, bin => this.bitwise.urshift(bin, asIntN(numBytes)));
     },
 
     _apply(num: BoundedNumber, operation: (bin:string) => string) : BoundedNumber {
@@ -161,6 +150,9 @@ export default {
             }
 
             return result.join('');
+        },
+        flipBit(bin: string, bitIndex : number) : string {
+            return bin.substring(0, bitIndex) + flip(bin[bitIndex]) + bin.substring(bitIndex+1)
         }
     }
 };
