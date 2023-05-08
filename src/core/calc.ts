@@ -98,7 +98,6 @@ export default {
         bin = operation(bin);
 
         let m = BigInt(1);
-        //console.log(bin);
 
         if(bin['0'] == '1') {
             bin = this.applyTwosComplement(bin);
