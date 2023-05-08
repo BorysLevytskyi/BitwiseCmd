@@ -13,7 +13,7 @@ interface ParserConfig {
 }
 
 export interface ParsedNumber {
-    value: number|bigint;
+    value: NumberType;
     base: NumberBase;
     input: string;
 }

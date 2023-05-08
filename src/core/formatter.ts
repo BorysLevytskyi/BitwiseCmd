@@ -3,21 +3,14 @@ import { NumberType } from "./types";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    numberToString: function(num: number|bigint, base: NumberBase) : string {
+    numberToString: function(num: NumberType, base: NumberBase) : string {
      
         switch(base) {
             case 'hex':
                 var hexVal = calc.abs(num).toString(16);
                 return num >= 0 ? '0x' + hexVal : '-0x' + hexVal;
             case 'bin':          
-                
-                if(num < 0) {
-                    const size = calc.numberOfBitsDisplayed(num);
-                    const absBin = calc.abs(num).toString(2).padStart(size, '0');
-                    return calc.applyTwosComplement(absBin);
-                }
-                
-                return num.toString(2);
+                return calc.binaryRepresentation(num);
             case 'dec':
                 return num.toString(10);
             default:

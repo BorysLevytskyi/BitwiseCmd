@@ -1,3 +1,5 @@
+import { NumberType } from "./types";
+
 function chunkifyString(input: string, chunkSize: number) : string[] {
     
     const result : string[] = [];
@@ -9,4 +11,8 @@ function chunkifyString(input: string, chunkSize: number) : string[] {
     return result;
 }
 
-export {chunkifyString};
+function asIntN(num: NumberType) : number {
+    return typeof num == "bigint" ? parseInt(num.toString()): num as number;
+}
+
+export {chunkifyString, asIntN};

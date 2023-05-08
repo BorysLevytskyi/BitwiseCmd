@@ -1,12 +1,19 @@
+import { type } from "os";
 import { Expression } from "../expression/expression-interfaces";
 import formatter from "./formatter";
 import { NumberType } from "./types";
+import { asIntN } from "./utils";
 
 export default {
     abs (num : NumberType) : NumberType {
         return num >= 0 ? num : -num;
     },
-    numberOfBitsDisplayed: function (num: number|bigint) : number {
+    
+    maxBitSize(num : NumberType) : number {
+        return typeof num == "bigint" ? 64 : 32;
+    },
+
+    numberOfBitsDisplayed: function (num: NumberType) : number {
         
         if(num < 0) {
             return typeof num == 'bigint' ? 64 : 32
@@ -26,31 +33,21 @@ export default {
         return Math.max.apply(null, counts);
     },
 
-    calcExpression: function (expr: Expression) {
-        return eval(expr.expressionString);
-    },
-
-    flipBit: function(num: number|bigint, index: number): number|bigint  {
+    flipBit: function(num: NumberType, index: number): NumberType  {
 
         const is64bit = typeof num == 'bigint';
         const size = typeof num == "bigint" ? 64 : 32;
         const bin = formatter.bin(num).padStart(size, '0');
         const staysNegative = (bin[0] == "1" && index > 0);
         const becomesNegative = (bin[0] == "0" && index == 0);
-
-        //console.log(bin);
         
         let m = 1;
         let flipped = bin.substring(0, index) + flip(bin[index]) + bin.substring(index+1);
-
-        //console.log(flipped);
 
         if(staysNegative || becomesNegative) {
             flipped = this.applyTwosComplement(flipped);
             m=-1;
         }
-
-        //console.log(flipped);
        
         return is64bit ? BigInt("0b"+ flipped)*BigInt(m) : parseInt(flipped, 2)*m;
     },
@@ -83,7 +80,38 @@ export default {
         return bin.split('').map(b => b=="1"?"0":"1").join("");
     },
 
-    bitwise: {
+    binaryRepresentation(num : NumberType, bitSize?: number) : string {
+        
+        bitSize = bitSize || typeof num == "bigint" ? 64 : 32;
+        const bin = this.abs(num).toString(2);
+        
+        if(bin.length > bitSize!)
+            throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
+
+        return  num < 0
+            ? this.applyTwosComplement(bin.padStart(bitSize, '0'))
+            : bin;
+    },
+
+    rshift (num: NumberType, numBytes : NumberType, bitSize: number) : NumberType {
+        
+        const bytes = asIntN(numBytes);
+        
+        let bin = this.binaryRepresentation(num, bitSize).padStart(bitSize, '0'); 
+        bin = bin.substring(bytes) + "0".repeat(bytes);
+
+        let m = BigInt(1);
+        
+        if(bin['0'] == '1') {
+            bin = this.applyTwosComplement(bin);
+            m = BigInt(-1);
+        }
+    
+        const result = BigInt("0b" + bin) * m;
+        return typeof num == "bigint" ? result : asIntN(result);
+    },
+
+    bitwise: { 
         not: (bin: string) : string  =>  {
 
             var padded = bin

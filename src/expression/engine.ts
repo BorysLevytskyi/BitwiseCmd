@@ -1,3 +1,4 @@
+import calc from "../core/calc";
 import { NumberType } from "../core/types";
 import ScalarValue from "./ScalarValue";
 
@@ -20,7 +21,7 @@ function evalute(op1 : NumberType, operator: string, op2 : NumberType) : NumberT
     switch(operator) {
         case ">>": return (a >> b) as (NumberType);
         case ">>>": return (a >>> b) as (NumberType);
-        case "<<": return (a << b) as (NumberType);
+        case "<<": return calc.rshift(a, b, calc.maxBitSize(a));
         case "&": return (b & a) as (NumberType);
         case "|": return (b | a) as (NumberType);
         case "^": return (b ^ a) as (NumberType);
