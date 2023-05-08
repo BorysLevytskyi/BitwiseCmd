@@ -1,23 +1,23 @@
 import formatter from "./formatter";
-import { BoundedNumber, JsNumber,  asBoundedNumber } from "./types";
+import { BoundedInt, JsNumber,  asBoundedNumber } from "./types";
 import { asIntN } from "./utils";
 
 export default {
-    abs (num : BoundedNumber) : BoundedNumber {
+    abs (num : BoundedInt) : BoundedInt {
         return asBoundedNumber(num.value >= 0 ? num.value : -num.value);
     },
     
-    numberOfBitsDisplayed: function (num: BoundedNumber | JsNumber) : number {
-        return asBoundedNumber(num).value.toString(2).length;
+    numberOfBitsDisplayed: function (num: BoundedInt | JsNumber) : number {
+        return this.toBinaryString(asBoundedNumber(num)).length;
     },
 
-    flipBit: function(num: BoundedNumber | JsNumber, bitIndex: number): BoundedNumber  {
+    flipBit: function(num: BoundedInt | JsNumber, bitIndex: number): BoundedInt  {
         return this._applySingle(asBoundedNumber(num), (bin) => this.bitwise.flipBit(bin, bitIndex));
     },
 
-    promoteTo64Bit(number: BoundedNumber) : BoundedNumber {
+    promoteTo64Bit(number: BoundedInt) : BoundedInt {
         const bin = this.toBinaryString(number);
-        return new BoundedNumber(BigInt("0b" + bin), 64);
+        return new BoundedInt(BigInt("0b" + bin), 64);
     },
 
     applyTwosComplement: (bin:string):string => {
@@ -39,7 +39,7 @@ export default {
         return flipped.join('') + bin.substring(lastIndex) ;
     },
 
-    toBinaryString(num: BoundedNumber) : string {
+    toBinaryString(num: BoundedInt) : string {
 
         const bitSize = num.maxBitSize;
         const bin = this.abs(num).value.toString(2);
@@ -54,35 +54,35 @@ export default {
         return r;
     },
 
-    lshift (num: BoundedNumber, numBytes : JsNumber) : BoundedNumber {
+    lshift (num: BoundedInt, numBytes : JsNumber) : BoundedInt {
         return this._applySingle(num, bin => this.bitwise.lshift(bin, asIntN(numBytes)));
     },
 
-    rshift (num : BoundedNumber, numBytes : JsNumber) : BoundedNumber {
+    rshift (num : BoundedInt, numBytes : JsNumber) : BoundedInt {
         return this._applySingle(num, bin => this.bitwise.rshift(bin, asIntN(numBytes)));
     },
 
-    urshift (num : BoundedNumber, numBytes : JsNumber) : BoundedNumber {
+    urshift (num : BoundedInt, numBytes : JsNumber) : BoundedInt {
         return this._applySingle(num, bin => this.bitwise.urshift(bin, asIntN(numBytes)));
     },
 
-    not(num:BoundedNumber) : BoundedNumber { 
+    not(num:BoundedInt) : BoundedInt { 
         return this._applySingle(num, this.bitwise.not);
     },
 
-    and (num1 : BoundedNumber, num2 : BoundedNumber) : BoundedNumber {
+    and (num1 : BoundedInt, num2 : BoundedInt) : BoundedInt {
         return this._applyTwo(num1, num2, this.bitwise.and);
     },
 
-    or (num1 : BoundedNumber, num2 : BoundedNumber) : BoundedNumber {
+    or (num1 : BoundedInt, num2 : BoundedInt) : BoundedInt {
         return this._applyTwo(num1, num2, this.bitwise.or);
     },
 
-    xor (num1 : BoundedNumber, num2 : BoundedNumber) : BoundedNumber {
+    xor (num1 : BoundedInt, num2 : BoundedInt) : BoundedInt {
         return this._applyTwo(num1, num2, this.bitwise.xor);
     },
 
-    _applySingle(num: BoundedNumber, operation: (bin:string) => string) : BoundedNumber {
+    _applySingle(num: BoundedInt, operation: (bin:string) => string) : BoundedInt {
 
         let bin = this.toBinaryString(num).padStart(num.maxBitSize, '0');
 
@@ -99,7 +99,7 @@ export default {
         return asBoundedNumber(typeof num.value == "bigint" ? result : asIntN(result));
     },
 
-    _applyTwo(num1: BoundedNumber, num2: BoundedNumber,  operation: (bin1:string, bin2:string) => string) : BoundedNumber {
+    _applyTwo(num1: BoundedInt, num2: BoundedInt,  operation: (bin1:string, bin2:string) => string) : BoundedInt {
 
         let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, '0');
         let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, '0');

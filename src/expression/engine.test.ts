@@ -1,13 +1,13 @@
-import { BoundedNumber } from "../core/types";
+import { BoundedInt } from "../core/types";
 import ScalarValue from "./ScalarValue";
 import engine from "./engine";
 
 describe('evaluate', () => {
 
     it('treats differently big ints and regular numbers', () => {
-        const one = new BoundedNumber(1);
-        const n64 = new BoundedNumber(2147483647, 64);
-        const n32 = new BoundedNumber(2147483647, 32);
+        const one = new BoundedInt(1);
+        const n64 = new BoundedInt(2147483647, 64);
+        const n32 = new BoundedInt(2147483647, 32);
 
         const bigResult = engine.applyOperator(new ScalarValue(n64), "<<", new ScalarValue(one));
         const result = engine.applyOperator(new ScalarValue(n32), "<<", new ScalarValue(one));

@@ -6,7 +6,7 @@ it('can apply ~ operand', () => {
     var expr = new BitwiseOperator(op, "~");
     
     var result = expr.evaluate();
-    expect(result.value).toBe(-11);
+    expect(result.value).toBe("-11");
     expect(result.base).toBe('dec');
 });
 

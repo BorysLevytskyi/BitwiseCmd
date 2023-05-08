@@ -1,6 +1,6 @@
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
-import { BoundedNumber, asBoundedNumber } from "../core/types";
+import { BoundedInt, asBoundedNumber } from "../core/types";
 
 // byte -i8 or b
 // single - i16 or s 
@@ -12,11 +12,11 @@ const binRegex = /^-?0b[0-1]+[l,L]?$/i;
 interface ParserConfig {
     regex: RegExp,
     base: NumberBase,
-    parse: (input: string) => BoundedNumber 
+    parse: (input: string) => BoundedInt 
 }
 
 export interface ParsedNumber {
-    value: BoundedNumber;
+    value: BoundedInt;
     base: NumberBase;
     input: string;
 }
@@ -66,7 +66,7 @@ class NumberParser {
     }
 }
 
-function parseIntSafe(input : string, radix: number)  : BoundedNumber {
+function parseIntSafe(input : string, radix: number)  : BoundedInt {
     
     const lower = input.toLocaleLowerCase();
     const bigIntStr = lower.replace('-', '').replace('l', '').replace('L', '');
@@ -76,7 +76,7 @@ function parseIntSafe(input : string, radix: number)  : BoundedNumber {
 
     if(isNegative) n = -n;
 
-    return new BoundedNumber(n, size);
+    return new BoundedInt(n, size);
 }
 
 const numberParser = new NumberParser(knownParsers);

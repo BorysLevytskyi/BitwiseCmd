@@ -1,4 +1,4 @@
-import { BoundedNumber, JsNumber, isBoundedNumber } from "./types";
+import { BoundedInt, JsNumber, isBoundedNumber } from "./types";
 
 function chunkifyString(input: string, chunkSize: number) : string[] {
     
@@ -11,7 +11,7 @@ function chunkifyString(input: string, chunkSize: number) : string[] {
     return result;
 }
 
-function asIntN(num: JsNumber | BoundedNumber) : number {
+function asIntN(num: JsNumber | BoundedInt) : number {
     if(isBoundedNumber(num))
         return asIntN(num.value);
 
