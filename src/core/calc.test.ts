@@ -2,30 +2,37 @@ import calc from './calc';
 import { BitwiseOperationExpression, ScalarValue, BitwiseOperator } from '../expression/expression';
 import { INT32_MAX_VALUE } from './const';
 import exp from 'constants';
+import { asBoundedNumber } from './types';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
-        expect(calc.flipBit(0, 31)).toBe(1);
-        expect(calc.flipBit(1, 31)).toBe(0);
-        expect(calc.flipBit(-1, 31)).toBe(-2);
-        expect(calc.flipBit(2147483647, 0)).toBe(-1);
-        expect(calc.flipBit(-1, 0)).toBe(2147483647);
-        expect(calc.flipBit(2147483647, 30)).toBe(2147483645);
+        expect(calc.flipBit(0, 31).value).toBe(1);
+        expect(calc.flipBit(1, 31).value).toBe(0);
+        expect(calc.flipBit(-1, 31).value).toBe(-2);
+        expect(calc.flipBit(2147483647, 0).value).toBe(-1);
+        expect(calc.flipBit(-1, 0).value).toBe(2147483647);
+        expect(calc.flipBit(2147483647, 30).value).toBe(2147483645);
     });
 
     it('caulate flipped bit 64-bit nubmer', () => {
         const int64max = BigInt("9223372036854775807");
-        expect(calc.flipBit(BigInt(int64max), 0)).toBe(BigInt(-1));
+        expect(calc.flipBit(BigInt(int64max), 0).value.toString()).toBe("-1");
     });
 
     it('calculates flipped bit', () => {
-        expect(calc.flipBit(0, 31)).toBe(1);
-        expect(calc.flipBit(1, 31)).toBe(0);
-        expect(calc.flipBit(-1, 31)).toBe(-2);
-        expect(calc.flipBit(2147483647, 0)).toBe(-1);
-        expect(calc.flipBit(-1, 0)).toBe(2147483647);
-        expect(calc.flipBit(2147483647, 30)).toBe(2147483645);
+        expect(calc.flipBit(0, 31).value).toBe(1);
+        expect(calc.flipBit(1, 31).value).toBe(0);
+        expect(calc.flipBit(-1, 31).value).toBe(-2);
+        expect(calc.flipBit(2147483647, 0).value).toBe(-1);
+        expect(calc.flipBit(-1, 0).value).toBe(2147483647);
+        expect(calc.flipBit(2147483647, 30).value).toBe(2147483645);
     });
+
+    
+    it('calcualte 31th bit in 64-bit int', () => {
+        expect(calc.flipBit(calc.promoteTo64Bit(-1), 31).value.toString()).toBe("8589934591");
+    });
+
 });
 
 describe('calc.numberOfBitsDisplayed', () => {
@@ -59,8 +66,8 @@ describe('calc.applyTwosComplement', () => {
 describe('calc.rshift', () => {
 
     it('produces number when given number and vice vers', () => {
-        const number = calc.rshift(1, 1, 32);
-        const bigInt = calc.rshift(BigInt(1), 1, 32);
+        const number = calc.rshift({value:1, maxBitSize:32}, 1).value;
+        const bigInt = calc.rshift({value:BigInt(1), maxBitSize:32}, 1).value;
 
         expect(typeof number).toBe('number');
         expect(number).toBe(2);
@@ -69,27 +76,32 @@ describe('calc.rshift', () => {
         expect(bigInt.toString()).toBe('2');
     });
 
+    it('supports scalar values', () => {
+        const operand = new ScalarValue(1);
+        expect(calc.rshift(operand, 1).value).toBe(2);
+    });
+
     it("respects bit size", () => {
-        expect(calc.rshift(BigInt("0b0100"), 2, 4).toString()).toBe("0");
+        expect(calc.rshift({value: BigInt("0b0100"), maxBitSize: 4}, 2).value.toString()).toBe("0");
     });
 
     it('transitions number to negative', ()=> {
         // 4-bit space
-        expect(calc.rshift(BigInt("0b0100"), 1, 4).toString()).toBe("-8");
+        expect(calc.rshift({value: BigInt("0b0100"), maxBitSize: 4}, 1).value.toString()).toBe("-8");
         
         // 5-bit space
-        expect(calc.rshift(BigInt("0b00100"), 1, 5).toString()).toBe("8");
-        expect(calc.rshift(BigInt("0b01000"), 1, 5).toString()).toBe("-16");
+        expect(calc.rshift({value: BigInt("0b00100"), maxBitSize: 5}, 1).value.toString()).toBe("8");
+        expect(calc.rshift({value: BigInt("0b01000"), maxBitSize: 5}, 1).value.toString()).toBe("-16");
 
         // 32-bit
-        expect(calc.rshift(BigInt("2147483647"), 1, 32).toString()).toBe("-2");
-        expect(calc.rshift(BigInt("2147483647"), 2, 32).toString()).toBe("-4");
+        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 32}, 1).value.toString()).toBe("-2");
+        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 32}, 2).value.toString()).toBe("-4");
 
         // 64-bit
-        expect(calc.rshift(BigInt("9223372036854775807"), 1, 64).toString()).toBe("-2");
-        expect(calc.rshift(BigInt("9223372036854775807"), 2, 64).toString()).toBe("-4");
-        expect(calc.rshift(BigInt("2147483647"), 1, 64).toString()).toBe("4294967294");
-        expect(calc.rshift(BigInt("2147483647"), 2, 64).toString()).toBe("8589934588");
+        expect(calc.rshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 1).value.toString()).toBe("-2");
+        expect(calc.rshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 2).value.toString()).toBe("-4");
+        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 64}, 1).value.toString()).toBe("4294967294");
+        expect(calc.rshift({value: BigInt("2147483647"), maxBitSize: 64}, 2).value.toString()).toBe("8589934588");
 
     });
 });
@@ -97,21 +109,19 @@ describe('calc.rshift', () => {
 describe("calc misc", () => {
 
 
-    it('calcualte 31th bit in 64-bit int', () => {
-        expect(calc.flipBit(calc.promoteToBigInt(-1), 31).toString()).toBe("8589934591");
+    it('promoteTo64Bit', () => {
+        expect(calc.promoteTo64Bit(-1).value.toString(2)).toBe("11111111111111111111111111111111");
     });
 
-    it('promotes to BigInt with the same bits', () => {
-        expect(calc.promoteToBigInt(-1).toString(2)).toBe("11111111111111111111111111111111");
-    });
+    it('binaryRepresentation', () => {
+        expect(calc.binaryRepresentation(asBoundedNumber(2147483647))).toBe("1111111111111111111111111111111");
+        expect(calc.binaryRepresentation(new ScalarValue(2147483647))).toBe("1111111111111111111111111111111");
+    })
 
     
 });
 
 describe("bitwise ", () => {
-
-    
-
     it("NOT same as in node", () => {
         
         for(var i = -100; i<100;i++) {

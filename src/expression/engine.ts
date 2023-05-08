@@ -1,5 +1,5 @@
 import calc from "../core/calc";
-import { JsNumber } from "../core/types";
+import { JsNumber, asBoundedNumber } from "../core/types";
 import ScalarValue from "./ScalarValue";
 
 const engine = {
@@ -15,13 +15,16 @@ const engine = {
 };
 
 function evalute(op1 : JsNumber, operator: string, op2 : JsNumber) : JsNumber{
-    const a = equalizeType(op2, op1) as any;
-    const b = equalizeType(op1, op2) as any;
+    const o1 = equalizeType(op2, op1);
+    const o2 = equalizeType(op1, op2);
     
+    const a = o1 as any;
+    const b = o2 as any;
+
     switch(operator) {
         case ">>": return (a >> b) as (JsNumber);
         case ">>>": return (a >>> b) as (JsNumber);
-        case "<<": return calc.rshift(a, b, calc.maxBitSize(a));
+        case "<<": return calc.rshift(asBoundedNumber(o1), o2).value;
         case "&": return (b & a) as (JsNumber);
         case "|": return (b | a) as (JsNumber);
         case "^": return (b ^ a) as (JsNumber);

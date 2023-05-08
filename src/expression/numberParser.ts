@@ -1,19 +1,22 @@
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
-import { JsNumber } from "../core/types";
+import { BoundedNumber, asBoundedNumber } from "../core/types";
 
-const decimalRegex = /^-?\d+[l,L]?$/;
-const hexRegex = /^-?0x[0-9,a-f]+[l,L]?$/i;
-const binRegex = /^-?0b[0-1]+[l,L]?$/i;
+// byte -i8 or b
+// single - i16 or s 
+
+const decimalRegex = /^-?\d+[l,L,S,s,B,b]?$/;
+const hexRegex = /^-?0x[0-9,a-f]+[l,L,S,s,B,b]?$/i;
+const binRegex = /^-?0b[0-1]+[l,L,S,s,B,b]?$/i;
 
 interface ParserConfig {
     regex: RegExp,
     base: NumberBase,
-    parse: (input: string) => JsNumber 
+    parse: (input: string) => BoundedNumber 
 }
 
 export interface ParsedNumber {
-    value: JsNumber;
+    value: BoundedNumber;
     base: NumberBase;
     input: string;
 }
@@ -66,24 +69,24 @@ class NumberParser {
 const MAX_SAFE_INTn = BigInt(INT32_MAX_VALUE);
 const MIN_SAFE_INTn = BigInt(INT32_MIN_VALUE);
 
-function parseIntSafe(input : string, radix: number)  : JsNumber {
+function parseIntSafe(input : string, radix: number)  : BoundedNumber {
     
-const bigIntStr = input.replace('-', '').replace('l', '').replace('L', '');
+    const bigIntStr = input.replace('-', '').replace('l', '').replace('L', '');
     let bigInt = BigInt(bigIntStr);
     const isNegative = input.startsWith('-');
     const isBigInt = input.toLowerCase().endsWith('l');
 
     if(isNegative) bigInt *= BigInt(-1);
 
-    if(isBigInt) return bigInt;
+    if(isBigInt) return asBoundedNumber(bigInt);
 
     if(bigInt > MAX_SAFE_INTn)
-        return bigInt;
+        return asBoundedNumber(bigInt);
 
     if(bigInt < MIN_SAFE_INTn)
-        return bigInt;
+        return asBoundedNumber(bigInt);
 
-    return parseInt(input.replace(/0(x|b)/, ''), radix);
+    return asBoundedNumber(parseInt(input.replace(/0(x|b)/, ''), radix));
 }
 
 const numberParser = new NumberParser(knownParsers);

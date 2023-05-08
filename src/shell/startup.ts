@@ -49,7 +49,9 @@ function getStartupCommands(appState : AppState) : string[] {
     }
 
     if(hashArgs.length > 0) {
-        startupCommands = hashArgs;
+
+        if(hashArgs.indexOf('empty')==-1)
+            startupCommands = hashArgs;
     }
 
     log.debug('Executing startup commands', startupCommands);

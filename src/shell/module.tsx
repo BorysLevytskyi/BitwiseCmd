@@ -62,7 +62,6 @@ const shellModule = {
                 handle: (s: CommandInput) => {
 
                     const executeCommand = (c: string) => {
-                        console.log(c);
 
                         if(c.length === 0) {
                             return "Default comand: " + localStorage.getItem(STARTUP_COMMAND_KEY);

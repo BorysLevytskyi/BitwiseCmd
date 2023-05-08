@@ -2,7 +2,8 @@ import {numberParser} from './numberParser';
 import { ExpressionElement as ExpressionElement } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE } from '../core/const';
-import { JsNumber } from '../core/types';
+import { BoundedNumber, JsNumber, isBoundedNumber, asBoundedNumber } from '../core/types';
+import calc from '../core/calc';
 
 var globalId : number = 1;
 
@@ -13,15 +14,22 @@ export default class ScalarValue implements ExpressionElement {
     value: JsNumber;
     base: NumberBase;
     isOperator: boolean;
+    maxBitSize: number;
 
-    constructor(value : JsNumber, base?: NumberBase, is32Limit?: boolean) {
+    constructor(value : BoundedNumber | JsNumber, base?: NumberBase) {
         
+        if(!isBoundedNumber(value))
+            value = asBoundedNumber(value);
+
         ScalarValue.validateSupported(value);
 
         this.id = globalId++;
-        this.value = value;
+        this.value = 0;
+        this.maxBitSize = 0;
         this.base = base || "dec";
         this.isOperator = false;
+        
+        this.setValue(value);
     }
 
     bitSize() : number {
@@ -32,8 +40,9 @@ export default class ScalarValue implements ExpressionElement {
         return typeof this.value === 'bigint';
     }
             
-    setValue(value : JsNumber) {
-        this.value = value;
+    setValue(value : BoundedNumber) {
+        this.value = value.value;
+        this.maxBitSize = value.maxBitSize;
     }
 
     evaluate() : ScalarValue {
@@ -44,13 +53,13 @@ export default class ScalarValue implements ExpressionElement {
         return this
     }
 
-    static validateSupported(num : JsNumber) {
+    static validateSupported(num : BoundedNumber) {
         
-        if(typeof num == "bigint" && (num < INT64_MIN_VALUE || num > INT64_MAX_VALUE)) {
+        if(typeof num.value == "bigint" && (num.value < INT64_MIN_VALUE || num.value > INT64_MAX_VALUE)) {
             throw new Error(`64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}`);
         }
 
-        if(typeof num == "number" && (num < INT32_MIN_VALUE || num > INT32_MAX_VALUE)) {
+        if(typeof num.value == "number" && (num.value < INT32_MIN_VALUE || num.value > INT32_MAX_VALUE)) {
             throw new Error(`Numer JavaScript type can only by used for numbers in range from ${INT32_MIN_VALUE} to ${INT32_MAX_VALUE}`)
         }
     }

@@ -1,16 +1,14 @@
-import { type } from "os";
-import { Expression } from "../expression/expression-interfaces";
 import formatter from "./formatter";
-import { JsNumber } from "./types";
+import { BoundedNumber, JsNumber, maxBitSize, asBoundedNumber } from "./types";
 import { asIntN } from "./utils";
 
 export default {
-    abs (num : JsNumber) : JsNumber {
-        return num >= 0 ? num : -num;
+    abs (num : BoundedNumber) : BoundedNumber {
+        return asBoundedNumber(num.value >= 0 ? num.value : -num.value);
     },
     
     maxBitSize(num : JsNumber) : number {
-        return typeof num == "bigint" ? 64 : 32;
+        return maxBitSize(num);
     },
 
     numberOfBitsDisplayed: function (num: JsNumber) : number {
@@ -33,11 +31,12 @@ export default {
         return Math.max.apply(null, counts);
     },
 
-    flipBit: function(num: JsNumber, index: number): JsNumber  {
+    flipBit: function(num: BoundedNumber | JsNumber, index: number): BoundedNumber  {
 
-        const is64bit = typeof num == 'bigint';
-        const size = typeof num == "bigint" ? 64 : 32;
-        const bin = formatter.bin(num).padStart(size, '0');
+        num = asBoundedNumber(num);
+        const is64bit = num.maxBitSize == 64;
+        const size = num.maxBitSize;
+        const bin = formatter.bin(num.value).padStart(size, '0');
         const staysNegative = (bin[0] == "1" && index > 0);
         const becomesNegative = (bin[0] == "0" && index == 0);
         
@@ -49,12 +48,13 @@ export default {
             m=-1;
         }
        
-        return is64bit ? BigInt("0b"+ flipped)*BigInt(m) : parseInt(flipped, 2)*m;
+        const n : JsNumber = is64bit ? BigInt("0b"+ flipped)*BigInt(m) : parseInt(flipped, 2)*m;
+        return asBoundedNumber(n);
     },
 
-    promoteToBigInt(number: number) {
-        const bin = formatter.bin(number);
-        return BigInt("0b" + bin);
+    promoteTo64Bit(number: number) : BoundedNumber {
+        const bin = this.binaryRepresentation(asBoundedNumber(number));
+        return asBoundedNumber(BigInt("0b" + bin));
     },
 
     applyTwosComplement: (bin:string):string => {
@@ -80,35 +80,38 @@ export default {
         return bin.split('').map(b => b=="1"?"0":"1").join("");
     },
 
-    binaryRepresentation(num : JsNumber, bitSize?: number) : string {
-        
-        bitSize = bitSize || typeof num == "bigint" ? 64 : 32;
-        const bin = this.abs(num).toString(2);
+    binaryRepresentation(num: BoundedNumber) : string {
+
+        const bitSize = num.maxBitSize;
+        const bin = this.abs(num).value.toString(2);
         
         if(bin.length > bitSize!)
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
 
-        return  num < 0
+        const r = num.value < 0
             ? this.applyTwosComplement(bin.padStart(bitSize, '0'))
             : bin;
+
+        return r;
     },
 
-    rshift (num: JsNumber, numBytes : JsNumber, bitSize: number) : JsNumber {
+    rshift (num: BoundedNumber, numBytes : JsNumber) : BoundedNumber {
         
         const bytes = asIntN(numBytes);
         
-        let bin = this.binaryRepresentation(num, bitSize).padStart(bitSize, '0'); 
+        let bin = this.binaryRepresentation(num).padStart(num.maxBitSize, '0');
+
         bin = bin.substring(bytes) + "0".repeat(bytes);
 
         let m = BigInt(1);
-        
+    
         if(bin['0'] == '1') {
             bin = this.applyTwosComplement(bin);
             m = BigInt(-1);
         }
-    
+
         const result = BigInt("0b" + bin) * m;
-        return typeof num == "bigint" ? result : asIntN(result);
+        return asBoundedNumber(typeof num.value == "bigint" ? result : asIntN(result));
     },
 
     bitwise: { 
