@@ -13,7 +13,7 @@ const formatter = {
                 var hexVal = calc.abs(num).value.toString(16);
                 return num.value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
             case 'bin':          
-                return calc.binaryRepresentation(num);
+                return calc.toBinaryString(num);
             case 'dec':
                 return num.value.toString(10);
             default:

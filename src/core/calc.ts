@@ -20,17 +20,6 @@ export default {
         return num.toString(2).length;
     },
 
-    maxNumberOfBitsDisplayed: function (arr: number[]) {
-
-        var counts = [], num;
-        for (var i = 0; i < arr.length; i++) {
-            num = arr[i];
-            counts.push(this.numberOfBitsDisplayed(num));
-        }
-
-        return Math.max.apply(null, counts);
-    },
-
     flipBit: function(num: BoundedNumber | JsNumber, index: number): BoundedNumber  {
 
         num = asBoundedNumber(num);
@@ -53,7 +42,7 @@ export default {
     },
 
     promoteTo64Bit(number: number) : BoundedNumber {
-        const bin = this.binaryRepresentation(asBoundedNumber(number));
+        const bin = this.toBinaryString(asBoundedNumber(number));
         return asBoundedNumber(BigInt("0b" + bin));
     },
 
@@ -76,11 +65,7 @@ export default {
         return flipped.join('') + bin.substring(lastIndex) ;
     },
 
-    flipAllBits: (bin: string): string => {
-        return bin.split('').map(b => b=="1"?"0":"1").join("");
-    },
-
-    binaryRepresentation(num: BoundedNumber) : string {
+    toBinaryString(num: BoundedNumber) : string {
 
         const bitSize = num.maxBitSize;
         const bin = this.abs(num).value.toString(2);
@@ -99,7 +84,7 @@ export default {
         
         const bytes = asIntN(numBytes);
         
-        let bin = this.binaryRepresentation(num).padStart(num.maxBitSize, '0');
+        let bin = this.toBinaryString(num).padStart(num.maxBitSize, '0');
 
         bin = bin.substring(bytes) + "0".repeat(bytes);
 

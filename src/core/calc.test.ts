@@ -1,7 +1,6 @@
 import calc from './calc';
-import { BitwiseOperationExpression, ScalarValue, BitwiseOperator } from '../expression/expression';
+import { ScalarValue } from '../expression/expression';
 import { INT32_MAX_VALUE } from './const';
-import exp from 'constants';
 import { asBoundedNumber } from './types';
 
 describe('calc.flipBit', () => {
@@ -44,11 +43,6 @@ describe('calc.numberOfBitsDisplayed', () => {
         expect(calc.numberOfBitsDisplayed(68719476735)).toBe(36);
         expect(calc.numberOfBitsDisplayed(-INT32_MAX_VALUE)).toBe(32);
         expect(calc.numberOfBitsDisplayed(-(BigInt(INT32_MAX_VALUE+1)))).toBe(64);
-    });
-
-       
-    it('maxNumberOfBitsDisplayed', () => {
-        expect(calc.maxNumberOfBitsDisplayed([1, 2, 3, 10])).toBe(4);
     });
 });
 
@@ -114,8 +108,8 @@ describe("calc misc", () => {
     });
 
     it('binaryRepresentation', () => {
-        expect(calc.binaryRepresentation(asBoundedNumber(2147483647))).toBe("1111111111111111111111111111111");
-        expect(calc.binaryRepresentation(new ScalarValue(2147483647))).toBe("1111111111111111111111111111111");
+        expect(calc.toBinaryString(asBoundedNumber(2147483647))).toBe("1111111111111111111111111111111");
+        expect(calc.toBinaryString(new ScalarValue(2147483647))).toBe("1111111111111111111111111111111");
     })
 
     
