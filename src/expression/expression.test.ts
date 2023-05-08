@@ -1,4 +1,6 @@
 import { parser, ListOfNumbersExpression, BitwiseOperationExpression, ScalarValue, BitwiseOperator } from "./expression";
+import { random } from "../core/utils";
+import { INT32_MAX_VALUE } from "../core/const";
 
 describe("expression parser", () => {
 
@@ -53,4 +55,66 @@ describe("expression parser", () => {
         var result = parser.parse("1|~2") as BitwiseOperationExpression;
         expect(result.children.length).toBe(2);
     });
-})
+});
+
+describe("comparison with nodejs engone", () => {
+    
+    it('set 32-bit', () => {
+        
+        const inputs = [
+            "921979543<<31",
+            "1123|324",
+            "213&9531",
+            "120^442161",
+            "1<<7",
+            "2>>>8",
+            "2<<7"
+        ];
+
+        inputs.forEach(testBinary);
+    });
+
+    it('random 32-bit', () => {
+        
+        const signs = ["|", "&", "^", "<<", ">>", ">>>"]
+
+        for(var i =0; i<1000; i++){
+            const sign = signs[random(0, signs.length-1)];
+            const isShift = sign.length > 1;
+            const op1 = random(-INT32_MAX_VALUE, INT32_MAX_VALUE);
+            const op2 = isShift ? random(0, 31) : random(-INT32_MAX_VALUE, INT32_MAX_VALUE);
+            const input = op1.toString() + sign + op2.toString();
+            testBinary(input);
+        }
+    });
+    
+    function testBinary(input: string) {
+        const expected = eval(input).toString();
+        let actual = "";
+        try
+        {
+            var expr = parser.parse(input) as BitwiseOperationExpression;
+
+            var op1 = expr.children[0] as ScalarValue;
+            var op2 = expr.children[1] as BitwiseOperator;
+
+            expect(op1.isBigInt()).toBe(false);
+            expect(op2.getUnderlyingScalarOperand().isBigInt()).toBe(false);
+
+            actual = op2.evaluate(op1).value.toString();
+            const equals = actual === expected;
+
+            if(!equals)
+            {
+                console.log(`${input}\nop1:${typeof op1.value}\nop2:${typeof op2.getUnderlyingScalarOperand().value}`);
+            }
+        }
+        catch(err) 
+        {
+            console.log(input);
+            throw err;
+        }
+        
+        expect(actual).toBe(expected);
+    }
+});

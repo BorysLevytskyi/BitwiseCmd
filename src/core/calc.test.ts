@@ -57,7 +57,7 @@ describe('calc.applyTwosComplement', () => {
     });
 });
 
-describe('calc.rshift', () => {
+describe('calc.lshift', () => {
 
     it('produces number when given number and vice vers', () => {
         const number = calc.lshift({value:1, maxBitSize:32}, 1).value;
@@ -96,7 +96,16 @@ describe('calc.rshift', () => {
         expect(calc.lshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 2).value.toString()).toBe("-4");
         expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 64}, 1).value.toString()).toBe("4294967294");
         expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 64}, 2).value.toString()).toBe("8589934588");
+    });
 
+    it('test', () => {
+        const actual = calc.lshift(asBoundedNumber(100081515), 31).value.toString();
+        expect(actual).toBe("-2147483648")
+    });
+
+    it('1 to sign bit', () => {
+        const actual = calc.lshift(asBoundedNumber(1), 31).value.toString();
+        expect(actual).toBe("-2147483648")
     });
 });
 
@@ -110,9 +119,7 @@ describe("calc misc", () => {
     it('binaryRepresentation', () => {
         expect(calc.toBinaryString(asBoundedNumber(2147483647))).toBe("1111111111111111111111111111111");
         expect(calc.toBinaryString(new ScalarValue(2147483647))).toBe("1111111111111111111111111111111");
-    })
-
-    
+    });
 });
 
 describe("calc.bitwise.", () => {

@@ -56,11 +56,11 @@ export default class ScalarValue implements ExpressionElement {
     static validateSupported(num : BoundedNumber) {
         
         if(typeof num.value == "bigint" && (num.value < INT64_MIN_VALUE || num.value > INT64_MAX_VALUE)) {
-            throw new Error(`64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}`);
+            throw new Error(`64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}. Given number was ${num}`);
         }
 
         if(typeof num.value == "number" && (num.value < INT32_MIN_VALUE || num.value > INT32_MAX_VALUE)) {
-            throw new Error(`Numer JavaScript type can only by used for numbers in range from ${INT32_MIN_VALUE} to ${INT32_MAX_VALUE}`)
+            throw new Error(`Numer JavaScript type can only by used for numbers in range from ${INT32_MIN_VALUE} to ${INT32_MAX_VALUE}. Given number was ${num.value}`)
         }
     }
 
