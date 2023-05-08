@@ -11,10 +11,9 @@ var globalId : number = 1;
 // Represents scalar numeric value
 export default class ScalarValue implements ExpressionElement {
     id: number;
-    value: bigint;
+    value: BoundedNumber;
     base: NumberBase;
     isOperator: boolean;
-    maxBitSize: number;
 
     constructor(value : BoundedNumber | JsNumber, base?: NumberBase) {
 
@@ -24,8 +23,7 @@ export default class ScalarValue implements ExpressionElement {
         ScalarValue.validateSupported(value);
 
         this.id = globalId++;
-        this.value = BigInt(0);
-        this.maxBitSize = 0;
+        this.value = new BoundedNumber(0);
         this.base = base || "dec";
         this.isOperator = false;
         
@@ -33,8 +31,7 @@ export default class ScalarValue implements ExpressionElement {
     }
   
     setValue(value : BoundedNumber) {
-        this.value = value.value;
-        this.maxBitSize = value.maxBitSize;
+        this.value = value;
     }
 
     evaluate() : ScalarValue {

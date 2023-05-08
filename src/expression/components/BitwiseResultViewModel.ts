@@ -88,7 +88,7 @@ export default class BitwiseResultViewModel {
             expression: expr,
             allowFlipBits: this.allowFlipBits,
             label: '',
-            maxBitSize: expr.maxBitSize,
+            maxBitSize: expr.value.maxBitSize,
         });
     };
 
@@ -105,7 +105,7 @@ export default class BitwiseResultViewModel {
             label: this.getLabel(resultNumber),
             expression: expr.operand,
             allowFlipBits: this.allowFlipBits,
-            maxBitSize: resultNumber.maxBitSize
+            maxBitSize: resultNumber.value.maxBitSize
         });
     };
  
@@ -119,7 +119,7 @@ export default class BitwiseResultViewModel {
             expression: resultExpr,
             allowFlipBits: false,
             label: '',
-            maxBitSize: resultExpr.maxBitSize
+            maxBitSize: resultExpr.value.maxBitSize
         });
     };
 
@@ -132,7 +132,7 @@ export default class BitwiseResultViewModel {
             expression: expr, 
             allowFlipBits: false,
             label: '',
-            maxBitSize: expr.maxBitSize
+            maxBitSize: expr.value.maxBitSize
         });
     };
 

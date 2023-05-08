@@ -6,6 +6,6 @@ it('converts numbers to bigint', () => {
     const int32 = new ScalarValue(INT32_MAX_VALUE);
     const int64 = new ScalarValue(BigInt(INT32_MAX_VALUE+1));
     
-    expect(int32.maxBitSize).toBe(32);
-    expect(int64.maxBitSize).toBe(64);
+    expect(int32.value.maxBitSize).toBe(32);
+    expect(int64.value.maxBitSize).toBe(64);
 });

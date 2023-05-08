@@ -1,7 +1,7 @@
 import calc from './calc';
 import { ScalarValue } from '../expression/expression';
 import { INT32_MAX_VALUE } from './const';
-import { asBoundedNumber } from './types';
+import { BoundedNumber, asBoundedNumber } from './types';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
@@ -61,8 +61,8 @@ describe('calc.applyTwosComplement', () => {
 describe('calc.lshift', () => {
 
     it('produces number when given number and vice vers', () => {
-        const number = calc.lshift({value: BigInt(1), maxBitSize:32}, 1).value;
-        const bigInt = calc.lshift({value: BigInt(1), maxBitSize:32}, 1).value;
+        const number = calc.lshift(new BoundedNumber(BigInt(1), 32), 1).value;
+        const bigInt = calc.lshift(new BoundedNumber(BigInt(1), 32), 1).value;
 
         expect(typeof number).toBe('number');
         expect(number).toBe(2);
@@ -73,30 +73,30 @@ describe('calc.lshift', () => {
 
     it('supports scalar values', () => {
         const operand = new ScalarValue(1);
-        expect(calc.lshift(operand, 1).value).toBe(2);
+        expect(calc.lshift(operand.value, 1).value).toBe(2);
     });
 
     it("respects bit size", () => {
-        expect(calc.lshift({value: BigInt("0b0100"), maxBitSize: 4}, 2).value.toString()).toBe("0");
+        expect(calc.lshift(new BoundedNumber(BigInt("0b0100"), 4), 2).value.toString()).toBe("0");
     });
 
     it('transitions number to negative', ()=> {
         // 4-bit space
-        expect(calc.lshift({value: BigInt("0b0100"), maxBitSize: 4}, 1).value.toString()).toBe("-8");
+        expect(calc.lshift(new BoundedNumber(BigInt("0b0100"), 4), 1).value.toString()).toBe("-8");
         
         // 5-bit space
-        expect(calc.lshift({value: BigInt("0b00100"), maxBitSize: 5}, 1).value.toString()).toBe("8");
-        expect(calc.lshift({value: BigInt("0b01000"), maxBitSize: 5}, 1).value.toString()).toBe("-16");
+        expect(calc.lshift(new BoundedNumber(BigInt("0b00100"), 5), 1).value.toString()).toBe("8");
+        expect(calc.lshift(new BoundedNumber(BigInt("0b01000"), 5), 1).value.toString()).toBe("-16");
 
         // 32-bit
-        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 32}, 1).value.toString()).toBe("-2");
-        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 32}, 2).value.toString()).toBe("-4");
+        expect(calc.lshift(new BoundedNumber(BigInt("2147483647"), 32), 1).value.toString()).toBe("-2");
+        expect(calc.lshift(new BoundedNumber(BigInt("2147483647"), 32), 2).value.toString()).toBe("-4");
 
         // 64-bit
-        expect(calc.lshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 1).value.toString()).toBe("-2");
-        expect(calc.lshift({value: BigInt("9223372036854775807"), maxBitSize: 64}, 2).value.toString()).toBe("-4");
-        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 64}, 1).value.toString()).toBe("4294967294");
-        expect(calc.lshift({value: BigInt("2147483647"), maxBitSize: 64}, 2).value.toString()).toBe("8589934588");
+        expect(calc.lshift(new BoundedNumber(BigInt("9223372036854775807"), 64), 1).value.toString()).toBe("-2");
+        expect(calc.lshift(new BoundedNumber(BigInt("9223372036854775807"), 64), 2).value.toString()).toBe("-4");
+        expect(calc.lshift(new BoundedNumber(BigInt("2147483647"), 64), 1).value.toString()).toBe("4294967294");
+        expect(calc.lshift(new BoundedNumber(BigInt("2147483647"), 64), 2).value.toString()).toBe("8589934588");
     });
 
     it('test', () => {
@@ -120,7 +120,6 @@ describe("calc misc", () => {
 
     it('binaryRepresentation', () => {
         expect(calc.toBinaryString(asBoundedNumber(2147483647))).toBe("1111111111111111111111111111111");
-        expect(calc.toBinaryString(new ScalarValue(2147483647))).toBe("1111111111111111111111111111111");
     });
 
     it('not 64bit', () => {

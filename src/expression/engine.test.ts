@@ -1,11 +1,16 @@
+import { BoundedNumber } from "../core/types";
 import ScalarValue from "./ScalarValue";
 import engine from "./engine";
 
 describe('evaluate', () => {
 
     it('treats differently big ints and regular numbers', () => {
-        const bigResult = engine.applyOperator(new ScalarValue({value: BigInt(2147483647), maxBitSize: 64}), "<<", new ScalarValue(BigInt(1)));
-        const result = engine.applyOperator(new ScalarValue({value: BigInt(2147483647), maxBitSize: 32}), "<<", new ScalarValue(1));
+        const one = new BoundedNumber(1);
+        const n64 = new BoundedNumber(2147483647, 64);
+        const n32 = new BoundedNumber(2147483647, 32);
+
+        const bigResult = engine.applyOperator(new ScalarValue(n64), "<<", new ScalarValue(one));
+        const result = engine.applyOperator(new ScalarValue(n32), "<<", new ScalarValue(one));
 
         expect(bigResult.value.toString()).toBe("4294967294");
         expect(result.value.toString()).toBe("-2");

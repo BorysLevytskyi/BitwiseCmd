@@ -146,12 +146,14 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const op = this.props.expressionItem.getUnderlyingScalarOperand();
         const { bitIndex: index, binaryStringLength: totalLength } = args;
 
-        if(totalLength > op.maxBitSize && (totalLength - index) > op.maxBitSize) {
-            op.setValue(calc.promoteTo64Bit(op));
+        const maxBitSize = op.value.maxBitSize;
+        
+        if(totalLength > op.value.maxBitSize && (totalLength - index) > maxBitSize) {
+            op.setValue(calc.promoteTo64Bit(op.value));
         }
 
-        const pad = op.maxBitSize - totalLength;
-        const newValue = calc.flipBit(op, pad + index);
+        const pad = op.value.maxBitSize - totalLength;
+        const newValue = calc.flipBit(op.value, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();
     }
@@ -159,9 +161,9 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getInfo(maxNumberOfBits:number) {
         var op = this.props.expressionItem.getUnderlyingScalarOperand();
 
-        if(op.maxBitSize <= maxNumberOfBits)
+        if(op.value.maxBitSize <= maxNumberOfBits)
         {
-            const title = `BitwiseCmd treats this number as ${op.maxBitSize}-bit integer. First bit is a sign bit. Try clicking on the first bit and see what will happen.`;
+            const title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer. First bit is a sign bit. Try clicking on the first bit and see what will happen.`;
 
             return <span title={title} style={{cursor:"help"}}>(32-bit Number)</span>;
         }

@@ -71,12 +71,12 @@ function parseIntSafe(input : string, radix: number)  : BoundedNumber {
     const lower = input.toLocaleLowerCase();
     const bigIntStr = lower.replace('-', '').replace('l', '').replace('L', '');
     const size = lower.endsWith('l') ? 64 : 16;
-    let bigInt = BigInt(bigIntStr);
+    let n = BigInt(bigIntStr);
     const isNegative = input.startsWith('-');
 
-    if(isNegative) bigInt *= BigInt(-1);
+    if(isNegative) n = -n;
 
-    return { value: bigInt, maxBitSize: size };
+    return new BoundedNumber(n, size);
 }
 
 const numberParser = new NumberParser(knownParsers);

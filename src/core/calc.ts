@@ -7,13 +7,8 @@ export default {
         return asBoundedNumber(num.value >= 0 ? num.value : -num.value);
     },
     
-    numberOfBitsDisplayed: function (num: JsNumber) : number {
-        
-        if(num < 0) {
-            return typeof num == 'bigint' ? 64 : 32
-        };
-
-        return num.toString(2).length;
+    numberOfBitsDisplayed: function (num: BoundedNumber | JsNumber) : number {
+        return asBoundedNumber(num).value.toString(2).length;
     },
 
     flipBit: function(num: BoundedNumber | JsNumber, bitIndex: number): BoundedNumber  {
@@ -22,7 +17,7 @@ export default {
 
     promoteTo64Bit(number: BoundedNumber) : BoundedNumber {
         const bin = this.toBinaryString(number);
-        return {value: BigInt("0b" + bin), maxBitSize: 64};
+        return new BoundedNumber(BigInt("0b" + bin), 64);
     },
 
     applyTwosComplement: (bin:string):string => {

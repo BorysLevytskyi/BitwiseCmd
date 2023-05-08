@@ -1,4 +1,5 @@
 import formatter from './formatter';
+import { BoundedNumber } from './types';
 
 describe("formatter", () => {
     it('formats string', () => {
@@ -8,9 +9,11 @@ describe("formatter", () => {
     });
 
     it('respects size when formatting negative number', () => {
-        const n = BigInt(-1);
-        expect(formatter.bin({value: n, maxBitSize: 32})).toBe("11111111111111111111111111111111");
-        expect(formatter.bin({value: n, maxBitSize: 64})).toBe("1111111111111111111111111111111111111111111111111111111111111111");
+        const minusOne = BigInt(-1);
+        const n32 = new BoundedNumber(minusOne, 32);
+        const n64 = new BoundedNumber(minusOne, 64);
+        expect(formatter.bin(n32)).toBe("11111111111111111111111111111111");
+        expect(formatter.bin(n64)).toBe("1111111111111111111111111111111111111111111111111111111111111111");
     });
 
     it('formats large binary number correctly', () => {

@@ -105,7 +105,7 @@ describe("comparison with nodejs engine", () => {
 
             if(actual != expected) {
                 const uop = bo.getUnderlyingScalarOperand();
-                console.log(`${expectedInput}\n${actualInput}\n${uop.value} ${uop.maxBitSize}\n${res.value} ${typeof res.value} ${res.maxBitSize}`)
+                console.log(`${expectedInput}\n${actualInput}\n${uop.value} ${uop.value.maxBitSize}\n${res.value} ${typeof res.value} ${res.value.maxBitSize}`)
             }
 
             expect(actual).toBe(expected);   
