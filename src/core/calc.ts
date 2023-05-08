@@ -21,7 +21,7 @@ export default {
     },
 
     flipBit: function(num: BoundedNumber | JsNumber, bitIndex: number): BoundedNumber  {
-        return this._apply(asBoundedNumber(num), (bin) => this.bitwise.flipBit(bin, bitIndex));
+        return this._applySingle(asBoundedNumber(num), (bin) => this.bitwise.flipBit(bin, bitIndex));
     },
 
     promoteTo64Bit(number: number) : BoundedNumber {
@@ -64,18 +64,34 @@ export default {
     },
 
     lshift (num: BoundedNumber, numBytes : JsNumber) : BoundedNumber {
-        return this._apply(num, bin => this.bitwise.lshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.bitwise.lshift(bin, asIntN(numBytes)));
     },
 
     rshift (num : BoundedNumber, numBytes : JsNumber) : BoundedNumber {
-        return this._apply(num, bin => this.bitwise.rshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.bitwise.rshift(bin, asIntN(numBytes)));
     },
 
     urshift (num : BoundedNumber, numBytes : JsNumber) : BoundedNumber {
-        return this._apply(num, bin => this.bitwise.urshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.bitwise.urshift(bin, asIntN(numBytes)));
     },
 
-    _apply(num: BoundedNumber, operation: (bin:string) => string) : BoundedNumber {
+    not(num:BoundedNumber) : BoundedNumber { 
+        return this._applySingle(num, this.bitwise.not);
+    },
+
+    and (num1 : BoundedNumber, num2 : BoundedNumber) : BoundedNumber {
+        return this._applyTwo(num1, num2, this.bitwise.and);
+    },
+
+    or (num1 : BoundedNumber, num2 : BoundedNumber) : BoundedNumber {
+        return this._applyTwo(num1, num2, this.bitwise.or);
+    },
+
+    xor (num1 : BoundedNumber, num2 : BoundedNumber) : BoundedNumber {
+        return this._applyTwo(num1, num2, this.bitwise.xor);
+    },
+
+    _applySingle(num: BoundedNumber, operation: (bin:string) => string) : BoundedNumber {
 
         let bin = this.toBinaryString(num).padStart(num.maxBitSize, '0');
 
@@ -90,6 +106,25 @@ export default {
 
         const result = BigInt("0b" + bin) * m;
         return asBoundedNumber(typeof num.value == "bigint" ? result : asIntN(result));
+    },
+
+    _applyTwo(num1: BoundedNumber, num2: BoundedNumber,  operation: (bin1:string, bin2:string) => string) : BoundedNumber {
+
+        let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, '0');
+        let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, '0');
+
+        let resultBin = operation(bin1, bin2);
+
+        let m = BigInt(1);
+    
+        if(resultBin['0'] == '1') {
+            resultBin = this.applyTwosComplement(resultBin);
+            m = BigInt(-1);
+        }
+
+        const result = BigInt("0b" + resultBin) * m;
+        const isBigInt = typeof num1.value == "bigint" || typeof num2.value == "bigint";
+        return asBoundedNumber( isBigInt ? result : asIntN(result));
     },
 
     bitwise: { 
