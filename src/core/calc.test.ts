@@ -164,6 +164,11 @@ describe("calc.bitwise.", () => {
         expect(calc.bitwise.urshift("1000", 3)).toBe("0001");
         expect(calc.bitwise.urshift("1101", 1)).toBe("0110");
     });
+
+    it('flipbit', () => {
+        expect(calc.bitwise.flipBit("1", 0)).toBe("0");
+        expect(calc.bitwise.flipBit("101", 1)).toBe("111");
+    })
 })
 
 describe("bitwise comparison", () => {
