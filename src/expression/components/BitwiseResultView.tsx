@@ -25,7 +25,20 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
     }
 
     render() {
-        var rows = this.getRows();
+
+         let model : BitwiseResultViewModel | null = null
+        
+        try
+         { 
+            model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
+         }
+         catch(err) {
+            const text = (err as any).message;
+            return <div className='error'>Error: {text}</div>
+         }
+
+
+        var rows = this.getRows(model!);
 
         return <table className="expression">
             <tbody>
@@ -34,9 +47,8 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
         </table>
     }
 
-    getRows(): JSX.Element[] {
+    getRows(model: BitwiseResultViewModel): JSX.Element[] {
 
-        var model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
         this.maxSeenLengthNumberOfBits = Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
 
         return model.items.map((itm, i) =>
