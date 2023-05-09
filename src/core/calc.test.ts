@@ -1,6 +1,6 @@
 import calc from './calc';
 import { ScalarValue } from '../expression/expression';
-import { BoundedInt, asBoundedNumber } from './types';
+import { Integer, asInteger } from './types';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from './const';
 
 describe('calc.flipBit', () => {
@@ -14,12 +14,12 @@ describe('calc.flipBit', () => {
     });
 
     it('sing-bit in 8-bit number', () => {
-        const result = calc.flipBit(new BoundedInt(-1, 8), 0);
+        const result = calc.flipBit(new Integer(-1, 8), 0);
         expect(result.maxBitSize).toBe(8);
     });
 
     it('caulate flipped bit 64-bit nubmer', () => {
-        const int64max = asBoundedNumber("9223372036854775807");
+        const int64max = asInteger("9223372036854775807");
         expect(calc.flipBit(int64max, 0).num()).toBe(-1);
     });
 
@@ -34,15 +34,15 @@ describe('calc.flipBit', () => {
 
     
     it('calcualte 31th bit in 64-bit int', () => {
-        const n = asBoundedNumber(-1);
+        const n = asInteger(-1);
         expect(calc.flipBit(calc.promoteTo64Bit(n), 31).toString()).toBe("8589934591");
     });
 });
 
 describe('calc.addSpace', () => {
     it('resizes number based on the space required', () => {
-        const n8 = new BoundedInt(1, 8);
-        const n16 = new BoundedInt(1, 16); 
+        const n8 = new Integer(1, 8);
+        const n16 = new Integer(1, 16); 
 
         expect(calc.addSpace(n8, 0).maxBitSize).toBe(8);
         expect(calc.addSpace(n8, 1).maxBitSize).toBe(16);
@@ -66,35 +66,35 @@ describe('calc.numberOfBitsDisplayed', () => {
 describe('calc.lshift', () => {
 
     it("respects bit size", () => {
-        expect(calc.lshift(new BoundedInt(BigInt("0b0100"), 4), 2).num()).toBe(0);
+        expect(calc.lshift(new Integer(BigInt("0b0100"), 4), 2).num()).toBe(0);
     });
 
     it('transitions number to negative', ()=> {
         // 4-bit space
-        expect(calc.lshift(new BoundedInt(BigInt("0b0100"), 4), 1).num()).toBe(-8);
+        expect(calc.lshift(new Integer(BigInt("0b0100"), 4), 1).num()).toBe(-8);
         
         // 5-bit space
-        expect(calc.lshift(new BoundedInt(BigInt("0b00100"), 5), 1).num()).toBe(8);
-        expect(calc.lshift(new BoundedInt(BigInt("0b01000"), 5), 1).num()).toBe(-16);
+        expect(calc.lshift(new Integer(BigInt("0b00100"), 5), 1).num()).toBe(8);
+        expect(calc.lshift(new Integer(BigInt("0b01000"), 5), 1).num()).toBe(-16);
 
         // 32-bit
-        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 32), 1).num()).toBe(-2);
-        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 32), 2).num()).toBe(-4);
+        expect(calc.lshift(new Integer(BigInt("2147483647"), 32), 1).num()).toBe(-2);
+        expect(calc.lshift(new Integer(BigInt("2147483647"), 32), 2).num()).toBe(-4);
 
         // 64-bit
-        expect(calc.lshift(new BoundedInt(BigInt("9223372036854775807"), 64), 1).num()).toBe(-2);
-        expect(calc.lshift(new BoundedInt(BigInt("9223372036854775807"), 64), 2).num()).toBe(-4);
-        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 64), 1).value.toString()).toBe("4294967294");
-        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 64), 2).value.toString()).toBe("8589934588");
+        expect(calc.lshift(new Integer(BigInt("9223372036854775807"), 64), 1).num()).toBe(-2);
+        expect(calc.lshift(new Integer(BigInt("9223372036854775807"), 64), 2).num()).toBe(-4);
+        expect(calc.lshift(new Integer(BigInt("2147483647"), 64), 1).value.toString()).toBe("4294967294");
+        expect(calc.lshift(new Integer(BigInt("2147483647"), 64), 2).value.toString()).toBe("8589934588");
     });
 
     it('test', () => {
-        const actual = calc.lshift(asBoundedNumber(100081515), 31).num();
+        const actual = calc.lshift(asInteger(100081515), 31).num();
         expect(actual).toBe(-2147483648);
     });
 
     it('1 to sign bit', () => {
-        const actual = calc.lshift(asBoundedNumber(1), 31).num();
+        const actual = calc.lshift(asInteger(1), 31).num();
         expect(actual).toBe(-2147483648);
     });
 });
@@ -103,16 +103,16 @@ describe("calc misc", () => {
 
 
     it('promoteTo64Bit', () => {
-        const n = asBoundedNumber(-1);
+        const n = asInteger(-1);
         expect(calc.toBinaryString(calc.promoteTo64Bit(n))).toBe("11111111111111111111111111111111");
     });
 
     it('binaryRepresentation', () => {
-        expect(calc.toBinaryString(asBoundedNumber(2147483647))).toBe("1111111111111111111111111111111");
+        expect(calc.toBinaryString(asInteger(2147483647))).toBe("1111111111111111111111111111111");
     });
 
     it('not 64bit', () => {
-        const actual = calc.not(asBoundedNumber("8920390230576132")).toString();
+        const actual = calc.not(asInteger("8920390230576132")).toString();
         expect(actual).toBe("-8920390230576133");
     });
 });

@@ -3,7 +3,6 @@ import hash from '../core/hash';
 import AppState from './AppState';
 import { Env } from './interfaces';
 import appStateStore from './appStateStore';
-import CommandLink from '../core/components/CommandLink';
 
 export type StartupAppData = {
     appState: AppState,

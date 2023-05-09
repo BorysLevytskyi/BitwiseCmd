@@ -6,7 +6,7 @@ import formatter from "./formatter";
 export type JsNumber = number | bigint;
 
 
-export class BoundedInt {
+export class Integer {
     value: bigint;
     maxBitSize: number;
     constructor(value: bigint | number, maxBitSize?: number) {
@@ -31,12 +31,12 @@ export class BoundedInt {
     }
 }
 
-export function asBoundedNumber(num: JsNumber | BoundedInt | string): BoundedInt {
+export function asInteger(num: JsNumber | Integer | string): Integer {
 
     if(typeof num == "string")
-        return asBoundedNumber(BigInt(num));
+        return asInteger(BigInt(num));
 
-    if(isBoundedNumber(num)) 
+    if(isInteger(num)) 
         return num;
 
     if(typeof num == "number" && isNaN(num)) {
@@ -46,9 +46,9 @@ export function asBoundedNumber(num: JsNumber | BoundedInt | string): BoundedInt
     const size = num > INT32_MAX_VALUE || num < INT32_MIN_VALUE ? 64 : 32;
     
     const n = typeof num == "bigint" ? num : BigInt(num);
-    return new BoundedInt(n, size);
+    return new Integer(n, size);
 }
 
-export function isBoundedNumber(num: JsNumber | BoundedInt): num is BoundedInt {
-    return (<BoundedInt>num).maxBitSize !== undefined;
+export function isInteger(num: JsNumber | Integer): num is Integer {
+    return (<Integer>num).maxBitSize !== undefined;
  }

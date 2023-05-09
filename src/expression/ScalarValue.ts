@@ -2,7 +2,7 @@ import {numberParser} from './numberParser';
 import { ExpressionElement as ExpressionElement } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE } from '../core/const';
-import { BoundedInt, JsNumber, isBoundedNumber, asBoundedNumber } from '../core/types';
+import { Integer, JsNumber, isInteger, asInteger } from '../core/types';
 import calc from '../core/calc';
 
 var globalId : number = 1;
@@ -11,26 +11,26 @@ var globalId : number = 1;
 // Represents scalar numeric value
 export default class ScalarValue implements ExpressionElement {
     id: number;
-    value: BoundedInt;
+    value: Integer;
     base: NumberBase;
     isOperator: boolean;
 
-    constructor(value : BoundedInt | JsNumber, base?: NumberBase) {
+    constructor(value : Integer | JsNumber, base?: NumberBase) {
 
-        if(!isBoundedNumber(value))
-            value = asBoundedNumber(value);
+        if(!isInteger(value))
+            value = asInteger(value);
 
         ScalarValue.validateSupported(value);
 
         this.id = globalId++;
-        this.value = new BoundedInt(0);
+        this.value = new Integer(0);
         this.base = base || "dec";
         this.isOperator = false;
         
         this.setValue(value);
     }
   
-    setValue(value : BoundedInt) {
+    setValue(value : Integer) {
         this.value = value;
     }
 
@@ -42,7 +42,7 @@ export default class ScalarValue implements ExpressionElement {
         return this
     }
 
-    static validateSupported(num : BoundedInt) {
+    static validateSupported(num : Integer) {
         
         if(typeof num.value == "bigint" && (num.value < INT64_MIN_VALUE || num.value > INT64_MAX_VALUE)) {
             throw new Error(`64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}. Given number was ${num}`);

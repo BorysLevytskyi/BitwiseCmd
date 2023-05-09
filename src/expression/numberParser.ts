@@ -1,7 +1,7 @@
 import { prefix } from "@fortawesome/free-solid-svg-icons";
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
-import { BoundedInt, asBoundedNumber } from "../core/types";
+import { Integer, asInteger } from "../core/types";
 
 // byte -i8 or b
 // single - i16 or s 
@@ -13,11 +13,11 @@ const binRegex = /^-?0b[0-1]+$/i;
 interface ParserConfig {
     regex: RegExp,
     base: NumberBase,
-    parse: (input: string) => BoundedInt 
+    parse: (input: string) => Integer 
 }
 
 export interface ParsedNumber {
-    value: BoundedInt;
+    value: Integer;
     base: NumberBase;
     input: string;
 }
@@ -67,7 +67,7 @@ class NumberParser {
     }
 }
 
-function parseBoundedInt(input : string)  : BoundedInt {
+function parseBoundedInt(input : string)  : Integer {
     
     const lower = input.toLocaleLowerCase().trim();
     const suffix = getSuffix(lower);
@@ -79,7 +79,7 @@ function parseBoundedInt(input : string)  : BoundedInt {
 
     if(isNegative) n = -n;
 
-    return new BoundedInt(n, size);
+    return new Integer(n, size);
 }
 
 function getSuffix(lower: string) {

@@ -1,13 +1,13 @@
 import { BoundFunction } from "@testing-library/react";
 import calc from "./calc";
-import { BoundedInt, JsNumber, asBoundedNumber } from "./types";
+import { Integer, JsNumber, asInteger } from "./types";
 import { type } from "os";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    numberToString: function(num: BoundedInt | JsNumber, base: NumberBase | number) : string {
+    numberToString: function(num: Integer | JsNumber, base: NumberBase | number) : string {
      
-        num = asBoundedNumber(num);
+        num = asInteger(num);
         base = typeof base == "string" ? getBase(base) : base;
 
         switch(base) {
@@ -35,10 +35,10 @@ const formatter = {
 
         return sb.join('');
     },
-    bin(number: BoundedInt | JsNumber) {
+    bin(number: Integer | JsNumber) {
         return this.numberToString(number, 'bin');
     },
-    emBin(number: BoundedInt | JsNumber) {
+    emBin(number: Integer | JsNumber) {
         return this.padLeft(this.bin(number), 8, '0');
     },
     
