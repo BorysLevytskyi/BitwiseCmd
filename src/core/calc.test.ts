@@ -46,17 +46,6 @@ describe('calc.numberOfBitsDisplayed', () => {
     });
 });
 
-describe('calc.bitwise.applyTwosComplement', () => {
-    it('applies twos complement', () => {
-        expect(calc.bitwise.applyTwosComplement("010")).toBe("110");
-        expect(calc.bitwise.applyTwosComplement("110")).toBe("010"); // reverse
-        expect(calc.bitwise.applyTwosComplement("110")).toBe("010");
-        expect(calc.bitwise.applyTwosComplement("0")).toBe("10");
-        expect(calc.bitwise.applyTwosComplement("10101100")).toBe("01010100");
-        expect(calc.bitwise.applyTwosComplement("01010100")).toBe("10101100"); // reverse
-    });
-});
-
 xdescribe('calc.lshift', () => {
 
     it('supports scalar.int()s', () => {
@@ -116,68 +105,78 @@ describe("calc misc", () => {
     });
 });
 
-describe("calc.bitwise.", () => {
+describe("calc.engine.", () => {
     it("not", () => {
-        expect(calc.bitwise.not("0101")).toBe("1010");
-        expect(calc.bitwise.not("11111")).toBe("00000")
+        expect(calc.engine.not("0101")).toBe("1010");
+        expect(calc.engine.not("11111")).toBe("00000")
     });
 
     it("or", () => {
-        expect(calc.bitwise.or("1", "1")).toBe("1");
-        expect(calc.bitwise.or("1", "0")).toBe("1");
-        expect(calc.bitwise.or("0", "0")).toBe("0");
-        expect(calc.bitwise.or("10101", "01111")).toBe("11111");
+        expect(calc.engine.or("1", "1")).toBe("1");
+        expect(calc.engine.or("1", "0")).toBe("1");
+        expect(calc.engine.or("0", "0")).toBe("0");
+        expect(calc.engine.or("10101", "01111")).toBe("11111");
     });
 
     it("and", () => {
-        expect(calc.bitwise.and("1", "1")).toBe("1");
-        expect(calc.bitwise.and("1", "0")).toBe("0");
-        expect(calc.bitwise.and("0", "0")).toBe("0");
-        expect(calc.bitwise.and("10101", "11011")).toBe("10001");
+        expect(calc.engine.and("1", "1")).toBe("1");
+        expect(calc.engine.and("1", "0")).toBe("0");
+        expect(calc.engine.and("0", "0")).toBe("0");
+        expect(calc.engine.and("10101", "11011")).toBe("10001");
     });
 
     it("xor", () => {
-        expect(calc.bitwise.xor("1", "1")).toBe("0");
-        expect(calc.bitwise.xor("1", "0")).toBe("1");
-        expect(calc.bitwise.xor("0", "0")).toBe("0");
-        expect(calc.bitwise.xor("10101", "11011")).toBe("01110");
+        expect(calc.engine.xor("1", "1")).toBe("0");
+        expect(calc.engine.xor("1", "0")).toBe("1");
+        expect(calc.engine.xor("0", "0")).toBe("0");
+        expect(calc.engine.xor("10101", "11011")).toBe("01110");
     });
 
     it("lshift", () => {
-        expect(calc.bitwise.lshift("1", 1)).toBe("0");
-        expect(calc.bitwise.lshift("01", 1)).toBe("10");
-        expect(calc.bitwise.lshift("01101", 4)).toBe("10000");
-        expect(calc.bitwise.lshift("000001", 4)).toBe("010000");
+        expect(calc.engine.lshift("1", 1)).toBe("0");
+        expect(calc.engine.lshift("01", 1)).toBe("10");
+        expect(calc.engine.lshift("01101", 4)).toBe("10000");
+        expect(calc.engine.lshift("000001", 4)).toBe("010000");
     });
 
     it("rshift", () => {
-        expect(calc.bitwise.rshift("1", 1)).toBe("1");
-        expect(calc.bitwise.rshift("01", 1)).toBe("00");
-        expect(calc.bitwise.rshift("0101", 2)).toBe("0001");
-        expect(calc.bitwise.rshift("1000", 3)).toBe("1111");
-        expect(calc.bitwise.rshift("1101", 1)).toBe("1110");
+        expect(calc.engine.rshift("1", 1)).toBe("1");
+        expect(calc.engine.rshift("01", 1)).toBe("00");
+        expect(calc.engine.rshift("0101", 2)).toBe("0001");
+        expect(calc.engine.rshift("1000", 3)).toBe("1111");
+        expect(calc.engine.rshift("1101", 1)).toBe("1110");
     });
 
     it("urshift", () => {
-        expect(calc.bitwise.urshift("1", 1)).toBe("0");
-        expect(calc.bitwise.urshift("01", 1)).toBe("00");
-        expect(calc.bitwise.urshift("0101", 2)).toBe("0001");
-        expect(calc.bitwise.urshift("1000", 3)).toBe("0001");
-        expect(calc.bitwise.urshift("1101", 1)).toBe("0110");
+        expect(calc.engine.urshift("1", 1)).toBe("0");
+        expect(calc.engine.urshift("01", 1)).toBe("00");
+        expect(calc.engine.urshift("0101", 2)).toBe("0001");
+        expect(calc.engine.urshift("1000", 3)).toBe("0001");
+        expect(calc.engine.urshift("1101", 1)).toBe("0110");
     });
 
     it('flipbit', () => {
-        expect(calc.bitwise.flipBit("1", 0)).toBe("0");
-        expect(calc.bitwise.flipBit("101", 1)).toBe("111");
-    })
+        expect(calc.engine.flipBit("1", 0)).toBe("0");
+        expect(calc.engine.flipBit("101", 1)).toBe("111");
+    });
+
+    it('applyTwosComplement', () => {
+        expect(calc.engine.applyTwosComplement("010")).toBe("110");
+        expect(calc.engine.applyTwosComplement("110")).toBe("010"); // reverse
+        expect(calc.engine.applyTwosComplement("110")).toBe("010");
+        expect(calc.engine.applyTwosComplement("0")).toBe("10");
+        expect(calc.engine.applyTwosComplement("10101100")).toBe("01010100");
+        expect(calc.engine.applyTwosComplement("01010100")).toBe("10101100"); // reverse
+    });
 })
 
-describe("bitwise comparison", () => {
+describe("engine comparison", () => {
+    
     it("NOT same as in node", () => {
         
         for(var i = -100; i<100;i++) {
             const expected = bin(~i);
-            const actual = calc.bitwise.not(bin(i));
+            const actual = calc.engine.not(bin(i));
             expect(`${i} is ${actual}`).toBe(`${i} is ${(expected)}`);
         } 
     });
@@ -186,7 +185,7 @@ describe("bitwise comparison", () => {
         for(var x = -100; x<100;x++) {
             const y = 5+3%x+x%6*(-x); 
             const expected = bin(x | y);
-            const actual = calc.bitwise.or(bin(x), bin(y));
+            const actual = calc.engine.or(bin(x), bin(y));
 
             expect(`${x} is ${actual}`).toBe(`${x} is ${(expected)}`);
         } 
@@ -196,7 +195,7 @@ describe("bitwise comparison", () => {
         for(var x = -100; x<100;x++) {
             const y = 5+3%x+x%6*(-x); 
             const expected = bin(x & y);
-            const actual = calc.bitwise.and(bin(x), bin(y));
+            const actual = calc.engine.and(bin(x), bin(y));
 
             expect(`${x} is ${actual}`).toBe(`${x} is ${(expected)}`);
         } 

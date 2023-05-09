@@ -12,7 +12,7 @@ export default {
     },
 
     flipBit: function(num: BoundedInt | JsNumber, bitIndex: number): BoundedInt  {
-        return this._applySingle(asBoundedNumber(num), (bin) => this.bitwise.flipBit(bin, bitIndex));
+        return this._applySingle(asBoundedNumber(num), (bin) => this.engine.flipBit(bin, bitIndex));
     },
 
     promoteTo64Bit(number: BoundedInt) : BoundedInt {
@@ -30,38 +30,38 @@ export default {
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
 
         const r = num.value < 0
-            ? this.bitwise.applyTwosComplement(bin.padStart(bitSize, '0'))
+            ? this.engine.applyTwosComplement(bin.padStart(bitSize, '0'))
             : bin;
 
         return r;
     },
 
     lshift (num: BoundedInt, numBytes : JsNumber) : BoundedInt {
-        return this._applySingle(num, bin => this.bitwise.lshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.engine.lshift(bin, asIntN(numBytes)));
     },
 
     rshift (num : BoundedInt, numBytes : JsNumber) : BoundedInt {
-        return this._applySingle(num, bin => this.bitwise.rshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.engine.rshift(bin, asIntN(numBytes)));
     },
 
     urshift (num : BoundedInt, numBytes : JsNumber) : BoundedInt {
-        return this._applySingle(num, bin => this.bitwise.urshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.engine.urshift(bin, asIntN(numBytes)));
     },
 
     not(num:BoundedInt) : BoundedInt { 
-        return this._applySingle(num, this.bitwise.not);
+        return this._applySingle(num, this.engine.not);
     },
 
     and (num1 : BoundedInt, num2 : BoundedInt) : BoundedInt {
-        return this._applyTwo(num1, num2, this.bitwise.and);
+        return this._applyTwo(num1, num2, this.engine.and);
     },
 
     or (num1 : BoundedInt, num2 : BoundedInt) : BoundedInt {
-        return this._applyTwo(num1, num2, this.bitwise.or);
+        return this._applyTwo(num1, num2, this.engine.or);
     },
 
     xor (num1 : BoundedInt, num2 : BoundedInt) : BoundedInt {
-        return this._applyTwo(num1, num2, this.bitwise.xor);
+        return this._applyTwo(num1, num2, this.engine.xor);
     },
 
     _applySingle(num: BoundedInt, operation: (bin:string) => string) : BoundedInt {
@@ -73,7 +73,7 @@ export default {
         let m = BigInt(1);
 
         if(bin['0'] == '1') {
-            bin = this.bitwise.applyTwosComplement(bin);
+            bin = this.engine.applyTwosComplement(bin);
             m = BigInt(-1);
         }
 
@@ -91,7 +91,7 @@ export default {
         let m = BigInt(1);
     
         if(resultBin['0'] == '1') {
-            resultBin = this.bitwise.applyTwosComplement(resultBin);
+            resultBin = this.engine.applyTwosComplement(resultBin);
             m = BigInt(-1);
         }
 
@@ -100,7 +100,7 @@ export default {
         return asBoundedNumber( isBigInt ? result : asIntN(result));
     },
 
-    bitwise: { 
+    engine: { 
         lshift (bin: string, bytes: number):string {
             return bin.substring(bytes) + "0".repeat(bytes);
         },
