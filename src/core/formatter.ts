@@ -1,7 +1,5 @@
-import { BoundFunction } from "@testing-library/react";
 import calc from "./calc";
 import { Integer, JsNumber, asInteger } from "./Integer";
-import { type } from "os";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
