@@ -1,6 +1,7 @@
 import React from 'react';
 import CommandLink from '../../core/components/CommandLink';
 import './HelpResultView.css';
+import { INT32_MAX_VALUE, INT32_MIN_VALUE } from '../../core/const';
 
 function HelpResultView() {
 
@@ -46,11 +47,6 @@ function HelpResultView() {
             <div className="right-panel">
                 <div className="section">
                     <strong className="section-title soft">Supported Bitwise Operations</strong><br />
-                    <small>
-                        <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">
-                            as implemented in the JavaScript engine of your browser. If it cannot do it, BitwiseCmd cannot do it.
-                        </a>
-                    </small>
                     <ul>
                         <li><code>&amp;</code> — bitwise AND</li>
                         <li><code>|</code> — bitwise inclusive OR</li>
@@ -59,6 +55,13 @@ function HelpResultView() {
                         <li><code>&lt;&lt;</code> — left shift</li>
                         <li><code>&gt;&gt;</code> — sign propagating right shift</li>
                         <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
+                    </ul>
+                </div>
+                <div className="section">
+                    <strong className="section-title soft">Supported Number Types</strong><br />
+                    <ul>
+                        <li><code>32-bit</code> - numbers beetween {-INT32_MIN_VALUE} and {INT32_MAX_VALUE} entered without suffixes. This is a default number type.</li>
+                        <li><code>64-bit</code> - numbers that exceed 32-bit range or entered with and L notations (e.g. 10L).</li>
                     </ul>
                 </div>
                 <div className="section">
