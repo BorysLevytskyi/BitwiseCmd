@@ -148,15 +148,11 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
 
         const maxBitSize = op.value.maxBitSize;
         if(totalLength > op.value.maxBitSize && (totalLength - index) > maxBitSize) {
-            
             op.setValue(calc.promoteTo64Bit(op.value));
         }
 
         const pad = op.value.maxBitSize - totalLength;
         const newValue = calc.flipBit(op.value, pad + index);
-        console.log(pad + index);
-        console.log(op.value.maxBitSize);
-        console.log(newValue.maxBitSize);
         op.setValue(newValue);
         this.props.onBitFlipped();
     }
