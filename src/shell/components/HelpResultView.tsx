@@ -60,11 +60,13 @@ function HelpResultView() {
                 <div className="section soft-border">
                     <div className="section-title soft">Supported Number Types <sup className='accent1'>NEW</sup></div>
                     <p>
-                        BitiwseCmd no longer uses JavaScript engine for execution of bitwise operations. It has it's own calculation engine which supports bitwise operations on the following data types:
+                        BitiwseCmd no longer uses browser's JavaScript engine for execution of bitwise operations. It has it's own calculation engine which bring supports bitwise operations on the following data types:
                     </p>
                     <ul>
-                        <li><code>32-bit integer</code> - numbers beetween {-INT32_MIN_VALUE} and {INT32_MAX_VALUE} entered without suffixes. This is a default number type.</li>
-                        <li><code>64-bit integer</code> - numbers that exceed 32-bit range or entered with and L notations (e.g. 10L).</li>
+                        <li><code>8-bit signed integer</code> - numbers entered with and <code>b</code> suffix (e.g. <CommandLink text='10b' />).</li>
+                        <li><code>64-bit signed integer</code> - numbers entered with and <code>s</code> suffix (e.g. <CommandLink text='10s' />).</li>
+                        <li><code>32-bit signed integer</code> - numbers beetween {-INT32_MIN_VALUE} and {INT32_MAX_VALUE} entered without suffixes. This is a default number type.</li>
+                        <li><code>64-bit signed integer</code> - numbers that exceed 32-bit range or entered with and <code>l</code> suffix (e.g. <CommandLink text='10l' />).</li>
                     </ul>
                 </div>
                 <div className="section">
