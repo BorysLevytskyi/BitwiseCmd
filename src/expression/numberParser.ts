@@ -1,5 +1,5 @@
 import { prefix } from "@fortawesome/free-solid-svg-icons";
-import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
+import { INT32_MAX_VALUE, INT32_MIN_VALUE, UINT32_MAX_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
 import { Integer, asInteger } from "../core/Integer";
 
@@ -70,23 +70,25 @@ class NumberParser {
 function parseInteger(input : string)  : Integer {
     
     const lower = input.toLocaleLowerCase().trim();
-    
+    const isNegative = input.startsWith('-');
     let suffix = getSuffix(lower);
     
     const bigIntStr = lower.replace('-', '').replace(suffix, '');
-    let n = BigInt(bigIntStr);
+    let num = BigInt(bigIntStr);
     
     const signed = !suffix.startsWith('u');
 
     if(!signed)
+    {
+        if(isNegative)
+            throw new Error(input + ": unsigned integer cannot be negative"); 
+
         suffix = suffix.substring(1);
+    }
 
-    const size = getSizeBySuffix(suffix, n);
-    const isNegative = input.startsWith('-');
+    const size = getSizeBySuffix(suffix, num, signed);
 
-    if(isNegative) n = -n;
-
-    return new Integer(n, size, signed);
+    return new Integer(isNegative  ? -num : num, size, signed);
 }
 
 function getSuffix(lower: string) {
@@ -102,13 +104,13 @@ function getSuffix(lower: string) {
     return match[0];
 }
 
-function getSizeBySuffix(suffix: string, value : bigint) {
- 
+function getSizeBySuffix(suffix: string, value : bigint, signed: boolean) {
+    const max32 = signed ? INT32_MAX_VALUE : UINT32_MAX_VALUE;
     switch(suffix.toLowerCase()) {
         case 'l': return 64;
         case 's': return 16;
         case 'b': return 8;
-        default: return value > INT32_MAX_VALUE  ? 64 : 32;
+        default: return value > max32  ? 64 : 32;
     }
 }
 

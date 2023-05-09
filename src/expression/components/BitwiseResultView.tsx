@@ -88,7 +88,9 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     }
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
-        const maxBits = Math.max()
+        const scalar =  this.props.expressionItem.evaluate();
+        const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, '0');
+        const signBitIndex = scalar.value.signed && bin.length >= scalar.value.maxBitSize ? bin.length - scalar.value.maxBitSize : -1;
 
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
@@ -96,19 +98,14 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
             <td className="bin">
                 <BinaryStringView
                     emphasizeBytes={emphasizeBytes}
-                    binaryString={formatter.padLeft(this.getBinaryString(), maxNumberOfBits, '0')}
+                    binaryString={bin}
                     allowFlipBits={allowFlipBits}
-                    bitSize={this.props.bitSize}
+                    signBitIndex={signBitIndex}
                     onFlipBit={args => this.flipBit(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
             <td className="info accent1" data-test-name='ignore'>{this.getInfo(maxNumberOfBits)}</td>
         </tr>;;
-    }
-
-    getBinaryString(): string {
-        var v = this.props.expressionItem.evaluate();
-        return formatter.numberToString(v.value, 'bin');
     }
 
     getLabel(): string {

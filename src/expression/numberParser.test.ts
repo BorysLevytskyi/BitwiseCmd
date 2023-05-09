@@ -38,7 +38,6 @@ describe("parser", () => {
         expect(dec?.value.maxBitSize).toBe(64);
     });
 
-
     it('switches to bigint if value exceeds max safe int', () => {
         const unsafeInt = BigInt(Number.MAX_SAFE_INTEGER)+BigInt(1);
         
@@ -102,6 +101,16 @@ describe("parser", () => {
         expect(v?.num()).toBe(1);
     });
 
+    it('fits usigned int32 max value into 32-bit data type', () => {
+        const n1 = numberParser.parse("4294967295u");
+        const n2 = numberParser.parse("4294967296u");
+
+        expect(n1?.value.maxBitSize).toBe(32);
+        expect(n2?.value.maxBitSize).toBe(64);
+        expect(n1?.value.signed).toBe(false);
+        expect(n2?.value.signed).toBe(false);
+    })
+
     it('parses single', () => {
         var v =  numberParser.parse('1s')?.value
         expect(v?.maxBitSize).toBe(16);
@@ -110,6 +119,10 @@ describe("parser", () => {
 
         //var v2 =  numberParser.parse('1i8')?.value
         //expect(v2).toEqual(v);
+    });
+
+    it('cannot parse negative usigned', () => {
+       expect(() => numberParser.parse('-1u')).toThrowError("-1u: unsigned integer cannot be negative");
     });
 
     it('parses usigned single', () => {

@@ -8,7 +8,7 @@ export type BinaryStringViewProps = {
     emphasizeBytes?: boolean;
     className?:string;
     disableHighlight?:boolean,
-    bitSize?: number
+    signBitIndex?: number,
 };
 
 export type FlipBitEventArg = {
@@ -36,7 +36,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
     }
 
     getChildren() {
-        var bits = this.createBits(this.props.binaryString.split(''), this.props.bitSize);
+        var bits = this.createBits(this.props.binaryString.split(''));
         
         if(this.props.emphasizeBytes) {
             return this.splitIntoBytes(bits);
@@ -53,15 +53,12 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
 
         let signBitIndex = -1;
 
-        if(bitSize != null && bitChars.length >= bitSize)
-            signBitIndex = bitChars.length - bitSize!;
-
         return bitChars.map((c, i) => {
 
             var className = c == '1' ? `one${css}` : `zero${css}`;
             var tooltip = '';
 
-            if(i === signBitIndex) {
+            if(i === this.props.signBitIndex) {
                 className += ' accent1';
                 tooltip = 'Signature bit. 0 means a positive number and 1 means a negative.'
             }
