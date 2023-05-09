@@ -120,8 +120,7 @@ export default {
         },
         or (bin1: string, bin2 : string) : string  {
 
-            if(bin1.length != bin2.length)
-                throw new Error("Binary strings must have the same length");
+            checkSameLength(bin1, bin2);
 
             const result = [];
             for(var i=0; i<bin1.length; i++) {
@@ -136,6 +135,8 @@ export default {
         },
         and (bin1: string, bin2 : string) : string  {
 
+            checkSameLength(bin1, bin2);
+
             const result = [];
             for(var i=0; i<bin1.length; i++) {
                 
@@ -148,6 +149,9 @@ export default {
             return result.join('');
         },
         xor (bin1: string, bin2:string) : string {
+
+            checkSameLength(bin1, bin2);
+
             const result = [];
             for(var i=0; i<bin1.length; i++) {
                 
@@ -182,6 +186,11 @@ export default {
         },
     }
 };
+
+function checkSameLength(bin1: string, bin2: string) {
+    if (bin1.length != bin2.length)
+        throw new Error("Binary strings must have the same length");
+}
 
 function flip(bit:string):string { 
     return bit === "0" ? "1" : "0";
