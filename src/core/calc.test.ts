@@ -13,6 +13,11 @@ describe('calc.flipBit', () => {
         expect(calc.flipBit(2147483647, 30).num()).toBe(2147483645);
     });
 
+    it('sing-bit in 8-bit number', () => {
+        const result = calc.flipBit(new BoundedInt(-1, 8), 0);
+        expect(result.maxBitSize).toBe(8);
+    });
+
     it('caulate flipped bit 64-bit nubmer', () => {
         const int64max = asBoundedNumber("9223372036854775807");
         expect(calc.flipBit(int64max, 0).num()).toBe(-1);

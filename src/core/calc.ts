@@ -88,7 +88,7 @@ export default {
         }
 
         const result = BigInt("0b" + bin) * m;
-        return asBoundedNumber(typeof num.value == "bigint" ? result : asIntN(result));
+        return new BoundedInt(typeof num.value == "bigint" ? result : asIntN(result), num.maxBitSize);
     },
 
     _applyTwo(num1: BoundedInt, num2: BoundedInt,  operation: (bin1:string, bin2:string) => string) : BoundedInt {
