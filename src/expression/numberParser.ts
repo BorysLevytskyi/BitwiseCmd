@@ -1,7 +1,7 @@
 import { prefix } from "@fortawesome/free-solid-svg-icons";
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
-import { Integer, asInteger } from "../core/types";
+import { Integer, asInteger } from "../core/Integer";
 
 // byte -i8 or b
 // single - i16 or s 

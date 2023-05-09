@@ -1,5 +1,5 @@
 import formatter from "./formatter";
-import { Integer, JsNumber,  asInteger } from "./types";
+import { Integer, JsNumber,  asInteger } from "./Integer";
 import { asIntN } from "./utils";
 
 export default {
@@ -86,15 +86,15 @@ export default {
 
         bin = operation(bin);
 
-        let m = BigInt(1);
+        let negative = false;
 
-        if(bin['0'] == '1') {
+        if(num.signed && bin['0'] == '1') {
             bin = this.engine.applyTwosComplement(bin);
-            m = BigInt(-1);
+            negative = true;
         }
 
-        const result = BigInt("0b" + bin) * m;
-        return new Integer(typeof num.value == "bigint" ? result : asIntN(result), num.maxBitSize);
+        const result = BigInt("0b" + bin) * BigInt(negative ? -1 : 1);
+        return new Integer(typeof num.value == "bigint" ? result : asIntN(result), num.maxBitSize, num.signed);
     },
 
     _applyTwo(num1: Integer, num2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {

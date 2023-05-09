@@ -9,9 +9,16 @@ export type JsNumber = number | bigint;
 export class Integer {
     value: bigint;
     maxBitSize: number;
-    constructor(value: bigint | number, maxBitSize?: number) {
+    signed: boolean;
+
+    constructor(value: JsNumber, maxBitSize?: number, signed? : boolean) {
         this.value = typeof value == "bigint" ? value : BigInt(value);
         this.maxBitSize = maxBitSize != null ? maxBitSize : (value >= INT32_MIN_VALUE && value <= INT32_MAX_VALUE) ? 32 : 64;
+        this.signed = signed == null ? true : signed;
+    }
+
+    static unsigned(value : JsNumber, maxBitSize?: number) {
+        return new Integer(value, maxBitSize, false);
     }
 
     valueOf() {

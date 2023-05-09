@@ -1,4 +1,4 @@
-import { Integer, JsNumber, isInteger } from "./types";
+import { Integer, JsNumber, isInteger } from "./Integer";
 
 function chunkifyString(input: string, chunkSize: number) : string[] {
     

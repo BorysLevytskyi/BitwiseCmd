@@ -1,7 +1,8 @@
 import calc from './calc';
 import { ScalarValue } from '../expression/expression';
-import { Integer, asInteger } from './types';
+import { Integer, asInteger } from './Integer';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from './const';
+import exp from 'constants';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
@@ -21,6 +22,19 @@ describe('calc.flipBit', () => {
     it('caulate flipped bit 64-bit nubmer', () => {
         const int64max = asInteger("9223372036854775807");
         expect(calc.flipBit(int64max, 0).num()).toBe(-1);
+    });
+
+    it('treats usingned type differently', () => {
+        
+        const v = BigInt("0b01111111");
+        const r = calc.flipBit(new Integer(v, 8), 0);
+        
+        expect(r.num()).toBe(-1);
+        expect(r.signed).toBe(true);
+
+        const ur = calc.flipBit(Integer.unsigned(v, 8), 0)
+        expect(ur.num()).toBe(255);
+        expect(ur.signed).toBe(false);
     });
 
     it('calculates flipped bit', () => {

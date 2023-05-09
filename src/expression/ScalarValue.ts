@@ -2,7 +2,7 @@ import {numberParser} from './numberParser';
 import { ExpressionElement as ExpressionElement } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE } from '../core/const';
-import { Integer, JsNumber, isInteger, asInteger } from '../core/types';
+import { Integer, JsNumber, isInteger, asInteger } from '../core/Integer';
 import calc from '../core/calc';
 
 var globalId : number = 1;

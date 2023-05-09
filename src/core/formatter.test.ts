@@ -1,5 +1,5 @@
 import formatter from './formatter';
-import { BoundedInt } from './types';
+import { Integer } from './Integer';
 
 describe("formatter", () => {
     it('formats string', () => {
@@ -10,8 +10,8 @@ describe("formatter", () => {
 
     it('respects size when formatting negative number', () => {
         const minusOne = BigInt(-1);
-        const n32 = new BoundedInt(minusOne, 32);
-        const n64 = new BoundedInt(minusOne, 64);
+        const n32 = new Integer(minusOne, 32);
+        const n64 = new Integer(minusOne, 64);
         expect(formatter.bin(n32)).toBe("11111111111111111111111111111111");
         expect(formatter.bin(n64)).toBe("1111111111111111111111111111111111111111111111111111111111111111");
     });
