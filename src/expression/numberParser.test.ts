@@ -106,9 +106,38 @@ describe("parser", () => {
         var v =  numberParser.parse('1s')?.value
         expect(v?.maxBitSize).toBe(16);
         expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(true);
 
         //var v2 =  numberParser.parse('1i8')?.value
         //expect(v2).toEqual(v);
+    });
+
+    it('parses usigned single', () => {
+        var v =  numberParser.parse('1us')?.value
+        expect(v?.maxBitSize).toBe(16);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
+    });
+
+    it('parses usigned int32', () => {
+        var v =  numberParser.parse('1u')?.value
+        expect(v?.maxBitSize).toBe(32);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
+    });
+
+    it('parses usigned byte', () => {
+        var v =  numberParser.parse('1ub')?.value
+        expect(v?.maxBitSize).toBe(8);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
+    });
+
+    it('parses usigned long', () => {
+        var v =  numberParser.parse('1ul')?.value
+        expect(v?.maxBitSize).toBe(64);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
     });
 
     it('parses byte', () => {

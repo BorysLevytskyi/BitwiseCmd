@@ -6,7 +6,7 @@ import { Integer, asInteger } from "../core/Integer";
 // byte -i8 or b
 // single - i16 or s 
 
-const decimalRegex = /^-?\d+[l,L,s,S,b,B]?$/;
+const decimalRegex = /^-?\d+(l|s|b|ul|us|ub|u)?$/;
 const hexRegex = /^-?0x[0-9,a-f]+$/i;
 const binRegex = /^-?0b[0-1]+$/i;
 
@@ -23,9 +23,9 @@ export interface ParsedNumber {
 }
 
 var knownParsers : ParserConfig[] = [
-    { regex: decimalRegex, base: 'dec', parse:(s) => parseBoundedInt(s,) },
-    { regex: hexRegex, base: 'hex', parse:(s) => parseBoundedInt(s)},
-    { regex: binRegex, base: 'bin', parse:(s) => parseBoundedInt(s) }];
+    { regex: decimalRegex, base: 'dec', parse:(s) => parseInteger(s,) },
+    { regex: hexRegex, base: 'hex', parse:(s) => parseInteger(s)},
+    { regex: binRegex, base: 'bin', parse:(s) => parseInteger(s) }];
 
 
 class NumberParser {
@@ -53,7 +53,7 @@ class NumberParser {
 
     applyParser(parser : ParserConfig, rawInput: string) : ParsedNumber | null {
     
-        if(!parser.regex.test(rawInput)) {
+        if(!parser.regex.test(rawInput.toLowerCase())) {
             return null;
         }
             
@@ -67,26 +67,34 @@ class NumberParser {
     }
 }
 
-function parseBoundedInt(input : string)  : Integer {
+function parseInteger(input : string)  : Integer {
     
     const lower = input.toLocaleLowerCase().trim();
-    const suffix = getSuffix(lower);
+    
+    let suffix = getSuffix(lower);
+    
     const bigIntStr = lower.replace('-', '').replace(suffix, '');
     let n = BigInt(bigIntStr);
     
+    const signed = !suffix.startsWith('u');
+
+    if(!signed)
+        suffix = suffix.substring(1);
+
     const size = getSizeBySuffix(suffix, n);
     const isNegative = input.startsWith('-');
 
     if(isNegative) n = -n;
 
-    return new Integer(n, size);
+    return new Integer(n, size, signed);
 }
 
 function getSuffix(lower: string) {
+    
     if(lower.startsWith('0x') || lower.startsWith('0b'))
         return '';
     
-    const match = /[l,s,b]$/.exec(lower);
+    const match = /[l,s,b,u]+$/.exec(lower);
     
     if(match == null || match.length == 0)
         return '';
@@ -96,7 +104,7 @@ function getSuffix(lower: string) {
 
 function getSizeBySuffix(suffix: string, value : bigint) {
  
-        switch(suffix.toLowerCase()) {
+    switch(suffix.toLowerCase()) {
         case 'l': return 64;
         case 's': return 16;
         case 'b': return 8;
