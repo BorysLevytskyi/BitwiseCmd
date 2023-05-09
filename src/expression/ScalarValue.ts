@@ -13,6 +13,7 @@ export default class ScalarValue implements ExpressionElement {
     value: Integer;
     base: NumberBase;
     isOperator: boolean;
+    label: string;
 
     constructor(value : Integer | JsNumber, base?: NumberBase) {
         
@@ -24,11 +25,18 @@ export default class ScalarValue implements ExpressionElement {
         this.id = globalId++;
         this.value = value as Integer;
         this.base = base || "dec";
-        this.isOperator = false;        
+        this.isOperator = false; 
+        this.label = '';       
     }
   
-    setValue(value : Integer) {
+    setValue(value : Integer) : ScalarValue {
         this.value = value;
+        return this;
+    }
+
+    setLabel(label : string) : ScalarValue {
+        this.label = label;
+        return this;
     }
 
     evaluate() : ScalarValue {

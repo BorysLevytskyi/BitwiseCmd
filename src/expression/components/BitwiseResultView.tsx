@@ -158,13 +158,19 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getInfo(maxNumberOfBits:number) {
         var op = this.props.expressionItem.getUnderlyingScalarOperand();
 
-        if(op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits)
+        if((op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits) || op.label.length > 0)
         {
-            const title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
-            let text = `${op.value.maxBitSize}-bit`;
+            let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
+            let text = `${op.value.maxBitSize}-bit `;
             
             if(!op.value.signed)
-                text += " unsigned";
+                text += " unsigned ";
+
+            if(op.label.length > 0)
+            {
+                text += " (converted)";
+                title += ". This number was converted to facilitate bitwise operation with an operand of a different type";
+            }
 
             return <span title={title} style={{cursor:"help"}}>{text}</span>;
         }

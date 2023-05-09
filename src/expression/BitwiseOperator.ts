@@ -64,12 +64,12 @@ function equalizeSize(op1: ScalarValue, op2: ScalarValue) {
         if(n1.signed === n2.signed) return;
 
         // Example int and usinged int. Poromoted both to 64 bit        
-        op1.setValue(n1.resize(n1.maxBitSize*2).toSigned());
-        op2.setValue(n2.resize(n2.maxBitSize*2).toSigned());
+        op1.setValue(n1.resize(n1.maxBitSize*2).toSigned()).setLabel("converted");
+        op2.setValue(n2.resize(n2.maxBitSize*2).toSigned()).setLabel("converted");
     }
     
     if(n1.maxBitSize > n2.maxBitSize) 
-        op2.setValue(n2.convertTo(n1));
+        op2.setValue(n2.convertTo(n1)).setLabel("converted");
     else 
-        op1.setValue(n1.convertTo(n2));
+        op1.setValue(n1.convertTo(n2)).setLabel("converted");
 }
