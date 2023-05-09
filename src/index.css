@@ -77,7 +77,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .light button.btn { color: black}
 .light button.btn:hover { background: #ddd}
 .light button.btn:disabled { color: #888; background-color: inherit; }
-.light .sign-bit { color:teal}
+.light .accent1 { color:darkcyan}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -96,7 +96,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark button.btn { color: white}
 .dark button.btn:hover { background: #333}
 .dark button.btn:disabled { color: #999; background-color: inherit; }
-.dark .sign-bit { color:mediumseagreen}
+.dark .accent1 { color:mediumseagreen}
 
 /*
     Midnight Theme
@@ -120,7 +120,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight button.btn { color: white}
 .midnight button.btn:hover { background: #132537}
 .midnight button.btn:disabled { color: #85a0ad; background-color: inherit; }
-.midnight .sign-bit { color:mediumseagreen}
+.midnight .accent1 { color:mediumseagreen}
 
 button { 
     border: none;

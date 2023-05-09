@@ -102,7 +102,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                     onFlipBit={args => this.flipBit(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info" data-test-name='ignore'>{this.getInfo(maxNumberOfBits)}</td>
+            <td className="info accent1" data-test-name='ignore'>{this.getInfo(maxNumberOfBits)}</td>
         </tr>;;
     }
 

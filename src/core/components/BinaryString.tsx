@@ -62,7 +62,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
             var tooltip = '';
 
             if(i === signBitIndex) {
-                className += ' sign-bit';
+                className += ' accent1';
                 tooltip = 'Signature bit. 0 means a positive number and 1 means a negative.'
             }
                 
