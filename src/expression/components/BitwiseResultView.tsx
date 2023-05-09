@@ -147,8 +147,9 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const { bitIndex: index, binaryStringLength: totalLength } = args;
 
         const maxBitSize = op.value.maxBitSize;
-        if(totalLength > op.value.maxBitSize && (totalLength - index) > maxBitSize) {
-            op.setValue(calc.promoteTo64Bit(op.value));
+        const space = (totalLength - index - maxBitSize);
+        if(totalLength > op.value.maxBitSize && space > 0) {
+            op.setValue(calc.addSpace(op.value, space));
         }
 
         const pad = op.value.maxBitSize - totalLength;

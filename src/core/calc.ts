@@ -20,6 +20,12 @@ export default {
         return new BoundedInt(BigInt("0b" + bin), 64);
     },
 
+    addSpace(number: BoundedInt, requiredSpace: number) : BoundedInt {
+        const bin = this.toBinaryString(number);
+        const totalSpaceRequired = number.maxBitSize + requiredSpace;
+        return new BoundedInt(BigInt("0b" + bin), nextPowOfTwo(totalSpaceRequired));
+    },
+
     operation (op1: BoundedInt, operator: string, op2 : BoundedInt) : BoundedInt {
         switch(operator) {
             case ">>": return this.rshift(op1, op2.value);
@@ -204,4 +210,10 @@ function checkSameLength(bin1: string, bin2: string) {
 
 function flip(bit:string):string { 
     return bit === "0" ? "1" : "0";
+}
+
+function nextPowOfTwo(num: number) : number {
+    let p = 2;
+    while(p < num) p = p*2;
+    return p;
 }
