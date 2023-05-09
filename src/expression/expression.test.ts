@@ -166,9 +166,7 @@ describe("comparison with nodejs engine", () => {
         }
         catch(err) 
         {
-
             console.log(`Error:\nExpected:${expectedInput}\nActual:${actualInput}\n${typeof actualInput}`);
-
             throw err;
         }
         

@@ -1,20 +1,9 @@
-import { prefix } from "@fortawesome/free-solid-svg-icons";
-import { INT32_MAX_VALUE, INT32_MIN_VALUE, UINT32_MAX_VALUE } from "../core/const";
+import { INT32_MAX_VALUE, UINT32_MAX_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
-import { Integer, asInteger } from "../core/Integer";
+import { Integer } from "../core/Integer";
 
-// byte -i8 or b
-// single - i16 or s 
-
-const decimalRegex = /^-?\d+(l|s|b|ul|us|ub|u)?$/;
-const hexRegex = /^-?0x[0-9,a-f]+$/i;
-const binRegex = /^-?0b[0-1]+$/i;
-
-interface ParserConfig {
-    regex: RegExp,
-    base: NumberBase,
-    parse: (input: string) => Integer 
-}
+const numberRegexString = "-?([0-9]+|0b[0-1]+|0x[0-9,a-f]+)(l|s|b|ul|us|ub|u)?";
+const numberRegexFullString = "^"+numberRegexString+"$"
 
 export interface ParsedNumber {
     value: Integer;
@@ -22,91 +11,59 @@ export interface ParsedNumber {
     input: string;
 }
 
-var knownParsers : ParserConfig[] = [
-    { regex: decimalRegex, base: 'dec', parse:(s) => parseInteger(s,) },
-    { regex: hexRegex, base: 'hex', parse:(s) => parseInteger(s)},
-    { regex: binRegex, base: 'bin', parse:(s) => parseInteger(s) }];
-
-
 class NumberParser {
+    
+    numberRegexString: string;
 
-    parsers: ParserConfig[];
-
-    constructor(parsers: ParserConfig[])
+    constructor()
     {
-        this.parsers = parsers;
+        this.numberRegexString = numberRegexString;
     }
 
-    parse (input : string) : ParsedNumber | null {
-        return this.parsers.map(p => this.applyParser(p, input)).reduce((c, n) => c || n);
-    };
+    caseParse(input : string) {
+        const regex = new RegExp(numberRegexFullString);
+        return regex.test(input);
+    }
 
-    parseOperator (input: string) : string | null {
-        var m = input.match(input);
+    parse (input : string) : ParsedNumber {
+
+        if(input.length == 0) throw new Error("input is null or empty");
+
+        const regex = new RegExp(numberRegexFullString, "i");
         
-        if(m == null || m.length == 0) {
-            return null;
-        }
+        const m = regex.exec(input);
 
-        return m[0];
-    };
+        if(m == null || m.length == 0)
+            throw new Error(input + " is not a number");
 
-    applyParser(parser : ParserConfig, rawInput: string) : ParsedNumber | null {
-    
-        if(!parser.regex.test(rawInput.toLowerCase())) {
-            return null;
-        }
-            
-        var value = parser.parse(rawInput);
-    
-        return  {
+        const value = parseInteger(m[0], m[1], m[2] || '');
+        
+        return {
             value: value,
-            base: parser.base,
-            input: rawInput
-        }    
-    }
+            base: getBase(input),
+            input: input
+        }
+    };
 }
 
-function parseInteger(input : string)  : Integer {
+function parseInteger(input : string, numberPart: string, suffix: string)  : Integer {
     
-    const lower = input.toLocaleLowerCase().trim();
     const isNegative = input.startsWith('-');
-    let suffix = getSuffix(lower);
-    
-    const bigIntStr = lower.replace('-', '').replace(suffix, '');
-    let num = BigInt(bigIntStr);
-    
+    let num = BigInt(numberPart);
     const signed = !suffix.startsWith('u');
 
-    if(!signed)
-    {
-        if(isNegative)
-            throw new Error(input + ": unsigned integer cannot be negative"); 
-
-        suffix = suffix.substring(1);
-    }
+    if(!signed && isNegative)
+        throw new Error(input + " unsigned integer cannot be negative");
 
     const size = getSizeBySuffix(suffix, num, signed);
-
     return new Integer(isNegative  ? -num : num, size, signed);
 }
 
-function getSuffix(lower: string) {
-    
-    if(lower.startsWith('0x') || lower.startsWith('0b'))
-        return '';
-    
-    const match = /[l,s,b,u]+$/.exec(lower);
-    
-    if(match == null || match.length == 0)
-        return '';
-    
-    return match[0];
-}
-
 function getSizeBySuffix(suffix: string, value : bigint, signed: boolean) {
+    
     const max32 = signed ? INT32_MAX_VALUE : UINT32_MAX_VALUE;
-    switch(suffix.toLowerCase()) {
+    
+    switch(suffix.replace('u', '').toLowerCase()) {
         case 'l': return 64;
         case 's': return 16;
         case 'b': return 8;
@@ -114,6 +71,13 @@ function getSizeBySuffix(suffix: string, value : bigint, signed: boolean) {
     }
 }
 
-const numberParser = new NumberParser(knownParsers);
+function getBase(input: string): NumberBase {
 
-export {numberParser};
+    if(input.indexOf('0b') > -1) return 'bin';
+    if(input.indexOf('0x') > -1) return 'hex';
+    return 'dec';
+}
+
+const numberParser = new NumberParser();
+
+export {numberParser, numberRegexString};

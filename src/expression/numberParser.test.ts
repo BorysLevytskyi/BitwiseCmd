@@ -92,8 +92,11 @@ describe("parser", () => {
     });
 
     it('returns null on bad inputs', () => {
-        expect(numberParser.parse('abc')).toBeNull();
-        expect(numberParser.parse('')).toBeNull();
+        expect(numberParser.caseParse('abc')).toBe(false);
+        expect(numberParser.caseParse('')).toBe(false);
+        expect(numberParser.caseParse('-1u')).toBe(true);
+        expect(() => numberParser.parse('abc')).toThrowError("abc is not a number");
+        expect(() => (numberParser.parse(''))).toThrowError('input is null or empty');
     });
 
     it('parses big int', () => {
@@ -122,7 +125,7 @@ describe("parser", () => {
     });
 
     it('cannot parse negative usigned', () => {
-       expect(() => numberParser.parse('-1u')).toThrowError("-1u: unsigned integer cannot be negative");
+       expect(() => numberParser.parse('-1u')).toThrowError("-1u unsigned integer cannot be negative");
     });
 
     it('parses usigned single', () => {
