@@ -47,6 +47,29 @@ function applyNotOperator(operand: ScalarValue) : ScalarValue {
 }
 
 function applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) : ScalarValue {
-    const result =  calc.operation(op1.value, operator, op2.value);
+    
+    equalizeSize(op1, op2);
+
+    const result = calc.operation(op1.value, operator, op2.value);
     return new ScalarValue(result, op2.base);
+}
+
+function equalizeSize(op1: ScalarValue, op2: ScalarValue) {
+    
+    const n1 = op1.value;
+    const n2 = op2.value;
+
+    if(n1.maxBitSize === n2.maxBitSize)
+    {
+        if(n1.signed === n2.signed) return;
+
+        // Example int and usinged int. Poromoted both to 64 bit        
+        op1.setValue(n1.resize(n1.maxBitSize*2).toSigned());
+        op2.setValue(n2.resize(n2.maxBitSize*2).toSigned());
+    }
+    
+    if(n1.maxBitSize > n2.maxBitSize) 
+        op2.setValue(n2.convertTo(n1));
+    else 
+        op1.setValue(n1.convertTo(n2));
 }

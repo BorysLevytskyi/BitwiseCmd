@@ -39,7 +39,7 @@ export default class BitwiseResultViewModel {
     }
 
     static buildBitwiseOperation (expr : BitwiseOperationExpression, config : Config) {
-
+        
         var op = expr.children[0],
             i = 0, len = expr.children.length,
             ex, m = new BitwiseResultViewModel(config);

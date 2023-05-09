@@ -4,6 +4,7 @@ import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
 import { Expression, ExpressionElement } from './expression-interfaces';
 import { numberParser, numberRegexString } from './numberParser';
+import { parse } from 'path';
 
 export { default as ScalarValue } from './ScalarValue';
 export { default as BitwiseOperator } from './BitwiseOperator';
@@ -114,6 +115,7 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
             num = m[2];
 
         var parsed = null;
+
         if(num.indexOf('~') == 0) {
             parsed = new BitwiseOperator(parseScalarValue(num.substring(1)), '~');
         }
@@ -135,7 +137,9 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
 
 function parseScalarValue(input : string) : ScalarValue {
     const n = numberParser.parse(input);
-    return new ScalarValue(n.value, n.base);
+    var sv = new ScalarValue(n.value, n.base);
+    if(sv.value.maxBitSize != n.value.maxBitSize) throw new Error("Gotcha!");
+    return sv;
 }
 
 var parser = new ExpressionParser();

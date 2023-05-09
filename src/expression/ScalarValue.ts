@@ -15,18 +15,16 @@ export default class ScalarValue implements ExpressionElement {
     isOperator: boolean;
 
     constructor(value : Integer | JsNumber, base?: NumberBase) {
-
-        if(!isInteger(value))
-            value = asInteger(value);
+        
+         if(!isInteger(value))
+             value = asInteger(value);
 
         ScalarValue.validateSupported(value);
 
         this.id = globalId++;
-        this.value = new Integer(0);
+        this.value = value as Integer;
         this.base = base || "dec";
-        this.isOperator = false;
-        
-        this.setValue(value);
+        this.isOperator = false;        
     }
   
     setValue(value : Integer) {
@@ -38,7 +36,7 @@ export default class ScalarValue implements ExpressionElement {
     }
 
     getUnderlyingScalarOperand() : ScalarValue  {
-        return this
+        return this;
     }
 
     static validateSupported(num : Integer) {

@@ -9,9 +9,9 @@ export type JsNumber = number | bigint;
 
 export class Integer {
     
-    value: bigint;
-    maxBitSize: number;
-    signed: boolean;
+    readonly value: bigint;
+    readonly maxBitSize: number;
+    readonly signed: boolean;
 
     constructor(value: JsNumber, maxBitSize?: number, signed? : boolean) {
         this.value = typeof value == "bigint" ? value : BigInt(value);
@@ -23,14 +23,14 @@ export class Integer {
         return new Integer(value, maxBitSize, false);
     }
 
-    asUnsigned() {
+    toUnsigned() {
         return this.signed 
             ? new Integer(BigInt("0b" + this.toString(2)), this.maxBitSize, false)
             : new Integer(this.value, this.maxBitSize, this.signed);
          
     }
 
-    asSigned() {
+    toSigned() {
         
         if(this.signed)
             return new Integer(this.value, this.maxBitSize, this.signed); 
@@ -41,11 +41,25 @@ export class Integer {
         return new Integer(bin[0] == '1' ? n : -n, this.maxBitSize, true)
     }
 
-    resize(maxBitSize: number) {
-        if(maxBitSize < this.maxBitSize)
+    resize(newSize: number) {
+
+        if(newSize < this.maxBitSize)
             throw new Error("Size cannot be reduced");
+        
+        if(newSize > 64)
+            throw new Error(`Bit size of ${newSize} is not supported`)
             
-        return new Integer(this.value, maxBitSize, this.signed);
+        return new Integer(this.value, newSize, this.signed);
+    }
+
+    convertTo(other: Integer) {
+        
+        let newValue = this.value;
+
+        if(this.signed && !other.signed)
+            newValue = this.toUnsigned().value;
+
+        return new Integer(newValue, other.maxBitSize, other.signed);
     }
 
     valueOf() {

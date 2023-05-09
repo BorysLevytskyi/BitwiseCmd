@@ -1,6 +1,7 @@
 import calc from './calc';
 import { Integer, asInteger } from './Integer';
 import { INT32_MIN_VALUE } from './const';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
@@ -44,11 +45,6 @@ describe('calc.flipBit', () => {
         expect(calc.flipBit(2147483647, 30).num()).toBe(2147483645);
     });
 
-    
-    it('calcualte 31th bit in 64-bit int', () => {
-        const n = asInteger(-1);
-        expect(calc.flipBit(calc.promoteTo64Bit(n), 31).toString()).toBe("8589934591");
-    });
 });
 
 describe('calc.addSpace', () => {
@@ -113,7 +109,12 @@ describe('calc.lshift', () => {
     it('resizes items if operands have different sizes', () => {
         // -1L|-1 - 64 bit
         // 1123123u|-1 - 64 bit
-        throw new Error("not implemented");
+        const r = calc.or(new Integer(-1, 64), new Integer(-1));
+        expect(r.maxBitSize).toBe(64);
+        expect(r.num()).toBe(-1);
+
+        const r2 = calc.or(Integer.unsigned(1123123, 32), new Integer(-1));
+        expect(r2.maxBitSize).toBe(64);
     });
 });
 

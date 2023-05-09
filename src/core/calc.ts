@@ -96,12 +96,9 @@ export default {
         return new Integer(typeof num.value == "bigint" ? result : asIntN(result), num.maxBitSize, num.signed);
     },
 
-    _applyTwo(num1: Integer, num2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {
+    _applyTwo(op1: Integer, op2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {
 
-        if(num1.maxBitSize != num2.maxBitSize) {
-            if(num1.maxBitSize > num2.maxBitSize) num2 = num2.resize(num1.maxBitSize);
-            else num1 = num1.resize(num2.maxBitSize);
-        }
+        const [num1, num2] = equalizeSize(op1, op2);
 
         let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, '0');
         let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, '0');
@@ -219,4 +216,19 @@ function nextPowOfTwo(num: number) : number {
     let p = 2;
     while(p < num) p = p*2;
     return p;
+}
+
+function equalizeSize(n1: Integer, n2: Integer) : [Integer, Integer] {
+        
+    if(n1.maxBitSize == n2.maxBitSize)
+    {
+        if(n1.signed === n2.signed) return [n1,n2];
+
+        // Example int and usinged int. Poromoted both yo 64 bit
+        return [n1.resize(n1.maxBitSize*2).toSigned(), n2.resize(n2.maxBitSize*2).toSigned()];
+    }
+    
+    return n1.maxBitSize > n2.maxBitSize  
+        ? [n1, n2.convertTo(n1)] 
+        : [n1.convertTo(n2), n2];
 }

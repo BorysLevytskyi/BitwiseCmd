@@ -161,8 +161,12 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         if(op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits)
         {
             const title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
+            let text = `${op.value.maxBitSize}-bit`;
+            
+            if(!op.value.signed)
+                text += " unsigned";
 
-            return <span title={title} style={{cursor:"help"}}>{op.value.maxBitSize}-bit</span>;
+            return <span title={title} style={{cursor:"help"}}>{text}</span>;
         }
 
         return null;
