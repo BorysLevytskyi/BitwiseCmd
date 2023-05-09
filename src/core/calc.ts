@@ -20,24 +20,7 @@ export default {
         return new BoundedInt(BigInt("0b" + bin), 64);
     },
 
-    applyTwosComplement: (bin:string):string => {
-        var lastIndex = bin.lastIndexOf('1');
     
-        // If there exists no '1' concat 1 at the
-        // starting of string
-        if (lastIndex == -1)
-            return "1" + bin;
-    
-        // Continue traversal backward after the position of
-        // first '1'
-        var flipped =[];
-        for (var i = lastIndex - 1; i >= 0; i--) {
-            // Just flip the values
-            flipped.unshift(bin.charAt(i) == "1" ? "0" : "1");
-        }
-    
-        return flipped.join('') + bin.substring(lastIndex) ;
-    },
 
     toBinaryString(num: BoundedInt) : string {
         const bitSize = num.maxBitSize;
@@ -47,7 +30,7 @@ export default {
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
 
         const r = num.value < 0
-            ? this.applyTwosComplement(bin.padStart(bitSize, '0'))
+            ? this.bitwise.applyTwosComplement(bin.padStart(bitSize, '0'))
             : bin;
 
         return r;
@@ -90,7 +73,7 @@ export default {
         let m = BigInt(1);
 
         if(bin['0'] == '1') {
-            bin = this.applyTwosComplement(bin);
+            bin = this.bitwise.applyTwosComplement(bin);
             m = BigInt(-1);
         }
 
@@ -108,7 +91,7 @@ export default {
         let m = BigInt(1);
     
         if(resultBin['0'] == '1') {
-            resultBin = this.applyTwosComplement(resultBin);
+            resultBin = this.bitwise.applyTwosComplement(resultBin);
             m = BigInt(-1);
         }
 
@@ -178,7 +161,25 @@ export default {
         },
         flipBit(bin: string, bitIndex : number) : string {
             return bin.substring(0, bitIndex) + flip(bin[bitIndex]) + bin.substring(bitIndex+1)
-        }
+        },
+        applyTwosComplement: (bin:string):string => {
+            var lastIndex = bin.lastIndexOf('1');
+        
+            // If there exists no '1' concat 1 at the
+            // starting of string
+            if (lastIndex == -1)
+                return "1" + bin;
+        
+            // Continue traversal backward after the position of
+            // first '1'
+            var flipped =[];
+            for (var i = lastIndex - 1; i >= 0; i--) {
+                // Just flip the values
+                flipped.unshift(bin.charAt(i) == "1" ? "0" : "1");
+            }
+        
+            return flipped.join('') + bin.substring(lastIndex) ;
+        },
     }
 };
 

@@ -46,14 +46,14 @@ describe('calc.numberOfBitsDisplayed', () => {
     });
 });
 
-describe('calc.applyTwosComplement', () => {
+describe('calc.bitwise.applyTwosComplement', () => {
     it('applies twos complement', () => {
-        expect(calc.applyTwosComplement("010")).toBe("110");
-        expect(calc.applyTwosComplement("110")).toBe("010"); // reverse
-        expect(calc.applyTwosComplement("110")).toBe("010");
-        expect(calc.applyTwosComplement("0")).toBe("10");
-        expect(calc.applyTwosComplement("10101100")).toBe("01010100");
-        expect(calc.applyTwosComplement("01010100")).toBe("10101100"); // reverse
+        expect(calc.bitwise.applyTwosComplement("010")).toBe("110");
+        expect(calc.bitwise.applyTwosComplement("110")).toBe("010"); // reverse
+        expect(calc.bitwise.applyTwosComplement("110")).toBe("010");
+        expect(calc.bitwise.applyTwosComplement("0")).toBe("10");
+        expect(calc.bitwise.applyTwosComplement("10101100")).toBe("01010100");
+        expect(calc.bitwise.applyTwosComplement("01010100")).toBe("10101100"); // reverse
     });
 });
 
