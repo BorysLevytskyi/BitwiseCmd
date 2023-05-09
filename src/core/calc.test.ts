@@ -37,7 +37,19 @@ describe('calc.flipBit', () => {
         const n = asBoundedNumber(-1);
         expect(calc.flipBit(calc.promoteTo64Bit(n), 31).toString()).toBe("8589934591");
     });
+});
 
+describe('calc.addSpace', () => {
+    it('resizes number based on the space required', () => {
+        const n8 = new BoundedInt(1, 8);
+        const n16 = new BoundedInt(1, 16); 
+
+        expect(calc.addSpace(n8, 0).maxBitSize).toBe(8);
+        expect(calc.addSpace(n8, 1).maxBitSize).toBe(16);
+        expect(calc.addSpace(n8, 9).maxBitSize).toBe(32);
+        expect(calc.addSpace(n16, 1).maxBitSize).toBe(32);
+        expect(calc.addSpace(n16, 32).maxBitSize).toBe(64);
+    });
 });
 
 describe('calc.numberOfBitsDisplayed', () => {
@@ -51,12 +63,7 @@ describe('calc.numberOfBitsDisplayed', () => {
     });
 });
 
-xdescribe('calc.lshift', () => {
-
-    it('supports scalar.int()s', () => {
-        const operand = new ScalarValue(1);
-        expect(calc.lshift(operand.value, 1)).toBe("2");
-    });
+describe('calc.lshift', () => {
 
     it("respects bit size", () => {
         expect(calc.lshift(new BoundedInt(BigInt("0b0100"), 4), 2).num()).toBe(0);
@@ -77,18 +84,18 @@ xdescribe('calc.lshift', () => {
         // 64-bit
         expect(calc.lshift(new BoundedInt(BigInt("9223372036854775807"), 64), 1).num()).toBe(-2);
         expect(calc.lshift(new BoundedInt(BigInt("9223372036854775807"), 64), 2).num()).toBe(-4);
-        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 64), 1).toString()).toBe("4294967294");
-        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 64), 2).toString()).toBe("8589934588");
+        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 64), 1).value.toString()).toBe("4294967294");
+        expect(calc.lshift(new BoundedInt(BigInt("2147483647"), 64), 2).value.toString()).toBe("8589934588");
     });
 
     it('test', () => {
         const actual = calc.lshift(asBoundedNumber(100081515), 31).num();
-        expect(actual).toBe("-2147483648")
+        expect(actual).toBe(-2147483648);
     });
 
     it('1 to sign bit', () => {
         const actual = calc.lshift(asBoundedNumber(1), 31).num();
-        expect(actual).toBe("-2147483648")
+        expect(actual).toBe(-2147483648);
     });
 });
 
