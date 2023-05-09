@@ -61,6 +61,7 @@ describe("comparison with nodejs engine", () => {
     it('set 32-bit', () => {
         
         const inputs = [
+            "1485578196>>14",
             "921979543<<31",
             "1123|324",
             "213&9531",
@@ -70,7 +71,7 @@ describe("comparison with nodejs engine", () => {
             "2<<7"
         ];
 
-        inputs.forEach(i => testBinary(i, i, false));
+        inputs.forEach(i => testBinary(i, i));
     });
 
     it('random: two inbary strings 64-bit', () => {
@@ -78,6 +79,7 @@ describe("comparison with nodejs engine", () => {
         const signs = ["|", "&", "^", "<<", ">>", ">>>"]
 
         for(var i =0; i<1000; i++){
+
             const sign = signs[random(0, signs.length-1)];
             const isShift = sign.length > 1;
             const op1 = random(-INT32_MAX_VALUE, INT32_MAX_VALUE);
@@ -94,20 +96,32 @@ describe("comparison with nodejs engine", () => {
         for(var i =0; i<1000; i++){
            
             const num = random(-Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
-            const expectedInput = "~" + num.toString();
-            const actualInput = num > INT32_MAX_VALUE ? `~BigInt("${num}")` : expectedInput;
-            const expected = eval(actualInput).toString();
+            const actualInput = "~" + num.toString();
+            const expectedInput = num > INT32_MAX_VALUE ? `~BigInt("${num}")` : actualInput;
+            const expected = eval(expectedInput).toString();
+        
+            let actual = "";
 
-            const expr = parser.parse(expectedInput) as BitwiseOperationExpression;
-            const bo = (expr.children[0] as BitwiseOperator);
-            const res = bo.evaluate();
-            const actual = res.value.toString();
+            try
+            {
+                const expr = parser.parse(actualInput) as BitwiseOperationExpression;
+                const bo = (expr.children[0] as BitwiseOperator);
+                const res = bo.evaluate();
+                actual = res.value.toString();
 
-            if(actual != expected) {
-                const uop = bo.getUnderlyingScalarOperand();
-                console.log(`${expectedInput}\n${actualInput}\n${uop.value} ${uop.value.maxBitSize}\n${res.value} ${typeof res.value} ${res.value.maxBitSize}`)
+                if(actual != expected) {
+                    const uop = bo.getUnderlyingScalarOperand();
+                    console.log(`Expected:${expectedInput}\nActual:${actualInput}\n${uop.value} ${uop.value.maxBitSize}\n${res.value} ${typeof res.value} ${res.value.maxBitSize}`)
+                }
             }
+            catch(err) 
+            {
 
+                console.log(`Error:\nExpected:${expectedInput}\nActual:${actualInput}\n${typeof actualInput}`);
+
+                throw err;
+            }
+        
             expect(actual).toBe(expected);   
         }
     });
@@ -129,7 +143,7 @@ describe("comparison with nodejs engine", () => {
         }
     });
     
-    function testBinary(expectedInput:string, actualInput: string, isBigInt: boolean) {
+    function testBinary(expectedInput:string, actualInput: string) {
         
         const expected = eval(expectedInput).toString();
         

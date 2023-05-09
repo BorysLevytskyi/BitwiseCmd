@@ -22,9 +22,9 @@ export interface ParsedNumber {
 }
 
 var knownParsers : ParserConfig[] = [
-    { regex: decimalRegex, base: 'dec', parse:(s) => parseIntSafe(s, 10) },
-    { regex: hexRegex, base: 'hex', parse:(s) => parseIntSafe(s, 16)},
-    { regex: binRegex, base: 'bin', parse:(s) => parseIntSafe(s, 2) }];
+    { regex: decimalRegex, base: 'dec', parse:(s) => parseBoundedInt(s, 10) },
+    { regex: hexRegex, base: 'hex', parse:(s) => parseBoundedInt(s, 16)},
+    { regex: binRegex, base: 'bin', parse:(s) => parseBoundedInt(s, 2) }];
 
 
 class NumberParser {
@@ -66,12 +66,12 @@ class NumberParser {
     }
 }
 
-function parseIntSafe(input : string, radix: number)  : BoundedInt {
+function parseBoundedInt(input : string)  : BoundedInt {
     
     const lower = input.toLocaleLowerCase();
-    const bigIntStr = lower.replace('-', '').replace('l', '').replace('L', '');
-    const size = lower.endsWith('l') ? 64 : 16;
+    const bigIntStr = lower.replace('-', '').replace('l', '');
     let n = BigInt(bigIntStr);
+    const size = lower.endsWith('l') || n > INT32_MAX_VALUE ? 64 : 32;
     const isNegative = input.startsWith('-');
 
     if(isNegative) n = -n;

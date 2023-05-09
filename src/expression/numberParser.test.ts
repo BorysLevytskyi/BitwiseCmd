@@ -1,3 +1,4 @@
+import exp from 'constants';
 import { asIntN } from '../core/utils';
 import {numberParser, ParsedNumber} from './numberParser';
 
@@ -11,9 +12,16 @@ describe("parser", () => {
         expect(asIntN(number.value)).toBe(10);
         expect(number.base).toBe('dec');
         expect(number.input).toBe('10');
+        expect(number.value.maxBitSize).toBe(32);
     });
 
-    it('parses bigint numbers', () => {
+    it('parses 64-bit numbers by size', () => {
+        const dec = numberParser.parse('3433374389036042');
+        expect(dec?.value.toString()).toBe('3433374389036042');
+        expect(dec?.value.maxBitSize).toBe(64);
+    });
+
+    it('parses 64-bit numbers with L notation', () => {
         const dec = numberParser.parse('10L');
         expect(dec).not.toBeNull();
 
@@ -21,9 +29,11 @@ describe("parser", () => {
         expect(typeof dec?.value.value).toBe("bigint");
         expect(dec?.base).toBe('dec');
         expect(dec?.input).toBe('10L');
+        expect(dec?.value.maxBitSize).toBe(64);
         
         const bin = numberParser.parse('0b10l');
         expect(bin).not.toBeNull();
+        expect(bin?.value.maxBitSize).toBe(64);
 
         expect(bin?.value.value).toBe(BigInt(2));
         expect(typeof bin?.value.value).toBe("bigint");
@@ -32,6 +42,7 @@ describe("parser", () => {
 
         const hex = numberParser.parse('0xfL');
         expect(hex).not.toBeNull();
+        expect(hex?.value.maxBitSize).toBe(64);
 
         expect(hex?.value.value.toString()).toBe(BigInt(15).toString());
         expect(typeof hex?.value.value).toBe("bigint");

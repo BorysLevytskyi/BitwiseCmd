@@ -40,7 +40,6 @@ export default {
     },
 
     toBinaryString(num: BoundedInt) : string {
-
         const bitSize = num.maxBitSize;
         const bin = this.abs(num).value.toString(2);
         
