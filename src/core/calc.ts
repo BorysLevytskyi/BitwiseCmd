@@ -20,7 +20,17 @@ export default {
         return new BoundedInt(BigInt("0b" + bin), 64);
     },
 
-    
+    operation (op1: BoundedInt, operator: string, op2 : BoundedInt) : BoundedInt {
+        switch(operator) {
+            case ">>": return this.rshift(op1, op2.value);
+            case ">>>": return this.urshift(op1, op2.value);
+            case "<<": return this.lshift(op1, op2.value);
+            case "&": return this.and(op1,op2);
+            case "|": return this.or(op1,op2);
+            case "^": return this.xor(op1,op2);
+            default: throw new Error(operator + " operator is not supported");
+        }
+    },
 
     toBinaryString(num: BoundedInt) : string {
         const bitSize = num.maxBitSize;

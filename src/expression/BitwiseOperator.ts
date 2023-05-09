@@ -1,3 +1,4 @@
+import calc from '../core/calc';
 import ScalarValue from './ScalarValue';
 import engine from './engine';
 import { ExpressionElement } from './expression-interfaces';
@@ -29,8 +30,8 @@ export default class BitwiseOperator implements ExpressionElement {
         var evaluatedOperand = this.operand.evaluate();
 
         return this.operator == "~"
-            ? engine.applyNotOperator(this.operand.getUnderlyingScalarOperand())
-            : engine.applyOperator(operand!, this.operator, evaluatedOperand);
+            ? applyNotOperator(this.operand.getUnderlyingScalarOperand())
+            : applyOperator(operand!, this.operator, evaluatedOperand);
     }
 
     getUnderlyingScalarOperand() : ScalarValue {
@@ -40,4 +41,14 @@ export default class BitwiseOperator implements ExpressionElement {
     toString(): string {
         return this.operator + this.operand.toString();
     }
+}
+
+function applyNotOperator(operand: ScalarValue) : ScalarValue {
+    return new ScalarValue(calc.not(operand.value), operand.base);
+}
+
+function applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) : ScalarValue {
+   
+    const result =  calc.operation(op1.value, operator, op2.value);
+    return new ScalarValue(result, op2.base);
 }
