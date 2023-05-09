@@ -15,6 +15,12 @@ describe("parser", () => {
         expect(number.value.maxBitSize).toBe(32);
     });
 
+    it('parses negative numbers', () => {
+        expect(numberParser.parse('-1')?.value.num()).toBe(-1);
+        expect(numberParser.parse('-0b10')?.value.num()).toBe(-2);
+        expect(numberParser.parse('-0x10')?.value.num()).toBe(-16);
+    });
+
     it('parses 64-bit numbers by size', () => {
         const dec = numberParser.parse('3433374389036042');
         expect(dec?.value.toString()).toBe('3433374389036042');

@@ -66,7 +66,7 @@ class NumberParser {
     }
 }
 
-function parseBoundedInt(input : string)  : BoundedInt {
+function parseBoundedInt(input : string, radix: number)  : BoundedInt {
     
     const lower = input.toLocaleLowerCase();
     const bigIntStr = lower.replace('-', '').replace('l', '');
