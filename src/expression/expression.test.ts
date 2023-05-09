@@ -87,7 +87,7 @@ describe("comparison with nodejs engine", () => {
             
             const input = op1.toString() + sign + op2.toString();
             
-            testBinary(input, input, false);
+            testBinary(input, input);
         }
     });
 
@@ -139,7 +139,7 @@ describe("comparison with nodejs engine", () => {
             const actualInput = `${op1}l${sign}${op2}l`;
             const expectedInput = `BigInt("${op1}")${sign}BigInt("${op2}")`; 
 
-            testBinary(expectedInput, actualInput, true);
+            testBinary(expectedInput, actualInput);
         }
     });
     
