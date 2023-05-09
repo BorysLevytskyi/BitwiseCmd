@@ -9,14 +9,14 @@ function HelpResultView() {
         <div className="panel-container">
             <div className="left-panel">
                 <div className="section">
-                    <strong className="section-title soft">Bitwise Calculation Commands</strong>
+                    <div className="section-title soft">Bitwise Calculation Commands</div>
                     <ul>
                         <li><code><CommandLink text="23 | 34" /></code> — type bitwise expression to see the result in binary</li>
                         <li><code><CommandLink text="23 34" /></code> — type one or more numbers to see their binary representations</li>
                     </ul>                   
                 </div>
                 <div className="section">
-                    <strong className="section-title  soft">IP Address & Networking Commands</strong>
+                    <div className="section-title  soft">IP Address & Networking Commands</div>
                     <ul>
                         <li><code><CommandLink text="127.0.0.1" /></code> — enter a single or multiple IP addresses (separated by space) to see their binary representation</li>
                         <li><code><CommandLink text="192.168.0.1/8" /></code> — subnet mask notations are supported as well</li>
@@ -25,7 +25,7 @@ function HelpResultView() {
                     </ul>
                 </div>
                 <div className="section">
-                    <strong className="section-title  soft">Color Theme Commands</strong>
+                    <div className="section-title  soft">Color Theme Commands</div>
                     <ul>
                         <li><code><CommandLink text="light" /></code> — set the Light color theme</li>
                         <li><code><CommandLink text="dark" /></code> — set the Dark color theme</li>
@@ -33,7 +33,7 @@ function HelpResultView() {
                     </ul>
                 </div>
                 <div className="section">
-                    <strong className="section-title  soft">Other Commands</strong>
+                    <div className="section-title  soft">Other Commands</div>
                     <ul>
                         <li><code><CommandLink text="clear" /></code> — clear output pane</li>
                         <li><code><CommandLink text="help" /></code> — display this help</li>
@@ -46,7 +46,7 @@ function HelpResultView() {
             </div>
             <div className="right-panel">
                 <div className="section">
-                    <strong className="section-title soft">Supported Bitwise Operations</strong><br />
+                    <div className="section-title soft">Supported Bitwise Operations</div>
                     <ul>
                         <li><code>&amp;</code> — bitwise AND</li>
                         <li><code>|</code> — bitwise inclusive OR</li>
@@ -57,9 +57,11 @@ function HelpResultView() {
                         <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
                     </ul>
                 </div>
-                <div className="section">
-                    <strong className="section-title soft">Supported Number Types</strong><br />
-                    BitiwseCmd no longer uses JavaScript engine for execution of bitwise operations. It has it's own calculation engine which support bitwise operations on the following data types:
+                <div className="section soft-border">
+                    <div className="section-title soft">Supported Number Types <sup className='accent1'>NEW</sup></div>
+                    <p>
+                        BitiwseCmd no longer uses JavaScript engine for execution of bitwise operations. It has it's own calculation engine which supports bitwise operations on the following data types:
+                    </p>
                     <ul>
                         <li><code>32-bit integer</code> - numbers beetween {-INT32_MIN_VALUE} and {INT32_MAX_VALUE} entered without suffixes. This is a default number type.</li>
                         <li><code>64-bit integer</code> - numbers that exceed 32-bit range or entered with and L notations (e.g. 10L).</li>

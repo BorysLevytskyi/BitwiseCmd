@@ -2,7 +2,6 @@ import { ScalarValue, ListOfNumbersExpression, BitwiseOperationExpression, Bitwi
 import { ExpressionElement, Expression } from '../expression-interfaces';
 import calc from '../../core/calc';
 import formatter from '../../core/formatter';
-import exp from 'constants';
 
 type Config = {
     emphasizeBytes: boolean;

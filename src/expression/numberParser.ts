@@ -1,3 +1,4 @@
+import { prefix } from "@fortawesome/free-solid-svg-icons";
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
 import { BoundedInt, asBoundedNumber } from "../core/types";
@@ -5,9 +6,9 @@ import { BoundedInt, asBoundedNumber } from "../core/types";
 // byte -i8 or b
 // single - i16 or s 
 
-const decimalRegex = /^-?\d+[l,L]?$/;
-const hexRegex = /^-?0x[0-9,a-f]+[l,L]?$/i;
-const binRegex = /^-?0b[0-1]+[l,L]?$/i;
+const decimalRegex = /^-?\d+[l,L,s,S,b,B]?$/;
+const hexRegex = /^-?0x[0-9,a-f]+$/i;
+const binRegex = /^-?0b[0-1]+$/i;
 
 interface ParserConfig {
     regex: RegExp,
@@ -22,9 +23,9 @@ export interface ParsedNumber {
 }
 
 var knownParsers : ParserConfig[] = [
-    { regex: decimalRegex, base: 'dec', parse:(s) => parseBoundedInt(s, 10) },
-    { regex: hexRegex, base: 'hex', parse:(s) => parseBoundedInt(s, 16)},
-    { regex: binRegex, base: 'bin', parse:(s) => parseBoundedInt(s, 2) }];
+    { regex: decimalRegex, base: 'dec', parse:(s) => parseBoundedInt(s,) },
+    { regex: hexRegex, base: 'hex', parse:(s) => parseBoundedInt(s)},
+    { regex: binRegex, base: 'bin', parse:(s) => parseBoundedInt(s) }];
 
 
 class NumberParser {
@@ -66,17 +67,41 @@ class NumberParser {
     }
 }
 
-function parseBoundedInt(input : string, radix: number)  : BoundedInt {
+function parseBoundedInt(input : string)  : BoundedInt {
     
-    const lower = input.toLocaleLowerCase();
-    const bigIntStr = lower.replace('-', '').replace('l', '');
+    const lower = input.toLocaleLowerCase().trim();
+    const suffix = getSuffix(lower);
+    const bigIntStr = lower.replace('-', '').replace(suffix, '');
     let n = BigInt(bigIntStr);
-    const size = lower.endsWith('l') || n > INT32_MAX_VALUE ? 64 : 32;
+    
+    const size = getSizeBySuffix(suffix, n);
     const isNegative = input.startsWith('-');
 
     if(isNegative) n = -n;
 
     return new BoundedInt(n, size);
+}
+
+function getSuffix(lower: string) {
+    if(lower.startsWith('0x') || lower.startsWith('0b'))
+        return '';
+    
+    const match = /[l,s,b]$/.exec(lower);
+    
+    if(match == null || match.length == 0)
+        return '';
+    
+    return match[0];
+}
+
+function getSizeBySuffix(suffix: string, value : bigint) {
+ 
+        switch(suffix.toLowerCase()) {
+        case 'l': return 64;
+        case 's': return 16;
+        case 'b': return 8;
+        default: return value > INT32_MAX_VALUE  ? 64 : 32;
+    }
 }
 
 const numberParser = new NumberParser(knownParsers);

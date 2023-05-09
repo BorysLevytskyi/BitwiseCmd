@@ -9,10 +9,10 @@ describe("parser", () => {
         expect(result).not.toBeNull();
 
         var number = result as ParsedNumber;
-        expect(asIntN(number.value)).toBe(10);
+        expect(number.value.maxBitSize).toBe(32);
+        expect(asIntN(number.value.num())).toBe(10);
         expect(number.base).toBe('dec');
         expect(number.input).toBe('10');
-        expect(number.value.maxBitSize).toBe(32);
     });
 
     it('parses negative numbers', () => {
@@ -36,24 +36,6 @@ describe("parser", () => {
         expect(dec?.base).toBe('dec');
         expect(dec?.input).toBe('10L');
         expect(dec?.value.maxBitSize).toBe(64);
-        
-        const bin = numberParser.parse('0b10l');
-        expect(bin).not.toBeNull();
-        expect(bin?.value.maxBitSize).toBe(64);
-
-        expect(bin?.value.value).toBe(BigInt(2));
-        expect(typeof bin?.value.value).toBe("bigint");
-        expect(bin?.base).toBe('bin');
-        expect(bin?.input).toBe('0b10l');
-
-        const hex = numberParser.parse('0xfL');
-        expect(hex).not.toBeNull();
-        expect(hex?.value.maxBitSize).toBe(64);
-
-        expect(hex?.value.value.toString()).toBe(BigInt(15).toString());
-        expect(typeof hex?.value.value).toBe("bigint");
-        expect(hex?.base).toBe('hex');
-        expect(hex?.input).toBe('0xfL');
     });
 
 
@@ -94,6 +76,7 @@ describe("parser", () => {
         expect(result).not.toBeNull();
 
         var number = result as ParsedNumber;
+        expect(number.value.maxBitSize).toBe(32);
         expect(number.value.num()).toBe(171);
         expect(number.base).toBe('hex');
         expect(number.input).toBe('0xab');
@@ -119,22 +102,21 @@ describe("parser", () => {
         expect(v?.num()).toBe(1);
     });
 
-    xit('parses single', () => {
+    it('parses single', () => {
         var v =  numberParser.parse('1s')?.value
         expect(v?.maxBitSize).toBe(16);
         expect(v?.num()).toBe(1);
 
-        var v2 =  numberParser.parse('1i8')?.value
-        expect(v2).toEqual(v);
+        //var v2 =  numberParser.parse('1i8')?.value
+        //expect(v2).toEqual(v);
     });
 
-    xit('parses byte', () => {
+    it('parses byte', () => {
         var v =  numberParser.parse('1b')?.value
-        expect(typeof v?.value).toBe("number");
-        expect(v?.maxBitSize).toBe(16);
+        expect(v?.maxBitSize).toBe(8);
         expect(v?.num()).toBe(1);
 
-        var v2 =  numberParser.parse('1i16')?.value
-        expect(v2?.num()).toEqual(v?.num());
+        //var v2 =  numberParser.parse('1i16')?.value
+        //expect(v2?.num()).toEqual(v?.num());
     });
 });

@@ -46,14 +46,11 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .hex .prefix { display: inline; }
 
-.help { padding: 10px; }
-.help ul { list-style-type: none; margin: 0; padding: 0;  }
-.help p { margin-top: 0.5em }
-
 .indicator { padding: 0px 5px; background: transparent; border: none; cursor: pointer; vertical-align: middle; }
 .error { color: maroon; }
 
 .soft { opacity: 0.7 }
+
 .small-text { font-size: 0.8em;}
 
 #view { padding: 10px}
@@ -70,14 +67,14 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .on { color: #121212; }
 .light .prefix { color: #888}
 .light .other { color: #bbb }
-.light .hashLink, .light .hashLink:visited { color: #ddd; }
+.light .hashLink, .light .hashLink:visited { color: #aaa; }
 .light .hashLink:hover { color: #888 }
 .light ul.top-links li:hover { background: #ddd }
 .light .error { color: #da586d }
 .light button.btn { color: black}
 .light button.btn:hover { background: #ddd}
 .light button.btn:disabled { color: #888; background-color: inherit; }
-.light .accent1 { color:darkcyan}
+.light .accent1 { color:rgb(56, 161, 103)}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -88,7 +85,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .on { color: white; }
 .dark .zero { color: #999;}
 .dark .prefix { color: #999}
-.dark  .other { color: #444;}
+.dark  .other { color: #777;}
 .dark .hashLink, .dark .hashLink:visited { color: #333 }
 .dark .hashLink:hover { color: #999 }
 .dark ul.top-links li:hover { background: #333 }
@@ -96,7 +93,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark button.btn { color: white}
 .dark button.btn:hover { background: #333}
 .dark button.btn:disabled { color: #999; background-color: inherit; }
-.dark .accent1 { color:mediumseagreen}
+.dark .accent1 { color:mediumseagreen}ч
 
 /*
     Midnight Theme

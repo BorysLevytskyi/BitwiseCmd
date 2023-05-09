@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
 import cmd, { CommandInput } from './shell/cmd';
 import AppRoot from './shell/components/AppRoot';
 import log from 'loglevel';
