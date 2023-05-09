@@ -109,6 +109,12 @@ describe('calc.lshift', () => {
         const actual = calc.lshift(asInteger(1), 31).num();
         expect(actual).toBe(-2147483648);
     });
+
+    it('resizes items if operands have different sizes', () => {
+        // -1L|-1 - 64 bit
+        // 1123123u|-1 - 64 bit
+        throw new Error("not implemented");
+    });
 });
 
 describe("calc misc", () => {

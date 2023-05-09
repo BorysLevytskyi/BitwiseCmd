@@ -98,6 +98,11 @@ export default {
 
     _applyTwo(num1: Integer, num2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {
 
+        if(num1.maxBitSize != num2.maxBitSize) {
+            if(num1.maxBitSize > num2.maxBitSize) num2 = num2.resize(num1.maxBitSize);
+            else num1 = num1.resize(num2.maxBitSize);
+        }
+
         let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, '0');
         let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, '0');
 
@@ -111,8 +116,7 @@ export default {
         }
 
         const result = BigInt("0b" + resultBin) * m;
-        const isBigInt = typeof num1.value == "bigint" || typeof num2.value == "bigint";
-        return asInteger( isBigInt ? result : asIntN(result));
+        return new Integer(result, num1.maxBitSize);
     },
 
     engine: { 

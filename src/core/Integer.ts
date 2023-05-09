@@ -8,6 +8,7 @@ export type JsNumber = number | bigint;
 
 
 export class Integer {
+    
     value: bigint;
     maxBitSize: number;
     signed: boolean;
@@ -38,6 +39,13 @@ export class Integer {
         const n = BigInt("0b"+bin);
         
         return new Integer(bin[0] == '1' ? n : -n, this.maxBitSize, true)
+    }
+
+    resize(maxBitSize: number) {
+        if(maxBitSize < this.maxBitSize)
+            throw new Error("Size cannot be reduced");
+            
+        return new Integer(this.value, maxBitSize, this.signed);
     }
 
     valueOf() {

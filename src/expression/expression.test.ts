@@ -4,7 +4,7 @@ import { INT32_MAX_VALUE } from "../core/const";
 
 describe("expression parser", () => {
 
-    it("pares list of number expression", () => {
+    it("parses list of number expression", () => {
         var result = parser.parse("1 2 3");
         expect(result).toBeInstanceOf(ListOfNumbersExpression);
     });

@@ -47,7 +47,6 @@ function applyNotOperator(operand: ScalarValue) : ScalarValue {
 }
 
 function applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) : ScalarValue {
-   
     const result =  calc.operation(op1.value, operator, op2.value);
     return new ScalarValue(result, op2.base);
 }

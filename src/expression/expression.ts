@@ -3,7 +3,7 @@ import BitwiseOperator from './BitwiseOperator'
 import ListOfNumbersExpression from './ListOfNumbersExpression';
 import BitwiseOperationExpression from './BitwiseOperationExpression';
 import { Expression, ExpressionElement } from './expression-interfaces';
-import { numberParser } from './numberParser';
+import { numberParser, numberRegexString } from './numberParser';
 
 export { default as ScalarValue } from './ScalarValue';
 export { default as BitwiseOperator } from './BitwiseOperator';
@@ -84,8 +84,8 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
     regex: RegExp;
 
     constructor() {
-        this.fullRegex = /^((<<|>>|>>>|\||\&|\^)?(~?-?([b,x,l,L,a-f,0-9]+)))+$/;
-        this.regex = /(<<|>>|>>>|\||\&|\^)?(~?-?(?:[b,x,l,L,a-f,0-9]+))/g;
+        this.fullRegex = /^((<<|>>|>>>|\||\&|\^)?(~?-?([b,x,l,s,u,a-f,0-9]+)))+$/i;
+        this.regex = /(<<|>>|>>>|\||\&|\^)?(~?-?(?:[b,x,l,s,u,,a-f,0-9]+))/gi;
     }
 
     canCreate (input: string) : boolean {
@@ -107,7 +107,8 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
         return new BitwiseOperationExpression(normalizedString, operands)
     };
 
-    parseMatch (m:any): ExpressionElement {
+    parseMatch (m:RegExpExecArray): ExpressionElement {
+
         var input = m[0],
             operator = m[1],
             num = m[2];
