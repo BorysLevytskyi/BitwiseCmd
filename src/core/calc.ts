@@ -1,4 +1,3 @@
-import formatter from "./formatter";
 import { Integer, JsNumber,  asInteger } from "./Integer";
 import { asIntN } from "./utils";
 

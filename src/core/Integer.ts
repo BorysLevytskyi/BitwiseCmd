@@ -2,6 +2,7 @@ import { type } from "os";
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "./const";
 import { asIntN } from "./utils";
 import formatter from "./formatter";
+import calc from "./calc";
 
 export type JsNumber = number | bigint;
 
@@ -14,11 +15,29 @@ export class Integer {
     constructor(value: JsNumber, maxBitSize?: number, signed? : boolean) {
         this.value = typeof value == "bigint" ? value : BigInt(value);
         this.maxBitSize = maxBitSize != null ? maxBitSize : (value >= INT32_MIN_VALUE && value <= INT32_MAX_VALUE) ? 32 : 64;
-        this.signed = signed == null ? true : signed;
+        this.signed = signed == null ? true : signed == true;
     }
 
     static unsigned(value : JsNumber, maxBitSize?: number) {
         return new Integer(value, maxBitSize, false);
+    }
+
+    asUnsigned() {
+        return this.signed 
+            ? new Integer(BigInt("0b" + this.toString(2)), this.maxBitSize, false)
+            : new Integer(this.value, this.maxBitSize, this.signed);
+         
+    }
+
+    asSigned() {
+        
+        if(this.signed)
+            return new Integer(this.value, this.maxBitSize, this.signed); 
+        
+        const bin = calc.engine.applyTwosComplement(this.toString(2)); 
+        const n = BigInt("0b"+bin);
+        
+        return new Integer(bin[0] == '1' ? n : -n, this.maxBitSize, true)
     }
 
     valueOf() {

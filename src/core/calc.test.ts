@@ -1,8 +1,6 @@
 import calc from './calc';
-import { ScalarValue } from '../expression/expression';
 import { Integer, asInteger } from './Integer';
-import { INT32_MAX_VALUE, INT32_MIN_VALUE } from './const';
-import exp from 'constants';
+import { INT32_MIN_VALUE } from './const';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
