@@ -59,9 +59,10 @@ function HelpResultView() {
                 </div>
                 <div className="section">
                     <strong className="section-title soft">Supported Number Types</strong><br />
+                    BitiwseCmd no longer uses JavaScript engine for execution of bitwise operations. It has it's own calculation engine which support bitwise operations on the following data types:
                     <ul>
-                        <li><code>32-bit</code> - numbers beetween {-INT32_MIN_VALUE} and {INT32_MAX_VALUE} entered without suffixes. This is a default number type.</li>
-                        <li><code>64-bit</code> - numbers that exceed 32-bit range or entered with and L notations (e.g. 10L).</li>
+                        <li><code>32-bit integer</code> - numbers beetween {-INT32_MIN_VALUE} and {INT32_MAX_VALUE} entered without suffixes. This is a default number type.</li>
+                        <li><code>64-bit integer</code> - numbers that exceed 32-bit range or entered with and L notations (e.g. 10L).</li>
                     </ul>
                 </div>
                 <div className="section">

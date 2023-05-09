@@ -1,6 +1,5 @@
 import calc from '../core/calc';
 import ScalarValue from './ScalarValue';
-import engine from './engine';
 import { ExpressionElement } from './expression-interfaces';
 
 export default class BitwiseOperator implements ExpressionElement {
