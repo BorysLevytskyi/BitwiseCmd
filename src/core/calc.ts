@@ -53,26 +53,38 @@ export default {
 
     lshift (num: Integer, numBytes : JsNumber) : Integer {
 
+        let bytes = asIntN(numBytes);
+
         if(num.maxBitSize == numBytes)
             return num; // Preserve C undefined behavior
+        
+        while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
 
-        return this._applySingle(num, bin => this.engine.lshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.engine.lshift(bin, bytes));
     },
 
     rshift (num : Integer, numBytes : JsNumber) : Integer {
         
+        let bytes = asIntN(numBytes);
+
         if(num.maxBitSize == numBytes)
             return num; // Preserve C undefined behavior
+        
+        while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
 
-        return this._applySingle(num, bin => this.engine.rshift(bin, asIntN(numBytes)));
+        return this._applySingle(num, bin => this.engine.rshift(bin, bytes));
     },
 
     urshift (num : Integer, numBytes : JsNumber) : Integer {
 
+        let bytes = asIntN(numBytes);
+
         if(num.maxBitSize == numBytes)
             return num; // Preserve C undefined behavior
-            
-        return this._applySingle(num, bin => this.engine.urshift(bin, asIntN(numBytes)));
+        
+        while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
+
+        return this._applySingle(num, bin => this.engine.urshift(bin, bytes));
     },
 
     not(num:Integer) : Integer { 
@@ -244,3 +256,13 @@ function equalizeSize(n1: Integer, n2: Integer) : [Integer, Integer] {
         ? [n1, n2.convertTo(n1)] 
         : [n1.convertTo(n2), n2];
 }
+
+/*
+        // c#
+        var op = -1;
+		var r = op>>>33;
+		Console.WriteLine(Convert.ToString(op, 2).PadLeft(32, '0'));
+		Console.WriteLine(Convert.ToString(r,2).PadLeft(32, '0'));
+		Console.WriteLine(Convert.ToString(r));
+		Console.WriteLine(r.GetType().Name);
+*/

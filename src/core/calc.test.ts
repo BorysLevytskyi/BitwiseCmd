@@ -135,6 +135,20 @@ describe('preserves C compiler behvaior', () => {
         expect(calc.urshift(long, 32).num()).toBe(4294967295);
         expect(calc.urshift(long, 64).num()).toBe(long.num());
     });
+
+    it('shift by bigger numbers of bytes', () => {
+        const byte = Integer.byte(-1);
+        expect(calc.urshift(byte, 9).num()).toBe(calc.urshift(byte, 1).num());
+        expect(calc.urshift(byte, 17).num()).toBe(calc.urshift(byte, 1).num());
+        expect(calc.urshift(byte, 18).num()).toBe(calc.urshift(byte, 2).num());
+
+        const int = Integer.int(-1);
+        expect(calc.lshift(int, 33).num()).toBe(-2);
+        expect(calc.rshift(int, 33).num()).toBe(-1);
+        
+        expect(calc.rshift(Integer.int(1), 33).num()).toBe(0);
+        expect(calc.rshift(Integer.int(1), 32).num()).toBe(1);
+    });
 });
 
 describe("calc misc", () => {
