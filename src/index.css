@@ -17,7 +17,16 @@ code { font-size: 1.2em; font-weight: bold; }
 .header-cmd { color: #c5c5c5 }
 
 .mono { font-family: monospace; font-size: 1.3em }
-.expressionInput { width: 500px; padding: 3px; border: none; outline: none; }
+.expressionInput { 
+    padding: 3px; 
+    outline: none;
+    border: none;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    z-index: 100;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    width: 600px; 
+}
 
 .hidden { display: none;}
 
@@ -75,6 +84,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .light button.btn:hover { background: #ddd}
 .light button.btn:disabled { color: #888; background-color: inherit; }
 .light .accent1 { color:rgb(56, 161, 103)}
+.light .expressionInput {background: #fafafa; border-bottom: solid 1px rgba(0, 0, 0, 0.5);}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -94,6 +104,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark button.btn:hover { background: #333}
 .dark button.btn:disabled { color: #999; background-color: inherit; }
 .dark .accent1 { color:mediumseagreen}ч
+.dark .expressionInput {background: #121212;}
 
 /*
     Midnight Theme
@@ -118,6 +129,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight button.btn:hover { background: #132537}
 .midnight button.btn:disabled { color: #85a0ad; background-color: inherit; }
 .midnight .accent1 { color:mediumseagreen}
+.midnight .expressionInput {background: #2c3e50;}
 
 button { 
     border: none;
@@ -156,25 +168,11 @@ button:focus {outline:0;}
     padding: 0 30px;
 }
 
-.new-ui #output {
+#output {
     padding: 30px 30px;
 }
 
-.input-p { 
-    display: none;
-}
-
-.new-ui #in {
-    border: none;
-    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
-    background: #2c3e50;
-    z-index: 100;
-    padding-left: 15px;
-    padding-bottom: 5px;
-    width: 600px;
-}
-
-.new-ui .input-p {
+.input-p {
     display:inline;
     z-index: 101;
     position: absolute;
@@ -183,7 +181,7 @@ button:focus {outline:0;}
     opacity: 0.5;
 }
 
-.new-ui .debug-indicators {
+.debug-indicators {
     left: 1px;
     opacity: 0.5;
 }
