@@ -192,13 +192,13 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
             children.push(<span title={title} style={{cursor:"help"}}>{text.trim()}</span>);
             
             const signedStr = op.value.signed ? 'signed' : 'unsigned';
-        const signedOther = op.value.signed ? 'usigned' : 'signed'; 
+            const signedOther = op.value.signed ? 'usigned' : 'signed'; 
             const signedTitle = `Click to change to ${signedOther} preserving the same bits`; 
 
-            if(allowSignChange && isFullSize)
+            if(allowSignChange)
                 children.push(<button className='accent1' title={signedTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
-            else
-                children.push(<span className='accent1'>{signedStr}</span>)
+            else if(op.value.signed)
+                children.push(<span className='accent1'> {signedStr}</span>)
 
             return <React.Fragment>{children}</React.Fragment>
         }
