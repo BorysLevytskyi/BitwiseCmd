@@ -171,6 +171,7 @@ button:focus {outline:0;}
     z-index: 100;
     padding-left: 15px;
     padding-bottom: 5px;
+    width: 600px;
 }
 
 .new-ui .input-p {
