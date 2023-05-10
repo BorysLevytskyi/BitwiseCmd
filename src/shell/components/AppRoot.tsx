@@ -50,7 +50,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
 
     render() {
 
-        const enableNewUi = this.props.appState.env != 'prod' || false;
+        const enableNewUi = this.props.appState.env != 'prod' || true;
         const newUi = enableNewUi ? 'new-ui' : '';
 
         return <div className={`app-root ${this.state.uiTheme} ${newUi}`}>

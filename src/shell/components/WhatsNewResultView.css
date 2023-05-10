@@ -1,2 +1,3 @@
 .changelog .item { margin-top: 2em; }
 .changelog .item-new .date { font-weight: bold; text-decoration: underline;}
+.changelog li { padding: 5px 0}
