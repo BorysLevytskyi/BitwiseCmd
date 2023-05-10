@@ -1,5 +1,5 @@
-import BitwiseOperator from "./BitwiseOperator";
-import { ScalarValue } from "./expression";
+import Operator from "./Operator";
+import { Operand } from "./expression";
 import { ExpressionElement } from "./expression-interfaces";
 import { type } from "os";
 import { InputType } from "zlib";

@@ -1,6 +1,6 @@
 import { Expression, ExpressionElement } from "./expression-interfaces";
 
-export default class BitwiseOperationExpression implements Expression {
+export default class BitwiseOperation implements Expression {
     
     expressionString: string;
     children: ExpressionElement[];

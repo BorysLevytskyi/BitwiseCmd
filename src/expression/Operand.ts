@@ -8,7 +8,7 @@ var globalId : number = 1;
 
 
 // Represents scalar numeric value
-export default class ScalarValue implements ExpressionElement {
+export default class Operand implements ExpressionElement {
     id: number;
     value: Integer;
     base: NumberBase;
@@ -20,7 +20,7 @@ export default class ScalarValue implements ExpressionElement {
          if(!isInteger(value))
              value = asInteger(value);
 
-        ScalarValue.validateSupported(value);
+        Operand.validateSupported(value);
 
         this.id = globalId++;
         this.value = value as Integer;
@@ -29,21 +29,21 @@ export default class ScalarValue implements ExpressionElement {
         this.label = '';       
     }
   
-    setValue(value : Integer) : ScalarValue {
+    setValue(value : Integer) : Operand {
         this.value = value;
         return this;
     }
 
-    setLabel(label : string) : ScalarValue {
+    setLabel(label : string) : Operand {
         this.label = label;
         return this;
     }
 
-    evaluate() : ScalarValue {
+    evaluate() : Operand {
         return this;
     }
 
-    getUnderlyingScalarOperand() : ScalarValue  {
+    getUnderlyingOperand() : Operand  {
         return this;
     }
 

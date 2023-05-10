@@ -1,9 +1,9 @@
-import ScalarValue from "./ScalarValue";
-import BitwiseOperator from './BitwiseOperator';
+import Operand from "./Operand";
+import Operator from './Operator';
 
 it('can apply ~ operand', () => {
-    var op = new ScalarValue(10, 'dec');
-    var expr = new BitwiseOperator(op, "~");
+    var op = new Operand(10, 'dec');
+    var expr = new Operator(op, "~");
     
     var result = expr.evaluate();
     expect(result.value.num()).toBe(-11);
@@ -11,9 +11,9 @@ it('can apply ~ operand', () => {
 });
 
 it('can apply & operand', () => {
-    var op1 = new ScalarValue(3, 'dec');
-    var op2 = new ScalarValue(4, 'dec');
-    var expr = new BitwiseOperator(op1, "|");
+    var op1 = new Operand(3, 'dec');
+    var op2 = new Operand(4, 'dec');
+    var expr = new Operator(op1, "|");
     var result = expr.evaluate(op2);
     expect(result.value.num()).toBe(7);
     expect(result.base).toBe('dec');

@@ -3,7 +3,7 @@ import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { Expression, ExpressionElement } from '../expression-interfaces';
-import { BitwiseOperator, ScalarValue } from '../expression';
+import { Operator, Operand } from '../expression';
 import calc from '../../core/calc';
 
 type BitwiseResultViewProps = {
@@ -113,17 +113,17 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         // For expressions like |~2 
         // TODO: find a better way...
         if (this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as BitwiseOperator;
-            return ex.operator + this.getLabelString(ex.getUnderlyingScalarOperand());
+            const ex = this.props.expressionItem as Operator;
+            return ex.operator + this.getLabelString(ex.getUnderlyingOperand());
         }
 
-        return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());
+        return this.getLabelString(this.props.expressionItem.getUnderlyingOperand());
     }
 
     getAlternative() {
 
         if (this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as BitwiseOperator;
+            const ex = this.props.expressionItem as Operator;
             const res = ex.evaluate();
 
             return formatter.numberToString(res.value, res.base);
@@ -134,13 +134,13 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return formatter.numberToString(v.value, altBase);
     }
 
-    getLabelString(op: ScalarValue): string {
+    getLabelString(op: Operand): string {
         return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 
     flipBit(args: FlipBitEventArg) {
 
-        const op = this.props.expressionItem.getUnderlyingScalarOperand();
+        const op = this.props.expressionItem.getUnderlyingOperand();
         const { bitIndex: index, binaryStringLength: totalLength } = args;
 
         const maxBitSize = op.value.maxBitSize;
@@ -156,7 +156,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     }
 
     getInfo(maxNumberOfBits:number) {
-        var op = this.props.expressionItem.getUnderlyingScalarOperand();
+        var op = this.props.expressionItem.getUnderlyingOperand();
 
         if((op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits) || op.label.length > 0)
         {
