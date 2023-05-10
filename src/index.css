@@ -151,3 +151,38 @@ button:focus {outline:0;}
 
     .expressionInput { width: 350px; }
 }
+
+.new-ui {
+    padding: 0 30px;
+}
+
+.new-ui #output {
+    padding: 30px 30px;
+}
+
+.input-p { 
+    display: none;
+}
+
+.new-ui #in {
+    border: none;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    background: #2c3e50;
+    z-index: 100;
+    padding-left: 15px;
+    padding-bottom: 5px;
+}
+
+.new-ui .input-p {
+    display:inline;
+    z-index: 101;
+    position: absolute;
+    margin-right: -10px;
+    margin-top: 3px;
+    opacity: 0.5;
+}
+
+.new-ui .debug-indicators {
+    left: 1px;
+    opacity: 0.5;
+}

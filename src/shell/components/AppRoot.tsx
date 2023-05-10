@@ -49,7 +49,11 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
     }
 
     render() {
-        return <div className={`app-root ${this.state.uiTheme}`}>
+
+        const enableNewUi = this.props.appState.env != 'prod' || false;
+        const newUi = enableNewUi ? 'new-ui' : '';
+
+        return <div className={`app-root ${this.state.uiTheme} ${newUi}`}>
                     <DebugIndicators appState={this.props.appState} />
                     <div className="header">
                         <h1>Bitwise<span className="header-cmd">Cmd</span>
