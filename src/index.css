@@ -5,7 +5,7 @@ html { height: 100% }
     font-family: Verdana; 
     font-size: 0.8em; 
     margin: 0; 
-    padding: 20px 100px 0 100px; 
+    padding: 0px 30px; 
     height: 100%; 
     overflow: auto; 
     position: relative;
@@ -17,7 +17,17 @@ code { font-size: 1.2em; font-weight: bold; }
 .header-cmd { color: #c5c5c5 }
 
 .mono { font-family: monospace; font-size: 1.3em }
-.expressionInput { width: 500px; padding: 3px; border: none; outline: none; }
+.expressionInput { 
+    padding: 3px; 
+    outline: none;
+    border: none;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    z-index: 100;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    width: 600px; 
+    background: ragba(0, 0, 0, 0);
+}
 
 .hidden { display: none;}
 
@@ -46,14 +56,11 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .hex .prefix { display: inline; }
 
-.help { padding: 10px; }
-.help ul { list-style-type: none; margin: 0; padding: 0;  }
-.help p { margin-top: 0.5em }
-
 .indicator { padding: 0px 5px; background: transparent; border: none; cursor: pointer; vertical-align: middle; }
 .error { color: maroon; }
 
 .soft { opacity: 0.7 }
+
 .small-text { font-size: 0.8em;}
 
 #view { padding: 10px}
@@ -70,13 +77,15 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .on { color: #121212; }
 .light .prefix { color: #888}
 .light .other { color: #bbb }
-.light .hashLink, .light .hashLink:visited { color: #ddd; }
+.light .hashLink, .light .hashLink:visited { color: #aaa; }
 .light .hashLink:hover { color: #888 }
 .light ul.top-links li:hover { background: #ddd }
 .light .error { color: #da586d }
 .light button.btn { color: black}
 .light button.btn:hover { background: #ddd}
 .light button.btn:disabled { color: #888; background-color: inherit; }
+.light .accent1 { color:rgb(56, 161, 103)}
+.light .expressionInput { border-bottom: solid 1px rgba(0, 0, 0, 0.5);}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -87,7 +96,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark .on { color: white; }
 .dark .zero { color: #999;}
 .dark .prefix { color: #999}
-.dark  .other { color: #444;}
+.dark  .other { color: #777;}
 .dark .hashLink, .dark .hashLink:visited { color: #333 }
 .dark .hashLink:hover { color: #999 }
 .dark ul.top-links li:hover { background: #333 }
@@ -95,6 +104,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark button.btn { color: white}
 .dark button.btn:hover { background: #333}
 .dark button.btn:disabled { color: #999; background-color: inherit; }
+.dark .accent1 { color:mediumseagreen}ч
 
 /*
     Midnight Theme
@@ -118,6 +128,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight button.btn { color: white}
 .midnight button.btn:hover { background: #132537}
 .midnight button.btn:disabled { color: #85a0ad; background-color: inherit; }
+.midnight .accent1 { color:mediumseagreen}
 
 button { 
     border: none;
@@ -150,4 +161,23 @@ button:focus {outline:0;}
 @media (max-width: 450px) {
 
     .expressionInput { width: 350px; }
+}
+
+
+#output {
+    padding: 30px 30px;
+}
+
+.input-p {
+    display:inline;
+    z-index: 101;
+    position: absolute;
+    margin-right: -10px;
+    margin-top: 3px;
+    opacity: 0.5;
+}
+
+.debug-indicators {
+    left: 1px;
+    opacity: 0.5;
 }

@@ -1,4 +1,7 @@
-.help .section {margin-bottom:10px;}
+.help ul { list-style-type: none; margin: 0; margin-top: 0.2em; padding: 0;  }
+.help p { margin-top: 0.5em }
+.help .section {padding: 1em;}
 .help .panel-container {overflow: hidden;}
-.help .left-panel {float:left; margin-right: 20px;}
-.help .right-panel {float:left;}
+.help .left-panel {float:left;  margin-right: 1em;}
+.help .right-panel {float:left; }
+.help .section-title {font-weight: bold;}

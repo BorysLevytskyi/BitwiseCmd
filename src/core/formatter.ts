@@ -1,20 +1,20 @@
-import { BoundFunction } from "@testing-library/react";
 import calc from "./calc";
-import { BoundedNumber, JsNumber, isBoundedNumber, asBoundedNumber } from "./types";
+import { Integer, JsNumber, asInteger } from "./Integer";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    numberToString: function(num: BoundedNumber | JsNumber, base: NumberBase) : string {
+    numberToString: function(num: Integer | JsNumber, base: NumberBase | number) : string {
      
-        num = asBoundedNumber(num);
+        num = asInteger(num);
+        base = typeof base == "string" ? getBase(base) : base;
 
         switch(base) {
-            case 'hex':
+            case 16:
                 var hexVal = calc.abs(num).value.toString(16);
                 return num.value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
-            case 'bin':          
+            case 2:          
                 return calc.toBinaryString(num);
-            case 'dec':
+            case 10:
                 return num.value.toString(10);
             default:
                 throw new Error("Unexpected kind: " + base)
@@ -33,10 +33,10 @@ const formatter = {
 
         return sb.join('');
     },
-    bin(number: JsNumber) {
+    bin(number: Integer | JsNumber) {
         return this.numberToString(number, 'bin');
     },
-    emBin(number: JsNumber) {
+    emBin(number: Integer | JsNumber) {
         return this.padLeft(this.bin(number), 8, '0');
     },
     

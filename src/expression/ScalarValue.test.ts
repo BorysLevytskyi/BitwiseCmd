@@ -1,11 +1,11 @@
+import { INT32_MAX_VALUE } from "../core/const";
 import ScalarValue from "./ScalarValue";
 
 
-it('supports bigint', () => {
-    const int = new ScalarValue(1);
-    const bigint = new ScalarValue(BigInt(1));
-    expect(int.isBigInt()).toBe(false);
-    expect(bigint.isBigInt()).toBe(true);
-    expect(int.bitSize()).toBe(32);
-    expect(bigint.bitSize()).toBe(64);
+it('converts numbers to bigint', () => {
+    const int32 = new ScalarValue(INT32_MAX_VALUE);
+    const int64 = new ScalarValue(BigInt(INT32_MAX_VALUE+1));
+    
+    expect(int32.value.maxBitSize).toBe(32);
+    expect(int64.value.maxBitSize).toBe(64);
 });

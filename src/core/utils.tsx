@@ -1,4 +1,4 @@
-import { JsNumber } from "./types";
+import { Integer, JsNumber, isInteger } from "./Integer";
 
 function chunkifyString(input: string, chunkSize: number) : string[] {
     
@@ -11,8 +11,19 @@ function chunkifyString(input: string, chunkSize: number) : string[] {
     return result;
 }
 
-function asIntN(num: JsNumber) : number {
+function asIntN(num: JsNumber | Integer) : number {
+    if(isInteger(num))
+        return asIntN(num.value);
+
     return typeof num == "bigint" ? parseInt(num.toString()): num as number;
 }
 
-export {chunkifyString, asIntN};
+function random(from: number, to: number) {
+    return Math.floor(Math.random() * (to+1));
+}
+
+function randomBool() {
+    return random(1, 10000) % 2 == 0;
+}
+
+export {chunkifyString, asIntN, random, randomBool};

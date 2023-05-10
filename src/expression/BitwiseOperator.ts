@@ -1,5 +1,5 @@
+import calc from '../core/calc';
 import ScalarValue from './ScalarValue';
-import engine from './engine';
 import { ExpressionElement } from './expression-interfaces';
 
 export default class BitwiseOperator implements ExpressionElement {
@@ -29,8 +29,8 @@ export default class BitwiseOperator implements ExpressionElement {
         var evaluatedOperand = this.operand.evaluate();
 
         return this.operator == "~"
-            ? engine.applyNotOperator(this.operand.getUnderlyingScalarOperand())
-            : engine.applyOperator(operand!, this.operator, evaluatedOperand);
+            ? applyNotOperator(this.operand.getUnderlyingScalarOperand())
+            : applyOperator(operand!, this.operator, evaluatedOperand);
     }
 
     getUnderlyingScalarOperand() : ScalarValue {
@@ -40,4 +40,43 @@ export default class BitwiseOperator implements ExpressionElement {
     toString(): string {
         return this.operator + this.operand.toString();
     }
+}
+
+function applyNotOperator(operand: ScalarValue) : ScalarValue {
+    return new ScalarValue(calc.not(operand.value), operand.base);
+}
+
+function applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) : ScalarValue {
+    
+    const isShift = /<|>/.test(operator);
+    if(!isShift)
+    {
+        if(op1.value.maxBitSize == op2.value.maxBitSize && op1.value.signed != op2.value.signed)
+            throw new Error("Operator `" + operator + "` cannot be applied to signed and unsigned operands of the same " + op2.value.maxBitSize + " -bit size");
+
+        equalizeSize(op1, op2);
+    }
+
+    const result = calc.operation(op1.value, operator, op2.value);
+    return new ScalarValue(result, op2.base);
+}
+
+function equalizeSize(op1: ScalarValue, op2: ScalarValue) {
+    
+    const n1 = op1.value;
+    const n2 = op2.value;
+
+    if(n1.maxBitSize === n2.maxBitSize)
+    {
+        if(n1.signed === n2.signed) return;
+
+        // Example int and usinged int. Poromoted both to 64 bit        
+        op1.setValue(n1.resize(n1.maxBitSize*2).toSigned()).setLabel("converted");
+        op2.setValue(n2.resize(n2.maxBitSize*2).toSigned()).setLabel("converted");
+    }
+    
+    if(n1.maxBitSize > n2.maxBitSize) 
+        op2.setValue(n2.convertTo(n1)).setLabel("converted");
+    else 
+        op1.setValue(n1.convertTo(n2)).setLabel("converted");
 }

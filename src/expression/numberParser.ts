@@ -1,94 +1,83 @@
-import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "../core/const";
+import { INT32_MAX_VALUE, UINT32_MAX_VALUE } from "../core/const";
 import { NumberBase } from "../core/formatter";
-import { BoundedNumber, asBoundedNumber } from "../core/types";
+import { Integer } from "../core/Integer";
 
-// byte -i8 or b
-// single - i16 or s 
-
-const decimalRegex = /^-?\d+[l,L]?$/;
-const hexRegex = /^-?0x[0-9,a-f]+[l,L]?$/i;
-const binRegex = /^-?0b[0-1]+[l,L]?$/i;
-
-interface ParserConfig {
-    regex: RegExp,
-    base: NumberBase,
-    parse: (input: string) => BoundedNumber 
-}
+const numberRegexString = "-?([0-9]+|0b[0-1]+|0x[0-9,a-f]+)(l|s|b|ul|us|ub|u)?";
+const numberRegexFullString = "^"+numberRegexString+"$"
 
 export interface ParsedNumber {
-    value: BoundedNumber;
+    value: Integer;
     base: NumberBase;
     input: string;
 }
 
-var knownParsers : ParserConfig[] = [
-    { regex: decimalRegex, base: 'dec', parse:(s) => parseIntSafe(s, 10) },
-    { regex: hexRegex, base: 'hex', parse:(s) => parseIntSafe(s, 16)},
-    { regex: binRegex, base: 'bin', parse:(s) => parseIntSafe(s, 2) }];
-
-
 class NumberParser {
+    
+    numberRegexString: string;
 
-    parsers: ParserConfig[];
-
-    constructor(parsers: ParserConfig[])
+    constructor()
     {
-        this.parsers = parsers;
+        this.numberRegexString = numberRegexString;
     }
 
-    parse (input : string) : ParsedNumber | null {
-        return this.parsers.map(p => this.applyParser(p, input)).reduce((c, n) => c || n);
-    };
+    caseParse(input : string) {
+        const regex = new RegExp(numberRegexFullString);
+        return regex.test(input);
+    }
 
-    parseOperator (input: string) : string | null {
-        var m = input.match(input);
+    parse (input : string) : ParsedNumber {
+
+        if(input.length == 0) throw new Error("input is null or empty");
+
+        const regex = new RegExp(numberRegexFullString, "i");
         
-        if(m == null || m.length == 0) {
-            return null;
-        }
+        const m = regex.exec(input);
 
-        return m[0];
-    };
+        if(m == null || m.length == 0)
+            throw new Error(input + " is not a number");
 
-    applyParser(parser : ParserConfig, rawInput: string) : ParsedNumber | null {
-    
-        if(!parser.regex.test(rawInput)) {
-            return null;
-        }
-            
-        var value = parser.parse(rawInput);
-    
-        return  {
+        const value = parseInteger(m[0], m[1], m[2] || '');
+        
+        return {
             value: value,
-            base: parser.base,
-            input: rawInput
-        }    
+            base: getBase(input),
+            input: input
+        }
+    };
+}
+
+function parseInteger(input : string, numberPart: string, suffix: string)  : Integer {
+    
+    const isNegative = input.startsWith('-');
+    let num = BigInt(numberPart);
+    const signed = !suffix.startsWith('u');
+
+    if(!signed && isNegative)
+        throw new Error(input + " unsigned integer cannot be negative");
+
+    const size = getSizeBySuffix(suffix, num, signed);
+    return new Integer(isNegative  ? -num : num, size, signed);
+}
+
+function getSizeBySuffix(suffix: string, value : bigint, signed: boolean) {
+    
+    const max32 = signed ? INT32_MAX_VALUE : UINT32_MAX_VALUE;
+    
+    switch(suffix.replace('u', '').toLowerCase()) {
+        case 'l': return 64;
+        case 's': return 16;
+        case 'b': return 8;
+        default: return value > max32  ? 64 : 32;
     }
 }
 
-const MAX_SAFE_INTn = BigInt(INT32_MAX_VALUE);
-const MIN_SAFE_INTn = BigInt(INT32_MIN_VALUE);
+function getBase(input: string): NumberBase {
 
-function parseIntSafe(input : string, radix: number)  : BoundedNumber {
-    
-    const bigIntStr = input.replace('-', '').replace('l', '').replace('L', '');
-    let bigInt = BigInt(bigIntStr);
-    const isNegative = input.startsWith('-');
-    const isBigInt = input.toLowerCase().endsWith('l');
-
-    if(isNegative) bigInt *= BigInt(-1);
-
-    if(isBigInt) return asBoundedNumber(bigInt);
-
-    if(bigInt > MAX_SAFE_INTn)
-        return asBoundedNumber(bigInt);
-
-    if(bigInt < MIN_SAFE_INTn)
-        return asBoundedNumber(bigInt);
-
-    return asBoundedNumber(parseInt(input.replace(/0(x|b)/, ''), radix));
+    if(input.indexOf('0b') > -1) return 'bin';
+    if(input.indexOf('0x') > -1) return 'hex';
+    return 'dec';
 }
 
-const numberParser = new NumberParser(knownParsers);
+const numberParser = new NumberParser();
 
-export {numberParser};
+export {numberParser, numberRegexString};

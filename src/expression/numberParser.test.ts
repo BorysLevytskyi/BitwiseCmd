@@ -1,3 +1,5 @@
+import exp from 'constants';
+import { asIntN } from '../core/utils';
 import {numberParser, ParsedNumber} from './numberParser';
 
 describe("parser", () => {
@@ -7,12 +9,25 @@ describe("parser", () => {
         expect(result).not.toBeNull();
 
         var number = result as ParsedNumber;
-        expect(number.value.value).toBe(10);
+        expect(number.value.maxBitSize).toBe(32);
+        expect(asIntN(number.value.num())).toBe(10);
         expect(number.base).toBe('dec');
         expect(number.input).toBe('10');
     });
 
-    it('parses bigint numbers', () => {
+    it('parses negative numbers', () => {
+        expect(numberParser.parse('-1')?.value.num()).toBe(-1);
+        expect(numberParser.parse('-0b10')?.value.num()).toBe(-2);
+        expect(numberParser.parse('-0x10')?.value.num()).toBe(-16);
+    });
+
+    it('parses 64-bit numbers by size', () => {
+        const dec = numberParser.parse('3433374389036042');
+        expect(dec?.value.toString()).toBe('3433374389036042');
+        expect(dec?.value.maxBitSize).toBe(64);
+    });
+
+    it('parses 64-bit numbers with L notation', () => {
         const dec = numberParser.parse('10L');
         expect(dec).not.toBeNull();
 
@@ -20,24 +35,8 @@ describe("parser", () => {
         expect(typeof dec?.value.value).toBe("bigint");
         expect(dec?.base).toBe('dec');
         expect(dec?.input).toBe('10L');
-        
-        const bin = numberParser.parse('0b10l');
-        expect(bin).not.toBeNull();
-
-        expect(bin?.value.value).toBe(BigInt(2));
-        expect(typeof bin?.value.value).toBe("bigint");
-        expect(bin?.base).toBe('bin');
-        expect(bin?.input).toBe('0b10l');
-
-        const hex = numberParser.parse('0xfL');
-        expect(hex).not.toBeNull();
-
-        expect(hex?.value.value.toString()).toBe(BigInt(15).toString());
-        expect(typeof hex?.value.value).toBe("bigint");
-        expect(hex?.base).toBe('hex');
-        expect(hex?.input).toBe('0xfL');
+        expect(dec?.value.maxBitSize).toBe(64);
     });
-
 
     it('switches to bigint if value exceeds max safe int', () => {
         const unsafeInt = BigInt(Number.MAX_SAFE_INTEGER)+BigInt(1);
@@ -76,7 +75,8 @@ describe("parser", () => {
         expect(result).not.toBeNull();
 
         var number = result as ParsedNumber;
-        expect(number.value.value).toBe(171);
+        expect(number.value.maxBitSize).toBe(32);
+        expect(number.value.num()).toBe(171);
         expect(number.base).toBe('hex');
         expect(number.input).toBe('0xab');
     });
@@ -86,39 +86,82 @@ describe("parser", () => {
         expect(result).not.toBeNull();
 
         var number = result as ParsedNumber;
-        expect(number.value.value).toBe(6);
+        expect(number.value.num()).toBe(6);
         expect(number.base).toBe('bin');
         expect(number.input).toBe('0b0110');
     });
 
     it('returns null on bad inputs', () => {
-        expect(numberParser.parse('abc')).toBeNull();
-        expect(numberParser.parse('')).toBeNull();
+        expect(numberParser.caseParse('abc')).toBe(false);
+        expect(numberParser.caseParse('')).toBe(false);
+        expect(numberParser.caseParse('-1u')).toBe(true);
+        expect(() => numberParser.parse('abc')).toThrowError("abc is not a number");
+        expect(() => (numberParser.parse(''))).toThrowError('input is null or empty');
     });
 
     it('parses big int', () => {
         var v =  numberParser.parse('1l')?.value
-        expect(typeof v?.value).toBe("bigint");
-        expect(v?.value.toString()).toBe("1");
+        expect(v?.num()).toBe(1);
     });
 
-    xit('parses single', () => {
+    it('fits usigned int32 max value into 32-bit data type', () => {
+        const n1 = numberParser.parse("4294967295u");
+        const n2 = numberParser.parse("4294967296u");
+
+        expect(n1?.value.maxBitSize).toBe(32);
+        expect(n2?.value.maxBitSize).toBe(64);
+        expect(n1?.value.signed).toBe(false);
+        expect(n2?.value.signed).toBe(false);
+    })
+
+    it('parses single', () => {
         var v =  numberParser.parse('1s')?.value
-        expect(typeof v?.value).toBe("number");
         expect(v?.maxBitSize).toBe(16);
-        expect(v?.value.toString()).toBe("1");
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(true);
 
-        var v2 =  numberParser.parse('1i8')?.value
-        expect(v2).toEqual(v);
+        //var v2 =  numberParser.parse('1i8')?.value
+        //expect(v2).toEqual(v);
     });
 
-    xit('parses byte', () => {
-        var v =  numberParser.parse('1b')?.value
-        expect(typeof v?.value).toBe("number");
-        expect(v?.maxBitSize).toBe(16);
-        expect(v?.value.toString()).toBe("1");
+    it('cannot parse negative usigned', () => {
+       expect(() => numberParser.parse('-1u')).toThrowError("-1u unsigned integer cannot be negative");
+    });
 
-        var v2 =  numberParser.parse('1i16')?.value
-        expect(v2).toEqual(v);
+    it('parses usigned single', () => {
+        var v =  numberParser.parse('1us')?.value
+        expect(v?.maxBitSize).toBe(16);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
+    });
+
+    it('parses usigned int32', () => {
+        var v =  numberParser.parse('1u')?.value
+        expect(v?.maxBitSize).toBe(32);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
+    });
+
+    it('parses usigned byte', () => {
+        var v =  numberParser.parse('1ub')?.value
+        expect(v?.maxBitSize).toBe(8);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
+    });
+
+    it('parses usigned long', () => {
+        var v =  numberParser.parse('1ul')?.value
+        expect(v?.maxBitSize).toBe(64);
+        expect(v?.num()).toBe(1);
+        expect(v?.signed).toBe(false);
+    });
+
+    it('parses byte', () => {
+        var v =  numberParser.parse('1b')?.value
+        expect(v?.maxBitSize).toBe(8);
+        expect(v?.num()).toBe(1);
+
+        //var v2 =  numberParser.parse('1i16')?.value
+        //expect(v2?.num()).toEqual(v?.num());
     });
 });

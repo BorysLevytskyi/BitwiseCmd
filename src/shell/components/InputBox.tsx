@@ -24,13 +24,16 @@ export default class InputBox extends React.Component<IInputBoxProps> {
     }
 
     render() {
-        return <input id="in" type="text"
+        return <React.Fragment>
+                <span className='input-p'>&gt;</span>
+                <input id="in" type="text"
                       ref={(input) => { this.nameInput = input; }} 
                       onKeyUp={e => this.onKeyUp(e)}
                       onKeyDown={e => this.onKeyDown(e)}
                       className="expressionInput mono"
                       placeholder="type an expression like '1>>2' or 'help' "
-                      autoComplete="off"/>;
+                      autoComplete="off"/>
+            </React.Fragment>
     }
 
     onKeyUp(e: any) {

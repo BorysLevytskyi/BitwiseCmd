@@ -56,7 +56,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 key={i}
                 sign={itm.sign}
                 css={itm.css}
-                bitSize={itm.bitSize}
+                bitSize={itm.maxBitSize}
                 allowFlipBits={itm.allowFlipBits}
                 expressionItem={itm.expression}
                 emphasizeBytes={this.props.emphasizeBytes}
@@ -88,7 +88,9 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     }
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
-        const maxBits = Math.max()
+        const scalar =  this.props.expressionItem.evaluate();
+        const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, '0');
+        const signBitIndex = scalar.value.signed && bin.length >= scalar.value.maxBitSize ? bin.length - scalar.value.maxBitSize : -1;
 
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
@@ -96,19 +98,14 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
             <td className="bin">
                 <BinaryStringView
                     emphasizeBytes={emphasizeBytes}
-                    binaryString={formatter.padLeft(this.getBinaryString(), maxNumberOfBits, '0')}
+                    binaryString={bin}
                     allowFlipBits={allowFlipBits}
-                    bitSize={this.props.bitSize}
+                    signBitIndex={signBitIndex}
                     onFlipBit={args => this.flipBit(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info" data-test-name='ignore'>{this.getInfo(maxNumberOfBits)}</td>
+            <td className="info accent1" data-test-name='ignore'>{this.getInfo(maxNumberOfBits)}</td>
         </tr>;;
-    }
-
-    getBinaryString(): string {
-        var v = this.props.expressionItem.evaluate();
-        return formatter.numberToString(v.value, 'bin');
     }
 
     getLabel(): string {
@@ -146,12 +143,14 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         const op = this.props.expressionItem.getUnderlyingScalarOperand();
         const { bitIndex: index, binaryStringLength: totalLength } = args;
 
-        if(totalLength > op.bitSize() && (totalLength - index) > op.bitSize()) {
-            op.setValue(calc.promoteTo64Bit(op.value as number));
+        const maxBitSize = op.value.maxBitSize;
+        const space = (totalLength - index - maxBitSize);
+        if(totalLength > op.value.maxBitSize && space > 0) {
+            op.setValue(calc.addSpace(op.value, space));
         }
 
-        const pad = op.bitSize() - totalLength;
-        const newValue = calc.flipBit(op, pad + index);
+        const pad = op.value.maxBitSize - totalLength;
+        const newValue = calc.flipBit(op.value, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();
     }
@@ -159,18 +158,21 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getInfo(maxNumberOfBits:number) {
         var op = this.props.expressionItem.getUnderlyingScalarOperand();
 
-        if (op.isBigInt())
+        if((op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits) || op.label.length > 0)
         {
-            const title = `BigInt JavaScript type is used to reprsent this number. All bitwise operations that involve this number have their operands converted to BigInt. BitwiseCmd treats this number as 64-bit number.`;
+            let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
+            let text = `${op.value.maxBitSize}-bit `;
+            
+            if(!op.value.signed)
+                text += " unsigned ";
 
-            return <span title={title} style={{cursor:"help"}}>(64-bit BigInt)</span>;
-        }
+            if(op.label.length > 0)
+            {
+                text += " (converted)";
+                title += ". This number was converted to facilitate bitwise operation with an operand of a different type";
+            }
 
-        if(op.bitSize() == 32 && maxNumberOfBits >= 32)
-        {
-            const title = "BitwiseCmd treats this number as 32-bit integer. First bit is a sign bit. Try clicking on the first bit and see what will happen.";
-
-            return <span title={title} style={{cursor:"help"}}>(32-bit Number)</span>;
+            return <span title={title} style={{cursor:"help"}}>{text}</span>;
         }
 
         return null;

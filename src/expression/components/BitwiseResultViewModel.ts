@@ -2,7 +2,6 @@ import { ScalarValue, ListOfNumbersExpression, BitwiseOperationExpression, Bitwi
 import { ExpressionElement, Expression } from '../expression-interfaces';
 import calc from '../../core/calc';
 import formatter from '../../core/formatter';
-import exp from 'constants';
 
 type Config = {
     emphasizeBytes: boolean;
@@ -15,7 +14,7 @@ type ExpressionRowModel = {
     expression: ExpressionElement;
     allowFlipBits: boolean;
     label: string;
-    bitSize: number;
+    maxBitSize: number;
 }
 
 export default class BitwiseResultViewModel {
@@ -40,7 +39,7 @@ export default class BitwiseResultViewModel {
     }
 
     static buildBitwiseOperation (expr : BitwiseOperationExpression, config : Config) {
-
+        
         var op = expr.children[0],
             i = 0, len = expr.children.length,
             ex, m = new BitwiseResultViewModel(config);
@@ -88,7 +87,7 @@ export default class BitwiseResultViewModel {
             expression: expr,
             allowFlipBits: this.allowFlipBits,
             label: '',
-            bitSize: expr.bitSize(),
+            maxBitSize: expr.value.maxBitSize,
         });
     };
 
@@ -105,7 +104,7 @@ export default class BitwiseResultViewModel {
             label: this.getLabel(resultNumber),
             expression: expr.operand,
             allowFlipBits: this.allowFlipBits,
-            bitSize: resultNumber.bitSize()
+            maxBitSize: resultNumber.value.maxBitSize
         });
     };
  
@@ -119,7 +118,7 @@ export default class BitwiseResultViewModel {
             expression: resultExpr,
             allowFlipBits: false,
             label: '',
-            bitSize: resultExpr.bitSize()
+            maxBitSize: resultExpr.value.maxBitSize
         });
     };
 
@@ -132,7 +131,7 @@ export default class BitwiseResultViewModel {
             expression: expr, 
             allowFlipBits: false,
             label: '',
-            bitSize: expr.bitSize()
+            maxBitSize: expr.value.maxBitSize
         });
     };
 
