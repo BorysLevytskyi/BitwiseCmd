@@ -156,9 +156,10 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     }
 
     getInfo(maxNumberOfBits:number) {
-        var op = this.props.expressionItem.getUnderlyingOperand();
+        const op = this.props.expressionItem.getUnderlyingOperand();
+        const isFullSize = op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits;
 
-        if((op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits) || op.label.length > 0)
+        if(isFullSize || op.label.length > 0 || !op.value.signed)
         {
             let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
             let text = `${op.value.maxBitSize}-bit `;
