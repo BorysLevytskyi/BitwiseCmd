@@ -1,11 +1,11 @@
 import log from 'loglevel';
 
-const APP_VERSION = 9;
+export const APP_VERSION = 9;
 
 export type PersistedAppData = {
     emphasizeBytes: boolean;
     uiTheme: string;
-    version: number;
+    version: number | null;
     debugMode: boolean | null;
     pageVisistsCount: number;
     donationClicked: boolean
@@ -41,7 +41,7 @@ export default class AppState {
         this.uiTheme = persistData.uiTheme || 'midnight';
         this.env = env;
 
-        this.emphasizeBytes = persistData.emphasizeBytes || true;
+        this.emphasizeBytes = !!persistData.emphasizeBytes;
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
         this.debugMode = persistData.debugMode === true;

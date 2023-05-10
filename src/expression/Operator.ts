@@ -1,8 +1,8 @@
 import calc from '../core/calc';
-import ScalarValue from './ScalarValue';
+import Operand from './Operand';
 import { ExpressionElement } from './expression-interfaces';
 
-export default class BitwiseOperator implements ExpressionElement {
+export default class Operator implements ExpressionElement {
     operand: ExpressionElement;
     operator: string;
     isOperator: boolean;
@@ -18,9 +18,9 @@ export default class BitwiseOperator implements ExpressionElement {
         this.isNotExpression = this.operator === '~';
     }
         
-    evaluate(operand?: ScalarValue) : ScalarValue {
+    evaluate(operand?: Operand) : Operand {
         
-        if (operand instanceof BitwiseOperator)
+        if (operand instanceof Operator)
             throw new Error('operand must be scalar value'); 
         
         if( this.operator != "~" && operand == null)
@@ -29,12 +29,12 @@ export default class BitwiseOperator implements ExpressionElement {
         var evaluatedOperand = this.operand.evaluate();
 
         return this.operator == "~"
-            ? applyNotOperator(this.operand.getUnderlyingScalarOperand())
+            ? applyNotOperator(this.operand.getUnderlyingOperand())
             : applyOperator(operand!, this.operator, evaluatedOperand);
     }
 
-    getUnderlyingScalarOperand() : ScalarValue {
-        return this.operand.getUnderlyingScalarOperand();
+    getUnderlyingOperand() : Operand {
+        return this.operand.getUnderlyingOperand();
     }
 
     toString(): string {
@@ -42,13 +42,14 @@ export default class BitwiseOperator implements ExpressionElement {
     }
 }
 
-function applyNotOperator(operand: ScalarValue) : ScalarValue {
-    return new ScalarValue(calc.not(operand.value), operand.base);
+function applyNotOperator(operand: Operand) : Operand {
+    return new Operand(calc.not(operand.value), operand.base);
 }
 
-function applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) : ScalarValue {
+function applyOperator(op1 : Operand, operator: string, op2 : Operand) : Operand {
     
     const isShift = /<|>/.test(operator);
+
     if(!isShift)
     {
         if(op1.value.maxBitSize == op2.value.maxBitSize && op1.value.signed != op2.value.signed)
@@ -57,11 +58,13 @@ function applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) :
         equalizeSize(op1, op2);
     }
 
+    console.log(op1.value, operator, op2.value);
     const result = calc.operation(op1.value, operator, op2.value);
-    return new ScalarValue(result, op2.base);
+    console.log('=', result);
+    return new Operand(result, op2.base);
 }
 
-function equalizeSize(op1: ScalarValue, op2: ScalarValue) {
+function equalizeSize(op1: Operand, op2: Operand) {
     
     const n1 = op1.value;
     const n2 = op2.value;

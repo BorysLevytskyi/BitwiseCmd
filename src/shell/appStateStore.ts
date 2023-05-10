@@ -1,12 +1,21 @@
-import AppState, { PersistedAppData } from "./AppState";
+import AppState, { APP_VERSION, PersistedAppData } from "./AppState";
 
 const storeKey = 'AppState';
+
+const DEFAULT_DATA : PersistedAppData = {
+    uiTheme: 'midnight',
+    emphasizeBytes: true,
+    version: APP_VERSION,
+    debugMode: false,
+    pageVisistsCount: 0,
+    donationClicked: false
+}
 
 export default {
     getPersistedData() : PersistedAppData {
         var json = window.localStorage.getItem(storeKey);
         if(!json) {
-            return {} as PersistedAppData;
+            return DEFAULT_DATA;
         }
 
         try {
@@ -14,7 +23,7 @@ export default {
         }
         catch(ex) {
             console.error('Failed to parse AppState json. Json Value: \n' + json, ex);
-            return {} as PersistedAppData;;
+            return DEFAULT_DATA;;
         }
     },
 

@@ -53,7 +53,7 @@ function getStartupCommands(appState : AppState) : string[] {
             startupCommands = hashArgs;
     }
 
-    log.debug('Executing startup commands', startupCommands);
+    log.debug('Startup commands loaded', startupCommands);
 
     return startupCommands;
 }

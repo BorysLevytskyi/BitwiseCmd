@@ -3,7 +3,7 @@ import formatter from '../../core/formatter';
 import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
 import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { Expression, ExpressionElement } from '../expression-interfaces';
-import { BitwiseOperator, ScalarValue } from '../expression';
+import { Operator, Operand, ListOfNumbers } from '../expression';
 import calc from '../../core/calc';
 
 type BitwiseResultViewProps = {
@@ -27,18 +27,18 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
     render() {
 
          let model : BitwiseResultViewModel | null = null
+         const isListOfNumbers = this.props.expression instanceof ListOfNumbers;
         
         try
-         { 
+        { 
             model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
-         }
-         catch(err) {
+        }
+        catch(err) {
             const text = (err as any).message;
             return <div className='error'>Error: {text}</div>
-         }
+        }
 
-
-        var rows = this.getRows(model!);
+        var rows = this.getRows(model!, isListOfNumbers);
 
         return <table className="expression">
             <tbody>
@@ -47,7 +47,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
         </table>
     }
 
-    getRows(model: BitwiseResultViewModel): JSX.Element[] {
+    getRows(model: BitwiseResultViewModel, allowSignChange : boolean): JSX.Element[] {
 
         this.maxSeenLengthNumberOfBits = Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
 
@@ -58,6 +58,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 css={itm.css}
                 bitSize={itm.maxBitSize}
                 allowFlipBits={itm.allowFlipBits}
+                allowSignChange={allowSignChange}
                 expressionItem={itm.expression}
                 emphasizeBytes={this.props.emphasizeBytes}
                 maxNumberOfBits={this.maxSeenLengthNumberOfBits}
@@ -77,15 +78,20 @@ type ExpressionRowProps = {
     maxNumberOfBits: number,
     emphasizeBytes: boolean,
     allowFlipBits: boolean,
+    allowSignChange: boolean,
     expressionItem: ExpressionElement,
     onBitFlipped: any
 }
 
 class ExpressionRow extends React.Component<ExpressionRowProps> {
+    
+    infoWasShown: boolean = false;
+
     constructor(props: ExpressionRowProps) {
         super(props);
         this.state = { operand: null };
     }
+
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
         const scalar =  this.props.expressionItem.evaluate();
@@ -113,17 +119,17 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         // For expressions like |~2 
         // TODO: find a better way...
         if (this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as BitwiseOperator;
-            return ex.operator + this.getLabelString(ex.getUnderlyingScalarOperand());
+            const ex = this.props.expressionItem as Operator;
+            return ex.operator + this.getLabelString(ex.getUnderlyingOperand());
         }
 
-        return this.getLabelString(this.props.expressionItem.getUnderlyingScalarOperand());
+        return this.getLabelString(this.props.expressionItem.getUnderlyingOperand());
     }
 
     getAlternative() {
 
         if (this.props.expressionItem.isOperator) {
-            const ex = this.props.expressionItem as BitwiseOperator;
+            const ex = this.props.expressionItem as Operator;
             const res = ex.evaluate();
 
             return formatter.numberToString(res.value, res.base);
@@ -134,13 +140,13 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         return formatter.numberToString(v.value, altBase);
     }
 
-    getLabelString(op: ScalarValue): string {
+    getLabelString(op: Operand): string {
         return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 
     flipBit(args: FlipBitEventArg) {
 
-        const op = this.props.expressionItem.getUnderlyingScalarOperand();
+        const op = this.props.expressionItem.getUnderlyingOperand();
         const { bitIndex: index, binaryStringLength: totalLength } = args;
 
         const maxBitSize = op.value.maxBitSize;
@@ -155,27 +161,47 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
         this.props.onBitFlipped();
     }
 
+    onChangeSign () {
+        var op = this.props.expressionItem.getUnderlyingOperand();
+        op.setValue(op.value.signed ? op.value.toUnsigned() : op.value.toSigned());
+        this.forceUpdate();
+    }
+
     getInfo(maxNumberOfBits:number) {
-        var op = this.props.expressionItem.getUnderlyingScalarOperand();
+        
+        const op = this.props.expressionItem.getUnderlyingOperand();
+        const allBitsDisplayed = op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits;
+        const { allowSignChange } = this.props;
+        const hasLabel = op.label.length > 0;
 
-        if((op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits) || op.label.length > 0)
+        if(!allBitsDisplayed && !hasLabel && !this.infoWasShown)
+            return null;
+
+        this.infoWasShown = true;
+
+        const children = [];
+        let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
+        let text = `${op.value.maxBitSize}-bit `;
+        const signedStr = op.value.signed ? 'signed' : 'unsigned';
+        const signedOther = op.value.signed ? 'usigned' : 'signed'; 
+        const signedTitle = `Click to change to ${signedOther} preserving the same bits`; 
+
+        if(op.label.length > 0)
         {
-            let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
-            let text = `${op.value.maxBitSize}-bit `;
-            
-            if(!op.value.signed)
-                text += " unsigned ";
-
-            if(op.label.length > 0)
-            {
-                text += " (converted)";
-                title += ". This number was converted to facilitate bitwise operation with an operand of a different type";
-            }
-
-            return <span title={title} style={{cursor:"help"}}>{text}</span>;
+            text += " (converted)";
+            title += ". This number was converted to facilitate bitwise operation with an operand of a different type";
         }
 
-        return null;
-        
+        children.push(<span title={title} style={{cursor:"help"}}>{text.trim()}</span>);
+                
+        if(allBitsDisplayed)
+        {
+            if(allowSignChange)
+                children.push(<button className='accent1' title={signedTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
+            else if(!op.value.signed)
+                children.push(<span className='accent1'> {signedStr}</span>)
+        }
+
+        return <React.Fragment>{children}</React.Fragment>
     }
 }

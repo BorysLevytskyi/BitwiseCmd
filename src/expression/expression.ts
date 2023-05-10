@@ -1,15 +1,14 @@
-import ScalarValue from './ScalarValue';
-import BitwiseOperator from './BitwiseOperator'
-import ListOfNumbersExpression from './ListOfNumbersExpression';
-import BitwiseOperationExpression from './BitwiseOperationExpression';
+import Operand from './Operand';
+import Operator from './Operator'
+import ListOfNumbers from './ListOfNumbers';
+import BitwiseOperation from './BitwiseOperation';
 import { Expression, ExpressionElement } from './expression-interfaces';
 import { numberParser, numberRegexString } from './numberParser';
-import { parse } from 'path';
 
-export { default as ScalarValue } from './ScalarValue';
-export { default as BitwiseOperator } from './BitwiseOperator';
-export { default as ListOfNumbersExpression } from './ListOfNumbersExpression';
-export { default as BitwiseOperationExpression } from './BitwiseOperationExpression';
+export { default as Operand } from './Operand';
+export { default as Operator } from './Operator';
+export { default as ListOfNumbers } from './ListOfNumbers';
+export { default as BitwiseOperation } from './BitwiseOperation';
 
 interface IExpressionParserFactory {
     canCreate: (input: string) => boolean;
@@ -76,7 +75,7 @@ class ListOfNumbersExpressionFactory implements IExpressionParserFactory
             .filter(p => p.length > 0)
             .map(m => parseScalarValue(m));
 
-        return new ListOfNumbersExpression(input, numbers);
+        return new ListOfNumbers(input, numbers);
     }
 }
 
@@ -105,7 +104,7 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
             operands.push(this.parseMatch(m));
         }
                 
-        return new BitwiseOperationExpression(normalizedString, operands)
+        return new BitwiseOperation(normalizedString, operands)
     };
 
     parseMatch (m:RegExpExecArray): ExpressionElement {
@@ -117,16 +116,16 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
         var parsed = null;
 
         if(num.indexOf('~') == 0) {
-            parsed = new BitwiseOperator(parseScalarValue(num.substring(1)), '~');
+            parsed = new Operator(parseScalarValue(num.substring(1)), '~');
         }
         else {
             parsed = parseScalarValue(num);
         }
 
         if(operator == null) {
-            return parsed as BitwiseOperator;
+            return parsed as Operator;
         } else {
-            return new BitwiseOperator(parsed as ScalarValue, operator);
+            return new Operator(parsed as Operand, operator);
         }
     };
 
@@ -135,9 +134,9 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
     };
 }
 
-function parseScalarValue(input : string) : ScalarValue {
+function parseScalarValue(input : string) : Operand {
     const n = numberParser.parse(input);
-    var sv = new ScalarValue(n.value, n.base);
+    var sv = new Operand(n.value, n.base);
     if(sv.value.maxBitSize != n.value.maxBitSize) throw new Error("Gotcha!");
     return sv;
 }

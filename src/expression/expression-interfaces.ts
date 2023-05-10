@@ -1,4 +1,4 @@
-import { ScalarValue } from "./expression";
+import { Operand } from "./expression";
 
 export interface Expression
 {
@@ -8,7 +8,7 @@ export interface Expression
 export interface ExpressionElement 
 {
     isOperator: boolean;   
-    getUnderlyingScalarOperand: () => ScalarValue;
-    evaluate(operand? : ScalarValue): ScalarValue;
+    getUnderlyingOperand: () => Operand;
+    evaluate(operand? : Operand): Operand;
 }
 
