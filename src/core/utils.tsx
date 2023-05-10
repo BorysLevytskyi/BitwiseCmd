@@ -26,4 +26,8 @@ function randomBool() {
     return random(1, 10000) % 2 == 0;
 }
 
-export {chunkifyString, asIntN, random, randomBool};
+function logLines(...params: any[]) {
+    console.log(params.join('\n'))
+}
+
+export {chunkifyString, asIntN, random, randomBool, logLines};

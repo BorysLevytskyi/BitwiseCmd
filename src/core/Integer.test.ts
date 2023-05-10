@@ -1,5 +1,15 @@
 import { Integer } from "./Integer"
-import { UINT32_MAX_VALUE } from "./const";
+import { INT32_MAX_VALUE, UINT32_MAX_VALUE } from "./const";
+
+it('toString for unsigned', () => {
+    const s = Integer.unsigned(4294967295).toString(2)
+    expect(s).toBe("11111111111111111111111111111111");
+});
+
+it('detects size correctly for signed and unsiged version', () => {
+    expect(Integer.unsigned(UINT32_MAX_VALUE).maxBitSize).toBe(32);
+    expect(Integer.signed(UINT32_MAX_VALUE).maxBitSize).toBe(64);
+})
 
 it('converts signed to unsigned and vice versa', () => {
     const n1 = new Integer(-1, 8);
@@ -21,7 +31,14 @@ it('convers to different type', () => {
 
     const n = src.convertTo(dest);
     expect(n.num()).toBe(UINT32_MAX_VALUE);
-})
+});
+
+it('doesnt modify 64-bit number when converting from usinged to signed', () => {
+    
+    expect(Integer.unsigned(4294967295).toSigned().num()).toBe(-1);
+    expect(Integer.unsigned(2147483647).toSigned().num()).toBe(2147483647);    
+});
+
 
 it('converts to largest size', () => {
     const n8 = new Integer(-1, 8);

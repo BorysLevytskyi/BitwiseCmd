@@ -247,7 +247,6 @@ function nextPowOfTwo(num: number) : number {
 }
 
 function equalizeSize(n1: Integer, n2: Integer) : [Integer, Integer] {
-        console.log('equalizeSize()', new Error().stack);
     if(n1.maxBitSize == n2.maxBitSize)
     {
         if(n1.signed === n2.signed) return [n1,n2];

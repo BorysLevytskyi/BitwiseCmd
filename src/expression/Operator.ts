@@ -58,9 +58,7 @@ function applyOperator(op1 : Operand, operator: string, op2 : Operand) : Operand
         equalizeSize(op1, op2);
     }
 
-    console.log(op1.value, operator, op2.value);
     const result = calc.operation(op1.value, operator, op2.value);
-    console.log('=', result);
     return new Operand(result, op2.base);
 }
 

@@ -1,11 +1,11 @@
 import { type } from "os";
-import { INT32_MAX_VALUE, INT32_MIN_VALUE } from "./const";
-import { asIntN } from "./utils";
+import { INT32_MAX_VALUE, INT32_MIN_VALUE, UINT32_MAX_VALUE } from "./const";
+import { asIntN, logLines as ln } from "./utils";
 import formatter from "./formatter";
 import calc from "./calc";
 
 export type JsNumber = number | bigint;
-
+export type IntegerInput = JsNumber | string;
 
 export class Integer {
     
@@ -13,29 +13,37 @@ export class Integer {
     readonly maxBitSize: number;
     readonly signed: boolean;
 
-    constructor(value: JsNumber, maxBitSize?: number, signed? : boolean) {
+    constructor(value: IntegerInput, maxBitSize?: number, signed? : boolean) {
+        
         this.value = typeof value == "bigint" ? value : BigInt(value);
-        this.maxBitSize = maxBitSize != null ? maxBitSize : (value >= INT32_MIN_VALUE && value <= INT32_MAX_VALUE) ? 32 : 64;
         this.signed = signed == null ? true : signed == true;
+        this.maxBitSize = maxBitSize != null ? maxBitSize : detectSize(this.value, this.signed);
+
+        if(!this.signed && this.value < 0)
+            throw new Error("Value " + value + " cannot be negative if the type is unsigned");
     }
 
-    static unsigned(value : JsNumber, maxBitSize?: number) {
+    static unsigned(value : IntegerInput, maxBitSize?: number) {
         return new Integer(value, maxBitSize, false);
     }
 
-    static long(value: JsNumber) : Integer {
+    static signed(value : IntegerInput, maxBitSize?: number) {
+        return new Integer(value, maxBitSize, true);
+    }
+
+    static long(value: IntegerInput) : Integer {
         return new Integer(value, 64);
     }
 
-    static int(value: JsNumber) : Integer {
+    static int(value: IntegerInput) : Integer {
         return new Integer(value, 32);
     }
 
-    static short(value: JsNumber) : Integer {
+    static short(value: IntegerInput) : Integer {
         return new Integer(value, 16);
     }
 
-    static byte(value: JsNumber) : Integer {
+    static byte(value: IntegerInput) : Integer {
         return new Integer(value, 8);
     }
 
@@ -51,10 +59,13 @@ export class Integer {
         if(this.signed)
             return new Integer(this.value, this.maxBitSize, this.signed); 
         
-        const bin = calc.engine.applyTwosComplement(this.toString(2)); 
-        const n = BigInt("0b"+bin);
+        const orig = this.toString(2).padStart(this.maxBitSize, '0');
+
+        const inverted = orig[0] == '1' ? calc.engine.applyTwosComplement(orig) : orig; 
+        const n = BigInt("0b"+inverted);
+        const negative = orig[0] == '1';
         
-        return new Integer(bin[0] == '1' ? n : -n, this.maxBitSize, true)
+        return new Integer(negative ? -n : n, this.maxBitSize, true)
     }
 
     resize(newSize: number) {
@@ -115,4 +126,12 @@ export function asInteger(num: JsNumber | Integer | string): Integer {
 
 export function isInteger(num: JsNumber | Integer): num is Integer {
     return (<Integer>num).maxBitSize !== undefined;
- }
+}
+function detectSize(value: bigint, signed: boolean): number {
+    
+    if(!signed)
+        return value > UINT32_MAX_VALUE ? 64 : 32;
+    else
+        return value < INT32_MIN_VALUE || value > INT32_MAX_VALUE ? 64 : 32;
+}
+
