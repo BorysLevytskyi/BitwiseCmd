@@ -37,7 +37,9 @@ code { font-size: 1.2em; font-weight: bold; }
 .result .content { padding-left: 10px}
 .result .cur { margin-right: 5px; }
 
+.input-string { margin-right: 5px;}
 .hashLink { text-decoration: none; margin-left: 5px; visibility: hidden; margin-right: 0; padding: 0; text-decoration: none; }
+a.hashLink { font-size: 1.1em;}
 .hashLink:hover { text-decoration: underline; margin-left: 5px; background: none; }
 .result:hover .hashLink { visibility: visible }
 
@@ -72,6 +74,7 @@ button { border: none; text-decoration: underline;}
 
 /* Light */
 .light { background: #fafafa; }
+.light .header-cmd { color: #919191 }
 .light a, .light a:visited, .light button { color: #222; }
 .light .one { color: black; }
 .light .zero { color: #888; }
@@ -99,20 +102,20 @@ button { border: none; text-decoration: underline;}
 .dark .zero { color: #999;}
 .dark .prefix { color: #999}
 .dark  .other { color: #777;}
-.dark .hashLink, .dark .hashLink:visited { color: #333 }
+.dark .hashLink, .dark .hashLink:visited { color: #555 }
 .dark .hashLink:hover { color: #999 }
 .dark ul.top-links li:hover { background: #333 }
 .dark .error { color: #da586d}
 .dark button.btn { color: white}
 .dark button.btn:hover { background: #333}
 .dark button.btn:disabled { color: #999; background-color: inherit; }
-.dark .accent1 { color:mediumseagreen}ч
+.dark .accent1 { color:mediumseagreen}
 
 /*
     Midnight Theme
 */
-.midnight .header-cmd { color: #85a0ad }
 .midnight { background: #2c3e50; color: white }
+.midnight .header-cmd { color: #7ea3b5 !important }
 .midnight .expression { color: white;}
 .midnight .expressionInput { color: white;}
 .midnight a, .dark a:visited, .midnight button { color: white; }

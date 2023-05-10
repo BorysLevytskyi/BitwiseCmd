@@ -21,8 +21,8 @@ const DisplayResultView: React.FunctionComponent<DisplayResultProps> = (props) =
 
         return <div className="result">
                         <div className="input mono">
-                                <span className="cur">
-                                    &gt;</span>{props.input}
+                                <span className="cur">&gt;</span>
+                                <span className="input-string">{props.input}</span>
                                     <a className="hashLink" title="Link for this expression" href={window.location.pathname + '#' + props.inputHash}>
                                         <FontAwesomeIcon className="icon" icon={faHashtag} size="xs" />
                                     </a>
