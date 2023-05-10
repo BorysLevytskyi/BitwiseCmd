@@ -41,7 +41,7 @@ export default class AppState {
         this.uiTheme = persistData.uiTheme || 'midnight';
         this.env = env;
 
-        this.emphasizeBytes = persistData.emphasizeBytes || true;
+        this.emphasizeBytes = !!persistData.emphasizeBytes;
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
         this.debugMode = persistData.debugMode === true;

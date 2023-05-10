@@ -51,8 +51,6 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
 
         const disableHighlight = this.props.disableHighlight || false;
 
-        let signBitIndex = -1;
-
         return bitChars.map((c, i) => {
 
             var className = c == '1' ? `one${css}` : `zero${css}`;
