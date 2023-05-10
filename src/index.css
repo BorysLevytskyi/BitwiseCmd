@@ -68,9 +68,11 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .cur { color: lightgray; }
 
+button { border: none; text-decoration: underline;}
+
 /* Light */
 .light { background: #fafafa; }
-.light a, .light a:visited { color: #222; }
+.light a, .light a:visited, .light button { color: #222; }
 .light .one { color: black; }
 .light .zero { color: #888; }
 .light .indicator { color: #ddd; }
@@ -91,7 +93,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .dark { background: #121212; color: white;}
 .dark .expression { color: white;}
 .dark .expressionInput { color: white; }
-.dark a, .dark a:visited { color: white; }
+.dark a, .dark a:visited, .dark button { color: white; }
 .dark .indicator { color: #555; }
 .dark .on { color: white; }
 .dark .zero { color: #999;}
@@ -113,7 +115,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight { background: #2c3e50; color: white }
 .midnight .expression { color: white;}
 .midnight .expressionInput { color: white;}
-.midnight a, .dark a:visited { color: white; }
+.midnight a, .dark a:visited, .midnight button { color: white; }
 .midnight .indicator { color: #85a0ad; }
 .midnight .on { color: white; }
 .midnight .zero { color: #85a0ad;}
