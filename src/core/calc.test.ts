@@ -2,6 +2,7 @@ import calc from './calc';
 import { Integer, asInteger } from './Integer';
 import { INT32_MIN_VALUE } from './const';
 import { faL } from '@fortawesome/free-solid-svg-icons';
+import exp from 'constants';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
@@ -145,9 +146,11 @@ describe('preserves C compiler behvaior', () => {
         const int = Integer.int(-1);
         expect(calc.lshift(int, 33).num()).toBe(-2);
         expect(calc.rshift(int, 33).num()).toBe(-1);
-        
+
         expect(calc.rshift(Integer.int(1), 33).num()).toBe(0);
         expect(calc.rshift(Integer.int(1), 32).num()).toBe(1);
+        
+        expect(calc.lshift(Integer.byte(1), 20).num()).toBe(16);
     });
 });
 
