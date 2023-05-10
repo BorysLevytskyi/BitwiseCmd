@@ -23,6 +23,22 @@ export class Integer {
         return new Integer(value, maxBitSize, false);
     }
 
+    static long(value: JsNumber) : Integer {
+        return new Integer(value, 64);
+    }
+
+    static int(value: JsNumber) : Integer {
+        return new Integer(value, 32);
+    }
+
+    static short(value: JsNumber) : Integer {
+        return new Integer(value, 16);
+    }
+
+    static byte(value: JsNumber) : Integer {
+        return new Integer(value, 8);
+    }
+
     toUnsigned() {
         return this.signed 
             ? new Integer(BigInt("0b" + this.toString(2)), this.maxBitSize, false)

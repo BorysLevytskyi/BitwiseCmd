@@ -52,14 +52,26 @@ export default {
     },
 
     lshift (num: Integer, numBytes : JsNumber) : Integer {
+
+        if(num.maxBitSize == numBytes)
+            return num; // Preserve C undefined behavior
+
         return this._applySingle(num, bin => this.engine.lshift(bin, asIntN(numBytes)));
     },
 
     rshift (num : Integer, numBytes : JsNumber) : Integer {
+        
+        if(num.maxBitSize == numBytes)
+            return num; // Preserve C undefined behavior
+
         return this._applySingle(num, bin => this.engine.rshift(bin, asIntN(numBytes)));
     },
 
     urshift (num : Integer, numBytes : JsNumber) : Integer {
+
+        if(num.maxBitSize == numBytes)
+            return num; // Preserve C undefined behavior
+            
         return this._applySingle(num, bin => this.engine.urshift(bin, asIntN(numBytes)));
     },
 

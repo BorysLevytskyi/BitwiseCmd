@@ -118,8 +118,26 @@ describe('calc.lshift', () => {
     });
 });
 
-describe("calc misc", () => {
+describe('preserves C compiler behvaior', () => {
+    it('lshift same size bytes', () => {
+        const int = Integer.int(-1);
+        const long = Integer.long(-1);
+        
+        expect(calc.lshift(int, 32).num()).toBe(int.num());
+        expect(calc.lshift(long, 32).num()).toBe(-4294967296);
+        expect(calc.lshift(long, 64).num()).toBe(long.num());
 
+        expect(calc.rshift(int, 32).num()).toBe(int.num());
+        expect(calc.rshift(long, 32).num()).toBe(-1);
+        expect(calc.rshift(long, 64).num()).toBe(long.num());
+
+        expect(calc.urshift(int, 32).num()).toBe(int.num());
+        expect(calc.urshift(long, 32).num()).toBe(4294967295);
+        expect(calc.urshift(long, 64).num()).toBe(long.num());
+    });
+});
+
+describe("calc misc", () => {
 
     it('promoteTo64Bit', () => {
         const n = asInteger(-1);
