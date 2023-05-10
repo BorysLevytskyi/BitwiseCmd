@@ -179,7 +179,3 @@ button:focus {outline:0;}
     opacity: 0.5;
 }
 
-.debug-indicators {
-    left: 1px;
-    opacity: 0.5;
-}
