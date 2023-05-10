@@ -1,11 +1,11 @@
 import log from 'loglevel';
 
-const APP_VERSION = 9;
+export const APP_VERSION = 9;
 
 export type PersistedAppData = {
     emphasizeBytes: boolean;
     uiTheme: string;
-    version: number;
+    version: number | null;
     debugMode: boolean | null;
     pageVisistsCount: number;
     donationClicked: boolean
