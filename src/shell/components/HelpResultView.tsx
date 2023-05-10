@@ -63,10 +63,10 @@ function HelpResultView() {
                     BitiwseCmd no longer uses the browser's JavaScript engine for the execution of bitwise operations. It has its own calculator implementation which brings supports bitwise operations on the following <i>signed</i> and <i>unsigned</i> data types:
                     </p>
                     <ul>
-                        <li><code>8-bit integer</code> - numbers entered with <code>b</code> or <code>ub</code> suffixes for signed and unsigned versions respectively (e.g. <CommandLink text='10b 10ub' />).</li>
-                        <li><code>64-bit integer</code> - numbers entered with <code>s</code> or <code>us</code> suffixes for signed and unsigned versions respectively (e.g. <CommandLink text='10s 10us' />).</li>
+                        <li><code>8-bit integer</code> - a.k.a Byte. Numbers entered with <code>b</code> or <code>ub</code> suffixes for signed and unsigned versions respectively (e.g. <CommandLink text='10b 10ub' />).</li>
+                        <li><code>16-bit integer</code> - a.k.a Short. Numbers entered with <code>s</code> or <code>us</code> suffixes for signed and unsigned versions respectively (e.g. <CommandLink text='10s 10us' />).</li>
                         <li><code>32-bit integer</code> - numbers entered without suffixes that fall in range of {INT32_MIN_VALUE} and {INT32_MAX_VALUE}. Use <code>u</code> suffix to denote an unsigned version of 32-bit integer. This is a default number type.</li>
-                        <li><code>64-bit integer</code> - numbers entered without suffixes and exceed the 32-bit range or entered with and  and <code>ul</code> suffixes for signed and unsigned versions respectively (e.g. <CommandLink text='10l 10ul' />).</li>
+                        <li><code>64-bit integer</code> - a.k.a Long. Numbers entered without suffixes and exceed the 32-bit range or entered with and  and <code>ul</code> suffixes for signed and unsigned versions respectively (e.g. <CommandLink text='10l 10ul' />).</li>
                     </ul>
                 </div>
                 <div className="section">

@@ -19,6 +19,8 @@ function WhatsnewResultView() {
                                      This includes shifting an integer by the number of bytes equal to its size (spoiler: you get the same number, this is undefined behavior in C. Don't believe me? Check this <a href="https://codeyarns.com/tech/2004-12-20-c-shift-operator-mayhem.html#gsc.tab=0">link</a>).</li>
                                 <li>A slightly improved UI</li>
                             </ul>
+                           <p>I'm sure there will be some bugs following such a big update. I will do my best to fix them as they are found.</p>
+                           <p>Many thanks to all people that submitted issues on GitHub. Your feedback is greatly appreciated. </p>
                         </p>
                     </div>
                     <div className='item'>

@@ -17,6 +17,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .header-cmd { color: #c5c5c5 }
 
 .mono { font-family: monospace; font-size: 1.3em }
+
 .expressionInput { 
     padding: 3px; 
     outline: none;
@@ -26,7 +27,7 @@ code { font-size: 1.2em; font-weight: bold; }
     padding-left: 15px;
     padding-bottom: 5px;
     width: 600px; 
-    background: ragba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0);
 }
 
 .hidden { display: none;}
@@ -73,7 +74,6 @@ code { font-size: 1.2em; font-weight: bold; }
 .light .one { color: black; }
 .light .zero { color: #888; }
 .light .indicator { color: #ddd; }
-.light .expressionInput { background: #ddd;}
 .light .on { color: #121212; }
 .light .prefix { color: #888}
 .light .other { color: #bbb }
@@ -90,7 +90,7 @@ code { font-size: 1.2em; font-weight: bold; }
 /* Dark */
 .dark { background: #121212; color: white;}
 .dark .expression { color: white;}
-.dark .expressionInput { color: white; background: #555; }
+.dark .expressionInput { color: white; }
 .dark a, .dark a:visited { color: white; }
 .dark .indicator { color: #555; }
 .dark .on { color: white; }
@@ -112,7 +112,7 @@ code { font-size: 1.2em; font-weight: bold; }
 .midnight .header-cmd { color: #85a0ad }
 .midnight { background: #2c3e50; color: white }
 .midnight .expression { color: white;}
-.midnight .expressionInput { background: #85a0ad; color: white;}
+.midnight .expressionInput { color: white;}
 .midnight a, .dark a:visited { color: white; }
 .midnight .indicator { color: #85a0ad; }
 .midnight .on { color: white; }

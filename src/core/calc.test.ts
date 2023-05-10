@@ -117,8 +117,7 @@ describe('calc.lshift', () => {
         expect(r.maxBitSize).toBe(64);
         expect(r.num()).toBe(-1);
 
-        const r2 = calc.or(Integer.unsigned(1123123, 32), new Integer(-1));
-        expect(r2.maxBitSize).toBe(64);
+        expect(() => calc.or(Integer.unsigned(1123123, 32), new Integer(-1))).toThrowError('This operation cannot be applied to signed and unsigned operands of the same size')
     });
 });
 
