@@ -48,8 +48,14 @@ function applyNotOperator(operand: ScalarValue) : ScalarValue {
 
 function applyOperator(op1 : ScalarValue, operator: string, op2 : ScalarValue) : ScalarValue {
     
-    if(!/<|>/.test(operator))
+    const isShift = /<|>/.test(operator);
+    if(!isShift)
+    {
+        if(op1.value.maxBitSize == op2.value.maxBitSize && op1.value.signed != op2.value.signed)
+            throw new Error("Operator `" + operator + "` cannot be applied to signed and unsigned operands of the same " + op2.value.maxBitSize + " -bit size");
+
         equalizeSize(op1, op2);
+    }
 
     const result = calc.operation(op1.value, operator, op2.value);
     return new ScalarValue(result, op2.base);

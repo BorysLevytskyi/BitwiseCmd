@@ -121,6 +121,9 @@ export default {
     },
 
     _applyTwo(op1: Integer, op2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {
+        
+        if(op1.maxBitSize == op2.maxBitSize && op1.signed != op2.signed)
+            throw new Error("Operator `" + operation + "` cannot be applied to signed and unsigned operands of the same size");
 
         const [num1, num2] = equalizeSize(op1, op2);
 

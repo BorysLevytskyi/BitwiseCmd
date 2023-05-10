@@ -1,8 +1,6 @@
 import calc from './calc';
 import { Integer, asInteger } from './Integer';
-import { INT32_MIN_VALUE } from './const';
-import { faL } from '@fortawesome/free-solid-svg-icons';
-import exp from 'constants';
+import { INT32_MIN_VALUE, INT64_MAX_VALUE, UINT64_MAX_VALUE } from './const';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
@@ -45,6 +43,11 @@ describe('calc.flipBit', () => {
         expect(calc.flipBit(-1, 0).num()).toBe(2147483647);
         expect(calc.flipBit(2147483647, 30).num()).toBe(2147483645);
     });
+
+    it('supports ulong', () => {
+        const ulong = calc.flipBit(new Integer(INT64_MAX_VALUE, 64, false), 0);
+        expect(ulong.toString()).toBe(UINT64_MAX_VALUE.toString());
+    })
 
 });
 

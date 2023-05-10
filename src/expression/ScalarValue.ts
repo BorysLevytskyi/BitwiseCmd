@@ -1,7 +1,7 @@
 import {numberParser} from './numberParser';
 import { ExpressionElement as ExpressionElement } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
-import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE } from '../core/const';
+import { INT32_MAX_VALUE, INT32_MIN_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE, UINT64_MAX_VALUE } from '../core/const';
 import { Integer, JsNumber, isInteger, asInteger } from '../core/Integer';
 
 var globalId : number = 1;
@@ -49,8 +49,12 @@ export default class ScalarValue implements ExpressionElement {
 
     static validateSupported(num : Integer) {
         
-        if((num.value < INT64_MIN_VALUE || num.value > INT64_MAX_VALUE)) {
-            throw new Error(`64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}. Given number was ${num}`);
+        if(num.signed && (num.value < INT64_MIN_VALUE || num.value > INT64_MAX_VALUE)) {
+            throw new Error(`Signed 64-bit numbers are supported in range from ${INT64_MIN_VALUE} to ${INT64_MAX_VALUE}. Given number was ${num}`);
+        }
+
+        if(!num.signed && (num.value > UINT64_MAX_VALUE)) {
+            throw new Error(`Unisgned 64-bit numbers larger than ${UINT64_MAX_VALUE} are not supported. Given number was ${num}`);
         }
     }
 }
