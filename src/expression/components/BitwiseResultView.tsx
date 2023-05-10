@@ -85,7 +85,7 @@ type ExpressionRowProps = {
 
 class ExpressionRow extends React.Component<ExpressionRowProps> {
     
-    infoShowed: boolean = false;
+    infoWasShown: boolean = false;
 
     constructor(props: ExpressionRowProps) {
         super(props);
@@ -170,39 +170,38 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getInfo(maxNumberOfBits:number) {
         
         const op = this.props.expressionItem.getUnderlyingOperand();
-        const isFullSize = op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits;
+        const allBitsDisplayed = op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits;
         const { allowSignChange } = this.props;
-        const isUnsigned = !op.value.signed;
         const hasLabel = op.label.length > 0;
 
-        if(isFullSize || hasLabel || isUnsigned || this.infoShowed)
+        if(!allBitsDisplayed && !hasLabel && !this.infoWasShown)
+            return null;
+
+        this.infoWasShown = true;
+
+        const children = [];
+        let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
+        let text = `${op.value.maxBitSize}-bit `;
+        const signedStr = op.value.signed ? 'signed' : 'unsigned';
+        const signedOther = op.value.signed ? 'usigned' : 'signed'; 
+        const signedTitle = `Click to change to ${signedOther} preserving the same bits`; 
+
+        if(op.label.length > 0)
         {
-            this.infoShowed = true;
-
-            let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
-            let text = `${op.value.maxBitSize}-bit `;
-        
-            if(op.label.length > 0)
-            {
-                text += " (converted)";
-                title += ". This number was converted to facilitate bitwise operation with an operand of a different type";
-            }
-
-            const children = [];
-            children.push(<span title={title} style={{cursor:"help"}}>{text.trim()}</span>);
-            
-            const signedStr = op.value.signed ? 'signed' : 'unsigned';
-            const signedOther = op.value.signed ? 'usigned' : 'signed'; 
-            const signedTitle = `Click to change to ${signedOther} preserving the same bits`; 
-
-            if(allowSignChange)
-                children.push(<button className='accent1' title={signedTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
-            else if(op.value.signed)
-                children.push(<span className='accent1'> {signedStr}</span>)
-
-            return <React.Fragment>{children}</React.Fragment>
+            text += " (converted)";
+            title += ". This number was converted to facilitate bitwise operation with an operand of a different type";
         }
 
-        return null;
+        children.push(<span title={title} style={{cursor:"help"}}>{text.trim()}</span>);
+                
+        if(allBitsDisplayed)
+        {
+            if(allowSignChange)
+                children.push(<button className='accent1' title={signedTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
+            else if(!op.value.signed)
+                children.push(<span className='accent1'> {signedStr}</span>)
+        }
+
+        return <React.Fragment>{children}</React.Fragment>
     }
 }

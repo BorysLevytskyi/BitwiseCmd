@@ -49,6 +49,7 @@ function applyNotOperator(operand: Operand) : Operand {
 function applyOperator(op1 : Operand, operator: string, op2 : Operand) : Operand {
     
     const isShift = /<|>/.test(operator);
+
     if(!isShift)
     {
         if(op1.value.maxBitSize == op2.value.maxBitSize && op1.value.signed != op2.value.signed)
@@ -57,7 +58,9 @@ function applyOperator(op1 : Operand, operator: string, op2 : Operand) : Operand
         equalizeSize(op1, op2);
     }
 
+    console.log(op1.value, operator, op2.value);
     const result = calc.operation(op1.value, operator, op2.value);
+    console.log('=', result);
     return new Operand(result, op2.base);
 }
 

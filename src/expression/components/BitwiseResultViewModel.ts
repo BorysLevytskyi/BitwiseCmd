@@ -155,6 +155,7 @@ export default class BitwiseResultViewModel {
     };
 
     static createModel(expr : Expression, emphasizeBytes: boolean) : BitwiseResultViewModel {
+
         if(expr instanceof ListOfNumbers) {
             return BitwiseResultViewModel.buildListOfNumbers(expr, { 
                 emphasizeBytes: emphasizeBytes, 
