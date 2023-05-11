@@ -75,6 +75,11 @@ a.hashLink { font-size: 1.1em;}
 
 button { border: none; text-decoration: underline;}
 
+.undo button { 
+    opacity: 0.4;
+    padding: 0;
+}
+
 /* Light */
 .light { background: #fafafa; }
 .light .header-cmd { color: #919191 }

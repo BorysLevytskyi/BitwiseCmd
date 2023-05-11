@@ -5,6 +5,9 @@ import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { Expression, ExpressionElement } from '../expression-interfaces';
 import { Operator, Operand, ListOfNumbers } from '../expression';
 import calc from '../../core/calc';
+import { Integer } from '../../core/Integer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
 
 type BitwiseResultViewProps = {
     expression: Expression;
@@ -93,6 +96,7 @@ type ExpressionElementRowProps = {
 class ExpressionElementTableRow extends React.Component<ExpressionElementRowProps> {
     
     infoWasShown: boolean = false;
+    originalValue: Integer | null = null;
 
     constructor(props: ExpressionElementRowProps) {
         super(props);
@@ -118,6 +122,9 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
             </td>
             <td className="other">{this.getAlternative()}</td>
             <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo(maxNumberOfBits) : null}</td>
+            <td className='undo' data-test-name='ignore'>
+                {this.originalValue != null ? <button title='Undo all changes' onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> : null}
+            </td>
         </tr>;
     }
 
@@ -151,6 +158,15 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
     }
 
+    undo() {
+        if(this.originalValue == null)
+            return;
+
+        this.props.expressionItem.getUnderlyingOperand().setValue(this.originalValue);
+        this.originalValue = null;
+        this.forceUpdate();
+    }
+
     flipBit(args: FlipBitEventArg) {
 
         const op = this.props.expressionItem.getUnderlyingOperand();
@@ -158,6 +174,9 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
 
         const maxBitSize = op.value.maxBitSize;
         const space = (totalLength - index - maxBitSize);
+        
+        this.originalValue = op.value;
+
         if(totalLength > op.value.maxBitSize && space > 0) {
             op.setValue(calc.addSpace(op.value, space));
         }
@@ -166,10 +185,13 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         const newValue = calc.flipBit(op.value, pad + index);
         op.setValue(newValue);
         this.props.onBitFlipped();
+
+
     }
 
     onChangeSign () {
         var op = this.props.expressionItem.getUnderlyingOperand();
+        this.originalValue = op.value;
         op.setValue(op.value.signed ? op.value.toUnsigned() : op.value.toSigned());
         this.forceUpdate();
     }
