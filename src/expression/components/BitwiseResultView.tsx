@@ -175,7 +175,8 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         const maxBitSize = op.value.maxBitSize;
         const space = (totalLength - index - maxBitSize);
         
-        this.originalValue = op.value;
+        if(this.originalValue == null)
+            this.originalValue = op.value;
 
         if(totalLength > op.value.maxBitSize && space > 0) {
             op.setValue(calc.addSpace(op.value, space));
@@ -191,7 +192,8 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
 
     onChangeSign () {
         var op = this.props.expressionItem.getUnderlyingOperand();
-        this.originalValue = op.value;
+        if(this.originalValue == null)
+            this.originalValue = op.value;
         op.setValue(op.value.signed ? op.value.toUnsigned() : op.value.toSigned());
         this.forceUpdate();
     }
