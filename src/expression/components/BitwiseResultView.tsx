@@ -26,8 +26,9 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
 
     render() {
 
-         let model : BitwiseResultViewModel | null = null
-         const isListOfNumbers = this.props.expression instanceof ListOfNumbers;
+        let model : BitwiseResultViewModel | null = null
+        const allowSignChange = this.props.expression instanceof ListOfNumbers;
+        
         
         try
         { 
@@ -38,7 +39,12 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
             return <div className='error'>Error: {text}</div>
         }
 
-        var rows = this.getRows(model!, isListOfNumbers);
+        const showInfoColumn : boolean = model.items
+            .map(i => willInfoColumnBeVisible(i.expressionElement, model!.maxNumberOfBits, allowSignChange))
+            .filter(p => p == true)
+            .length > 0;
+
+        var rows = this.getRows(model!, showInfoColumn, allowSignChange);
 
         return <table className="expression">
             <tbody>
@@ -47,31 +53,31 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
         </table>
     }
 
-    getRows(model: BitwiseResultViewModel, allowSignChange : boolean): JSX.Element[] {
+    getRows(model: BitwiseResultViewModel, showInfoColumn : boolean, allowSignChange : boolean): JSX.Element[] {
 
         this.maxSeenLengthNumberOfBits = Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
 
         return model.items.map((itm, i) =>
-            <ExpressionRow
+            <ExpressionElementTableRow
                 key={i}
                 sign={itm.sign}
                 css={itm.css}
                 bitSize={itm.maxBitSize}
                 allowFlipBits={itm.allowFlipBits}
                 allowSignChange={allowSignChange}
-                expressionItem={itm.expression}
+                expressionItem={itm.expressionElement}
                 emphasizeBytes={this.props.emphasizeBytes}
                 maxNumberOfBits={this.maxSeenLengthNumberOfBits}
+                showInfoColumn={showInfoColumn}
                 onBitFlipped={() => this.onBitFlipped()} />);
     }
 
     onBitFlipped() {
         this.forceUpdate();
-        //this.setState({d:new Date()});
     }
 }
 
-type ExpressionRowProps = {
+type ExpressionElementRowProps = {
     sign: string,
     css: string,
     bitSize: number,
@@ -80,14 +86,15 @@ type ExpressionRowProps = {
     allowFlipBits: boolean,
     allowSignChange: boolean,
     expressionItem: ExpressionElement,
-    onBitFlipped: any
+    onBitFlipped: any,
+    showInfoColumn: boolean
 }
 
-class ExpressionRow extends React.Component<ExpressionRowProps> {
+class ExpressionElementTableRow extends React.Component<ExpressionElementRowProps> {
     
     infoWasShown: boolean = false;
 
-    constructor(props: ExpressionRowProps) {
+    constructor(props: ExpressionElementRowProps) {
         super(props);
         this.state = { operand: null };
     }
@@ -110,8 +117,8 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
                     onFlipBit={args => this.flipBit(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info accent1" data-test-name='ignore'>{this.getInfo(maxNumberOfBits)}</td>
-        </tr>;;
+            <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo(maxNumberOfBits) : null}</td>
+        </tr>;
     }
 
     getLabel(): string {
@@ -170,12 +177,7 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
     getInfo(maxNumberOfBits:number) {
         
         const op = this.props.expressionItem.getUnderlyingOperand();
-        const allBitsDisplayed = op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits;
         const { allowSignChange } = this.props;
-        const hasLabel = op.label.length > 0;
-
-        if(!allBitsDisplayed && !hasLabel && !this.infoWasShown)
-            return null;
 
         this.infoWasShown = true;
 
@@ -194,14 +196,22 @@ class ExpressionRow extends React.Component<ExpressionRowProps> {
 
         children.push(<span title={title} style={{cursor:"help"}}>{text.trim()}</span>);
                 
-        if(allBitsDisplayed)
+        if(this.props.maxNumberOfBits >= op.value.maxBitSize)
         {
             if(allowSignChange)
                 children.push(<button className='accent1' title={signedTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
             else if(!op.value.signed)
                 children.push(<span className='accent1'> {signedStr}</span>)
         }
-
+        
         return <React.Fragment>{children}</React.Fragment>
     }
+}
+
+function willInfoColumnBeVisible(expr: ExpressionElement, maxNumberOfBits: number, allowSignChange : boolean) {
+        
+    const op = expr.getUnderlyingOperand();
+    const allBitsDisplayed = op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits;
+    const hasLabel = op.label.length > 0;
+    return allBitsDisplayed || hasLabel;
 }

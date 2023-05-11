@@ -3,7 +3,7 @@ import Operator from './Operator'
 import ListOfNumbers from './ListOfNumbers';
 import BitwiseOperation from './BitwiseOperation';
 import { Expression, ExpressionElement } from './expression-interfaces';
-import { numberParser, numberRegexString } from './numberParser';
+import { numberParser } from './numberParser';
 
 export { default as Operand } from './Operand';
 export { default as Operator } from './Operator';

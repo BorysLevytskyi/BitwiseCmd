@@ -11,7 +11,7 @@ type Config = {
 type ExpressionRowModel = {
     sign: string;
     css: string;
-    expression: ExpressionElement;
+    expressionElement: ExpressionElement;
     allowFlipBits: boolean;
     label: string;
     maxBitSize: number;
@@ -84,7 +84,7 @@ export default class BitwiseResultViewModel {
         this.items.push({ 
             sign:'', 
             css: '',
-            expression: expr,
+            expressionElement: expr,
             allowFlipBits: this.allowFlipBits,
             label: '',
             maxBitSize: expr.value.maxBitSize,
@@ -102,7 +102,7 @@ export default class BitwiseResultViewModel {
             sign: expr.operator, 
             css: '',
             label: this.getLabel(resultNumber),
-            expression: expr.operand,
+            expressionElement: expr.operand,
             allowFlipBits: this.allowFlipBits,
             maxBitSize: resultNumber.value.maxBitSize
         });
@@ -115,7 +115,7 @@ export default class BitwiseResultViewModel {
         this.items.push({
             sign: expr.operator + formatter.numberToString(child.value, child.base),
             css: 'expression-result',
-            expression: resultExpr,
+            expressionElement: resultExpr,
             allowFlipBits: false,
             label: '',
             maxBitSize: resultExpr.value.maxBitSize
@@ -128,7 +128,7 @@ export default class BitwiseResultViewModel {
         this.items.push({ 
             sign:'=', 
             css: 'expression-result',
-            expression: expr, 
+            expressionElement: expr, 
             allowFlipBits: false,
             label: '',
             maxBitSize: expr.value.maxBitSize
