@@ -45,7 +45,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         return bits;
     }
 
-    createBits(bitChars:string[], bitSize?: number) : JSX.Element[] {
+    createBits(bitChars:string[]) : JSX.Element[] {
         const allowFlipBits = this.props.allowFlipBits || false;
         const css = allowFlipBits ? ' flipable' : ''
 
@@ -55,6 +55,9 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
 
             var className = c == '1' ? `one${css}` : `zero${css}`;
             var tooltip = '';
+
+            if(i < (this.props.signBitIndex || 0))
+                className += ' extra-bit';
 
             if(i === this.props.signBitIndex) {
                 className += ' accent1';

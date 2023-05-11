@@ -71,6 +71,8 @@ a.hashLink { font-size: 1.1em;}
 
 .cur { color: lightgray; }
 
+.extra-bit { opacity: 0.4;}
+
 button { border: none; text-decoration: underline;}
 
 /* Light */
