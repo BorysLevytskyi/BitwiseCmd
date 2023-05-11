@@ -22,7 +22,9 @@ export default {
     addSpace(number: Integer, requiredSpace: number) : Integer {
         const bin = this.toBinaryString(number);
         const totalSpaceRequired = number.maxBitSize + requiredSpace;
-        return new Integer(BigInt("0b" + bin), nextPowOfTwo(totalSpaceRequired));
+
+        const n = BigInt("0b" + bin);
+        return new Integer(number.value >= 0 ? n : -n, nextPowOfTwo(totalSpaceRequired));
     },
 
     operation (op1: Integer, operator: string, op2 : Integer) : Integer {

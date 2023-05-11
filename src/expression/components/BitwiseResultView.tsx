@@ -1,6 +1,6 @@
 import React from 'react';
 import formatter from '../../core/formatter';
-import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
+import BinaryStringView, { FlipBitEventArg as BitClickedEventArg } from '../../core/components/BinaryString';
 import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { Expression, ExpressionElement } from '../expression-interfaces';
 import { Operator, Operand, ListOfNumbers } from '../expression';
@@ -72,7 +72,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 emphasizeBytes={this.props.emphasizeBytes}
                 maxNumberOfBits={this.maxSeenLengthNumberOfBits}
                 showInfoColumn={showInfoColumn}
-                onBitFlipped={() => this.onBitFlipped()} />);
+                onBitClicked={() => this.onBitFlipped()} />);
     }
 
     onBitFlipped() {
@@ -89,7 +89,7 @@ type ExpressionElementRowProps = {
     allowFlipBits: boolean,
     allowSignChange: boolean,
     expressionItem: ExpressionElement,
-    onBitFlipped: any,
+    onBitClicked: any,
     showInfoColumn: boolean
 }
 
@@ -106,24 +106,27 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
         const scalar =  this.props.expressionItem.evaluate();
-        const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, '0');
+        const padChar = scalar.value.value >= 0 ? '0' : '1';
+        const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, padChar);
         const signBitIndex = scalar.value.signed && bin.length >= scalar.value.maxBitSize ? bin.length - scalar.value.maxBitSize : -1;
 
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
-            <td className="label">{this.getLabel()}</td>
+            <td className="label">
+                <span>{this.getLabel()}</span>
+            </td>
             <td className="bin">
                 <BinaryStringView
                     emphasizeBytes={emphasizeBytes}
                     binaryString={bin}
                     allowFlipBits={allowFlipBits}
                     signBitIndex={signBitIndex}
-                    onFlipBit={args => this.flipBit(args)} />
+                    onBitClicked={args => this.onBitClicked(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo(maxNumberOfBits) : null}</td>
+            <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo() : null}</td>
             <td className='undo' data-test-name='ignore'>
-                {this.originalValue != null ? <button title='Undo all changes' onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> : null}
+                {this.originalValue != null && !this.originalValue.isTheSame(scalar.value) ? <button title='Undo all changes' onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> : null}
             </td>
         </tr>;
     }
@@ -167,7 +170,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         this.forceUpdate();
     }
 
-    flipBit(args: FlipBitEventArg) {
+    onBitClicked(args: BitClickedEventArg) {
 
         const op = this.props.expressionItem.getUnderlyingOperand();
         const { bitIndex: index, binaryStringLength: totalLength } = args;
@@ -179,15 +182,17 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
             this.originalValue = op.value;
 
         if(totalLength > op.value.maxBitSize && space > 0) {
-            op.setValue(calc.addSpace(op.value, space));
+            op.setValue(calc.addSpace(op.value, space));   
         }
 
-        const pad = op.value.maxBitSize - totalLength;
-        const newValue = calc.flipBit(op.value, pad + index);
-        op.setValue(newValue);
-        this.props.onBitFlipped();
+        if(!args.isExtraBit)
+        {
+            const pad = op.value.maxBitSize - totalLength;
+            const newValue = calc.flipBit(op.value, pad + index);
+            op.setValue(newValue);
+        }
 
-
+        this.props.onBitClicked();
     }
 
     onChangeSign () {
@@ -198,7 +203,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         this.forceUpdate();
     }
 
-    getInfo(maxNumberOfBits:number) {
+    getInfo() {
         
         const op = this.props.expressionItem.getUnderlyingOperand();
         const { allowSignChange } = this.props;
