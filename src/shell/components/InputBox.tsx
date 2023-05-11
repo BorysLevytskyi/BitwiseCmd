@@ -31,7 +31,7 @@ export default class InputBox extends React.Component<IInputBoxProps> {
                       onKeyUp={e => this.onKeyUp(e)}
                       onKeyDown={e => this.onKeyDown(e)}
                       className="expressionInput mono"
-                      placeholder="type an expression like '1>>2' or 'help' "
+                      placeholder="type an expression like '23|45', '4 6 8', or 'help'"
                       autoComplete="off"/>
             </React.Fragment>
     }
