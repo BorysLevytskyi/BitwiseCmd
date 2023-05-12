@@ -8,7 +8,8 @@ const DEFAULT_DATA : PersistedAppData = {
     version: APP_VERSION,
     debugMode: false,
     pageVisistsCount: 0,
-    donationClicked: false
+    donationClicked: false,
+    annotateTypes: false
 }
 
 export default {

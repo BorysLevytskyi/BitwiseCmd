@@ -12,7 +12,7 @@ const expressionAppModule = {
             canHandle: (input:string) => parser.canParse(input),
             handle: function(c: CommandInput) {
                 var expr = parser.parse(c.input);
-                appState.addCommandResult(c.input, () => <BitwiseResultView expression={expr!} emphasizeBytes={appState.emphasizeBytes} />);
+                appState.addCommandResult(c.input, () => <BitwiseResultView expression={expr!} emphasizeBytes={appState.emphasizeBytes} annotateTypes={appState.annotateTypes} />);
             }
         });
     }

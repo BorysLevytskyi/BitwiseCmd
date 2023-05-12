@@ -8,7 +8,8 @@ export type PersistedAppData = {
     version: number | null;
     debugMode: boolean | null;
     pageVisistsCount: number;
-    donationClicked: boolean
+    donationClicked: boolean;
+    annotateTypes: boolean
 }
 
 export type CommandResultView = {
@@ -26,27 +27,28 @@ export default class AppState {
     version: number = APP_VERSION;
     emphasizeBytes: boolean;
     debugMode: boolean = false;
-    uiTheme: string;
-    changeHandlers: AppStateChangeHandler[];
-    commandResults: CommandResultView[];
+    uiTheme: string = 'midnight';
+    changeHandlers: AppStateChangeHandler[] = [];
+    commandResults: CommandResultView[] = [];
     persistedVersion: number;
     wasOldVersion: boolean;
     env: string;
     pageVisitsCount: number;
     donationClicked: boolean;
+    showSettings: boolean = false;
+    annotateTypes: boolean = false;
 
     constructor(persistData : PersistedAppData, env: string) {
-        this.commandResults = [];
-        this.changeHandlers = [];
-        this.uiTheme = persistData.uiTheme || 'midnight';
+
         this.env = env;
 
-        this.emphasizeBytes = !!persistData.emphasizeBytes;
+    this.emphasizeBytes = !!persistData.emphasizeBytes;
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
         this.debugMode = persistData.debugMode === true;
         this.pageVisitsCount = persistData.pageVisistsCount || 0;
         this.donationClicked = persistData.donationClicked;
+        this.annotateTypes = !!persistData.annotateTypes;
     }
 
     addCommandResult(input : string, view : ViewFactory) {
@@ -92,6 +94,16 @@ export default class AppState {
         this.triggerChanged();
     }
 
+    toggleShowSettings() {
+        this.showSettings = !this.showSettings;
+        this.triggerChanged();
+    }
+
+    toggleAnnotateTypes() {
+        this.annotateTypes = !this.annotateTypes;
+        this.triggerChanged();
+    }
+
     registerVisit() {
         this.pageVisitsCount++;
         this.triggerChanged();
@@ -112,7 +124,8 @@ export default class AppState {
             version: this.version,
             debugMode: this.debugMode,
             pageVisistsCount: this.pageVisitsCount,
-            donationClicked: this.donationClicked
+            donationClicked: this.donationClicked,
+            annotateTypes: this.annotateTypes
         }
     }
 };
