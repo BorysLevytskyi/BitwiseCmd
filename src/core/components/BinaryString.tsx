@@ -16,7 +16,7 @@ export type FlipBitEventArg = {
     binaryStringLength: number;
     $event: any;
     newBinaryString: any;
-    isExtraBit: boolean
+    isTypeExtend: boolean
 };
 
 export default class BinaryStringView extends React.Component<BinaryStringViewProps> {
@@ -38,7 +38,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
             binaryStringLength: this.props.binaryString.length,
             newBinaryString: newBinaryString, 
             $event: e,
-            isExtraBit: isExtra
+            isTypeExtend: isExtra
         });
     }
 
