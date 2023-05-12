@@ -1,0 +1,28 @@
+.settings-container {
+    padding: 20px;
+    display: inline-block;
+}
+
+.settings-container h3 {
+    
+}
+
+.settings-container button {
+    text-decoration:  none;
+}
+
+.settings-container button svg {
+    margin-right: 3px;
+}
+
+.settings-container .description {
+    font-size: 0.85em;
+    padding: 0;
+    margin: 0;
+    padding-left: 30px;
+    opacity: 0.8;
+}
+
+.settings-container .setting {
+    margin-bottom: 10px;
+}

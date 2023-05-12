@@ -75,6 +75,10 @@ a.hashLink { font-size: 1.1em;}
 
 button { border: none; text-decoration: underline;}
 
+.settings-button {
+    margin-left: -20px;
+}
+
 .undo button { 
     opacity: 0.4;
     padding: 0;

@@ -34,6 +34,8 @@ export default class AppState {
     env: string;
     pageVisitsCount: number;
     donationClicked: boolean;
+    showSettings: boolean = false;
+    annotateTypes: boolean = false;
 
     constructor(persistData : PersistedAppData, env: string) {
         this.commandResults = [];
@@ -89,6 +91,16 @@ export default class AppState {
 
     toggleDebugMode() {
         this.debugMode = !this.debugMode;
+        this.triggerChanged();
+    }
+
+    toggleShowSettins() {
+        this.showSettings = !this.showSettings;
+        this.triggerChanged();
+    }
+
+    toggleAnnotateTypes() {
+        this.annotateTypes = !this.annotateTypes;
         this.triggerChanged();
     }
 

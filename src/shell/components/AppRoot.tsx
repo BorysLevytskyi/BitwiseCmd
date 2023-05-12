@@ -8,6 +8,9 @@ import DebugIndicators from './DebugIndicators';
 import hash from '../../core/hash';
 import TopLinks from './TopLinks';
 import Toggle from './Toggle';
+import SettingsPane from './SettingsPane';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 
 type AppRootProps = {
@@ -64,11 +67,11 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                     <div className="expressionInput-container">
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
 
-                        <span className="configPnl">
-                            <Toggle elementId="emphasizeBytes" text="[em]" isOn={this.state.emphasizeBytes} onClick={() => this.toggleEmphasizeBytes()} title="Toggle Emphasize Bytes"  />                            
+                        <span className="settings-button">
+                           <button><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettins()} /></button>                            
                         </span>
                     </div>
-
+                    {this.props.appState.showSettings ? <SettingsPane appState={this.props.appState} /> : null}
                     <div id="output">
                     {this.getResultViews()}
                     </div>
