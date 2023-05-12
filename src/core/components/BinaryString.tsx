@@ -9,6 +9,7 @@ export type BinaryStringViewProps = {
     className?: string;
     disableHighlight?: boolean,
     signBitIndex?: number,
+    integerBitSize?: number
 };
 
 export type FlipBitEventArg = {
@@ -57,13 +58,17 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         const css = allowFlipBits ? ' flipable' : ''
 
         const disableHighlight = this.props.disableHighlight || false;
+        const firstBitIndex = this.props.integerBitSize != null 
+            ?  bitChars.length - this.props.integerBitSize
+            : -1;
 
         return bitChars.map((c, i) => {
 
             var className = c == '1' ? `one${css}` : `zero${css}`;
             var tooltip = '';
 
-            const isExtra = i < (this.props.signBitIndex || 0);
+            
+            const isExtra = i < firstBitIndex;
             if (isExtra)
                 className += ' extra-bit';
 

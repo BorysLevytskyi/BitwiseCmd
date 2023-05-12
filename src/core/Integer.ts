@@ -14,7 +14,7 @@ export class Integer {
     readonly signed: boolean;
 
     constructor(value: IntegerInput, maxBitSize?: number, signed? : boolean) {
-        
+
         this.value = typeof value == "bigint" ? value : BigInt(value);
         this.signed = signed == null ? true : signed == true;
         this.maxBitSize = maxBitSize != null ? maxBitSize : detectSize(this.value, this.signed);

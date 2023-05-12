@@ -52,11 +52,17 @@ function parseInteger(input : string, numberPart: string, suffix: string)  : Int
     let num = BigInt(numberPart);
     const signed = !suffix.startsWith('u');
 
-    if(!signed && isNegative)
-        throw new Error(input + " unsigned integer cannot be negative");
+    const bitSize = getSizeBySuffix(suffix, num, signed);
+    const newValue = isNegative  ? -num : num;
 
-    const size = getSizeBySuffix(suffix, num, signed);
-    return new Integer(isNegative  ? -num : num, size, signed);
+    if(!signed && isNegative)
+    {
+        const signed = new Integer(newValue, bitSize, true);
+        const bin = "0b" + signed.toString(2);
+        return  Integer.unsigned(BigInt(bin), bitSize);
+    }
+
+    return new Integer(newValue, bitSize, signed);
 }
 
 function getSizeBySuffix(suffix: string, value : bigint, signed: boolean) {

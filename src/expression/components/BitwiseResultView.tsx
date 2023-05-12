@@ -126,6 +126,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
                     binaryString={bin}
                     allowFlipBits={allowFlipBits}
                     signBitIndex={signBitIndex}
+                    integerBitSize={this.scalar.value.maxBitSize}
                     onBitClicked={args => this.onBitClicked(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>

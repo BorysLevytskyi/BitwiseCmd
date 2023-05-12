@@ -1,6 +1,7 @@
 import exp from 'constants';
 import { asIntN } from '../core/utils';
 import {numberParser, ParsedNumber} from './numberParser';
+import { UINT16_MAX_VALUE, UINT32_MAX_VALUE, UINT64_MAX_VALUE, UINT8_MAX_VALUE } from '../core/const';
 
 describe("parser", () => {
 
@@ -124,10 +125,6 @@ describe("parser", () => {
         //expect(v2).toEqual(v);
     });
 
-    it('cannot parse negative usigned', () => {
-       expect(() => numberParser.parse('-1u')).toThrowError("-1u unsigned integer cannot be negative");
-    });
-
     it('parses usigned single', () => {
         var v =  numberParser.parse('1us')?.value
         expect(v?.maxBitSize).toBe(16);
@@ -163,5 +160,24 @@ describe("parser", () => {
 
         //var v2 =  numberParser.parse('1i16')?.value
         //expect(v2?.num()).toEqual(v?.num());
+    });
+
+    it('allows negative unsigned for the sake of cimplicity', () => {
+        
+        const ubyte = numberParser.parse("-1ub").value;
+        expect(ubyte.num()).toBe(UINT8_MAX_VALUE);
+        expect(ubyte.maxBitSize).toBe(8);
+
+        const ushort = numberParser.parse("-1us").value;
+        expect(ushort.num()).toBe(UINT16_MAX_VALUE);
+        expect(ushort.maxBitSize).toBe(16);
+
+        const uint = numberParser.parse("-1u").value;
+        expect(uint.num()).toBe(UINT32_MAX_VALUE);
+        expect(uint.maxBitSize).toBe(32);
+
+        const ulong = numberParser.parse("-1ul").value;
+        expect(ulong.value).toBe(UINT64_MAX_VALUE);
+        expect(ulong.maxBitSize).toBe(64);
     });
 });
