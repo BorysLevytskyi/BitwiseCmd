@@ -105,7 +105,7 @@ describe("parser", () => {
         expect(v?.num()).toBe(1);
     });
 
-    it('fits usigned int32 max value into 32-bit data type', () => {
+    it('fits unsigned int32 max value into 32-bit data type', () => {
         const n1 = numberParser.parse("4294967295u");
         const n2 = numberParser.parse("4294967296u");
 
@@ -125,28 +125,28 @@ describe("parser", () => {
         //expect(v2).toEqual(v);
     });
 
-    it('parses usigned single', () => {
+    it('parses unsigned single', () => {
         var v =  numberParser.parse('1us')?.value
         expect(v?.maxBitSize).toBe(16);
         expect(v?.num()).toBe(1);
         expect(v?.signed).toBe(false);
     });
 
-    it('parses usigned int32', () => {
+    it('parses unsigned int32', () => {
         var v =  numberParser.parse('1u')?.value
         expect(v?.maxBitSize).toBe(32);
         expect(v?.num()).toBe(1);
         expect(v?.signed).toBe(false);
     });
 
-    it('parses usigned byte', () => {
+    it('parses unsigned byte', () => {
         var v =  numberParser.parse('1ub')?.value
         expect(v?.maxBitSize).toBe(8);
         expect(v?.num()).toBe(1);
         expect(v?.signed).toBe(false);
     });
 
-    it('parses usigned long', () => {
+    it('parses unsigned long', () => {
         var v =  numberParser.parse('1ul')?.value
         expect(v?.maxBitSize).toBe(64);
         expect(v?.num()).toBe(1);

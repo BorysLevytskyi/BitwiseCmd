@@ -219,7 +219,7 @@ getLabel(): string {
         let text = `${op.value.maxBitSize}-bit `;
 
         const signedStr = op.value.signed ? 'signed' : 'unsigned';
-        const signedOther = op.value.signed ? 'usigned' : 'signed'; 
+        const signedOther = op.value.signed ? 'unsigned' : 'signed'; 
         const signedButtonTitle = `Click to change to ${signedOther} preserving the same bits`; 
 
         if(op.label.length > 0)

@@ -20,7 +20,7 @@ function SettingsPane(props : SettingsPaneProps) {
                 </button>
                 <p className='description'>
                     {appState.emphasizeBytes 
-                        ? "Each binary string is extended to contain at least 8 bits. White space is be added between each group of 8 bits which signify a bytes so it is easier to tell them apart." 
+                        ? "Each binary string is extended to contain at least 8 bits. A white space is added between each group of 8 bits so it easy to tell bytes apart." 
                         : "Binary strings are not modified."} 
                 </p>
             </div>
@@ -30,8 +30,8 @@ function SettingsPane(props : SettingsPaneProps) {
                 </button>
                 <p className='description'>
                     {appState.annotateTypes 
-                        ? "BitwiseCmd shows the integer size as well as indication whether the data type is signed or not. BitwiseCmd also allows to flip between signed/usigned versions of certain values preserving their binary representation." 
-                        : "Infomration about size of integers used in calculation is hidden."} 
+                        ? "BitwiseCmd shows the integer size and indicates whether the data type is signed or unsigned." 
+                        : "Information about the size of integers used in the calculation is hidden."} 
                 </p>
             </div>
            
