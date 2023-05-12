@@ -2,6 +2,7 @@ import { Operand, ListOfNumbers, BitwiseOperation, Operator } from '../expressio
 import { ExpressionElement, Expression } from '../expression-interfaces';
 import calc from '../../core/calc';
 import formatter from '../../core/formatter';
+import exp from 'constants';
 
 type Config = {
     emphasizeBytes: boolean;
@@ -155,6 +156,8 @@ export default class BitwiseResultViewModel {
     };
 
     static createModel(expr : Expression, emphasizeBytes: boolean) : BitwiseResultViewModel {
+
+        console.log(expr);
 
         if(expr instanceof ListOfNumbers) {
             return BitwiseResultViewModel.buildListOfNumbers(expr, { 

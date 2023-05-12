@@ -47,6 +47,10 @@ export class Integer {
         return new Integer(value, 8);
     }
 
+    isTheSame  (other : Integer) : boolean {
+        return this.value == other.value && this.signed == other.signed && this.maxBitSize == other.maxBitSize;
+    }
+
     toUnsigned() {
         return this.signed 
             ? new Integer(BigInt("0b" + this.toString(2)), this.maxBitSize, false)

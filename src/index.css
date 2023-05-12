@@ -30,6 +30,8 @@ code { font-size: 1.2em; font-weight: bold; }
     background: rgba(0, 0, 0, 0);
 }
 
+.label { width: 5em; overflow: visible;}
+.label span {position: global;}
 .hidden { display: none;}
 
 .result { margin: 10px 10px 30px; }
@@ -71,7 +73,7 @@ a.hashLink { font-size: 1.1em;}
 
 .cur { color: lightgray; }
 
-.extra-bit { opacity: 0.4;}
+.extra-bit { opacity: 0.2;}
 
 button { border: none; text-decoration: underline;}
 

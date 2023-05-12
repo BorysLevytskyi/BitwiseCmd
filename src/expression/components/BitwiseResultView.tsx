@@ -1,6 +1,6 @@
 import React from 'react';
 import formatter from '../../core/formatter';
-import BinaryStringView, { FlipBitEventArg } from '../../core/components/BinaryString';
+import BinaryStringView, { FlipBitEventArg as BitClickedEventArg } from '../../core/components/BinaryString';
 import BitwiseResultViewModel from './BitwiseResultViewModel';
 import { Expression, ExpressionElement } from '../expression-interfaces';
 import { Operator, Operand, ListOfNumbers } from '../expression';
@@ -8,6 +8,7 @@ import calc from '../../core/calc';
 import { Integer } from '../../core/Integer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import loglevel from 'loglevel';
 
 type BitwiseResultViewProps = {
     expression: Expression;
@@ -72,10 +73,11 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 emphasizeBytes={this.props.emphasizeBytes}
                 maxNumberOfBits={this.maxSeenLengthNumberOfBits}
                 showInfoColumn={showInfoColumn}
-                onBitFlipped={() => this.onBitFlipped()} />);
+                onValueChanged={() => this.onValueChanged()} />);
     }
 
-    onBitFlipped() {
+    onValueChanged() {
+        loglevel.debug("onValueChanged()");
         this.forceUpdate();
     }
 }
@@ -89,43 +91,56 @@ type ExpressionElementRowProps = {
     allowFlipBits: boolean,
     allowSignChange: boolean,
     expressionItem: ExpressionElement,
-    onBitFlipped: any,
+    onValueChanged: any,
     showInfoColumn: boolean
 }
 
 class ExpressionElementTableRow extends React.Component<ExpressionElementRowProps> {
     
     infoWasShown: boolean = false;
-    originalValue: Integer | null = null;
+    originalValue: Integer;
+    scalar: Operand;
 
     constructor(props: ExpressionElementRowProps) {
         super(props);
         this.state = { operand: null };
+        this.scalar = this.props.expressionItem.getUnderlyingOperand();
+        this.originalValue = this.scalar.value;
     }
 
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
         const scalar =  this.props.expressionItem.evaluate();
-        const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, '0');
+        const padChar = scalar.value.value >= 0 ? '0' : '1';
+        const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, padChar);
         const signBitIndex = scalar.value.signed && bin.length >= scalar.value.maxBitSize ? bin.length - scalar.value.maxBitSize : -1;
 
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
-            <td className="label">{this.getLabel()}</td>
+            <td className="label">
+                <span>{this.getLabel()}</span>
+            </td>
             <td className="bin">
                 <BinaryStringView
                     emphasizeBytes={emphasizeBytes}
                     binaryString={bin}
                     allowFlipBits={allowFlipBits}
                     signBitIndex={signBitIndex}
-                    onFlipBit={args => this.flipBit(args)} />
+                    onBitClicked={args => this.onBitClicked(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo(maxNumberOfBits) : null}</td>
+            <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo() : null}</td>
             <td className='undo' data-test-name='ignore'>
-                {this.originalValue != null ? <button title='Undo all changes' onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> : null}
+                {this.getUndoButton()}
             </td>
         </tr>;
+    }
+
+    getUndoButton(): React.ReactNode {
+
+        return !this.originalValue.isTheSame(this.scalar.value) 
+            ? <button title='Undo all changes' className='undo' data-control="undo" onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> 
+            : null;
     }
 
     getLabel(): string {
@@ -159,46 +174,43 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
     }
 
     undo() {
-        if(this.originalValue == null)
-            return;
-
-        this.props.expressionItem.getUnderlyingOperand().setValue(this.originalValue);
-        this.originalValue = null;
-        this.forceUpdate();
+        this.changeValue(this.originalValue);
+        this.props.onValueChanged();
     }
 
-    flipBit(args: FlipBitEventArg) {
+    onBitClicked(args: BitClickedEventArg) {
 
-        const op = this.props.expressionItem.getUnderlyingOperand();
         const { bitIndex: index, binaryStringLength: totalLength } = args;
 
-        const maxBitSize = op.value.maxBitSize;
-        const space = (totalLength - index - maxBitSize);
-        
-        if(this.originalValue == null)
-            this.originalValue = op.value;
+        const maxBitSize = this.scalar.value.maxBitSize;
 
-        if(totalLength > op.value.maxBitSize && space > 0) {
-            op.setValue(calc.addSpace(op.value, space));
+        if(!args.isTypeExtend)
+        {
+            const pad = this.scalar.value.maxBitSize - totalLength;
+            const newValue = calc.flipBit(this.scalar.value, pad + index);
+            this.changeValue(newValue);
+            return;
         }
-
-        const pad = op.value.maxBitSize - totalLength;
-        const newValue = calc.flipBit(op.value, pad + index);
-        op.setValue(newValue);
-        this.props.onBitFlipped();
-
-
+        
+        const space = (totalLength - index - maxBitSize);
+        this.changeValue(calc.addSpace(this.scalar.value, space));
     }
 
     onChangeSign () {
+        
         var op = this.props.expressionItem.getUnderlyingOperand();
-        if(this.originalValue == null)
-            this.originalValue = op.value;
-        op.setValue(op.value.signed ? op.value.toUnsigned() : op.value.toSigned());
+        
+        this.changeValue(op.value.signed ? op.value.toUnsigned() : op.value.toSigned());
+    
         this.forceUpdate();
     }
 
-    getInfo(maxNumberOfBits:number) {
+    changeValue(newValue: Integer) {
+        this.scalar.setValue(newValue);
+        this.props.onValueChanged();
+    } 
+
+    getInfo() {
         
         const op = this.props.expressionItem.getUnderlyingOperand();
         const { allowSignChange } = this.props;
