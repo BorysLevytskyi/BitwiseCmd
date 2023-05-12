@@ -21,8 +21,8 @@ function SettingsPane(props : SettingsPaneProps) {
                     <FontAwesomeIcon icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
                 </button>
                 <p className='description'>
-                    {appState.emphasizeBytes ? 
-                        "Each binary string is extended to contain at least 8 bits. White space is be added between each group of 8 bits which signify a bytes so it is easier to tell them apart." 
+                    {appState.emphasizeBytes 
+                        ? "Each binary string is extended to contain at least 8 bits. White space is be added between each group of 8 bits which signify a bytes so it is easier to tell them apart." 
                         : "Binary strings are not modified."} 
                 </p>
             </div>
