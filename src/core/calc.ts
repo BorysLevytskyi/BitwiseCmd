@@ -1,5 +1,5 @@
 import { Integer, JsNumber,  asInteger } from "./Integer";
-import { asIntN } from "./utils";
+import { asIntN, logLines } from "./utils";
 
 export default {
     abs (num : Integer) : Integer {
@@ -20,11 +20,8 @@ export default {
     },
 
     addSpace(number: Integer, requiredSpace: number) : Integer {
-        const bin = this.toBinaryString(number);
         const totalSpaceRequired = number.maxBitSize + requiredSpace;
-
-        const n = BigInt("0b" + bin);
-        return new Integer(number.value >= 0 ? n : -n, nextPowOfTwo(totalSpaceRequired));
+        return new Integer(number.value, nextPowOfTwo(totalSpaceRequired));
     },
 
     operation (op1: Integer, operator: string, op2 : Integer) : Integer {

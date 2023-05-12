@@ -62,6 +62,13 @@ describe('calc.addSpace', () => {
         expect(calc.addSpace(n16, 1).maxBitSize).toBe(32);
         expect(calc.addSpace(n16, 32).maxBitSize).toBe(64);
     });
+
+    it('preserves the sign when extending number', () => {
+        const byte = Integer.byte(-1);
+        const actual = calc.addSpace(byte, 1);
+        expect(actual.maxBitSize).toBe(16);
+        expect(actual.num()).toBe(-1);
+    })
 });
 
 describe('calc.numberOfBitsDisplayed', () => {
