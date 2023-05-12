@@ -13,6 +13,7 @@ import loglevel from 'loglevel';
 type BitwiseResultViewProps = {
     expression: Expression;
     emphasizeBytes: boolean;
+    annotateTypes: boolean
 }
 
 type BitwiseResultViewState = {
@@ -43,12 +44,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
             return <div className='error'>Error: {text}</div>
         }
 
-        const showInfoColumn : boolean = model.items
-            .map(i => willInfoColumnBeVisible(i.expressionElement, model!.maxNumberOfBits, allowSignChange))
-            .filter(p => p == true)
-            .length > 0;
-
-        var rows = this.getRows(model!, showInfoColumn, allowSignChange);
+        var rows = this.getRows(model!, this.props.annotateTypes, allowSignChange);
 
         return <table className="expression">
             <tbody>
@@ -92,7 +88,7 @@ type ExpressionElementRowProps = {
     allowSignChange: boolean,
     expressionItem: ExpressionElement,
     onValueChanged: any,
-    showInfoColumn: boolean
+    showInfoColumn: boolean,
 }
 
 class ExpressionElementTableRow extends React.Component<ExpressionElementRowProps> {
@@ -221,25 +217,23 @@ getLabel(): string {
         const children = [];
         let title = `BitwiseCmd treats this number as ${op.value.maxBitSize}-bit integer`;
         let text = `${op.value.maxBitSize}-bit `;
+
         const signedStr = op.value.signed ? 'signed' : 'unsigned';
         const signedOther = op.value.signed ? 'usigned' : 'signed'; 
-        const signedTitle = `Click to change to ${signedOther} preserving the same bits`; 
+        const signedButtonTitle = `Click to change to ${signedOther} preserving the same bits`; 
 
         if(op.label.length > 0)
         {
             text += " (converted)";
-            title += ". This number was converted to facilitate bitwise operation with an operand of a different type";
+            title += ". This number was converted to facilitate bitwise operation with an operand of a different type.";
         }
 
         children.push(<span title={title} style={{cursor:"help"}}>{text.trim()}</span>);
                 
-        if(this.props.maxNumberOfBits >= op.value.maxBitSize)
-        {
-            if(allowSignChange)
-                children.push(<button className='accent1' title={signedTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
-            else if(!op.value.signed)
-                children.push(<span className='accent1'> {signedStr}</span>)
-        }
+        if(allowSignChange)
+            children.push(<button className='accent1' title={signedButtonTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
+        else if(!op.value.signed)
+            children.push(<span className='accent1'>{signedStr}</span>)
         
         return <React.Fragment>{children}</React.Fragment>
     }

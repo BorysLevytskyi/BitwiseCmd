@@ -47,10 +47,6 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
         return results;
     }
 
-    toggleEmphasizeBytes() {
-        this.props.appState.toggleEmphasizeBytes();
-    }
-
     render() {
 
         const enableNewUi = this.props.appState.env != 'prod' || true;
@@ -68,7 +64,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
 
                         <span className="settings-button">
-                           <button><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettins()} /></button>                            
+                           <button><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
                         </span>
                     </div>
                     {this.props.appState.showSettings ? <SettingsPane appState={this.props.appState} /> : null}

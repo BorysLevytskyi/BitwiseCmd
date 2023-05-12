@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SettingsPane.css';
-import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { type } from 'os';
 import AppState from '../AppState';
@@ -21,7 +21,9 @@ function SettingsPane(props : SettingsPaneProps) {
                     <FontAwesomeIcon icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
                 </button>
                 <p className='description'>
-                    {appState.emphasizeBytes ? "This setting is on" : "This settings is of"} 
+                    {appState.emphasizeBytes ? 
+                        "Each binary string is extended to contain at least 8 bits. White space is be added between each group of 8 bits which signify a bytes so it is easier to tell them apart." 
+                        : "Binary strings are not modified."} 
                 </p>
             </div>
             <div className='setting'>
@@ -29,9 +31,12 @@ function SettingsPane(props : SettingsPaneProps) {
                     <FontAwesomeIcon icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
                 </button>
                 <p className='description'>
-                    {appState.annotateTypes ? "Bit size is shown next to each number" : "Do not show what data types BitwiseCmd uses to represent every nubmer in the results section"} 
+                    {appState.annotateTypes 
+                        ? "BitwiseCmd shows the integer size as well as indication whether the data type is signed or not. BitwiseCmd also allows to flip between signed/usigned versions of certain values preserving their binary representation." 
+                        : "Infomration about size of integers used in calculation is hidden."} 
                 </p>
             </div>
+           
         </div>
     </div>
 }
