@@ -44,7 +44,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
             return <div className='error'>Error: {text}</div>
         }
 
-        var rows = this.getRows(model!, this.props.annotateTypes, allowSignChange);
+        var rows = this.getRows(model!, allowSignChange);
 
         return <table className="expression">
             <tbody>
@@ -53,7 +53,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
         </table>
     }
 
-    getRows(model: BitwiseResultViewModel, showInfoColumn : boolean, allowSignChange : boolean): JSX.Element[] {
+    getRows(model: BitwiseResultViewModel, allowSignChange : boolean): JSX.Element[] {
 
         this.maxSeenLengthNumberOfBits = Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
 
@@ -68,7 +68,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 expressionItem={itm.expressionElement}
                 emphasizeBytes={this.props.emphasizeBytes}
                 maxNumberOfBits={this.maxSeenLengthNumberOfBits}
-                showInfoColumn={showInfoColumn}
+                showInfoColumn={this.props.annotateTypes}
                 onValueChanged={() => this.onValueChanged()} />);
     }
 
@@ -232,8 +232,8 @@ getLabel(): string {
                 
         if(allowSignChange)
             children.push(<button className='accent1' title={signedButtonTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
-        else if(!op.value.signed)
-            children.push(<span className='accent1'>{signedStr}</span>)
+        else
+            children.push(<span className='accent1'>&nbsp;{signedStr}</span>)
         
         return <React.Fragment>{children}</React.Fragment>
     }

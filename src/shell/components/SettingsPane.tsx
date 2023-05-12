@@ -1,8 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SettingsPane.css';
-import { faClose, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
-import { type } from 'os';
+import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import AppState from '../AppState';
 
 type SettingsPaneProps = {
