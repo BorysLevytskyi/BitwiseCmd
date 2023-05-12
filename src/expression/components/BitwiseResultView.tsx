@@ -139,7 +139,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
     getUndoButton(): React.ReactNode {
 
         return !this.originalValue.isTheSame(this.scalar.value) 
-            ? <button title='Undo all changes' onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> 
+            ? <button title='Undo all changes' className='undo' data-control="undo" onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> 
             : null;
     }
 
