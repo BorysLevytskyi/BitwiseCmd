@@ -51,7 +51,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
 
         const enableNewUi = this.props.appState.env != 'prod' || true;
         const newUi = enableNewUi ? 'new-ui' : '';
-
+        const settingsCss = "settings-button" + (this.props.appState.showSettings ? '' : ' soft');
         return <div className={`app-root ${this.state.uiTheme} ${newUi}`}>
                     <DebugIndicators appState={this.props.appState} />
                     <div className="header">
@@ -62,10 +62,9 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
 
                     <div className="expressionInput-container">
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
+                        
+                        <button className={settingsCss}><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
 
-                        <span className="settings-button">
-                           <button><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
-                        </span>
                     </div>
                     {this.props.appState.showSettings ? <SettingsPane appState={this.props.appState} /> : null}
                     <div id="output">
