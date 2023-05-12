@@ -30,8 +30,6 @@ code { font-size: 1.2em; font-weight: bold; }
     background: rgba(0, 0, 0, 0);
 }
 
-.label { width: 5em; overflow: visible;}
-.label span {position: global;}
 .hidden { display: none;}
 
 .result { margin: 10px 10px 30px; }

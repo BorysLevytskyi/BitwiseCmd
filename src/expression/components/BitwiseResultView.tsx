@@ -118,7 +118,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
             <td className="label">
-                <span>{this.getLabel()}</span>
+                {this.getLabel()}
             </td>
             <td className="bin">
                 <BinaryStringView
@@ -143,7 +143,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
             : null;
     }
 
-    getLabel(): string {
+getLabel(): string {
 
         // For expressions like |~2 
         // TODO: find a better way...
