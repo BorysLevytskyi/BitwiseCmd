@@ -8,6 +8,7 @@ import calc from '../../core/calc';
 import { Integer } from '../../core/Integer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import loglevel from 'loglevel';
 
 type BitwiseResultViewProps = {
     expression: Expression;
@@ -76,6 +77,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
     }
 
     onValueChanged() {
+        loglevel.debug("onValueChanged()");
         this.forceUpdate();
     }
 }
@@ -129,12 +131,12 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
             <td className="other">{this.getAlternative()}</td>
             <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo() : null}</td>
             <td className='undo' data-test-name='ignore'>
-                {this.getUndoChildren()}
+                {this.getUndoButton()}
             </td>
         </tr>;
     }
 
-    getUndoChildren(): React.ReactNode {
+    getUndoButton(): React.ReactNode {
 
         return !this.originalValue.isTheSame(this.scalar.value) 
             ? <button title='Undo all changes' onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> 
@@ -172,9 +174,8 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
     }
 
     undo() {
-        this.replaceValue(this.originalValue);
-        this.forceUpdate();
-
+        this.changeValue(this.originalValue);
+        this.props.onValueChanged();
     }
 
     onBitClicked(args: BitClickedEventArg) {
@@ -187,29 +188,26 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         {
             const pad = this.scalar.value.maxBitSize - totalLength;
             const newValue = calc.flipBit(this.scalar.value, pad + index);
-            this.replaceValue(newValue);
+            this.changeValue(newValue);
+            return;
         }
-        else 
-        {
-            const space = (totalLength - index - maxBitSize);
-            this.replaceValue(calc.addSpace(this.scalar.value, space));
-        }
-
-        this.forceUpdate();
-        this.props.onValueChanged();
+        
+        const space = (totalLength - index - maxBitSize);
+        this.changeValue(calc.addSpace(this.scalar.value, space));
     }
 
     onChangeSign () {
         
         var op = this.props.expressionItem.getUnderlyingOperand();
         
-        this.replaceValue(op.value.signed ? op.value.toUnsigned() : op.value.toSigned());
+        this.changeValue(op.value.signed ? op.value.toUnsigned() : op.value.toSigned());
     
         this.forceUpdate();
     }
 
-    replaceValue(newValue: Integer) {
+    changeValue(newValue: Integer) {
         this.scalar.setValue(newValue);
+        this.props.onValueChanged();
     } 
 
     getInfo() {
