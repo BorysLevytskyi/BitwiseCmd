@@ -26,8 +26,27 @@
     ga('create', 'UA-61569164-1', 'auto');
     ga('send', 'pageview');
 
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    gtag('js', new Date())
+    gtag('config', 'G-H9EVNH8GNZ');
+
     window.bitwiseCmdAnalyticsHandler = function(evt) {
         ga('send', Object.assign({hitType: 'event'}, evt));
+        gtag('event', evt.eventAction, evt);
         return true;
     }
 })();
+
+
+/*
+<!-- Google tag (gtag.js) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-H9EVNH8GNZ');
+</script>
+*/
