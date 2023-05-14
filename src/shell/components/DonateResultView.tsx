@@ -27,7 +27,7 @@ function DonateResultView() {
         </div>
         
         <div className='section'>
-            <h3>BitCoin</h3>
+            <h3>Bitcoin</h3>
             <span>BTC Address:</span> <strong>{addr}</strong> 
                 <button onClick={() => copy()} title="Copy this address into the Cliboard" className={`button copy-button ${copyCss}`}>
                    Copy

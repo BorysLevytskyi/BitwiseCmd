@@ -27,7 +27,7 @@ code { font-size: 1.2em; font-weight: bold; }
 }
 
 .button { padding: 5px;}
-.button svg { margin: 0 5px; }
+.button svg { margin: 0; margin-right: 5px; }
 .button-large { padding: 10px; }
 
 .button:hover { background: rgba(255, 255, 255, 0.2);}
