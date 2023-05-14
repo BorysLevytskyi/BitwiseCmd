@@ -18,7 +18,7 @@ code { font-size: 1.2em; font-weight: bold; }
 
 .mono { font-family: monospace; font-size: 1.3em }
 
-.button-large {
+.button {
     padding: 10px;
     border: solid 1px white;
     border-radius: 5px;
@@ -26,7 +26,11 @@ code { font-size: 1.2em; font-weight: bold; }
     display: inline-block;
 }
 
-.button-large:hover { background: rgba(255, 255, 255, 0.2);}
+.button { padding: 5px;}
+.button svg { margin: 0 5px; }
+.button-large { padding: 10px; }
+
+.button:hover { background: rgba(255, 255, 255, 0.2);}
 
 .expressionInput { 
     padding: 3px; 
@@ -114,8 +118,8 @@ button { border: none; text-decoration: underline;}
 .light button.btn:disabled { color: #888; background-color: inherit; }
 .light .accent1 { color:rgb(56, 161, 103)}
 .light .expressionInput { border-bottom: solid 1px rgba(0, 0, 0, 0.5);}
-.light .button-large { border: solid 1px gray; }
-.light .button-large:hover { background: rgba(0, 0, 0, 0.2);}
+.light .button { border: solid 1px gray; }
+.light .button:hover { background: rgba(0, 0, 0, 0.2);}
 
 /* Dark */
 .dark { background: #121212; color: white;}

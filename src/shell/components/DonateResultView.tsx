@@ -19,7 +19,7 @@ function DonateResultView() {
         <div className='section'>
         <h3>PayPal</h3>
             <p>
-                <a className='paypal-button button-large' href='https://www.paypal.com/donate/?hosted_button_id=3GREJYC4T5AJ8' target='_blank'>
+                <a className='paypal-button button button-large' href='https://www.paypal.com/donate/?hosted_button_id=3GREJYC4T5AJ8' target='_blank'>
                     <FontAwesomeIcon icon={faPaypal} size='lg' />
                     Donate via PayPal
                 </a>
@@ -28,7 +28,10 @@ function DonateResultView() {
         
         <div className='section'>
             <h3>BitCoin</h3>
-            <span>BTC Address:</span> <strong>{addr}</strong> <button onClick={() => copy()} title="Copy this address into the Cliboard" className={`copy-button ${copyCss}`}><FontAwesomeIcon icon={faClipboard} size="lg" />Copy</button> <span className={`soft ${copiedCss}`}>copied</span>
+            <span>BTC Address:</span> <strong>{addr}</strong> 
+                <button onClick={() => copy()} title="Copy this address into the Cliboard" className={`button copy-button ${copyCss}`}>
+                   Copy
+                </button> <span className={`soft ${copiedCss}`}>copied</span>
         </div>
     </div>
 
