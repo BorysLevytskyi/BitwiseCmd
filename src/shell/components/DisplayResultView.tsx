@@ -38,7 +38,7 @@ const DisplayResultView: React.FunctionComponent<DisplayResultProps> = (props) =
                         <div className="input mono">
                                 <span className="cur">&gt;</span>
                                 <span className="input-string">{props.input}</span>
-                                    <a className="hashLink" title="Copy link link for this expression" onClick={async (e) => {return await copyLink(e)}} href={link}>
+                                    <a className="hashLink" title="Copy link for this expression" onClick={async (e) => {return await copyLink(e)}} href={link}>
                                         <FontAwesomeIcon className="icon" icon={copied ? faCheck : faLink} size="xs" />
                                     </a>
                                     <span className='soft hashLink'>{copiedText}</span>

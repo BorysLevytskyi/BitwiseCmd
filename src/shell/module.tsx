@@ -45,6 +45,8 @@ const shellModule = {
             else {
                 sendAnalyticsEvent({eventCategory: "Donation", eventAction: "DonateButtonClickedAgain"})
             }
+
+            appState.addCommandResult(c.input, () => <DonateResultView />)
         });
 
         cmd.command("track", (c:CommandInput) => {

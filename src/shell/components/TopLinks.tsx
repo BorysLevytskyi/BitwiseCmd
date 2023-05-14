@@ -9,9 +9,9 @@ function TopLinks() {
 
     return <ul className="top-links">                
                 <li>
-                    <a href='https://www.paypal.com/donate/?hosted_button_id=3GREJYC4T5AJ8' onClick={onDonate} target="_blank">
+                    <button onClick={onDonate}>
                         <FontAwesomeIcon className='icon' icon={faDonate} size="lg" /><span className='link-text'>donate</span>
-                    </a>
+                    </button>
                 </li>
                 <li>
                     <a href="https://github.com/BorisLevitskiy/BitwiseCmd"><FontAwesomeIcon className="icon" icon={faGithub} size="lg" /><span className="link-text">github</span></a>

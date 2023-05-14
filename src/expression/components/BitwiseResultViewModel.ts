@@ -157,8 +157,6 @@ export default class BitwiseResultViewModel {
 
     static createModel(expr : Expression, emphasizeBytes: boolean) : BitwiseResultViewModel {
 
-        console.log(expr);
-
         if(expr instanceof ListOfNumbers) {
             return BitwiseResultViewModel.buildListOfNumbers(expr, { 
                 emphasizeBytes: emphasizeBytes, 
