@@ -10,7 +10,7 @@ export type StartupAppData = {
 }
 
 const STARTUP_COMMAND_KEY = 'StartupCommand';
-const DEFAULT_COMMANDS = ['help', '127.0.0.1 192.168.0.1/8', '1|2&123', '4 0b1000000 0x1f0'];
+const DEFAULT_COMMANDS = ['help', '192.168.0.1/8', '1|2&123', '4 0b1000000 0x1f0'];
 
 function bootstrapAppData() : StartupAppData {
     const env = window.location.host === "bitwisecmd.com" ? 'prod' : 'stage';
