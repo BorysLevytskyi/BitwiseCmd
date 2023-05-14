@@ -20,12 +20,13 @@ const DisplayResultView: React.FunctionComponent<DisplayResultProps> = (props) =
         const appState = props.appState;
         const link = window.location.origin + window.location.pathname + '#' + props.inputHash;
         const [copied, setCopied] = useState(false);
+        const copiedText = copied ? 'copied' : '';
 
         async function copyLink(e: any) {
             try {
                 await navigator.clipboard.writeText(link);
                 setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
+                setTimeout(() => setCopied(false), 1000);
                 return false;
               } catch (err) {
                 loglevel.debug(err);
@@ -40,6 +41,7 @@ const DisplayResultView: React.FunctionComponent<DisplayResultProps> = (props) =
                                     <a className="hashLink" title="Copy link link for this expression" onClick={async (e) => {return await copyLink(e)}} href={link}>
                                         <FontAwesomeIcon className="icon" icon={copied ? faCheck : faLink} size="xs" />
                                     </a>
+                                    <span className='soft hashLink'>{copiedText}</span>
                                     <button className="hashLink" title="Remove this result" onClick={() => appState.removeResult(props.resultIndex)}>
                                         <FontAwesomeIcon className="icon" icon={faTrashAlt} size="xs" />
                                     </button>

@@ -37,10 +37,11 @@ code { font-size: 1.2em; font-weight: bold; }
 .result .content { padding-left: 10px}
 .result .cur { margin-right: 5px; }
 
-.input-string { margin-right: 5px;}
-.hashLink { text-decoration: none; margin-left: 5px; visibility: hidden; margin-right: 0; padding: 0; text-decoration: none; }
+.input-string { margin-right: 10px;}
+.hashLink { text-decoration: none; margin-left: 8px; visibility: hidden; margin-right: 0; padding: 0; text-decoration: none; }
 a.hashLink { font-size: 1.1em;}
-.hashLink:hover { text-decoration: underline; margin-left: 5px; background: none; }
+.hashLink .icon { margin: 0;}
+.hashLink:hover { text-decoration: underline; background: none; }
 .result:hover .hashLink { visibility: visible }
 
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
