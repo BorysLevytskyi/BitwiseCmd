@@ -40,7 +40,7 @@ function SettingsPane(props : SettingsPaneProps) {
                 </button>
                 <p className='description'>
                     {appState.annotateTypes 
-                        ? "Binary are displayed as they are stored in memory. Integer size is shown." 
+                        ? "Integers are displayed as they are stored in memory. Bit size is shown." 
                         : "Information about the size of integers is hidden."} 
                 </p>
             </div>
