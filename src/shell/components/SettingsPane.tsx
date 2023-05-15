@@ -16,7 +16,7 @@ function SettingsPane(props : SettingsPaneProps) {
             <h3>Settings</h3>
             <div className='setting'>
                 <button onClick={() => appState.toggleEmphasizeBytes()}>
-                    <FontAwesomeIcon icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
+                    <FontAwesomeIcon size='lg' icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
                 </button>
                 <p className='description'>
                     {appState.emphasizeBytes 
@@ -26,7 +26,7 @@ function SettingsPane(props : SettingsPaneProps) {
             </div>
             <div className='setting'>
                 <button onClick={() => appState.toggleAnnotateTypes()}>
-                    <FontAwesomeIcon icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
+                    <FontAwesomeIcon size='lg' icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
                 </button>
                 <p className='description'>
                     {appState.annotateTypes 
