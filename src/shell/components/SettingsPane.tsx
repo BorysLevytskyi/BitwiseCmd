@@ -20,8 +20,8 @@ function SettingsPane(props : SettingsPaneProps) {
                 </button>
                 <p className='description'>
                     {appState.emphasizeBytes 
-                        ? "Each binary string is extended to contain at least 8 bits. A white space is added between each group of 8 bits so it easy to tell bytes apart." 
-                        : "Binary strings are not modified."} 
+                        ? "Binary strings are padded with extra bits to have a length that is multiple of 8." 
+                        : "Binary strings are not padded with extra bits."} 
                 </p>
             </div>
             <div className='setting'>
@@ -30,7 +30,7 @@ function SettingsPane(props : SettingsPaneProps) {
                 </button>
                 <p className='description'>
                     {appState.dimExtraBits 
-                        ? "Extra bits, that were used as padding when displaying multiple numbers, are now dimmed in contrast to the real value bits." 
+                        ? "Extra bits used for padding are now dimmed." 
                         : "No bits are dimmed."} 
                 </p>
             </div>
@@ -40,8 +40,8 @@ function SettingsPane(props : SettingsPaneProps) {
                 </button>
                 <p className='description'>
                     {appState.annotateTypes 
-                        ? "BitwiseCmd shows the integer size and indicates whether the data type is signed or unsigned." 
-                        : "Information about the size of integers used in the calculation is hidden."} 
+                        ? "Binary are displayed as they are stored in memory. Integer size is shown." 
+                        : "Information about the size of integers is hidden."} 
                 </p>
             </div>
         </div>
