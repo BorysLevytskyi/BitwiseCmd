@@ -20,6 +20,10 @@ export default {
     },
 
     addSpace(number: Integer, requiredSpace: number) : Integer {
+
+        if(requiredSpace < 0)
+            throw new Error("Required space cannot be negative");
+
         const totalSpaceRequired = number.maxBitSize + requiredSpace;
         return new Integer(number.value, nextPowOfTwo(totalSpaceRequired));
     },
@@ -45,10 +49,10 @@ export default {
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
 
         const r = num.value < 0
-            ? this.engine.applyTwosComplement(bin.padStart(bitSize, '0'))
+            ? this.engine.applyTwosComplement(bin)
             : bin;
 
-        return r;
+        return bin.length != bitSize ? r.substring(r.length-bin.length) : r;
     },
 
     lshift (num: Integer, numBytes : JsNumber) : Integer {
@@ -105,7 +109,7 @@ export default {
 
     _applySingle(num: Integer, operation: (bin:string) => string) : Integer {
 
-        let bin = this.toBinaryString(num).padStart(num.maxBitSize, '0');
+        let bin = this.toBinaryString(num).padStart(num.maxBitSize, num.value < 0 ? '1' : '0');
 
         bin = operation(bin);
 
@@ -127,8 +131,8 @@ export default {
 
         const [num1, num2] = equalizeSize(op1, op2);
 
-        let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, '0');
-        let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, '0');
+        let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, num1.value < 0  ? '1' : '0');
+        let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, num2.value < 0  ? '1' : '0');
 
         let resultBin = operation(bin1, bin2);
 
@@ -225,7 +229,9 @@ export default {
                 flipped.unshift(bin.charAt(i) == "1" ? "0" : "1");
             }
         
-            return flipped.join('') + bin.substring(lastIndex) ;
+            const result =  flipped.join('') + bin.substring(lastIndex);
+            //logLines(bin + " " + bin.length, result + " " + result.length);
+            return result;
         },
     }
 };

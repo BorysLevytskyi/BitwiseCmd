@@ -7,6 +7,7 @@ import exp from 'constants';
 type Config = {
     emphasizeBytes: boolean;
     allowFlipBits: boolean;
+    annotateDataTypes: boolean;
 }
 
 type ExpressionRowModel = {
@@ -24,9 +25,11 @@ export default class BitwiseResultViewModel {
     items: ExpressionRowModel[];
     maxNumberOfBits: number;
     allowFlipBits: boolean;
+    annotateDataTypes: boolean;
 
-    constructor({ emphasizeBytes = false, allowFlipBits = false} : Config) {
+    constructor({ emphasizeBytes = false, allowFlipBits = false, annotateDataTypes = false} : Config) {
         this.emphasizeBytes = emphasizeBytes;
+        this.annotateDataTypes = annotateDataTypes;
         this.items = [];
         this.maxNumberOfBits = 0;
         this.allowFlipBits = allowFlipBits === true;
@@ -80,7 +83,7 @@ export default class BitwiseResultViewModel {
     };
 
     addScalarRow(expr: Operand) {
-        const bits = calc.numberOfBitsDisplayed(expr.value);
+        const bits = this.calcMaxNumberOfBits(expr);
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         this.items.push({ 
             sign:'', 
@@ -95,7 +98,7 @@ export default class BitwiseResultViewModel {
     addOperatorRow(expr: Operator) {
         
         const resultNumber = expr.isNotExpression ? expr.evaluate() : expr.getUnderlyingOperand();
-        const bits = calc.numberOfBitsDisplayed(resultNumber.value);
+        const bits = this.calcMaxNumberOfBits(resultNumber);
         
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         
@@ -110,7 +113,7 @@ export default class BitwiseResultViewModel {
     };
  
     addShiftExpressionResultRow(expr : Operator, resultExpr : Operand) {
-        const bits = calc.numberOfBitsDisplayed(resultExpr.value);
+        const bits = this.calcMaxNumberOfBits(resultExpr);
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
         const child = expr.operand.getUnderlyingOperand();
         this.items.push({
@@ -124,8 +127,10 @@ export default class BitwiseResultViewModel {
     };
 
     addExpressionResultRow(expr : Operand) {
-        const bits = calc.numberOfBitsDisplayed(expr.value);
+        
+        const bits = this.calcMaxNumberOfBits(expr);
         this.maxNumberOfBits = Math.max(bits, this.maxNumberOfBits);
+
         this.items.push({ 
             sign:'=', 
             css: 'expression-result',
@@ -135,6 +140,10 @@ export default class BitwiseResultViewModel {
             maxBitSize: expr.value.maxBitSize
         });
     };
+
+    calcMaxNumberOfBits (op: Operand) {
+       return this.annotateDataTypes ? op.value.maxBitSize : calc.numberOfBitsDisplayed(op.value);
+    }
 
     getLabel (op: Operand) : string {
 
@@ -155,19 +164,21 @@ export default class BitwiseResultViewModel {
         return bits;
     };
 
-    static createModel(expr : Expression, emphasizeBytes: boolean) : BitwiseResultViewModel {
+    static createModel(expr : Expression, emphasizeBytes: boolean, annotateDataTypes: boolean) : BitwiseResultViewModel {
 
         if(expr instanceof ListOfNumbers) {
             return BitwiseResultViewModel.buildListOfNumbers(expr, { 
                 emphasizeBytes: emphasizeBytes, 
-                allowFlipBits: true 
+                allowFlipBits: true,
+                annotateDataTypes: annotateDataTypes
             });
         }
 
         if(expr instanceof BitwiseOperation) {
             return BitwiseResultViewModel.buildBitwiseOperation(expr, { 
                 emphasizeBytes: emphasizeBytes,
-                allowFlipBits: true 
+                allowFlipBits: true,
+                annotateDataTypes: annotateDataTypes
             });
         }
 

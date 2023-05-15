@@ -7,7 +7,6 @@ import log from 'loglevel';
 import DebugIndicators from './DebugIndicators';
 import hash from '../../core/hash';
 import TopLinks from './TopLinks';
-import Toggle from './Toggle';
 import SettingsPane from './SettingsPane';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
@@ -63,7 +62,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                     <div className="expressionInput-container">
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
                         
-                        <button className={settingsCss}><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
+                        <button className={settingsCss} title='Toggle Settings'><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
 
                     </div>
                     {this.props.appState.showSettings ? <SettingsPane appState={this.props.appState} /> : null}

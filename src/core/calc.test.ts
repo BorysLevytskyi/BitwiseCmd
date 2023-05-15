@@ -74,13 +74,19 @@ describe('calc.addSpace', () => {
 describe('calc.numberOfBitsDisplayed', () => {
     it('calculates number of bits', () => {
         expect(calc.numberOfBitsDisplayed(1)).toBe(1);
-        expect(calc.numberOfBitsDisplayed(BigInt(-1))).toBe(32);
+        expect(calc.numberOfBitsDisplayed(BigInt(-1))).toBe(1);
         expect(calc.numberOfBitsDisplayed(2)).toBe(2);
         expect(calc.numberOfBitsDisplayed(3)).toBe(2);
         expect(calc.numberOfBitsDisplayed(68719476735)).toBe(36);
-        expect(calc.numberOfBitsDisplayed(INT32_MIN_VALUE-1)).toBe(64);
+        expect(calc.numberOfBitsDisplayed(INT32_MIN_VALUE-1)).toBe(32);
     });
 });
+
+describe('calc.xor', () => {
+    it('positive and negative nubmer', () => {
+        expect(calc.xor(Integer.int(-1), Integer.int(10)).num()).toBe(-11);
+    });
+})
 
 describe('calc.lshift', () => {
 
@@ -167,10 +173,12 @@ describe("calc misc", () => {
 
     it('promoteTo64Bit', () => {
         const n = asInteger(-1);
-        expect(calc.toBinaryString(calc.promoteTo64Bit(n))).toBe("11111111111111111111111111111111");
+        expect(calc.toBinaryString(calc.promoteTo64Bit(n))).toBe("1");
     });
 
     it('binaryRepresentation', () => {
+        
+        expect(calc.toBinaryString(Integer.int(-2147483647))).toBe("0000000000000000000000000000001");       
         expect(calc.toBinaryString(asInteger(2147483647))).toBe("1111111111111111111111111111111");
     });
 

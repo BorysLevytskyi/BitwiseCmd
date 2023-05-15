@@ -74,7 +74,15 @@ a.hashLink { font-size: 1.1em;}
 
 .hex .prefix { display: inline; }
 
-.indicator { padding: 0px 5px; background: transparent; border: none; cursor: pointer; vertical-align: middle; margin-left: -3em; color:rgba(0, 0, 0, 0.25) }
+.indicator { padding: 0px 5px; background: transparent; border: none; cursor: pointer; vertical-align: middle; color:rgba(0, 0, 0, 0.25) }
+
+
+.tooltip-holder { position: relative; display: inline}
+.tooltip-holder .tooltip {display: none; font-size: 0.9em; position: absolute; margin-left: 10px; width: 300px; padding: 10px; border-radius: 5px;}
+.tooltip-holder .tooltip p { margin-bottom: 0;}
+.tooltip-holder .tooltip .tooltip-header { font-weight: bold; margin-bottom: 5px;}
+.tooltip:hover { display: inline;}
+.tooltip-holder:hover .tooltip { display: inline; }
 
 .error { color: maroon; }
 
@@ -86,9 +94,10 @@ a.hashLink { font-size: 1.1em;}
 
 .cur { color: lightgray; }
 
-.extra-bit { opacity: 0.3;}
+.dim-extra-bits .extra-bit { opacity: 0.3;}
 
-button { border: none; text-decoration: underline;}
+button { border: none; }
+button.link-button {text-decoration: underline;}
 
 .settings-button {
     margin-left: -20px;
@@ -97,10 +106,15 @@ button { border: none; text-decoration: underline;}
 .undo button { 
     opacity: 0.4;
     padding: 0;
+    margin-right: 5px;
 }
+
+.solid-border { border: solid 1px rgba(255, 255, 255, 0.8);}
+
 
 /* Light */
 .light { background: #fafafa; }
+.light .solid-background {background: #fafafa;}
 .light .header-cmd { color: #919191 }
 .light a, .light a:visited, .light button { color: #222; }
 .light .one { color: black; }
@@ -120,9 +134,12 @@ button { border: none; text-decoration: underline;}
 .light .expressionInput { border-bottom: solid 1px rgba(0, 0, 0, 0.5);}
 .light .button { border: solid 1px gray; }
 .light .button:hover { background: rgba(0, 0, 0, 0.2);}
+.light .solid-border { border: solid 1px gray;}
+.light .donate-result-view .paypal-button { border: solid 1px gray; }
 
 /* Dark */
 .dark { background: #121212; color: white;}
+.dark .solid-background {background: #121212;}
 .dark .expression { color: white;}
 .dark .expressionInput { color: white; }
 .dark a, .dark a:visited, .dark button { color: white; }
@@ -144,6 +161,7 @@ button { border: none; text-decoration: underline;}
     Midnight Theme
 */
 .midnight { background: #2c3e50; color: white }
+.midnight .solid-background {background: #2c3e50;}
 .midnight .header-cmd { color: #7ea3b5 !important }
 .midnight .expression { color: white;}
 .midnight .expressionInput { color: white;}

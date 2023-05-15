@@ -3,7 +3,7 @@ import { Integer, JsNumber, asInteger } from "./Integer";
 export type NumberBase = 'dec' | 'hex' | 'bin';
 
 const formatter = {
-    numberToString: function(num: Integer | JsNumber, base: NumberBase | number) : string {
+    numberToString: function(num: Integer | JsNumber, base: NumberBase | number, padLength?: number) : string {
      
         num = asInteger(num);
         base = typeof base == "string" ? getBase(base) : base;
@@ -12,8 +12,14 @@ const formatter = {
             case 16:
                 var hexVal = calc.abs(num).value.toString(16);
                 return num.value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
-            case 2:          
-                return calc.toBinaryString(num);
+            case 2:    
+                const bin = calc.toBinaryString(num);
+                
+                if(padLength == null) 
+                    return bin;
+                
+                const padChar = num.value >= 0 ? '0' : '1';
+                return bin.padStart(padLength, padChar);
             case 10:
                 return num.value.toString(10);
             default:
@@ -35,6 +41,9 @@ const formatter = {
     },
     bin(number: Integer | JsNumber) {
         return this.numberToString(number, 'bin');
+    },
+    fullBin(number: Integer) {
+        return this.numberToString(number, 'bin', number.maxBitSize);
     },
     emBin(number: Integer | JsNumber) {
         return this.padLeft(this.bin(number), 8, '0');

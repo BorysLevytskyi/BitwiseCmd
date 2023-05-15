@@ -9,7 +9,7 @@ function TopLinks() {
 
     return <ul className="top-links">                
                 <li>
-                    <button onClick={onDonate}>
+                    <button onClick={onDonate} className='link-button'>
                         <FontAwesomeIcon className='icon' icon={faDonate} size="lg" /><span className='link-text'>donate</span>
                     </button>
                 </li>

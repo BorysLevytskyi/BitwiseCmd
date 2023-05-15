@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SettingsPane.css';
-import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import AppState from '../AppState';
 
 type SettingsPaneProps = {
@@ -12,29 +12,38 @@ function SettingsPane(props : SettingsPaneProps) {
     const {appState} = props;    
 
     return <div id="settings" className='settings-container'>
-        <div className="inner">
+        <div className="inner solid-border">
             <h3>Settings</h3>
             <div className='setting'>
                 <button onClick={() => appState.toggleEmphasizeBytes()}>
-                    <FontAwesomeIcon icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
+                    <FontAwesomeIcon size='xl' icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
                 </button>
                 <p className='description'>
                     {appState.emphasizeBytes 
-                        ? "Each binary string is extended to contain at least 8 bits. A white space is added between each group of 8 bits so it easy to tell bytes apart." 
-                        : "Binary strings are not modified."} 
+                        ? "Binary strings are padded with extra bits to have a length that is multiple of 8." 
+                        : "Binary strings are not padded with extra bits."} 
+                </p>
+            </div>
+            <div className='setting'>
+                <button onClick={() => appState.toggleDimExtrBits()}>
+                    <FontAwesomeIcon size='xl' icon={appState.dimExtraBits ? faToggleOn : faToggleOff} /> Dim Extra Bits
+                </button>
+                <p className='description'>
+                    {appState.dimExtraBits 
+                        ? "Extra bits used for padding are now dimmed." 
+                        : "No bits are dimmed."} 
                 </p>
             </div>
             <div className='setting'>
                 <button onClick={() => appState.toggleAnnotateTypes()}>
-                    <FontAwesomeIcon icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
+                    <FontAwesomeIcon size='xl' icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
                 </button>
                 <p className='description'>
                     {appState.annotateTypes 
-                        ? "BitwiseCmd shows the integer size and indicates whether the data type is signed or unsigned." 
-                        : "Information about the size of integers used in the calculation is hidden."} 
+                        ? "Integers are displayed as they are stored in memory. Bit size is shown." 
+                        : "Information about the size of integers is hidden."} 
                 </p>
             </div>
-           
         </div>
     </div>
 }
