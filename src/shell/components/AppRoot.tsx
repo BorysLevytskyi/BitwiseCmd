@@ -7,7 +7,6 @@ import log from 'loglevel';
 import DebugIndicators from './DebugIndicators';
 import hash from '../../core/hash';
 import TopLinks from './TopLinks';
-import Toggle from './Toggle';
 import SettingsPane from './SettingsPane';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';

@@ -20,6 +20,10 @@ export default {
     },
 
     addSpace(number: Integer, requiredSpace: number) : Integer {
+
+        if(requiredSpace < 0)
+            throw new Error("Required space cannot be negative");
+
         const totalSpaceRequired = number.maxBitSize + requiredSpace;
         return new Integer(number.value, nextPowOfTwo(totalSpaceRequired));
     },

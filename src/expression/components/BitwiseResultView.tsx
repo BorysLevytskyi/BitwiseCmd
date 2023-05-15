@@ -37,7 +37,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
         
         try
         { 
-            model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes);
+            model = BitwiseResultViewModel.createModel(this.props.expression, this.props.emphasizeBytes, this.props.annotateTypes);
         }
         catch(err) {
             const text = (err as any).message;
@@ -55,7 +55,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
 
     getRows(model: BitwiseResultViewModel, allowSignChange : boolean): JSX.Element[] {
 
-        this.maxSeenLengthNumberOfBits = Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
+        this.maxSeenLengthNumberOfBits = model.maxNumberOfBits; //Math.max(model.maxNumberOfBits, this.maxSeenLengthNumberOfBits);
 
         return model.items.map((itm, i) =>
             <ExpressionElementTableRow
@@ -68,7 +68,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
                 expressionItem={itm.expressionElement}
                 emphasizeBytes={this.props.emphasizeBytes}
                 maxNumberOfBits={this.maxSeenLengthNumberOfBits}
-                showInfoColumn={this.props.annotateTypes}
+                annotateTypes={this.props.annotateTypes}
                 onValueChanged={() => this.onValueChanged()} />);
     }
 
@@ -88,7 +88,7 @@ type ExpressionElementRowProps = {
     allowSignChange: boolean,
     expressionItem: ExpressionElement,
     onValueChanged: any,
-    showInfoColumn: boolean,
+    annotateTypes: boolean,
 }
 
 class ExpressionElementTableRow extends React.Component<ExpressionElementRowProps> {
@@ -105,11 +105,12 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
     }
 
     render() {
-        const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits } = this.props;
+        const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits, annotateTypes } = this.props;
         const scalar =  this.props.expressionItem.evaluate();
         const padChar = scalar.value.value >= 0 ? '0' : '1';
         const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, padChar);
         const signBitIndex = scalar.value.signed && bin.length >= scalar.value.maxBitSize ? bin.length - scalar.value.maxBitSize : -1;
+        const valueSize = annotateTypes ? scalar.value.maxBitSize : calc.numberOfBitsDisplayed(scalar.value);
 
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
@@ -122,11 +123,11 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
                     binaryString={bin}
                     allowFlipBits={allowFlipBits}
                     signBitIndex={signBitIndex}
-                    integerBitSize={this.scalar.value.maxBitSize}
+                    valueBitSize={valueSize}
                     onBitClicked={args => this.onBitClicked(args)} />
             </td>
             <td className="other">{this.getAlternative()}</td>
-            <td className="info accent1" data-test-name='ignore'>{this.props.showInfoColumn ? this.getInfo() : null}</td>
+            <td className="info accent1" data-test-name='ignore'>{this.props.annotateTypes ? this.getInfo() : null}</td>
             <td className='undo' data-test-name='ignore'>
                 {this.getUndoButton()}
             </td>
@@ -177,20 +178,24 @@ getLabel(): string {
 
     onBitClicked(args: BitClickedEventArg) {
 
-        const { bitIndex: index, binaryStringLength: totalLength } = args;
+        const { bitIndex, binaryStringLength: binaryStringLength } = args;
 
         const maxBitSize = this.scalar.value.maxBitSize;
 
-        if(!args.isTypeExtend)
+        const rightIndex = binaryStringLength - bitIndex; 
+
+        if(rightIndex <= maxBitSize)
         {
-            const pad = this.scalar.value.maxBitSize - totalLength;
-            const newValue = calc.flipBit(this.scalar.value, pad + index);
+            const pad = this.scalar.value.maxBitSize - binaryStringLength;
+            const newValue = calc.flipBit(this.scalar.value, pad + bitIndex);
             this.changeValue(newValue);
             return;
         }
+
         
-        const space = (totalLength - index - maxBitSize);
+        const space = (binaryStringLength - bitIndex - maxBitSize);
         this.changeValue(calc.addSpace(this.scalar.value, space));
+        loglevel.debug("Operand size changed");
     }
 
     onChangeSign () {
@@ -237,12 +242,4 @@ getLabel(): string {
         
         return <React.Fragment>{children}</React.Fragment>
     }
-}
-
-function willInfoColumnBeVisible(expr: ExpressionElement, maxNumberOfBits: number, allowSignChange : boolean) {
-        
-    const op = expr.getUnderlyingOperand();
-    const allBitsDisplayed = op.value.maxBitSize != 32 || op.value.maxBitSize <= maxNumberOfBits;
-    const hasLabel = op.label.length > 0;
-    return allBitsDisplayed || hasLabel;
 }

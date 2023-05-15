@@ -9,7 +9,7 @@ export type BinaryStringViewProps = {
     className?: string;
     disableHighlight?: boolean,
     signBitIndex?: number,
-    integerBitSize?: number
+    valueBitSize?: number
 };
 
 export type FlipBitEventArg = {
@@ -17,7 +17,7 @@ export type FlipBitEventArg = {
     binaryStringLength: number;
     $event: any;
     newBinaryString: any;
-    isTypeExtend: boolean
+    isExtraBit: boolean
 };
 
 export default class BinaryStringView extends React.Component<BinaryStringViewProps> {
@@ -39,7 +39,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
             binaryStringLength: this.props.binaryString.length,
             newBinaryString: newBinaryString, 
             $event: e,
-            isTypeExtend: isExtra
+            isExtraBit: isExtra
         });
     }
 
@@ -58,8 +58,8 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         const css = allowFlipBits ? ' flipable' : ''
 
         const disableHighlight = this.props.disableHighlight || false;
-        const firstBitIndex = this.props.integerBitSize != null 
-            ?  bitChars.length - this.props.integerBitSize
+        const firstBitIndex = this.props.valueBitSize != null 
+            ?  bitChars.length - this.props.valueBitSize
             : -1;
 
         return bitChars.map((c, i) => {
