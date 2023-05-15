@@ -32,6 +32,8 @@ const shellModule = {
             appState.toggleDebugMode();
             appState.addCommandResult(c.input, () => <TextResultView text={`Debug Mode: ${appState.debugMode}`}/>);
         }); 
+        cmd.command('-annotate:on', (c:CommandInput) => appState.toggleAnnotateTypes(true))
+        cmd.command('-annotate:off', (c:CommandInput) => appState.toggleAnnotateTypes(false))
         cmd.command("-max", (c:CommandInput) => {
             const text = `Int32 ${INT32_MAX_VALUE}\nInt64 ${INT64_MAX_VALUE}`
             appState.addCommandResult(c.input, () => <TextResultView text={text} />)

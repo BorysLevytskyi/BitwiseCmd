@@ -99,8 +99,8 @@ export default class AppState {
         this.triggerChanged();
     }
 
-    toggleAnnotateTypes() {
-        this.annotateTypes = !this.annotateTypes;
+    toggleAnnotateTypes(value? : boolean) {
+        this.annotateTypes = value != null ? value : !this.annotateTypes;
         this.triggerChanged();
     }
 
