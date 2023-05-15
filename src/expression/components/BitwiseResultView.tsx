@@ -7,7 +7,7 @@ import { Operator, Operand, ListOfNumbers } from '../expression';
 import calc from '../../core/calc';
 import { Integer } from '../../core/Integer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faTriangleExclamation, faUndo } from '@fortawesome/free-solid-svg-icons';
 import loglevel from 'loglevel';
 
 type BitwiseResultViewProps = {
@@ -51,11 +51,13 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
         if(this.props.dimExtrBits)
             css += " dim-extra-bits";
 
-        return <table className={css}>
-            <tbody>
-                {rows}
-            </tbody>
-        </table>
+        return <React.Fragment>
+                    <table className={css}>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+        </React.Fragment>
     }
 
     getRows(model: BitwiseResultViewModel, allowSignChange: boolean): JSX.Element[] {
