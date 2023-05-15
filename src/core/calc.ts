@@ -44,7 +44,6 @@ export default {
     toBinaryString(num: Integer) : string {
         const bitSize = num.maxBitSize;
         const bin = this.abs(num).value.toString(2);
-        //console.log(num.value + " " + bin);
         
         if(bin.length > bitSize!)
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
