@@ -5,9 +5,8 @@ import { getNetworkAddress, getAddressSpaceSize } from '../subnet-utils';
 import IpAddressBinaryString from './IpAddressBinaryString';
 import { IpAddress, IpAddressWithSubnetMask, VpcCommand } from '../models';
 import formatter from '../../core/formatter';
-import Toggle from '../../shell/components/Toggle';
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import IconWithToolTip from '../../shell/components/IconWithTooltip';
 
 
 const MAX_NON_HOSTS_BITS = 30; // leave two bits for hosts min
@@ -41,17 +40,13 @@ function SubnetView(props: { vpc: VpcCommand }) {
                     <BinaryStringView binaryString={split.subnet} disableHighlight={true} className="address-space subnet-part" />
                     <BinaryStringView binaryString={split.hosts} disableHighlight={true} className="address-space host-part" />
                     <span className="address-space decimal-part">{networkAddress.toString()}</span>
-                    <Toggle text="[i]" isOn={vpc.showLegend} onClick={() => setVpc(vpc.toggleLegend())} title="Show/Hide Color Legend">
-                        <FontAwesomeIcon className="icon" icon={faQuestionCircle} size="sm" />
-                    </Toggle>
-                </div>
-                <div style={{"display" : vpc.showLegend ? '' : 'none'}}>
-                    <p>
-                        Color Legend
-                    </p>
-                    <span className="address-space soft">000</span> - VPC address bits <br/>
-                    <span className="address-space subnet-part">000</span> - Bits dedicated for subnets address<br/>
-                    <span className="address-space host-part">000</span> - Bits dedicated to host addresses inside each subnet
+                    
+                    <IconWithToolTip icon={faInfoCircle}>
+                        <div className='accent1 tooltip-header'>Color Legend</div>
+                        <span className="address-space soft">000</span> - VPC address bits <br/>
+                        <span className="address-space subnet-part">000</span> - Bits dedicated for subnets address<br/>
+                        <span className="address-space host-part">000</span> - Bits dedicated to host addresses inside each subnet
+                    </IconWithToolTip>
                 </div>
             </div>
 
@@ -130,13 +125,11 @@ class VpcModel {
     cidr: IpAddressWithSubnetMask;
     subnetBits: number;
     subnetNum: number;
-    showLegend: boolean;
 
     constructor(cidr: IpAddressWithSubnetMask, subnetBits: number) {
         this.cidr = cidr;
         this.subnetBits = subnetBits;
         this.subnetNum = 0;
-        this.showLegend = false;
     }
 
     static create(vpc: VpcCommand) {
@@ -153,11 +146,5 @@ class VpcModel {
 
     changeVpcCidr(newCidr: IpAddressWithSubnetMask) {
         return new VpcModel(newCidr, this.subnetBits);
-    }
-
-    toggleLegend() {
-        var n = new VpcModel(this.cidr,  this.subnetBits);
-        n.showLegend = !this.showLegend;
-        return n;
     }
 }

@@ -96,7 +96,8 @@ a.hashLink { font-size: 1.1em;}
 
 .dim-extra-bits .extra-bit { opacity: 0.3;}
 
-button { border: none; text-decoration: underline;}
+button { border: none; }
+button.link-button {text-decoration: underline;}
 
 .settings-button {
     margin-left: -20px;

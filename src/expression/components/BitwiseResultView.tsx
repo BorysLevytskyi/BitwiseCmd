@@ -9,6 +9,7 @@ import { Integer } from '../../core/Integer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faTriangleExclamation, faUndo } from '@fortawesome/free-solid-svg-icons';
 import loglevel from 'loglevel';
+import IconWithToolTip from '../../shell/components/IconWithTooltip';
 
 type BitwiseResultViewProps = {
     expression: Expression;
@@ -145,17 +146,13 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         const buttons = [];
 
         if (this.scalar.value.value < 0)
-            buttons.push(<div className='tooltip-holder'>
-                <button><FontAwesomeIcon icon={faInfoCircle} /></button>
-
-                <div className='tooltip solid-border solid-background'>
-                    <div className='accent1 tooltip-header'>Two's Complement</div>
+            buttons.push(<IconWithToolTip icon={faInfoCircle}>
+               <div className='accent1 tooltip-header'>Two's Complement</div>
                     <p>
                         This is a negative number. It's binary representation is <u>inverted</u> using <strong>Two's Complement</strong> operation.
                     </p>
                     {this.props.annotateTypes ? null : <p>To see full in-memory binary representation, go to <b>Settings</b> and enable <b>Annotate Data Types</b> toggle. </p>}
-                </div>
-            </div>)
+            </IconWithToolTip>)
 
         if (!this.originalValue.isTheSame(this.scalar.value))
             buttons.push(<button title='Undo all changes' className='undo' data-control="undo" onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo} /></button>);
@@ -256,7 +253,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         children.push(<span title={title} style={{ cursor: "help" }}>{text.trim()}</span>);
 
         if (allowSignChange)
-            children.push(<button className='accent1' title={signedButtonTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
+            children.push(<button className='accent1 link-button' title={signedButtonTitle} onClick={() => this.onChangeSign()}>{signedStr}</button>);
         else
             children.push(<span className='accent1'>&nbsp;{signedStr}</span>)
 
