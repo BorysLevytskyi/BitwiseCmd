@@ -71,8 +71,8 @@ export default class AppState {
         this.triggerChanged();
     }
 
-    toggleEmphasizeBytes() {
-        this.emphasizeBytes = !this.emphasizeBytes;
+    toggleEmphasizeBytes(value? : boolean) {
+        this.emphasizeBytes = value != null  ? value : !this.emphasizeBytes;
         this.triggerChanged();
     }
 
