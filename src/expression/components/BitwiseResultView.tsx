@@ -13,7 +13,8 @@ import loglevel from 'loglevel';
 type BitwiseResultViewProps = {
     expression: Expression;
     emphasizeBytes: boolean;
-    annotateTypes: boolean
+    annotateTypes: boolean,
+    dimExtrBits: boolean
 }
 
 type BitwiseResultViewState = {
@@ -43,9 +44,14 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
             return <div className='error'>Error: {text}</div>
         }
 
-        var rows = this.getRows(model!, allowSignChange);
+        const rows = this.getRows(model!, allowSignChange);
 
-        return <table className="expression">
+        let css = "expression";
+
+        if(this.props.dimExtrBits)
+            css += " dim-extra-bits";
+
+        return <table className={css}>
             <tbody>
                 {rows}
             </tbody>
@@ -87,8 +93,9 @@ type ExpressionElementRowProps = {
     allowSignChange: boolean,
     expressionItem: ExpressionElement,
     onValueChanged: any,
-    annotateTypes: boolean,
-}
+    annotateTypes: boolean
+};
+
 class ExpressionElementTableRow extends React.Component<ExpressionElementRowProps> {
 
     infoWasShown: boolean = false;

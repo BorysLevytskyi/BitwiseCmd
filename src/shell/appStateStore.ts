@@ -9,7 +9,8 @@ const DEFAULT_DATA : PersistedAppData = {
     debugMode: false,
     pageVisistsCount: 0,
     donationClicked: false,
-    annotateTypes: false
+    annotateTypes: false,
+    dimExtrBits: true
 }
 
 export default {

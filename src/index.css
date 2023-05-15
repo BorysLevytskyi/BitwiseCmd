@@ -94,7 +94,7 @@ a.hashLink { font-size: 1.1em;}
 
 .cur { color: lightgray; }
 
-.extra-bit { opacity: 0.3;}
+.dim-extra-bits .extra-bit { opacity: 0.3;}
 
 button { border: none; text-decoration: underline;}
 

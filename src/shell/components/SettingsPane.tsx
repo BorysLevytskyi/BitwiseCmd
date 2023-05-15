@@ -16,7 +16,7 @@ function SettingsPane(props : SettingsPaneProps) {
             <h3>Settings</h3>
             <div className='setting'>
                 <button onClick={() => appState.toggleEmphasizeBytes()}>
-                    <FontAwesomeIcon size='lg' icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
+                    <FontAwesomeIcon size='xl' icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
                 </button>
                 <p className='description'>
                     {appState.emphasizeBytes 
@@ -25,8 +25,18 @@ function SettingsPane(props : SettingsPaneProps) {
                 </p>
             </div>
             <div className='setting'>
+                <button onClick={() => appState.toggleDimExtrBits()}>
+                    <FontAwesomeIcon size='xl' icon={appState.dimExtraBits ? faToggleOn : faToggleOff} /> Dim Extra Bits
+                </button>
+                <p className='description'>
+                    {appState.dimExtraBits 
+                        ? "Extra bits, that were used as padding when displaying multiple numbers, are now dimmed in contrast to the real value bits." 
+                        : "No bits are dimmed."} 
+                </p>
+            </div>
+            <div className='setting'>
                 <button onClick={() => appState.toggleAnnotateTypes()}>
-                    <FontAwesomeIcon size='lg' icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
+                    <FontAwesomeIcon size='xl' icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
                 </button>
                 <p className='description'>
                     {appState.annotateTypes 
@@ -34,7 +44,6 @@ function SettingsPane(props : SettingsPaneProps) {
                         : "Information about the size of integers used in the calculation is hidden."} 
                 </p>
             </div>
-           
         </div>
     </div>
 }
