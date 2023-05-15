@@ -58,12 +58,13 @@ a.hashLink { font-size: 1.1em;}
 .hashLink:hover { text-decoration: underline; background: none; }
 .result:hover .hashLink { visibility: visible }
 
+.expression { font-size: 1.7em; font-family: monospace }
+.expression button { font-family: monospace; font-size: 0.9em;}
 .expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
 .expression .bin { letter-spacing: 3px; }
 .expression .info { font-size: 0.9em; color: teal; }
 .expression .byte { margin: 0 3px; }
 .expression-result td { border-top: dotted 1px gray; }
-.expression { font-size: 1.5em; font-family: monospace }
 .expression .prefix { font-weight: normal; display: none; font-size: 0.9em }
 .expression .other { font-size: 0.9em}
 .expression .sign { text-align: right; padding-right: 5px;}
