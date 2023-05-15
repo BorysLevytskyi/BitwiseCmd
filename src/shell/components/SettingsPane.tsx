@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SettingsPane.css';
-import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import AppState from '../AppState';
 
 type SettingsPaneProps = {
@@ -12,7 +12,7 @@ function SettingsPane(props : SettingsPaneProps) {
     const {appState} = props;    
 
     return <div id="settings" className='settings-container'>
-        <div className="inner">
+        <div className="inner solid-border">
             <h3>Settings</h3>
             <div className='setting'>
                 <button onClick={() => appState.toggleEmphasizeBytes()}>

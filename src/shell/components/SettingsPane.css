@@ -11,6 +11,15 @@
     margin-right: 3px;
 }
 
+.settings-container .inner {
+    padding: 15px 20px;
+    border-radius: 5px;
+}
+
+.settings-container h3 { 
+    margin-top: 0;
+}
+
 .settings-container .description {
     font-size: 0.85em;
     padding: 0;
