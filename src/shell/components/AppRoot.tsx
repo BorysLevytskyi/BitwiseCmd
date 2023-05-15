@@ -62,7 +62,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                     <div className="expressionInput-container">
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
                         
-                        <button className={settingsCss}><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
+                        <button className={settingsCss} title='Toggle Settings'><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
 
                     </div>
                     {this.props.appState.showSettings ? <SettingsPane appState={this.props.appState} /> : null}

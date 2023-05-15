@@ -7,7 +7,7 @@ import { Operator, Operand, ListOfNumbers } from '../expression';
 import calc from '../../core/calc';
 import { Integer } from '../../core/Integer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faUndo } from '@fortawesome/free-solid-svg-icons';
 import loglevel from 'loglevel';
 
 type BitwiseResultViewProps = {
@@ -90,7 +90,6 @@ type ExpressionElementRowProps = {
     onValueChanged: any,
     annotateTypes: boolean,
 }
-
 class ExpressionElementTableRow extends React.Component<ExpressionElementRowProps> {
     
     infoWasShown: boolean = false;
@@ -112,32 +111,48 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         const valueSize = annotateTypes ? scalar.value.maxBitSize : calc.numberOfBitsDisplayed(scalar.value);
 
         return <tr className={"row-with-bits " + css}>
-            <td className="sign">{sign}</td>
-            <td className="label">
-                {this.getLabel()}
-            </td>
-            <td className="bin">
-                <BinaryStringView
-                    emphasizeBytes={emphasizeBytes}
-                    binaryString={bin}
-                    allowFlipBits={allowFlipBits}
-                    signBitIndex={signBitIndex}
-                    valueBitSize={valueSize}
-                    onBitClicked={args => this.onBitClicked(args)} />
-            </td>
-            <td className="other">{this.getAlternative()}</td>
-            <td className="info accent1" data-test-name='ignore'>{this.props.annotateTypes ? this.getInfo() : null}</td>
-            <td className='undo' data-test-name='ignore'>
-                {this.getUndoButton()}
-            </td>
+                <td className="sign">{sign}</td>
+                <td className="label">
+                    {this.getLabel()}
+                </td>
+                <td className="bin">
+                    <BinaryStringView
+                        emphasizeBytes={emphasizeBytes}
+                        binaryString={bin}
+                        allowFlipBits={allowFlipBits}
+                        signBitIndex={signBitIndex}
+                        valueBitSize={valueSize}
+                        onBitClicked={args => this.onBitClicked(args)} />
+                </td>
+                <td className="other">{this.getAlternative()}</td>
+                <td className="info accent1" data-test-name='ignore'>{this.props.annotateTypes ? this.getInfo() : null}</td>
+                <td className='undo' data-test-name='ignore'>
+                    {this.getControlButtons()}
+                </td>
         </tr>;
     }
 
-    getUndoButton(): React.ReactNode {
+    getControlButtons(): React.ReactNode {
 
-        return !this.originalValue.isTheSame(this.scalar.value) 
-            ? <button title='Undo all changes' className='undo' data-control="undo" onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> 
-            : null;
+        const buttons = [];
+
+        if(!this.originalValue.isTheSame(this.scalar.value))
+            buttons.push(<button title='Undo all changes' className='undo' data-control="undo" onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo}/></button> );
+        
+        if(this.scalar.value.value < 0)
+            buttons.push(<div className='tooltip-holder'>
+                    <button><FontAwesomeIcon icon={faInfoCircle} /></button>
+                    
+                    <div className='tooltip solid-border solid-background'>
+                        <div className='accent1 tooltip-header'>Two's Complement</div>
+                        <p>
+                            This is a negative number. It's binary representation is inverted using Two's Complement operation.
+                        </p>
+                        {this.props.annotateTypes ? null : <p>To see full in-memory binary representation, go to <b>Settings</b> and enable <b>Annotate Data Types</b> toggle. </p>}
+                    </div>
+                </div>)
+
+        return <React.Fragment>{buttons}</React.Fragment>
     }
 
 getLabel(): string {
