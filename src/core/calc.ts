@@ -44,15 +44,16 @@ export default {
     toBinaryString(num: Integer) : string {
         const bitSize = num.maxBitSize;
         const bin = this.abs(num).value.toString(2);
+        //console.log(num.value + " " + bin);
         
         if(bin.length > bitSize!)
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
 
         const r = num.value < 0
-            ? this.engine.applyTwosComplement(bin.padStart(bitSize, '0'))
+            ? this.engine.applyTwosComplement(bin)
             : bin;
 
-        return r;
+        return bin.length != bitSize ? r.substring(r.length-bin.length) : r;
     },
 
     lshift (num: Integer, numBytes : JsNumber) : Integer {
@@ -109,7 +110,7 @@ export default {
 
     _applySingle(num: Integer, operation: (bin:string) => string) : Integer {
 
-        let bin = this.toBinaryString(num).padStart(num.maxBitSize, '0');
+        let bin = this.toBinaryString(num).padStart(num.maxBitSize, num.value < 0 ? '1' : '0');
 
         bin = operation(bin);
 
@@ -131,8 +132,8 @@ export default {
 
         const [num1, num2] = equalizeSize(op1, op2);
 
-        let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, '0');
-        let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, '0');
+        let bin1 = this.toBinaryString(num1).padStart(num1.maxBitSize, num1.value < 0  ? '1' : '0');
+        let bin2 = this.toBinaryString(num2).padStart(num2.maxBitSize, num2.value < 0  ? '1' : '0');
 
         let resultBin = operation(bin1, bin2);
 
@@ -229,7 +230,9 @@ export default {
                 flipped.unshift(bin.charAt(i) == "1" ? "0" : "1");
             }
         
-            return flipped.join('') + bin.substring(lastIndex) ;
+            const result =  flipped.join('') + bin.substring(lastIndex);
+            //logLines(bin + " " + bin.length, result + " " + result.length);
+            return result;
         },
     }
 };

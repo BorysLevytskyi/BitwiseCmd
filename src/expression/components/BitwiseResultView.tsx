@@ -107,8 +107,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
     render() {
         const { sign, css, maxNumberOfBits, emphasizeBytes, allowFlipBits, annotateTypes } = this.props;
         const scalar =  this.props.expressionItem.evaluate();
-        const padChar = scalar.value.value >= 0 ? '0' : '1';
-        const bin = formatter.numberToString(scalar.value, 'bin').padStart(maxNumberOfBits, padChar);
+        const bin = formatter.numberToString(scalar.value, 'bin', maxNumberOfBits);
         const signBitIndex = scalar.value.signed && bin.length >= scalar.value.maxBitSize ? bin.length - scalar.value.maxBitSize : -1;
         const valueSize = annotateTypes ? scalar.value.maxBitSize : calc.numberOfBitsDisplayed(scalar.value);
 

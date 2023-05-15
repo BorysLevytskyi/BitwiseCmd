@@ -98,7 +98,7 @@ export class Integer {
     }
 
     toString(base?:number) {
-        return formatter.numberToString(this, base || 10);
+        return formatter.numberToString(this, base || 10, this.maxBitSize);
     }
     
     num() {

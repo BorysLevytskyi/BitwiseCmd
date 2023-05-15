@@ -12,8 +12,10 @@ describe("formatter", () => {
         const minusOne = BigInt(-1);
         const n32 = new Integer(minusOne, 32);
         const n64 = new Integer(minusOne, 64);
-        expect(formatter.bin(n32)).toBe("11111111111111111111111111111111");
-        expect(formatter.bin(n64)).toBe("1111111111111111111111111111111111111111111111111111111111111111");
+        expect(formatter.bin(n32)).toBe("1");
+        expect(formatter.bin(n64)).toBe("1");
+        expect(formatter.fullBin(n32)).toBe("11111111111111111111111111111111");
+        expect(formatter.fullBin(n64)).toBe("1111111111111111111111111111111111111111111111111111111111111111");
     });
 
     it('formats large binary number correctly', () => {
@@ -25,9 +27,10 @@ describe("formatter", () => {
     });
 
     it('formats negative binary numbers', () => {
-        expect(formatter.numberToString(-1, 'bin')).toBe("11111111111111111111111111111111");
+        expect(formatter.numberToString(-1, 'bin')).toBe("1");
+        expect(formatter.numberToString(-1, 'bin', 32)).toBe("11111111111111111111111111111111");
         expect(formatter.numberToString(-0, 'bin')).toBe("0");
-        expect(formatter.numberToString(-2147483647, 'bin')).toBe("10000000000000000000000000000001");       
+        expect(formatter.numberToString(-2147483647, 'bin')).toBe("0000000000000000000000000000001");       
     });
 
     it('pads left', () => {
