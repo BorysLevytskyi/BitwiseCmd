@@ -6,6 +6,7 @@
 .tooltip-holder .tooltip-icon {
     opacity: 0.5;
     z-index: 0;
+    vertical-align: middle;
 }
 
 .tooltip-holder .tooltip {
