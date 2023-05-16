@@ -88,7 +88,6 @@ a.hashLink { font-size: 1.1em;}
 
 .cur { color: lightgray; }
 
-.dim-extra-bits .extra-bit { opacity: 0.3;}
 
 button { border: none; }
 button.link-button {text-decoration: underline;}
@@ -105,14 +104,14 @@ button.link-button {text-decoration: underline;}
 
 .solid-border { border: solid 1px rgba(255, 255, 255, 0.8);}
 
+.zero { opacity: 0.5}
+.dim-extra-bits .extra-bit { opacity: 0.1;}
 
 /* Light */
 .light { background: #fafafa; }
 .light .solid-background {background: #fafafa;}
 .light .header-cmd { color: #919191 }
 .light a, .light a:visited, .light button { color: #222; }
-.light .one { color: black; }
-.light .zero { color: #888; }
 .light .indicator { color: #ddd; }
 .light .on { color: #121212; }
 .light .prefix { color: #888}
@@ -139,7 +138,6 @@ button.link-button {text-decoration: underline;}
 .dark a, .dark a:visited, .dark button { color: white; }
 .dark .indicator { color: #555; }
 .dark .on { color: white; }
-.dark .zero { color: #999;}
 .dark .prefix { color: #999}
 .dark  .other { color: #777;}
 .dark .hashLink, .dark .hashLink:visited { color: #555 }
@@ -162,7 +160,6 @@ button.link-button {text-decoration: underline;}
 .midnight a, .dark a:visited, .midnight button { color: white; }
 .midnight .indicator { color: #85a0ad; }
 .midnight .on { color: white; }
-.midnight .zero { color: #85a0ad;}
 .midnight .prefix { color: #85a0ad}
 .midnight  .other { color: #9FBAC7;}
 .midnight .accent-background { background-color: #3b5268;}

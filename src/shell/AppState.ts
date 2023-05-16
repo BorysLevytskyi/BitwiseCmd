@@ -28,7 +28,7 @@ export default class AppState {
     version: number = APP_VERSION;
     emphasizeBytes: boolean;
     debugMode: boolean = false;
-    uiTheme: string = 'midnight';
+    uiTheme: string = 'dark';
     changeHandlers: AppStateChangeHandler[] = [];
     commandResults: CommandResultView[] = [];
     persistedVersion: number;
@@ -44,6 +44,7 @@ export default class AppState {
 
         this.env = env;
 
+        this.uiTheme = persistData.uiTheme;
         this.emphasizeBytes = !!persistData.emphasizeBytes;
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
