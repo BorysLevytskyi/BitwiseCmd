@@ -1,5 +1,6 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./IconWithTooltip.css";
 
 export type IconWithToolTipProps = {
     icon: IconProp
@@ -7,7 +8,7 @@ export type IconWithToolTipProps = {
 
 function IconWithToolTip (props: React.PropsWithChildren<IconWithToolTipProps>)  {
     return <div className='tooltip-holder'>
-        <button><FontAwesomeIcon icon={props.icon} /></button>
+        <span className="tooltip-icon"><FontAwesomeIcon icon={props.icon} /></span>
 
         <div className='tooltip solid-border solid-background'>
             {props.children}

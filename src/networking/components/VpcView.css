@@ -12,7 +12,7 @@
 }
 
 .vpc-view .host-part {
-    color: darkcyan;
+    color: coral;
 }
 
 .vpc-view .subnet-part {
@@ -47,4 +47,8 @@
 
 .vpc-view .address-container {
     margin: 20px 0;
+}
+
+.vpc-view .tooltip-icon {
+    margin-left: 5px;
 }
