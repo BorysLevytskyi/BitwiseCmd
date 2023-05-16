@@ -1,5 +1,7 @@
 import React from 'react';
 import log from 'loglevel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 export interface IInputBoxProps
 {
@@ -25,7 +27,7 @@ export default class InputBox extends React.Component<IInputBoxProps> {
 
     render() {
         return <React.Fragment>
-                <span className='input-p'>&gt;</span>
+                <span className='input-p'><FontAwesomeIcon icon={faAngleRight} /></span>
                 <input id="in" type="text"
                       ref={(input) => { this.nameInput = input; }} 
                       onKeyUp={e => this.onKeyUp(e)}
