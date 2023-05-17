@@ -123,7 +123,7 @@ button.link-button {text-decoration: underline;}
 .light button.btn { color: black}
 .light button.btn:hover { background: #ddd}
 .light button.btn:disabled { color: #888; background-color: inherit; }
-.light .accent1 { color:rgb(56, 161, 103)}
+.light .accent1 { color:green}
 .light .expressionInput { border-bottom: solid 1px rgba(0, 0, 0, 0.5);}
 .light .button { border: solid 1px gray; }
 .light .button:hover { background: rgba(0, 0, 0, 0.2);}
