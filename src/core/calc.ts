@@ -2,12 +2,11 @@ import { Integer, JsNumber,  asInteger } from "./Integer";
 import { asIntN, logLines } from "./utils";
 
 export default {
-    abs (num : Integer) : Integer {
-        return asInteger(num.value >= 0 ? num.value : -num.value);
-    },
-    
+
     numberOfBitsDisplayed: function (num: Integer | JsNumber) : number {
-        return this.toBinaryString(asInteger(num)).length;
+        const n = asInteger(num);
+        const len = this.toBinaryString(n).length;
+        return (len+1) == n.maxBitSize ? n.maxBitSize : len; // Include sign bit if it is all that left
     },
 
     flipBit: function(num: Integer | JsNumber, bitIndex: number): Integer  {
@@ -43,7 +42,7 @@ export default {
 
     toBinaryString(num: Integer) : string {
         const bitSize = num.maxBitSize;
-        const bin = this.abs(num).value.toString(2);
+        const bin = num.abs().value.toString(2);
         
         if(bin.length > bitSize!)
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)

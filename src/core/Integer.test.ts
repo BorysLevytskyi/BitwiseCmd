@@ -49,3 +49,9 @@ it('converts to largest size', () => {
     expect(n16.num()).toBe(-1);
     expect(n32.num()).toBe(-1);
 });
+
+it('abs doesnt change type size', () => {
+    const result = Integer.byte(-127).abs();
+    expect(result.num()).toBe(127);
+    expect(result.maxBitSize).toBe(8);
+})

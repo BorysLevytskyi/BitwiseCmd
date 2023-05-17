@@ -1,5 +1,6 @@
 import React from 'react';
 import './BinaryString.css';
+import loglevel from 'loglevel';
 
 export type BinaryStringViewProps = {
     allowFlipBits?: boolean;

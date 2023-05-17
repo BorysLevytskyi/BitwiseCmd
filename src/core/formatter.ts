@@ -10,7 +10,7 @@ const formatter = {
 
         switch(base) {
             case 16:
-                var hexVal = calc.abs(num).value.toString(16);
+                var hexVal = num.abs().value.toString(16);
                 return num.value >= 0 ? '0x' + hexVal : '-0x' + hexVal;
             case 2:    
                 const bin = calc.toBinaryString(num);

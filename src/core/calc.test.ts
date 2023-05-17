@@ -186,6 +186,18 @@ describe("calc misc", () => {
         const actual = calc.not(asInteger("8920390230576132")).toString();
         expect(actual).toBe("-8920390230576133");
     });
+
+    it('numberOfBitsDisplayed appends sign bit', () => {
+        const byte = Integer.byte(-127);
+        const int = Integer.int(-127);
+
+        expect(calc.numberOfBitsDisplayed(int)).toBe(7);
+        expect(calc.numberOfBitsDisplayed(int.abs())).toBe(7);
+
+        // If there is only sign bit left, might as well show it
+        expect(calc.numberOfBitsDisplayed(byte)).toBe(8); 
+        expect(calc.numberOfBitsDisplayed(byte.abs())).toBe(8); 
+    })
 });
 
 describe("calc.engine.", () => {
