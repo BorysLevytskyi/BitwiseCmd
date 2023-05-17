@@ -4,13 +4,13 @@ const storeKey = 'AppState';
 
 const DEFAULT_DATA : PersistedAppData = {
     uiTheme: 'dark',
-    emphasizeBytes: true,
+    emphasizeBytes: false,
     version: APP_VERSION,
     debugMode: false,
     pageVisistsCount: 0,
     donationClicked: false,
     annotateTypes: false,
-    dimExtrBits: true
+    dimExtrBits: false
 }
 
 export default {

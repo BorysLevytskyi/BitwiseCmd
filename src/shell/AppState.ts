@@ -28,7 +28,7 @@ export default class AppState {
     version: number = APP_VERSION;
     emphasizeBytes: boolean;
     debugMode: boolean = false;
-    uiTheme: string = 'dark';
+    uiTheme: string;
     changeHandlers: AppStateChangeHandler[] = [];
     commandResults: CommandResultView[] = [];
     persistedVersion: number;
