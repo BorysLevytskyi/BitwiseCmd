@@ -142,7 +142,7 @@ export default class BitwiseResultViewModel {
     };
 
     calcMaxNumberOfBits (op: Operand) {
-       return this.annotateDataTypes ? op.value.maxBitSize : calc.numberOfBitsDisplayed(op.value);
+       return calc.numberOfBitsDisplayed(op.value);
     }
 
     getLabel (op: Operand) : string {
