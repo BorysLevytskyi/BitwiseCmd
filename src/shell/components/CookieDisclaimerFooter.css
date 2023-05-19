@@ -1,0 +1,13 @@
+.cookie-disclaimer {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    margin: 5px;
+    padding-bottom: 0;
+    background:green;
+    color: white;
+    border-radius: 5px;
+}
+.cookie-disclaimer .button { border-color: white !important}
+.cookie-disclaimer .button { color: white; }
+.cookie-disclaimer p { margin-top: 0; margin-bottom: 10px;}

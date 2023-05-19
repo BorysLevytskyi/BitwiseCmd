@@ -11,6 +11,7 @@ export type PersistedAppData = {
     donationClicked: boolean;
     annotateTypes: boolean;
     dimExtrBits: boolean;
+    cookieDisclaimerHidden: boolean
 }
 
 export type CommandResultView = {
@@ -39,6 +40,7 @@ export default class AppState {
     showSettings: boolean = false;
     annotateTypes: boolean = false;
     dimExtraBits: boolean = false;
+    cookieDisclaimerHidden: boolean = false;
 
     constructor(persistData: PersistedAppData, env: string) {
 
@@ -53,6 +55,7 @@ export default class AppState {
         this.donationClicked = persistData.donationClicked;
         this.annotateTypes = !!persistData.annotateTypes;
         this.dimExtraBits = !!persistData.dimExtrBits;
+        this.cookieDisclaimerHidden = !!persistData.cookieDisclaimerHidden
     }
 
     addCommandResult(input: string, view: ViewFactory) {
@@ -126,6 +129,11 @@ export default class AppState {
         return true;
     }
 
+    setCookieDisclaimerHidden(value: boolean) {
+        this.cookieDisclaimerHidden = value;
+        this.triggerChanged();
+    }
+
     getPersistData(): PersistedAppData {
         return {
             emphasizeBytes: this.emphasizeBytes,
@@ -135,7 +143,8 @@ export default class AppState {
             pageVisistsCount: this.pageVisitsCount,
             donationClicked: this.donationClicked,
             annotateTypes: this.annotateTypes,
-            dimExtrBits: this.dimExtraBits
+            dimExtrBits: this.dimExtraBits,
+            cookieDisclaimerHidden: this.cookieDisclaimerHidden
         }
     }
 };

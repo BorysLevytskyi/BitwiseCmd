@@ -10,6 +10,7 @@ import TopLinks from './TopLinks';
 import SettingsPane from './SettingsPane';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
+import CookieDisclaimerFooter from './CookieDisclaimerFooter';
 
 
 type AppRootProps = {
@@ -51,6 +52,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
         const enableNewUi = this.props.appState.env != 'prod' || true;
         const newUi = enableNewUi ? 'new-ui' : '';
         const settingsCss = "settings-button" + (this.props.appState.showSettings ? '' : ' soft');
+        
         return <div className={`app-root ${this.state.uiTheme} ${newUi}`}>
                     <DebugIndicators appState={this.props.appState} />
                     <div className="header">
@@ -69,6 +71,7 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                     <div id="output">
                     {this.getResultViews()}
                     </div>
+                    <CookieDisclaimerFooter appSate={this.props.appState} />
                 </div>;
     }
 }
