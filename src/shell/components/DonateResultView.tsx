@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState} from 'react';
-import { faClipboard} from "@fortawesome/free-solid-svg-icons";
+import { faClipboard, faCoffee} from "@fortawesome/free-solid-svg-icons";
 import "./DonateResultView.css";
 import { sendAnalyticsEvent } from '../analytics';
 import { faPaypal } from '@fortawesome/free-brands-svg-icons';
@@ -14,9 +14,15 @@ function DonateResultView() {
     const addr = "bc1qyv08z29776uwdwy2m0c77gpgpupzr78jpcnraq";
 
     return <div className="donate-result-view">
-        <p>Thank you for your interest in donation. At this point BitwiseCmd can accept donations in Bitcoin or via PayPayl.</p>
+        <p>Thank you for your interest in donation. At this point BitwiseCmd can accept donations via services listed below:</p>
        
         <div className='section'>
+        <h3>buymeacoffee.com</h3>
+        <p>
+            <a className='button button-large' href='https://bmc.link/boryslevytB' onClick={() => onBuyMeCoffe()} target='_blank'>
+                <FontAwesomeIcon icon={faCoffee} size='lg' /> Buy Me a Coffee
+            </a>
+        </p>
         <h3>PayPal</h3>
             <p>
                 <a className='paypal-button button button-large' href='https://www.paypal.com/donate/?hosted_button_id=3GREJYC4T5AJ8' target='_blank'>
@@ -40,6 +46,10 @@ function DonateResultView() {
         setState('copied');
         setTimeout(() => setState('default'), 3000);
         sendAnalyticsEvent({eventCategory: "Donation", eventAction: "CopyBTCAddressCopyClicked"})
+    }
+
+    function onBuyMeCoffe() {
+        sendAnalyticsEvent({eventAction: "BuyMeCoffeeClicked", eventCategory: "Donation"})
     }
 }
 
