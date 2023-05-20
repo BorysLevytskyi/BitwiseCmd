@@ -3,7 +3,7 @@ import "./CookieDisclaimerFooter.css";
 import AppState from "../AppState";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretUp, faCircleXmark, faCross } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 function CookieDisclaimerFooter(props: { appSate: AppState }): JSX.Element {
 
