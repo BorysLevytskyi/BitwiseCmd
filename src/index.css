@@ -105,6 +105,8 @@ button.link-button {text-decoration: underline;}
 }
 
 .solid-border { border: solid 1px rgba(255, 255, 255, 0.8); border-radius: 5px;}
+.solid-border-soft { border: solid 1px rgba(255, 255, 255, 0.5); border-radius: 5px;}
+
 
 .zero { opacity: 0.5}
 .dim-extra-bits .extra-bit { opacity: 0.1;}
@@ -131,6 +133,7 @@ button.link-button {text-decoration: underline;}
 .light .button:hover { background: rgba(0, 0, 0, 0.2);}
 .light .solid-border { border: solid 1px gray;}
 .light .donate-result-view .paypal-button { border: solid 1px gray; }
+.light .accent1-border { border-color:green}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -150,6 +153,7 @@ button.link-button {text-decoration: underline;}
 .dark button.btn:hover { background: #333}
 .dark button.btn:disabled { color: #999; background-color: inherit; }
 .dark .accent1 { color:mediumseagreen}
+.dark .accent1-border { border-color:mediumseagreen}
 
 /*
     Midnight Theme
@@ -174,6 +178,7 @@ button.link-button {text-decoration: underline;}
 .midnight button.btn:hover { background: #132537}
 .midnight button.btn:disabled { color: #85a0ad; background-color: inherit; }
 .midnight .accent1 { color:mediumseagreen}
+.midnight .accent1-border { border-color:mediumseagreen}
 
 button { 
     border: none;

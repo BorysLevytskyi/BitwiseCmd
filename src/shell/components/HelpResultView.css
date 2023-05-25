@@ -7,8 +7,8 @@
 .help .panel-container {overflow: hidden;}
 .help .left-panel {float:left; margin-right: 1em;}
 .help .right-panel {float:left; }
-.help .section-title {font-weight: bold;}
-
+.help .section-title {font-weight: bold; font-size: 1.1em;}
+.help .important-note {padding: 5px; display: inline-block; margin-top: 5px;}
 @media (min-width: 1024px) {
     .left-panel, .right-panel {
         width: 45%;
