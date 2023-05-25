@@ -54,6 +54,11 @@ describe("expression parser", () => {
         var result = parser.parse("1|~2") as BitwiseOperation;
         expect(result.children.length).toBe(2);
     });
+
+    it("bug2", () => {
+        const result = parser.parse('0b0000000000000000001000010001011110000010100000001 & (0b0000000000000000001000010001011110000010100000001 >> 7)');
+        expect(result).toBeNull();
+    })
 });
 
 describe("comparison with nodejs engine", () => {
