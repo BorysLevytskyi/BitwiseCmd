@@ -169,7 +169,7 @@ button.link-button {text-decoration: underline;}
 .midnight .prefix { color: #85a0ad}
 .midnight  .other { color: #9FBAC7;}
 .midnight .accent-background { background-color: #3b5268;}
-.midnight .hashLink, .dark .hashLink:visited { color: #85a0ad }
+.midnight .hashLink, .midnight .hashLink:visited { color: #85a0ad }
 .midnight .hashLink:hover { color: #9FBAC7 }
 .midnight ul.top-links li:hover { background: #132537 }
 .midnight .error { color:#da586d}
