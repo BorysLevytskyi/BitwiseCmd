@@ -5,7 +5,7 @@
     window.bitwiseCmdAnalyticsHandler = function() {return false};
 
     var key = 'TrackAnalytics';
-    var disableAnalytics = localStorage.getItem(key) === 'false' ||  window.location.hash.indexOf('-notrack') > -1
+    var disableAnalytics = !!navigator.doNotTrack || localStorage.getItem(key) === 'false' ||  window.location.hash.indexOf('-notrack') > -1
 
     if(disableAnalytics) {
         localStorage.setItem(key, "false");
