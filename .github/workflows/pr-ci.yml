@@ -56,7 +56,9 @@ jobs:
         working-directory: BitwiseCmdTests
         env:
           BASE_URL: http://localhost:3030
-        run: npm run test-build
+          CHROME_ARGS: --headless=new --disable-gpu --no-sandbox --disable-dev-shm-usage --window-size=1280,720
+        run: |
+          xvfb-run --auto-servernum -- npm run test-build
 
       - name: Stop static web server
         if: always()
