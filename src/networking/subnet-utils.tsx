@@ -1,5 +1,4 @@
-import { createSubnetMaskByte } from "../core/byte";
-import { flipBitsToOne, flipBitsToZero } from '../core/byte';
+import { createSubnetMaskByte, flipBitsToOne, flipBitsToZero } from '../core/byte';
 import { IpAddress, IpAddressWithSubnetMask, NetworkClass } from "./models";
 
 function createSubnetMaskIp(ipm: IpAddressWithSubnetMask) : IpAddress {
@@ -59,7 +58,6 @@ function getNetworkClass (ipAddress: IpAddress) : NetworkClass {
     const byte = ipAddress.firstByte;
 
     const firstBitOne = (byte & 128) === 128;
-    const firstBitZero = (byte & 128) === 0;
     const secondBitOne = (byte & 64) === 64;
 
     const thirdBitOne = (byte & 32) === 32;

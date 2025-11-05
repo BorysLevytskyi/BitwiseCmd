@@ -2,7 +2,6 @@ import { Operand, ListOfNumbers, BitwiseOperation, Operator } from '../expressio
 import { ExpressionElement, Expression } from '../expression-interfaces';
 import calc from '../../core/calc';
 import formatter from '../../core/formatter';
-import exp from 'constants';
 
 type Config = {
     emphasizeBytes: boolean;
@@ -43,27 +42,26 @@ export default class BitwiseResultViewModel {
     }
 
     static buildBitwiseOperation (expr : BitwiseOperation, config : Config) {
-        
-        var op = expr.children[0],
-            i = 0, len = expr.children.length,
-            ex, m = new BitwiseResultViewModel(config);
 
-        var prev : Operand | null = null;
+        const len = expr.children.length;
+        const m = new BitwiseResultViewModel(config);
 
-        for (;i<len;i++) {
-            ex = expr.children[i];
+        let prev : Operand | null = null;
+
+        for (let i = 0; i < len; i++) {
+            const ex = expr.children[i];
             if(ex instanceof Operand) {
                 m.addScalarRow(ex);
                 prev = ex;
                 continue;
             }
 
-            var eo = ex as Operator;
+            const eo = ex as Operator;
 
             // If it a single NOT expression
             if(eo.isNotExpression) {
                 m.addOperatorRow(eo);
-                var notResult = eo.evaluate();
+                const notResult = eo.evaluate();
                 m.addExpressionResultRow(notResult);
                 prev = notResult;
             }
@@ -152,7 +150,7 @@ export default class BitwiseResultViewModel {
 
     static applyEmphasizeBytes (bits : number, emphasizeBytes : boolean) : number {
         
-        if(emphasizeBytes && bits % 8 != 0) {
+        if(emphasizeBytes && bits % 8 !== 0) {
              if(bits < 8) {
                  return 8;
              }

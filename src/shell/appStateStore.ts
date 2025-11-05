@@ -14,7 +14,7 @@ const DEFAULT_DATA : PersistedAppData = {
     cookieDisclaimerHidden: false
 }
 
-export default {
+const appStateStore = {
     getPersistedData() : PersistedAppData {
         var json = window.localStorage.getItem(storeKey);
         if(!json) {
@@ -26,7 +26,7 @@ export default {
         }
         catch(ex) {
             console.error('Failed to parse AppState json. Json Value: \n' + json, ex);
-            return DEFAULT_DATA;;
+            return DEFAULT_DATA;
         }
     },
 
@@ -37,4 +37,6 @@ export default {
     persistData(appState: AppState) {
         localStorage.setItem(storeKey, JSON.stringify(appState.getPersistData()));
     }
-}
+};
+
+export default appStateStore;

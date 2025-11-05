@@ -1,14 +1,14 @@
-export default {
+const typeGuards = {
     plainObject: function(obj : any) : boolean {
-        return typeof obj == "object" && !(obj instanceof Array) && obj instanceof Object;
+        return typeof obj === "object" && !(obj instanceof Array) && obj instanceof Object;
     },
 
     aFunction: function(obj : any) : boolean {
-        return typeof obj == "function";
+        return typeof obj === "function";
     },
 
     string: function(obj : any) : boolean {
-        return typeof obj == "string";
+        return typeof obj === "string";
     },
 
     array: function(obj : any) : boolean  {
@@ -16,6 +16,8 @@ export default {
     },
 
     number: function(obj : any) : boolean  {
-        return typeof obj == "number" && !isNaN(obj)
+        return typeof obj === "number" && !isNaN(obj);
     }
-}
+};
+
+export default typeGuards;

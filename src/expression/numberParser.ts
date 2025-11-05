@@ -27,13 +27,13 @@ class NumberParser {
 
     parse (input : string) : ParsedNumber {
 
-        if(input.length == 0) throw new Error("input is null or empty");
+        if(input.length === 0) throw new Error("input is null or empty");
 
         const regex = new RegExp(numberRegexFullString, "i");
         
         const m = regex.exec(input);
 
-        if(m == null || m.length == 0)
+        if(m === null || m.length === 0)
             throw new Error(input + " is not a number");
 
         const value = parseInteger(m[0], m[1], m[2] || '');

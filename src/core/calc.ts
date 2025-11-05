@@ -1,12 +1,12 @@
 import { Integer, JsNumber,  asInteger } from "./Integer";
-import { asIntN, logLines } from "./utils";
+import { asIntN } from "./utils";
 
-export default {
+const calc = {
 
     numberOfBitsDisplayed: function (num: Integer | JsNumber) : number {
         const n = asInteger(num);
         const len = this.toBinaryString(n).length;
-        return (len+1) == n.maxBitSize ? n.maxBitSize : len; // Include sign bit if it is all that left
+        return (len + 1) === n.maxBitSize ? n.maxBitSize : len; // Include sign bit if it is all that left
     },
 
     flipBit: function(num: Integer | JsNumber, bitIndex: number): Integer  {
@@ -51,14 +51,14 @@ export default {
             ? this.engine.applyTwosComplement(bin)
             : bin;
 
-        return bin.length != bitSize ? r.substring(r.length-bin.length) : r;
+        return bin.length !== bitSize ? r.substring(r.length-bin.length) : r;
     },
 
     lshift (num: Integer, numBytes : JsNumber) : Integer {
 
         let bytes = asIntN(numBytes);
 
-        if(num.maxBitSize == numBytes)
+        if(num.maxBitSize === bytes)
             return num; // Preserve C undefined behavior
         
         while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
@@ -70,7 +70,7 @@ export default {
         
         let bytes = asIntN(numBytes);
 
-        if(num.maxBitSize == numBytes)
+        if(num.maxBitSize === bytes)
             return num; // Preserve C undefined behavior
         
         while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
@@ -82,7 +82,7 @@ export default {
 
         let bytes = asIntN(numBytes);
 
-        if(num.maxBitSize == numBytes)
+        if(num.maxBitSize === bytes)
             return num; // Preserve C undefined behavior
         
         while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
@@ -114,18 +114,18 @@ export default {
 
         let negative = false;
 
-        if(num.signed && bin['0'] == '1') {
+        if(num.signed && bin[0] === '1') {
             bin = this.engine.applyTwosComplement(bin);
             negative = true;
         }
 
         const result = BigInt("0b" + bin) * BigInt(negative ? -1 : 1);
-        return new Integer(typeof num.value == "bigint" ? result : asIntN(result), num.maxBitSize, num.signed);
+        return new Integer(typeof num.value === "bigint" ? result : asIntN(result), num.maxBitSize, num.signed);
     },
 
     _applyTwo(op1: Integer, op2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {
         
-        if(op1.maxBitSize == op2.maxBitSize && op1.signed != op2.signed)
+        if(op1.maxBitSize === op2.maxBitSize && op1.signed !== op2.signed)
             throw new Error("This operation cannot be applied to signed and unsigned operands of the same size");
 
         const [num1, num2] = equalizeSize(op1, op2);
@@ -137,7 +137,7 @@ export default {
 
         let m = BigInt(1);
     
-        if(resultBin['0'] == '1') {
+        if(resultBin[0] === '1') {
             resultBin = this.engine.applyTwosComplement(resultBin);
             m = BigInt(-1);
         }
@@ -204,7 +204,7 @@ export default {
                 const b1 = bin1[i] === "1";
                 const b2 = bin2[i] === "1";
 
-                result.push(b1 != b2 ? "1" : "0");
+                result.push(b1 !== b2 ? "1" : "0");
             }
 
             return result.join('');
@@ -217,7 +217,7 @@ export default {
         
             // If there exists no '1' concat 1 at the
             // starting of string
-            if (lastIndex == -1)
+            if (lastIndex === -1)
                 return "1" + bin;
         
             // Continue traversal backward after the position of
@@ -225,7 +225,7 @@ export default {
             var flipped =[];
             for (var i = lastIndex - 1; i >= 0; i--) {
                 // Just flip the values
-                flipped.unshift(bin.charAt(i) == "1" ? "0" : "1");
+                flipped.unshift(bin.charAt(i) === "1" ? "0" : "1");
             }
         
             const result =  flipped.join('') + bin.substring(lastIndex);
@@ -235,8 +235,10 @@ export default {
     }
 };
 
+export default calc;
+
 function checkSameLength(bin1: string, bin2: string) {
-    if (bin1.length != bin2.length)
+    if (bin1.length !== bin2.length)
         throw new Error("Binary strings must have the same length");
 }
 
@@ -251,7 +253,7 @@ function nextPowOfTwo(num: number) : number {
 }
 
 function equalizeSize(n1: Integer, n2: Integer) : [Integer, Integer] {
-    if(n1.maxBitSize == n2.maxBitSize)
+    if(n1.maxBitSize === n2.maxBitSize)
     {
         if(n1.signed === n2.signed) return [n1,n2];
 

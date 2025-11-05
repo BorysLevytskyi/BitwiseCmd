@@ -1,4 +1,4 @@
-import { faTrashAlt, faHashtag, faLink, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faLink, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import AppState from '../AppState';

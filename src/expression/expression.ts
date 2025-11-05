@@ -26,7 +26,7 @@ class ExpressionParser {
         var trimmed = input.replace(/^\s+|\s+$/, '');
         var i = this.factories.length-1;
         for(;i>=0;i--) {
-            if(this.factories[i].canCreate(trimmed) === true){
+            if(this.factories[i].canCreate(trimmed)){
                 return true;
             }
         }
@@ -41,7 +41,7 @@ class ExpressionParser {
 
             factory = this.factories[i];
 
-            if(factory.canCreate(trimmed) == true){
+            if(factory.canCreate(trimmed)){
                 return factory.create(trimmed);
             }
         }
@@ -56,17 +56,14 @@ class ExpressionParser {
 
 class ListOfNumbersExpressionFactory implements IExpressionParserFactory
 {
-    constructor() {
-    }
-
     canCreate (input: string): boolean {
-        if(input.length == 0) return false;
-        
+        if(input.length === 0) return false;
+
         return input.split(' ')
             .filter(p => p.length > 0)
             .map(p => numberParser.caseParse(p))
-            .filter(n => n == false)
-            .length == 0;
+            .filter(n => n === false)
+            .length === 0;
     };
 
     create (input : string) : Expression {
@@ -84,8 +81,8 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
     regex: RegExp;
 
     constructor() {
-        this.fullRegex = /^[-,~,<,>,&,\^\|,b,x,l,s,u,a-f,0-9,\s]+$/i;
-        this.regex = /(<<|>>|>>>|\||\&|\^)?(~?-?(?:[b,x,l,s,u,,a-f,0-9]+))/gi;
+        this.fullRegex = /^[-,~,<,>,&,^|,b,x,l,s,u,a-f,0-9,\s]+$/i;
+        this.regex = /(<<|>>|>>>|\||&|\^)?(~?-?(?:[b,x,l,s,u,,a-f,0-9]+))/gi;
     }
 
     canCreate (input: string) : boolean {
@@ -100,7 +97,7 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
 
         this.regex.lastIndex = 0;
 
-        while ((m = this.regex.exec(normalizedString)) != null) {
+        while ((m = this.regex.exec(normalizedString)) !== null) {
             operands.push(this.parseMatch(m));
         }
                 
@@ -109,20 +106,19 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
 
     parseMatch (m:RegExpExecArray): ExpressionElement {
 
-        var input = m[0],
-            operator = m[1],
+        var operator = m[1],
             num = m[2];
 
         var parsed = null;
 
-        if(num.indexOf('~') == 0) {
+        if(num.indexOf('~') === 0) {
             parsed = new Operator(parseScalarValue(num.substring(1)), '~');
         }
         else {
             parsed = parseScalarValue(num);
         }
 
-        if(operator == null) {
+        if(operator === undefined || operator === null) {
             return parsed as Operator;
         } else {
             return new Operator(parsed as Operand, operator);
@@ -137,7 +133,7 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
 function parseScalarValue(input : string) : Operand {
     const n = numberParser.parse(input);
     var sv = new Operand(n.value, n.base);
-    if(sv.value.maxBitSize != n.value.maxBitSize) throw new Error("Gotcha!");
+    if(sv.value.maxBitSize !== n.value.maxBitSize) throw new Error("Gotcha!");
     return sv;
 }
 

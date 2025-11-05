@@ -1,4 +1,4 @@
-import { ExpressionElement as ExpressionElement } from './expression-interfaces';
+import { ExpressionElement } from './expression-interfaces';
 import { NumberBase } from '../core/formatter';
 import { INT64_MAX_VALUE, INT64_MIN_VALUE, UINT64_MAX_VALUE } from '../core/const';
 import { Integer, JsNumber, isInteger, asInteger } from '../core/Integer';

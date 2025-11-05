@@ -10,8 +10,9 @@ export type AnalyticsHandler = (evt: AnalyticsEvent) => boolean;
 
 function sendAnalyticsEvent(evt : AnalyticsEvent) {
     const handler = (window as any).bitwiseCmdAnalyticsHandler;
-    if(handler == null) {
+    if(handler === null || handler === undefined) {
         log.debug('ERROR!!!: Analytics event was not sent. Handler not found');
+        return;
     }
 
     const delivered = (handler as AnalyticsHandler)(evt);

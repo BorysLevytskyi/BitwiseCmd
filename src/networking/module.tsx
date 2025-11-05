@@ -9,7 +9,6 @@ import log from 'loglevel';
 import SubnetView from './components/SubnetView';
 import { createSubnetMaskIp } from './subnet-utils';
 import {sendAnalyticsEvent} from '../shell/analytics';
-import TextResultView from '../shell/components/TextResultView';
 import VpcView from './components/VpcView';
 
 const networkingAppModule = {
@@ -17,11 +16,14 @@ const networkingAppModule = {
         
         // Add Ip Address commands
         cmd.command({
-            canHandle: (input:string) => ipAddressParser.parse(input) != null,
+            canHandle: (input:string) => {
+                const parsed = ipAddressParser.parse(input);
+                return parsed !== null && parsed !== undefined;
+            },
             handle: function(c: CommandInput) {
                 var result = ipAddressParser.parse(c.input);
 
-                if(result == null)
+                if(result === null || result === undefined)
                     return;
 
                 if(result instanceof ParsingError) {

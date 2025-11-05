@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SettingsPane.css';
-import { faGear, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
+import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import AppState from '../AppState';
 
 type SettingsPaneProps = {
@@ -15,7 +15,7 @@ function SettingsPane(props : SettingsPaneProps) {
         <div className="inner solid-border">
             <h3>Settings</h3>
             <div className='setting'>
-                <button onClick={() => appState.toggleEmphasizeBytes()}>
+                <button type="button" onClick={() => appState.toggleEmphasizeBytes()}>
                     <FontAwesomeIcon size='xl' icon={appState.emphasizeBytes ? faToggleOn : faToggleOff} /> Emphasize Bytes
                 </button>
                 <p className='description'>
@@ -25,7 +25,7 @@ function SettingsPane(props : SettingsPaneProps) {
                 </p>
             </div>
             <div className='setting'>
-                <button onClick={() => appState.toggleDimExtrBits()}>
+                <button type="button" onClick={() => appState.toggleDimExtrBits()}>
                     <FontAwesomeIcon size='xl' icon={appState.dimExtraBits ? faToggleOn : faToggleOff} /> Dim Extra Bits
                 </button>
                 <p className='description'>
@@ -35,7 +35,7 @@ function SettingsPane(props : SettingsPaneProps) {
                 </p>
             </div>
             <div className='setting'>
-                <button onClick={() => appState.toggleAnnotateTypes()}>
+                <button type="button" onClick={() => appState.toggleAnnotateTypes()}>
                     <FontAwesomeIcon size='xl' icon={appState.annotateTypes ? faToggleOn : faToggleOff} /> Annotate Data Types
                 </button>
                 <p className='description'>

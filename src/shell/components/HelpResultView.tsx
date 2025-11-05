@@ -3,7 +3,7 @@ import CommandLink from '../../core/components/CommandLink';
 import './HelpResultView.css';
 import { INT32_MAX_VALUE, INT32_MIN_VALUE } from '../../core/const';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleExclamation, faWarning } from '@fortawesome/free-solid-svg-icons';
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 function HelpResultView() {
 
@@ -59,7 +59,7 @@ function HelpResultView() {
                         <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
                     </ul>
                     <div className='important-note'>
-                        <FontAwesomeIcon icon={faCircleExclamation} size='lg'/> <a target='_blank' href='https://en.cppreference.com/w/c/language/operator_precedence'>Operator precedence</a> is IGNORED. Operators are executed <strong>left-to-right</strong>.
+                        <FontAwesomeIcon icon={faCircleExclamation} size='lg'/> <a target='_blank' href='https://en.cppreference.com/w/c/language/operator_precedence' rel="noreferrer">Operator precedence</a> is IGNORED. Operators are executed <strong>left-to-right</strong>.
                     </div>
                 </div>
                 <div className="section soft-border">

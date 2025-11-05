@@ -6,7 +6,7 @@ const formatter = {
     numberToString: function(num: Integer | JsNumber, base: NumberBase | number, padLength?: number) : string {
      
         num = asInteger(num);
-        base = typeof base == "string" ? getBase(base) : base;
+        base = typeof base === "string" ? getBase(base) : base;
 
         switch(base) {
             case 16:
@@ -15,7 +15,7 @@ const formatter = {
             case 2:    
                 const bin = calc.toBinaryString(num);
                 
-                if(padLength == null) 
+                if(padLength === null || padLength === undefined)
                     return bin;
                 
                 const padChar = num.value >= 0 ? '0' : '1';
@@ -27,14 +27,15 @@ const formatter = {
         }
     },
     padLeft: function (str: string, length: number, symbol: string) : string {
-        var sb = Array.prototype.slice.call(str), symbol = symbol || "0";
+        const fillCharacter = symbol ?? "0";
+        const sb: string[] = Array.prototype.slice.call(str);
 
-        if(length == null) {
+        if(length === null || length === undefined) {
             return str;
         }
 
         while(length > sb.length) {
-            sb.unshift(symbol);
+            sb.unshift(fillCharacter);
         }
 
         return sb.join('');
@@ -66,7 +67,7 @@ const formatter = {
 
             mask++;
 
-            if(mask == b) {
+            if(mask === b) {
                 b = mask2;
                 res.push(tmp.join(''));
                 tmp = [];

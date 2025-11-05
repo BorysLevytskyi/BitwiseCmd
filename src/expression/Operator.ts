@@ -23,12 +23,12 @@ export default class Operator implements ExpressionElement {
         if (operand instanceof Operator)
             throw new Error('operand must be scalar value'); 
         
-        if( this.operator != "~" && operand == null)
+        if( this.operator !== "~" && (operand === undefined || operand === null))
             throw new Error("operand is required");
 
         var evaluatedOperand = this.operand.evaluate();
 
-        return this.operator == "~"
+        return this.operator === "~"
             ? applyNotOperator(this.operand.getUnderlyingOperand())
             : applyOperator(operand!, this.operator, evaluatedOperand);
     }
@@ -52,7 +52,7 @@ function applyOperator(op1 : Operand, operator: string, op2 : Operand) : Operand
 
     if(!isShift)
     {
-        if(op1.value.maxBitSize == op2.value.maxBitSize && op1.value.signed != op2.value.signed)
+        if(op1.value.maxBitSize === op2.value.maxBitSize && op1.value.signed !== op2.value.signed)
             throw new Error("Operator `" + operator + "` cannot be applied to signed and unsigned operands of the same " + op2.value.maxBitSize + " -bit size");
 
         equalizeSize(op1, op2);

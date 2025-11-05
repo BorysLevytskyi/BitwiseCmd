@@ -3,7 +3,6 @@ import InputBox from './InputBox';
 import DisplayResultView from './DisplayResultView';
 import AppState, { CommandResultView } from '../AppState';
 import cmd from '../cmd';
-import log from 'loglevel';
 import DebugIndicators from './DebugIndicators';
 import hash from '../../core/hash';
 import TopLinks from './TopLinks';
@@ -49,10 +48,10 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
 
     render() {
 
-        const enableNewUi = this.props.appState.env != 'prod' || true;
+        const enableNewUi = this.props.appState.env !== 'prod' || true;
         const newUi = enableNewUi ? 'new-ui' : '';
         const settingsCss = "settings-button" + (this.props.appState.showSettings ? '' : ' soft');
-        
+
         return <div className={`app-root ${this.state.uiTheme} ${newUi}`}>
                     <DebugIndicators appState={this.props.appState} />
                     <div className="header">
@@ -64,7 +63,9 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                     <div className="expressionInput-container">
                         <InputBox onCommandEntered={(input) => cmd.execute(input)} />
                         
-                        <button className={settingsCss} title='Toggle Settings'><FontAwesomeIcon icon={faGear} onClick={() => this.props.appState.toggleShowSettings()} /></button>                            
+                        <button className={settingsCss} title='Toggle Settings' type="button" onClick={() => this.props.appState.toggleShowSettings()}>
+                            <FontAwesomeIcon icon={faGear} />
+                        </button>
 
                     </div>
                     {this.props.appState.showSettings ? <SettingsPane appState={this.props.appState} /> : null}

@@ -1,9 +1,9 @@
-export default {
+const hashUtils = {
     encodeHash: function(input:string):string {
         return encodeURIComponent(input.trim().replace(/\s/g,','));
     },
     decodeHash: function(hashValue:string):string {
-        return decodeURIComponent(hashValue.replace(/^\#/, '')).replace(/,/g,' ');
+        return decodeURIComponent(hashValue.replace(/^#/, '')).replace(/,/g,' ');
     },
     getArgs: function (hashValue:string) : string[] {
 
@@ -17,6 +17,8 @@ export default {
         return args;
     }
 };
+
+export default hashUtils;
 
 function splitHashList(str: string) : string[] {
 
