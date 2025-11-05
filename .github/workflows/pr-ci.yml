@@ -8,6 +8,8 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      BITWISECMD_TESTS_TOKEN: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -33,18 +35,18 @@ jobs:
           npx --yes wait-on --timeout=120000 http-get://127.0.0.1:3030
 
       - name: Ensure BitwiseCmdTests access token is configured
-        if: ${{ secrets.BITWISECMD_TESTS_TOKEN == '' }}
+        if: ${{ env.BITWISECMD_TESTS_TOKEN == '' }}
         run: |
           echo "::error::Add a personal access token with repo scope as the BITWISECMD_TESTS_TOKEN repository secret so the CI job can clone BitwiseCmdTests."
           exit 1
 
       - name: Checkout BitwiseCmdTests repository
-        if: ${{ secrets.BITWISECMD_TESTS_TOKEN != '' }}
+        if: ${{ env.BITWISECMD_TESTS_TOKEN != '' }}
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository_owner }}/BitwiseCmdTests
           path: BitwiseCmdTests
-          token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
+          token: ${{ env.BITWISECMD_TESTS_TOKEN }}
 
       - name: Install BitwiseCmdTests dependencies
         working-directory: BitwiseCmdTests
