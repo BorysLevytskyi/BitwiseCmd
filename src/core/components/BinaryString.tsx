@@ -1,6 +1,5 @@
 import React from 'react';
 import './BinaryString.css';
-import loglevel from 'loglevel';
 
 export type BinaryStringViewProps = {
     allowFlipBits?: boolean;
@@ -32,7 +31,7 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         }
 
         const arr = this.props.binaryString.split('');
-        arr[index] = arr[index] == '0' ? '1' : '0';
+        arr[index] = arr[index] === '0' ? '1' : '0';
         const newBinaryString = arr.join('');
 
         this.props.onBitClicked({
@@ -59,13 +58,13 @@ export default class BinaryStringView extends React.Component<BinaryStringViewPr
         const css = allowFlipBits ? ' flipable' : ''
 
         const disableHighlight = this.props.disableHighlight || false;
-        const firstBitIndex = this.props.valueBitSize != null 
+        const firstBitIndex = this.props.valueBitSize !== null && this.props.valueBitSize !== undefined
             ?  bitChars.length - this.props.valueBitSize
             : -1;
 
         return bitChars.map((c, i) => {
 
-            var className = c == '1' ? `one${css}` : `zero${css}`;
+            var className = c === '1' ? `one${css}` : `zero${css}`;
             var tooltip = '';
 
             

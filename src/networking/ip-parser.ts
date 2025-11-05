@@ -17,10 +17,10 @@ const ipAddressParser = {
         const result = this.parseCommand(input);
 
         const matches = this.getMaches(result.nextInput);
-        const correctInputs = matches.filter(m => m.matches != null);
-        const incorrectInputs = matches.filter(m => m.matches == null);
-        
-        if(correctInputs.length == 0)
+        const correctInputs = matches.filter(m => m.matches !== null && m.matches !== undefined);
+        const incorrectInputs = matches.filter(m => m.matches === null || m.matches === undefined);
+
+        if(correctInputs.length === 0)
             return null;
 
         if(incorrectInputs.length > 0) {
@@ -34,9 +34,9 @@ const ipAddressParser = {
             return parsingErrors[0] as ParsingError;
         }
 
-        if(result.command != null) {
-            const cmd = 
-             result.command == CMD_SUBNET 
+        if(result.command !== null) {
+            const cmd =
+             result.command === CMD_SUBNET
                 ? this.createSubnetDefinition(parsedObjects as ParsedIpObject[])
                 : this.createVpcDefinition(parsedObjects as ParsedIpObject[]);
             
@@ -62,15 +62,15 @@ const ipAddressParser = {
 
     getMaches(input : string) : { matches: RegExpExecArray | null, input: string }[] {
 
-        return input.
-            replace(/[\t\s]+/g, ' ')
-                .split(' ')
+        return input
+            .replace(/[\t\s]+/g, ' ')
+            .split(' ')
                 .filter(s => s.length>0)
                 .map(s => {
                     const ipV4Regex = /^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})(\/\d+)?$/;
                     const matches = ipV4Regex.exec(s);
                     
-                    if(matches == null || matches.length === 0)
+                    if(matches === null || matches.length === 0)
                         return {matches: null, input: s};
                     
                     return {matches, input: s};
@@ -105,7 +105,7 @@ const ipAddressParser = {
     },
 
     createSubnetDefinition(items: ParsedIpObject[]) : SubnetCommand | ParsingError {
-        if(items.length != 1)
+        if(items.length !== 1)
             return new ParsingError("Incorrect network definition");
         
         const first = items[0];
@@ -118,7 +118,7 @@ const ipAddressParser = {
 
     createVpcDefinition(items: ParsedIpObject[]) : VpcCommand | ParsingError {
 
-        if(items.length != 1)
+        if(items.length !== 1)
             return new ParsingError("Incorrect VPC definition");
         
         const first = items[0];

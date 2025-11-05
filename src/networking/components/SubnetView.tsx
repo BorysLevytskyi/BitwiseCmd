@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import BinaryStringView from '../../core/components/BinaryString';
 import './SubnetView.css';
 import { getNetworkAddress, getBroadCastAddress, createSubnetMaskIp } from '../subnet-utils';
-import { chunkifyString } from '../../core/utils';
 import IpAddressBinaryString from './IpAddressBinaryString';
 import { IpAddress, IpAddressWithSubnetMask, SubnetCommand } from '../models';
 
@@ -41,9 +39,9 @@ function SubnetView(props : {subnet : SubnetCommand}) {
                         </td>
                         <td data-test-name="decimal">
                            
-                            <button className="btn" onClick={decrementMask} disabled={subnet.cidr.maskBits === 0} title="Decrease mask size">-</button>
+                            <button type="button" className="btn" onClick={decrementMask} disabled={subnet.cidr.maskBits === 0} title="Decrease mask size">-</button>
                             <span>{subnet.cidr.maskBits}</span>
-                            <button className="btn"onClick={incrementMask} disabled={subnet.cidr.maskBits === 32} title="Increase mask size">+</button>
+                            <button type="button" className="btn"onClick={incrementMask} disabled={subnet.cidr.maskBits === 32} title="Increase mask size">+</button>
                         </td>
                     </tr>
             </tbody>

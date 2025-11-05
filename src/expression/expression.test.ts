@@ -114,7 +114,7 @@ describe("comparison with nodejs engine", () => {
                 const res = bo.evaluate();
                 actual = res.value.toString();
 
-                if(actual != expected) {
+                if(actual !== expected) {
                     const uop = bo.getUnderlyingOperand();
                     console.log(`Expected:${expectedInput}\nActual:${actualInput}\n${uop.value} ${uop.value.maxBitSize}\n${res.value} ${typeof res.value} ${res.value.maxBitSize}`)
                 }

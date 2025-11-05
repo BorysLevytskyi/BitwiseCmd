@@ -49,7 +49,7 @@ export default class AppState {
         this.uiTheme = persistData.uiTheme;
         this.emphasizeBytes = !!persistData.emphasizeBytes;
         this.persistedVersion = persistData.version || 0.1;
-        this.wasOldVersion = persistData.version != null && this.version > this.persistedVersion;
+        this.wasOldVersion = persistData.version !== null && persistData.version !== undefined && this.version > this.persistedVersion;
         this.debugMode = persistData.debugMode === true;
         this.pageVisitsCount = persistData.pageVisistsCount || 0;
         this.donationClicked = persistData.donationClicked;
@@ -79,7 +79,7 @@ export default class AppState {
     }
 
     toggleEmphasizeBytes(value?: boolean) {
-        this.emphasizeBytes = value != null ? value : !this.emphasizeBytes;
+        this.emphasizeBytes = value !== null && value !== undefined ? value : !this.emphasizeBytes;
         this.triggerChanged();
     }
 
@@ -107,7 +107,7 @@ export default class AppState {
     }
 
     toggleAnnotateTypes(value?: boolean) {
-        this.annotateTypes = value != null ? value : !this.annotateTypes;
+        this.annotateTypes = value !== null && value !== undefined ? value : !this.annotateTypes;
         this.triggerChanged();
     }
 

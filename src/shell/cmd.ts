@@ -36,19 +36,19 @@ export class CmdShell {
 
         log.debug(`Executing command: ${rawInput}`);
 
-        ops = ops || Object.assign({}, DEFUALT_COMMAND_OPTIONS);
+        const resolvedOps = ops ?? Object.assign({}, DEFUALT_COMMAND_OPTIONS);
 
-        var input = rawInput.trim().toLowerCase();
-        var handler = this.findHandler(input);
+        const input = rawInput.trim().toLowerCase();
+        const handler = this.findHandler(input);
 
-        if(handler != null) {
+        if(handler !== null) {
             // if(this.debugMode) {
             //     this.invokeHandler(input, handler, ops);
             //     return
             // }
 
             try {
-                this.invokeHandler(input, handler, ops);
+                this.invokeHandler(input, handler, resolvedOps);
             } catch (e) {
                  this.handleError(input, e as Error);
             }
@@ -64,8 +64,8 @@ export class CmdShell {
     }
    
     command (cmd : string | object, handler? : any) {
-        var h = this.createHandler(cmd, handler);
-        if(h == null){
+        const h = this.createHandler(cmd, handler);
+        if(h === null){
             console.warn('unexpected set of arguments: ', JSON.stringify(arguments));
             return;
         }
@@ -96,25 +96,27 @@ export class CmdShell {
     }
 
     findHandler (input: string) : ICommandHandler | null {
-        return this.handlers.filter(h => h.canHandle(input))[0];
+        return this.handlers.find(h => h.canHandle(input)) ?? null;
     };
 
     invokeHandler (input : string, handler : ICommandHandler, options: CommandOptions) {
 
-        var cmdResult = handler.handle({ input: input, options });
-        if(cmdResult != null) {
+        const cmdResult = handler.handle({ input: input, options });
+        if(cmdResult !== null && cmdResult !== undefined) {
             log.debug(cmdResult);
         }
     };
 
     handleError (input: string, err: Error) {
-        
+
         if(this.debugMode)
             console.error(input, err);
 
-        if(this.errorHandler != null)
+        if(this.errorHandler !== null)
             this.errorHandler(input, err);
     }
 }
 
-export default new CmdShell();
+const cmdShell = new CmdShell();
+
+export default cmdShell;

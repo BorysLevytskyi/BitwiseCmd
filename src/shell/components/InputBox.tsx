@@ -1,5 +1,4 @@
 import React from 'react';
-import log from 'loglevel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,7 +20,7 @@ export default class InputBox extends React.Component<IInputBoxProps> {
     }
 
     componentDidMount(){
-        if(this.nameInput != null)
+        if(this.nameInput !== null)
             this.nameInput.focus();
     }
 
@@ -40,7 +39,7 @@ export default class InputBox extends React.Component<IInputBoxProps> {
 
     onKeyUp(e: any) {
         var input = e.target;
-        if (e.keyCode != 13 || input.value.trim().length == 0) {
+        if (e.keyCode !== 13 || input.value.trim().length === 0) {
             return;
         }
         
@@ -54,7 +53,7 @@ export default class InputBox extends React.Component<IInputBoxProps> {
 
     onKeyDown(args: any) {
 
-        if(args.keyCode == 38) {
+        if(args.keyCode === 38) {
             var newIndex = this.historyIndex+1;
 
             if (this.history.length > newIndex) { // up
@@ -66,7 +65,7 @@ export default class InputBox extends React.Component<IInputBoxProps> {
             return;
         }
 
-        if(args.keyCode == 40) {
+        if(args.keyCode === 40) {
             if(this.historyIndex > 0) { // down
                 args.target.value = this.history[--this.historyIndex];
             }

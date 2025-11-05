@@ -63,7 +63,7 @@ function tokenize(input: string): Token[] {
             if (!firstToken.skip)
                 found.push({value: value, type: firstToken.type});
 
-            if (cur.length == value.length)
+            if (cur.length === value.length)
                 break;
 
             cur = cur.substring(value.length);

@@ -7,7 +7,7 @@ import { Operator, Operand, ListOfNumbers } from '../expression';
 import calc from '../../core/calc';
 import { Integer } from '../../core/Integer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faTriangleExclamation, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faUndo } from '@fortawesome/free-solid-svg-icons';
 import loglevel from 'loglevel';
 import IconWithToolTip from '../../shell/components/IconWithTooltip';
 
@@ -191,7 +191,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
     }
 
     getLabelString(op: Operand): string {
-        return formatter.numberToString(op.value, op.base == 'bin' ? 'dec' : op.base);
+        return formatter.numberToString(op.value, op.base === 'bin' ? 'dec' : op.base);
     }
 
     undo() {
@@ -201,7 +201,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
 
     onBitClicked(args: BitClickedEventArg) {
 
-        const { bitIndex, binaryStringLength: binaryStringLength } = args;
+        const { bitIndex, binaryStringLength } = args;
 
         const maxBitSize = this.scalar.value.maxBitSize;
 

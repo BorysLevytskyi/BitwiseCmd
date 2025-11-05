@@ -40,7 +40,7 @@ function getStartupCommands(appState : AppState) : string[] {
 
     var startupCommands = loadStoredCommands();
 
-    if(startupCommands.length == 0) 
+    if(startupCommands.length === 0)
         startupCommands = DEFAULT_COMMANDS;
 
     if(appState.wasOldVersion) {
@@ -49,7 +49,7 @@ function getStartupCommands(appState : AppState) : string[] {
 
     if(hashArgs.length > 0) {
 
-        if(hashArgs.indexOf('empty')==-1)
+        if(hashArgs.indexOf('empty') === -1)
             startupCommands = hashArgs;
     }
 
@@ -60,11 +60,11 @@ function getStartupCommands(appState : AppState) : string[] {
 
 function loadStoredCommands() : string[] {
     const json = localStorage.getItem(STARTUP_COMMAND_KEY);
-    return json != null ? [json] : []; 
+    return json !== null && json !== undefined ? [json] : [];
 }
 
 function setupLogger(env: Env) {
-    if(env != 'prod'){
+    if(env !== 'prod'){
         log.setLevel("debug");
         log.debug(`Log level is set to debug. Env: ${env}`)
     } else {

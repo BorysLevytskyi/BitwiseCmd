@@ -7,7 +7,7 @@ function DebugIndicators(props:  {appState: AppState}) {
     const list = [];
     const state = props.appState;
 
-    if(props.appState.env != 'prod') {
+    if(props.appState.env !== 'prod') {
         list.push(state.env);
     }
 
@@ -19,7 +19,7 @@ function DebugIndicators(props:  {appState: AppState}) {
         list.push("notrack");
     }
 
-    if(list.length == 0)
+    if(list.length === 0)
         return null;
 
     return <div className="debug-indicators">

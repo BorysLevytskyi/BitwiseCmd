@@ -1,6 +1,5 @@
-import { type } from "os";
 import { INT32_MAX_VALUE, INT32_MIN_VALUE, UINT32_MAX_VALUE } from "./const";
-import { asIntN, logLines as ln } from "./utils";
+import { asIntN } from "./utils";
 import formatter from "./formatter";
 import calc from "./calc";
 
@@ -15,9 +14,10 @@ export class Integer {
 
     constructor(value: IntegerInput, maxBitSize?: number, signed? : boolean) {
 
-        this.value = typeof value == "bigint" ? value : BigInt(value);
-        this.signed = signed == null ? true : signed == true;
-        this.maxBitSize = maxBitSize != null ? maxBitSize : detectSize(this.value, this.signed);
+        this.value = typeof value === "bigint" ? value : BigInt(value);
+        const resolvedSigned = signed ?? true;
+        this.signed = resolvedSigned;
+        this.maxBitSize = maxBitSize ?? detectSize(this.value, this.signed);
 
         if(!this.signed && this.value < 0)
             throw new Error("Value " + value + " cannot be negative if the type is unsigned");
@@ -54,7 +54,7 @@ export class Integer {
     }
 
     isTheSame  (other : Integer) : boolean {
-        return this.value == other.value && this.signed == other.signed && this.maxBitSize == other.maxBitSize;
+        return this.value === other.value && this.signed === other.signed && this.maxBitSize === other.maxBitSize;
     }
 
     toUnsigned() {
@@ -71,9 +71,9 @@ export class Integer {
         
         const orig = this.toString(2).padStart(this.maxBitSize, '0');
 
-        const inverted = orig[0] == '1' ? calc.engine.applyTwosComplement(orig) : orig; 
+        const inverted = orig[0] === '1' ? calc.engine.applyTwosComplement(orig) : orig;
         const n = BigInt("0b"+inverted);
-        const negative = orig[0] == '1';
+        const negative = orig[0] === '1';
         
         return new Integer(negative ? -n : n, this.maxBitSize, true)
     }
@@ -118,24 +118,24 @@ export class Integer {
 
 export function asInteger(num: JsNumber | Integer | string): Integer {
 
-    if(typeof num == "string")
+    if(typeof num === "string")
         return asInteger(BigInt(num));
 
-    if(isInteger(num)) 
+    if(isInteger(num))
         return num;
 
-    if(typeof num == "number" && isNaN(num)) {
+    if(typeof num === "number" && isNaN(num)) {
         throw new Error("Cannot create BoundedNumber from NaN");
     }
 
     const size = num > INT32_MAX_VALUE || num < INT32_MIN_VALUE ? 64 : 32;
-    
-    const n = typeof num == "bigint" ? num : BigInt(num);
+
+    const n = typeof num === "bigint" ? num : BigInt(num);
     return new Integer(n, size);
 }
 
 export function isInteger(num: JsNumber | Integer): num is Integer {
-    return (<Integer>num).maxBitSize !== undefined;
+    return (num as Integer).maxBitSize !== undefined;
 }
 function detectSize(value: bigint, signed: boolean): number {
     

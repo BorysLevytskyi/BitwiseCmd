@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import BinaryStringView from '../../core/components/BinaryString';
 import './VpcView.css';
 import { getNetworkAddress, getAddressSpaceSize } from '../subnet-utils';
-import IpAddressBinaryString from './IpAddressBinaryString';
-import { IpAddress, IpAddressWithSubnetMask, VpcCommand } from '../models';
+import { IpAddressWithSubnetMask, VpcCommand } from '../models';
 import formatter from '../../core/formatter';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import IconWithToolTip from '../../shell/components/IconWithTooltip';
@@ -57,9 +56,9 @@ function SubnetView(props: { vpc: VpcCommand }) {
                             VPC CIDR Mask:
                     </td>
                         <td>
-                            <button className="btn" onClick={decrVpc} disabled={vpc.cidr.maskBits <= 1} title="Decrease vpc address bits">-</button>
-                         /{vpc.cidr.maskBits}
-                            <button className="btn" onClick={incrVpc} disabled={subnetMaskSize >= MAX_NON_HOSTS_BITS} title="Increse vpc address bits">+</button>
+                            <button type="button" className="btn" onClick={decrVpc} disabled={vpc.cidr.maskBits <= 1} title="Decrease vpc address bits">-</button>
+                            /{vpc.cidr.maskBits}
+                            <button type="button" className="btn" onClick={incrVpc} disabled={subnetMaskSize >= MAX_NON_HOSTS_BITS} title="Increase vpc address bits">+</button>
                         </td>
                     </tr>
                     <tr>
@@ -67,9 +66,9 @@ function SubnetView(props: { vpc: VpcCommand }) {
                             Subnet CIDR Mask:
                     </td>
                         <td>
-                            <button className="btn" onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Increase subnet bits">-</button>
-                        /{subnetMaskSize}
-                            <button className="btn" onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= MAX_NON_HOSTS_BITS} title="Increase subnet bits">+</button>
+                            <button type="button" className="btn" onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Increase subnet bits">-</button>
+                            /{subnetMaskSize}
+                            <button type="button" className="btn" onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= MAX_NON_HOSTS_BITS} title="Increase subnet bits">+</button>
                         </td>
                     </tr>
                     <tr>
@@ -77,9 +76,9 @@ function SubnetView(props: { vpc: VpcCommand }) {
                             Max Subnets in VPC:
                     </td>
                         <td>
-                            <button className="btn" onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Decrease subnet bits">-</button>
+                            <button type="button" className="btn" onClick={decrSubnet} disabled={vpc.subnetBits <= 1} title="Decrease subnet bits">-</button>
                             {maxSubnets}
-                            <button className="btn" onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= MAX_NON_HOSTS_BITS} title="Increase subnet bits">+</button>
+                            <button type="button" className="btn" onClick={incrSubnet} disabled={vpc.cidr.maskBits + vpc.subnetBits >= MAX_NON_HOSTS_BITS} title="Increase subnet bits">+</button>
                         </td>
                     </tr>
                     <tr>
@@ -102,21 +101,6 @@ function SubnetView(props: { vpc: VpcCommand }) {
             </table>
         </div>
     </React.Fragment>;
-}
-
-function Indicator2(props: { ip: IpAddress, descr: string }) {
-
-    const { ip, descr } = props;
-
-    return <tr>
-        <td className="soft" data-test-name="label">{descr}</td>
-        <td data-test-name="decimal" className="ip-address-col">
-            {ip.toString()}
-        </td>
-        <td data-test-name="bin">
-            <IpAddressBinaryString ip={ip} />
-        </td>
-    </tr>;
 }
 
 export default SubnetView;

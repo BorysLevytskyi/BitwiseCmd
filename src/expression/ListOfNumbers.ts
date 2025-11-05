@@ -1,6 +1,6 @@
 import calc from "../core/calc";
 import Operand from "./Operand";
-import { Expression, ExpressionElement } from "./expression-interfaces";
+import { Expression } from "./expression-interfaces";
 
 export default class ListOfNumbers implements Expression {
     children: Operand[];
