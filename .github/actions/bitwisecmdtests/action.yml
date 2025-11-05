@@ -1,0 +1,88 @@
+name: Run BitwiseCmdTests
+
+description: Run BitwiseCmdTests end-to-end suites against an externally hosted application.
+
+inputs:
+  test-command:
+    description: npm script name to execute inside BitwiseCmdTests
+    required: true
+  base-url:
+    description: Optional BASE_URL for BitwiseCmdTests
+    required: false
+    default: ''
+  upload-artifact:
+    description: Upload the BitwiseCmdTests log as an artifact
+    required: false
+    default: 'false'
+  artifact-name:
+    description: Artifact name when uploading logs
+    required: false
+    default: bitwisecmdtests-results
+  node-version:
+    description: Node.js version to install
+    required: false
+    default: '18'
+  bitwisecmd-tests-token:
+    description: Personal access token with repo scope for BitwiseCmdTests checkout
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs['node-version'] }}
+
+    - name: Ensure BitwiseCmdTests access token is configured
+      if: ${{ inputs['bitwisecmd-tests-token'] == '' }}
+      shell: bash
+      run: |
+        echo "::error::Add a personal access token with repo scope as the BITWISECMD_TESTS_TOKEN repository secret so the workflow can clone BitwiseCmdTests."
+        exit 1
+
+    - name: Checkout BitwiseCmdTests repository
+      if: ${{ inputs['bitwisecmd-tests-token'] != '' }}
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository_owner }}/BitwiseCmdTests
+        path: BitwiseCmdTests
+        token: ${{ inputs['bitwisecmd-tests-token'] }}
+
+    - name: Install BitwiseCmdTests dependencies
+      if: ${{ inputs['bitwisecmd-tests-token'] != '' }}
+      shell: bash
+      working-directory: BitwiseCmdTests
+      run: npm install --no-audit --no-fund
+
+    - name: Run BitwiseCmdTests
+      if: ${{ inputs['bitwisecmd-tests-token'] != '' }}
+      shell: bash
+      working-directory: BitwiseCmdTests
+      env:
+        CHROME_ARGS: --headless=new --disable-gpu --no-sandbox --disable-dev-shm-usage --window-size=1280,720
+        BASE_URL: ${{ inputs['base-url'] }}
+        TEST_COMMAND: ${{ inputs['test-command'] }}
+        SHOULD_UPLOAD: ${{ inputs['upload-artifact'] }}
+      run: |
+        if [ -n "$BASE_URL" ]; then
+          export BASE_URL
+        else
+          unset BASE_URL
+        fi
+
+        if [ "$SHOULD_UPLOAD" = 'true' ]; then
+          set -o pipefail
+          xvfb-run --auto-servernum -- bash -c "npm run $TEST_COMMAND" | tee bitwisecmdtests-results.log
+        else
+          xvfb-run --auto-servernum -- npm run "$TEST_COMMAND"
+        fi
+
+    - name: Upload test results artifact
+      if: ${{ inputs['upload-artifact'] == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs['artifact-name'] }}
+        path: BitwiseCmdTests/bitwisecmdtests-results.log
+        if-no-files-found: warn
