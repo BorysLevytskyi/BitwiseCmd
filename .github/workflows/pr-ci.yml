@@ -28,9 +28,9 @@ jobs:
 
       - name: Start static web server
         run: |
-          nohup npx --yes http-server ./build -p 3030 --silent > server.log 2>&1 &
+          npx --yes http-server ./build -p 3030 --silent </dev/null > server.log 2>&1 &
           echo $! > server.pid
-          npx --yes wait-on http://localhost:3030
+          npx --yes wait-on --timeout=120000 http-get://127.0.0.1:3030
 
       - name: Checkout BitwiseCmdTests repository
         uses: actions/checkout@v4
