@@ -100,6 +100,7 @@ jobs:
           exit $curl_status
 
       - name: Commit gh-pages contents
+        id: commit-gh-pages
         run: |
           if [ -z "${commit_hash:-}" ]; then
             echo "commit_hash was not set" >&2
@@ -116,9 +117,15 @@ jobs:
           fi
           if git diff --cached --quiet; then
             echo "No changes to commit"
+            echo "commit_made=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Application release"
+            echo "commit_made=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Push gh-pages commit
+        if: steps.commit-gh-pages.outputs.commit_made == 'true'
+        run: git push origin gh-pages
 
       - name: Wait for production deployment
         run: |
