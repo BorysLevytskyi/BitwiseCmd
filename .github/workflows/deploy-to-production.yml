@@ -1,9 +1,7 @@
-name: Manual gh-pages Preview
+name: Deploy to Production
 
 on:
   workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 jobs:
   preview-gh-pages:
