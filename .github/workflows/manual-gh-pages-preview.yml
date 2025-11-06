@@ -1,0 +1,75 @@
+name: Manual gh-pages Preview
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  preview-gh-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build application
+        env:
+          CI: true
+        run: npm run build
+
+      - name: Preserve build output
+        run: |
+          rm -rf /tmp/gh-pages-build
+          cp -R build /tmp/gh-pages-build
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Clean gh-pages workspace
+        run: |
+          shopt -s dotglob
+          for path in *; do
+            if [ "$path" != ".git" ]; then
+              rm -rf "$path"
+            fi
+          done
+
+      - name: Copy build output to gh-pages root
+        run: |
+          cp -R /tmp/gh-pages-build/* ./
+
+      - name: Start static web server
+        run: |
+          npx --yes http-server ./ -p 3030 --silent </dev/null > server.log 2>&1 &
+          echo $! > server.pid
+          npx --yes wait-on --timeout=120000 http-get://127.0.0.1:3030
+
+      - name: Run BitwiseCmdTests
+        uses: ./.github/actions/bitwisecmdtests
+        with:
+          test-command: test-build
+          base-url: http://127.0.0.1:3030
+          bitwisecmd-tests-token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
+
+      - name: Stop static web server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+          fi
+          rm -f server.pid
