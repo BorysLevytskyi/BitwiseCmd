@@ -1,0 +1,149 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  preview-gh-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build application
+        env:
+          CI: true
+        run: npm run build
+
+      - name: Embed commit hash in index.html
+        run: |
+          commit_hash=$(git rev-parse HEAD)
+          index_path="build/index.html"
+          if [ ! -f "$index_path" ]; then
+            echo "Expected $index_path to exist after build" >&2
+            exit 1
+          fi
+          printf '<!-- Commit: %s -->\n' "$commit_hash" | cat - "$index_path" > "${index_path}.with-hash"
+          mv "${index_path}.with-hash" "$index_path"
+          echo "commit_hash=$commit_hash" >> "$GITHUB_ENV"
+
+      - name: Preserve build output
+        run: |
+          rm -rf /tmp/gh-pages-build
+          cp -R build /tmp/gh-pages-build
+
+      - name: Preserve BitwiseCmdTests action
+        run: |
+          rm -rf /tmp/bitwisecmdtests-action
+          cp -R .github/actions/bitwisecmdtests /tmp/bitwisecmdtests-action
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Clean gh-pages workspace
+        run: |
+          shopt -s dotglob
+          for path in *; do
+            if [ "$path" != ".git" ]; then
+              rm -rf "$path"
+            fi
+          done
+
+      - name: Restore BitwiseCmdTests action
+        run: |
+          mkdir -p .github/actions
+          cp -R /tmp/bitwisecmdtests-action .github/actions/bitwisecmdtests
+
+      - name: Copy build output to gh-pages root
+        run: |
+          cp -R /tmp/gh-pages-build/* ./
+
+      - name: Start static web server
+        run: |
+          npx --yes http-server ./ -p 3030 --silent </dev/null > server.log 2>&1 &
+          echo $! > server.pid
+          npx --yes wait-on --timeout=120000 http-get://127.0.0.1:3030
+
+      - name: Run BitwiseCmdTests
+        uses: ./.github/actions/bitwisecmdtests
+        with:
+          test-command: test-build
+          base-url: http://127.0.0.1:3030
+          bitwisecmd-tests-token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
+
+      - name: Curl static preview and stop server
+        if: always()
+        run: |
+          curl -fsSL http://127.0.0.1:3030
+          curl_status=$?
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+          fi
+          rm -f server.pid
+          exit $curl_status
+
+      - name: Commit gh-pages contents
+        id: commit-gh-pages
+        run: |
+          if [ -z "${commit_hash:-}" ]; then
+            echo "commit_hash was not set" >&2
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --all . ':!BitwiseCmdTests' ':!.github'
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            echo "commit_made=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Application release"
+            echo "commit_made=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push gh-pages commit
+        if: steps.commit-gh-pages.outputs.commit_made == 'true'
+        run: git push origin gh-pages
+
+      - name: Wait for production deployment
+        run: |
+          if [ -z "${commit_hash:-}" ]; then
+            echo "commit_hash was not set" >&2
+            exit 1
+          fi
+          attempts=0
+          max_attempts=60
+          sleep_seconds=10
+          while [ $attempts -lt $max_attempts ]; do
+            response=$(curl -fsS https://bitwisecmd.com || true)
+            if [ -n "$response" ] && echo "$response" | grep -q "$commit_hash"; then
+              echo "Deployment contains commit hash $commit_hash"
+              exit 0
+            fi
+            attempts=$((attempts + 1))
+            echo "Commit hash not present yet (attempt $attempts/$max_attempts); retrying in $sleep_seconds seconds..."
+            sleep $sleep_seconds
+          done
+          echo "Timed out waiting for deployment to include commit hash $commit_hash" >&2
+          exit 1
+
+      - name: Run BitwiseCmdTests against production
+        uses: ./.github/actions/bitwisecmdtests
+        with:
+          test-command: test-prod
+          base-url: https://bitwisecmd.com
+          bitwisecmd-tests-token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
