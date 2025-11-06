@@ -66,10 +66,13 @@ jobs:
           base-url: http://127.0.0.1:3030
           bitwisecmd-tests-token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
 
-      - name: Stop static web server
+      - name: Curl static preview and stop server
         if: always()
         run: |
+          curl -fsSL http://127.0.0.1:3030
+          curl_status=$?
           if [ -f server.pid ]; then
             kill $(cat server.pid) || true
           fi
           rm -f server.pid
+          exit $curl_status
