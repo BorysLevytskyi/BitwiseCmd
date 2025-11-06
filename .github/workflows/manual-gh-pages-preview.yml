@@ -39,6 +39,7 @@ jobs:
           fi
           printf '<!-- Commit: %s -->\n' "$commit_hash" | cat - "$index_path" > "${index_path}.with-hash"
           mv "${index_path}.with-hash" "$index_path"
+          echo "commit_hash=$commit_hash" >> "$GITHUB_ENV"
 
       - name: Preserve build output
         run: |
@@ -97,3 +98,50 @@ jobs:
           fi
           rm -f server.pid
           exit $curl_status
+
+      - name: Commit gh-pages contents
+        run: |
+          if [ -z "${commit_hash:-}" ]; then
+            echo "commit_hash was not set" >&2
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --all
+          if [ -d .github ]; then
+            git reset -- .github
+          fi
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Application release"
+          fi
+
+      - name: Wait for production deployment
+        run: |
+          if [ -z "${commit_hash:-}" ]; then
+            echo "commit_hash was not set" >&2
+            exit 1
+          fi
+          attempts=0
+          max_attempts=60
+          sleep_seconds=10
+          while [ $attempts -lt $max_attempts ]; do
+            response=$(curl -fsS https://bitwisecmd.com || true)
+            if [ -n "$response" ] && echo "$response" | grep -q "$commit_hash"; then
+              echo "Deployment contains commit hash $commit_hash"
+              exit 0
+            fi
+            attempts=$((attempts + 1))
+            echo "Commit hash not present yet (attempt $attempts/$max_attempts); retrying in $sleep_seconds seconds..."
+            sleep $sleep_seconds
+          done
+          echo "Timed out waiting for deployment to include commit hash $commit_hash" >&2
+          exit 1
+
+      - name: Run BitwiseCmdTests against production
+        uses: ./.github/actions/bitwisecmdtests
+        with:
+          test-command: test-prod
+          base-url: https://bitwisecmd.com
+          bitwisecmd-tests-token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
