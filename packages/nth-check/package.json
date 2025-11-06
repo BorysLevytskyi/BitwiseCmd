@@ -1,0 +1,12 @@
+{
+  "name": "nth-check",
+  "version": "1.0.2",
+  "description": "Safe nth-check implementation for CSS nth-* selectors.",
+  "license": "MIT",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "parse.js",
+    "compile.js"
+  ]
+}

@@ -39,6 +39,12 @@
       "react-app/jest"
     ]
   },
+  "overrides": {
+    "serialize-javascript": "6.0.2",
+    "svgo@1.3.2": {
+      "nth-check": "file:./packages/nth-check"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
