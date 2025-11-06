@@ -34,6 +34,11 @@ jobs:
           rm -rf /tmp/gh-pages-build
           cp -R build /tmp/gh-pages-build
 
+      - name: Preserve BitwiseCmdTests action
+        run: |
+          rm -rf /tmp/bitwisecmdtests-action
+          cp -R .github/actions/bitwisecmdtests /tmp/bitwisecmdtests-action
+
       - name: Checkout gh-pages branch
         uses: actions/checkout@v4
         with:
@@ -48,6 +53,11 @@ jobs:
               rm -rf "$path"
             fi
           done
+
+      - name: Restore BitwiseCmdTests action
+        run: |
+          mkdir -p .github/actions
+          cp -R /tmp/bitwisecmdtests-action .github/actions/bitwisecmdtests
 
       - name: Copy build output to gh-pages root
         run: |
