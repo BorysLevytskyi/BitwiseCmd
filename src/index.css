@@ -132,7 +132,6 @@ button.link-button {text-decoration: underline;}
 .light .button { border: solid 1px gray; }
 .light .button:hover { background: rgba(0, 0, 0, 0.2);}
 .light .solid-border { border: solid 1px gray;}
-.light .donate-result-view .paypal-button { border: solid 1px gray; }
 .light .accent1-border { border-color:green}
 
 /* Dark */
