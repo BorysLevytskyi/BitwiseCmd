@@ -107,6 +107,9 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -d BitwiseCmdTests ]; then
+            rm -rf BitwiseCmdTests
+          fi
           git add --all
           if [ -d .github ]; then
             git reset -- .github
