@@ -25,6 +25,11 @@ jobs:
           CI: true
         run: npm run build
 
+      - name: Run unit tests
+        env:
+          CI: true
+        run: npm test -- --watch=false
+
       - name: Start static web server
         run: |
           npx --yes http-server ./build -p 3030 --silent </dev/null > server.log 2>&1 &
