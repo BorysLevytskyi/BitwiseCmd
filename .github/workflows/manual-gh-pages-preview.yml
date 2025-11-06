@@ -29,6 +29,17 @@ jobs:
           CI: true
         run: npm run build
 
+      - name: Embed commit hash in index.html
+        run: |
+          commit_hash=$(git rev-parse HEAD)
+          index_path="build/index.html"
+          if [ ! -f "$index_path" ]; then
+            echo "Expected $index_path to exist after build" >&2
+            exit 1
+          fi
+          printf '<!-- Commit: %s -->\n' "$commit_hash" | cat - "$index_path" > "${index_path}.with-hash"
+          mv "${index_path}.with-hash" "$index_path"
+
       - name: Preserve build output
         run: |
           rm -rf /tmp/gh-pages-build
