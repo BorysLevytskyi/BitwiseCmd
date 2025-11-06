@@ -1,0 +1,17 @@
+name: Manual BitwiseCmdTests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-bitwisecmdtests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Run BitwiseCmdTests
+        uses: ./.github/actions/bitwisecmdtests
+        with:
+          test-command: test-prod
+          upload-artifact: 'true'
+          artifact-name: bitwisecmdtests-results
+          bitwisecmd-tests-token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
