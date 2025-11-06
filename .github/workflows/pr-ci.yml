@@ -7,6 +7,8 @@ on:
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
+    env:
+      BITWISECMD_TESTS_TOKEN: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
     timeout-minutes: 5
     steps:
       - name: Checkout repository
@@ -31,26 +33,26 @@ jobs:
         run: npm test -- --watch=false
 
       - name: Skip BitwiseCmdTests (token unavailable)
-        if: ${{ secrets.BITWISECMD_TESTS_TOKEN == '' }}
+        if: ${{ env.BITWISECMD_TESTS_TOKEN == '' }}
         run: echo "BITWISECMD_TESTS_TOKEN is not available; skipping BitwiseCmdTests end-to-end suite."
 
       - name: Start static web server
-        if: ${{ secrets.BITWISECMD_TESTS_TOKEN != '' }}
+        if: ${{ env.BITWISECMD_TESTS_TOKEN != '' }}
         run: |
           npx --yes http-server ./build -p 3030 --silent </dev/null > server.log 2>&1 &
           echo $! > server.pid
           npx --yes wait-on --timeout=120000 http-get://127.0.0.1:3030
 
       - name: Run BitwiseCmdTests
-        if: ${{ secrets.BITWISECMD_TESTS_TOKEN != '' }}
+        if: ${{ env.BITWISECMD_TESTS_TOKEN != '' }}
         uses: ./.github/actions/bitwisecmdtests
         with:
           test-command: test-build
           base-url: http://127.0.0.1:3030
-          bitwisecmd-tests-token: ${{ secrets.BITWISECMD_TESTS_TOKEN }}
+          bitwisecmd-tests-token: ${{ env.BITWISECMD_TESTS_TOKEN }}
 
       - name: Stop static web server
-        if: ${{ always() && secrets.BITWISECMD_TESTS_TOKEN != '' }}
+        if: ${{ always() && env.BITWISECMD_TESTS_TOKEN != '' }}
         run: |
           if [ -f server.pid ]; then
             kill $(cat server.pid) || true
