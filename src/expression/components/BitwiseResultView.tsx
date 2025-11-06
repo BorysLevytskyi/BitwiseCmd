@@ -126,7 +126,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
             <td className="label">
-                {this.getLabel()}
+                <span>{this.getLabel()}</span>
             </td>
             <td className="bin">
                 <BinaryStringView

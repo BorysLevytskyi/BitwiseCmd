@@ -11,7 +11,8 @@ const DEFAULT_DATA : PersistedAppData = {
     donationClicked: false,
     annotateTypes: false,
     dimExtrBits: false,
-    cookieDisclaimerHidden: false
+    cookieDisclaimerHidden: false,
+    centeredLayout: true
 }
 
 const appStateStore = {

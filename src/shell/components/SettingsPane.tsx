@@ -44,6 +44,16 @@ function SettingsPane(props : SettingsPaneProps) {
                         : "Information about the size of integers is hidden."} 
                 </p>
             </div>
+            <div className='setting'>
+                <button type="button" onClick={() => appState.toggleCenteredLayout()}>
+                    <FontAwesomeIcon size='xl' icon={appState.centeredLayout ? faToggleOn : faToggleOff} /> Centered Layout
+                </button>
+                <p className='description'>
+                    {appState.centeredLayout 
+                        ? "Content is centered with wide side margins on large screens."
+                        : "Content stretches to full width as before."}
+                </p>
+            </div>
         </div>
     </div>
 }

@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-export const APP_VERSION = 9;
+export const APP_VERSION = 10;
 
 export type PersistedAppData = {
     emphasizeBytes: boolean;
@@ -11,7 +11,8 @@ export type PersistedAppData = {
     donationClicked: boolean;
     annotateTypes: boolean;
     dimExtrBits: boolean;
-    cookieDisclaimerHidden: boolean
+    cookieDisclaimerHidden: boolean,
+    centeredLayout?: boolean
 }
 
 export type CommandResultView = {
@@ -41,6 +42,7 @@ export default class AppState {
     annotateTypes: boolean = false;
     dimExtraBits: boolean = false;
     cookieDisclaimerHidden: boolean = false;
+    centeredLayout: boolean = true;
 
     constructor(persistData: PersistedAppData, env: string) {
 
@@ -56,6 +58,7 @@ export default class AppState {
         this.annotateTypes = !!persistData.annotateTypes;
         this.dimExtraBits = !!persistData.dimExtrBits;
         this.cookieDisclaimerHidden = !!persistData.cookieDisclaimerHidden
+        this.centeredLayout = (persistData.centeredLayout === undefined) ? true : !!persistData.centeredLayout;
     }
 
     addCommandResult(input: string, view: ViewFactory) {
@@ -116,6 +119,11 @@ export default class AppState {
         this.triggerChanged();
     }
 
+    toggleCenteredLayout(value?: boolean) {
+        this.centeredLayout = value !== null && value !== undefined ? value : !this.centeredLayout;
+        this.triggerChanged();
+    }
+
     registerVisit() {
         this.pageVisitsCount++;
         this.triggerChanged();
@@ -144,7 +152,8 @@ export default class AppState {
             donationClicked: this.donationClicked,
             annotateTypes: this.annotateTypes,
             dimExtrBits: this.dimExtraBits,
-            cookieDisclaimerHidden: this.cookieDisclaimerHidden
+            cookieDisclaimerHidden: this.cookieDisclaimerHidden,
+            centeredLayout: this.centeredLayout
         }
     }
 };

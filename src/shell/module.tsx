@@ -24,6 +24,8 @@ const shellModule = {
         cmd.command("dark", () => appState.setUiTheme('dark'));
         cmd.command("light", () => appState.setUiTheme('light'));
         cmd.command("midnight", () => appState.setUiTheme('midnight'));
+        cmd.command("settings", () => appState.toggleShowSettings());
+        cmd.command("bladerunner", () => appState.setUiTheme('bladerunner'));
         cmd.command("about", (c: CommandInput) => appState.addCommandResult(c.input, () => <AboutResultView />));
         cmd.command("whatsnew", (c: CommandInput) => appState.addCommandResult(c.input, () => <WhatsnewResultView />));
         cmd.command("guid", (c: CommandInput) => appState.addCommandResult(c.input, () => <TextResultView text={uuid()} />));
