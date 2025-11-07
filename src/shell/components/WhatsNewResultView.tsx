@@ -10,8 +10,7 @@ function WhatsNewResultView() {
             <p>
                 <span className="soft date">Nov 6th, 2025</span> <br />
             </p>
-            <ul>
-                <li>Added a new <CommandLink text="bladerunner" /> theme inspired by neon cyberpunk aesthetics.</li>
+            <ul>                
                 <li>Introduced a Centered Layout option that centers content on wide monitors; you can revert to the stretched layout in <CommandLink text="settings" />.</li>
             </ul>
         </div>

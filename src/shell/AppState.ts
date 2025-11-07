@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-export const APP_VERSION = 10;
+export const APP_VERSION = 9;
 
 export type PersistedAppData = {
     emphasizeBytes: boolean;
@@ -96,7 +96,7 @@ export default class AppState {
 
     setUiTheme(theme: string) {
         this.uiTheme = theme;
-        this.triggerChanged();
+        this.triggerChanged();        
     }
 
     toggleDebugMode() {

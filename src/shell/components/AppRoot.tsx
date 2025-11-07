@@ -8,7 +8,7 @@ import hash from '../../core/hash';
 import TopLinks from './TopLinks';
 import SettingsPane from './SettingsPane';
 import CommandLink from '../../core/components/CommandLink';
-import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
 import CookieDisclaimerFooter from './CookieDisclaimerFooter';
 
 
@@ -78,7 +78,10 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                             {this.getResultViews()}
                             </div>
                     </div>
-                    <CookieDisclaimerFooter appSate={this.props.appState} />
+                    <CookieDisclaimerFooter appState={this.props.appState} />
+                    <div className="bladerunner-easter-egg">
+                        <CommandLink text="" command='bladerunner-easter' icon={faPersonRunning} />
+                    </div>
                 </div>;
     }
 }

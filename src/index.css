@@ -229,8 +229,6 @@ button.link-button {text-decoration: underline;}
 .bladerunner .accent1 { color: mediumseagreen }
 .bladerunner .accent1-border { border-color: mediumseagreen }
 .bladerunner .button { border-color: #00eaff }
-.bladerunner .top-links a, .bladerunner .top-links a:visited { color: #dce7f5 }
-.bladerunner .top-links button { color: #dce7f5 }
 .bladerunner code { color: #e3a600 }
 .bladerunner code a, .bladerunner code a:visited { color: #e3a600 }
 .bladerunner .command-link { color: #5fc2e9 }
@@ -263,12 +261,42 @@ button.link-button {text-decoration: underline;}
     filter: drop-shadow(0 0 2px currentColor);
 }
 /* Blade Runner: neon hover glow for top-links controls */
+.bladerunner .top-links a, .bladerunner .top-links a:visited { color: #dce7f5 }
+.bladerunner .top-links button { color: #dce7f5 }
+
 .bladerunner .top-links a:hover,
 .bladerunner .top-links a:focus,
 .bladerunner .top-links button:hover,
 .bladerunner .top-links button:focus {
     /* very dim magenta glow */
-    text-shadow:0  0 2px rgb(229, 33, 0.5);
+    text-shadow:0  0 2px rgb(229, 33, 0.5);  
+    color: #FFBF00; 
+}
+
+/* Blade Runner: add matching glow to SVG icons inside top-links on hover/focus */
+.bladerunner .top-links a:hover .icon,
+.bladerunner .top-links a:focus .icon,
+.bladerunner .top-links button:hover .icon,
+.bladerunner .top-links button:focus .icon,
+.bladerunner .top-links a:hover svg,
+.bladerunner .top-links a:focus svg,
+.bladerunner .top-links button:hover svg,
+.bladerunner .top-links button:focus svg {
+    color: amber !important;
+    filter: drop-shadow(0 0 2px rgba(255, 127, 176, 0.5));
+}
+
+.bladerunner .bladerunner-easter-egg {display: none;}
+
+.bladerunner-easter-egg {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+    opacity: 0.3;
+}
+
+.bladerunner-easter-egg:hover { 
+    opacity: 1;
 }
 
 
@@ -281,6 +309,21 @@ button {
 
 
 button:focus {outline:0;}
+
+/* Remove blue focus ring from the Blade Runner easter egg button */
+.bladerunner-easter-egg button:focus,
+.bladerunner-easter-egg button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Anchor the Blade Runner easter egg to bottom-right regardless of scrolling */
+.bladerunner-easter-egg {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+}
 
 /* Top Links Shrink */
 @media (max-width: 800px) {
