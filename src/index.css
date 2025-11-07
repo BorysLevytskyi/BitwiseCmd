@@ -206,8 +206,8 @@ button.link-button {text-decoration: underline;}
 */
 .bladerunner { background: #0b0f14; color: white }
 .bladerunner .solid-background { background: #0b0f14; }
-.bladerunner .header-cmd {  color: #ff7fb0 !important; }
-.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8; }
+.bladerunner .header-cmd {  color: #ff7fb0 !important; text-shadow: 0 0 4px rgba(255, 127, 176, 0.4), 0 0 10px rgba(255, 127, 176, 0.25); }
+.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.4), 0 0 10px rgba(102, 217, 232, 0.25); }
 .bladerunner {color: #e6f0ff;}
 .bladerunner .expression { color: white; }
 .bladerunner .expressionInput { color: white; }
