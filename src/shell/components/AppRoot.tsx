@@ -8,7 +8,6 @@ import hash from '../../core/hash';
 import TopLinks from './TopLinks';
 import SettingsPane from './SettingsPane';
 import CommandLink from '../../core/components/CommandLink';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import CookieDisclaimerFooter from './CookieDisclaimerFooter';
 
