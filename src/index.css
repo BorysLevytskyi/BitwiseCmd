@@ -207,8 +207,34 @@ button.link-button {text-decoration: underline;}
 */
 .bladerunner { background: #0b0f14; color: white }
 .bladerunner .solid-background { background: #0b0f14; }
-.bladerunner .header-cmd {  color: #ff7fb0 !important; text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
-.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); font-family: fantasy, Verdana, sans-serif; }
+.bladerunner .header-cmd {  color: #ff7fb0a8 !important; }
+.bladerunner .lights-on .header-cmd {  color: #ff7fb0 !important; }
+/* Rule for element when it has both .header and .on  */
+.bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
+.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; font-family: Impact, Verdana, sans-serif; cursor: pointer; position: relative; z-index: 1; letter-spacing: 0.02em; }
+.bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); }
+.bladerunner .header h1.lights-on::after {
+    /* Neon-style halo: layered cyan + magenta radial glows */
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-30%, -50%);
+    width: 20%;
+    height: 120%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(102, 217, 232, 0.70) 0%,
+            rgba(102, 217, 232, 0.45) 22%,
+            rgba(0, 0, 0, 0) 60%),
+        radial-gradient(ellipse at center,
+            rgba(255, 127, 176, 0.55) 0%,
+            rgba(255, 127, 176, 0.35) 35%,
+            rgba(0, 0, 0, 0) 72%);
+    filter: blur(35px);
+}
 .bladerunner {color: #e6f0ff;}
 .bladerunner .expression { color: white; }
 .bladerunner .expressionInput { color: white; }

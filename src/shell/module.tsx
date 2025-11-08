@@ -26,7 +26,7 @@ const shellModule = {
         cmd.command("midnight", () => appState.setUiTheme('midnight'));
         cmd.command("settings", () => appState.toggleShowSettings());
         cmd.command("bladerunner", () => {
-            appState.setUiTheme('bladerunner'); 
+            appState.setUiTheme('bladerunner');
             sendAnalyticsEvent({eventCategory: "UI", eventAction: "ThemeChanged", eventLabel: "bladerunner"});          
         });
         cmd.command("bladerunner-easter", (c: CommandInput) => { 
@@ -102,3 +102,5 @@ const shellModule = {
 }
 
 export default shellModule;
+
+

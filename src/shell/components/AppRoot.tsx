@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import InputBox from './InputBox';
 import DisplayResultView from './DisplayResultView';
 import AppState, { CommandResultView } from '../AppState';
@@ -8,8 +8,9 @@ import hash from '../../core/hash';
 import TopLinks from './TopLinks';
 import SettingsPane from './SettingsPane';
 import CommandLink from '../../core/components/CommandLink';
-import { faGear, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faL, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
 import CookieDisclaimerFooter from './CookieDisclaimerFooter';
+import bladerunner from '../Bladerunner';
 
 
 type AppRootProps = {
@@ -47,6 +48,10 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
         return results;
     }
 
+    componentDidMount(): void {
+        bladerunner.start(this.props.appState);
+    }
+
     render() {
 
         const enableNewUi = this.props.appState.env !== 'prod' || true;
@@ -58,7 +63,8 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                     <div className="header-pane">
                         <DebugIndicators appState={this.props.appState} />
                         <div className="header">
-                            <h1>Bitwise<span className="header-cmd">Cmd</span>
+                            <h1 onClick={() => bladerunner.toggleLights()}>
+                                Bitwise<span className="header-cmd">Cmd</span>
                             </h1>
                         <TopLinks />
                         </div>
@@ -85,3 +91,5 @@ export default class AppRoot extends React.Component<AppRootProps, AppRootState>
                 </div>;
     }
 }
+
+
