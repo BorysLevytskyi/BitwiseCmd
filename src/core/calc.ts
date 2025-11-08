@@ -33,10 +33,11 @@ const calc = {
             case ">>": return this.rshift(op1, op2.value);
             case ">>>": return this.urshift(op1, op2.value);
             case "<<": return this.lshift(op1, op2.value);
-            case "&": return this.and(op1,op2);
-            case "|": return this.or(op1,op2);
-            case "^": return this.xor(op1,op2);
-            case "+": return this.add(op1,op2);
+            case "&": return this.and(op1, op2);
+            case "|": return this.or(op1, op2);
+            case "^": return this.xor(op1, op2);
+            case "+": return this.add(op1, op2);
+            case "-": return this.sub(op1, op2);
             case "*": return this.mul(op1, op2);
             case "/": return this.div(op1, op2);
             default: throw new Error(operator + " operator is not supported");

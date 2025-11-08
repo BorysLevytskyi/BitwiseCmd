@@ -307,7 +307,27 @@ button.link-button {text-decoration: underline;}
 .bladerunner .top-links button:focus {
     /* very dim magenta glow */
     text-shadow:0  0 2px rgb(229, 33, 0.5);  
-    color: #FFBF00; 
+    color: hsl(45, 100%, 50%); 
+}
+
+.bladerunner .top-links li {position: relative;}
+.bladerunner .top-links button:hover::after, .bladerunner .top-links a:hover::after {
+    /* Neon-style halo: layered cyan + magenta radial glows */
+    content: "X";
+    position: absolute;
+    left: -50%;
+    top: 0;
+    /*transform: translate(-50%, -50%);*/
+    width: 200%;
+    height: 120%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(227, 166, 0, 0.85) 0%,
+            rgba(227, 166, 0, 0.55) 22%,
+            rgba(0, 0, 0, 0) 60%);
+    filter: blur(20px);
 }
 
 /* Blade Runner: add matching glow to SVG icons inside top-links on hover/focus */
