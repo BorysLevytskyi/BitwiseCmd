@@ -310,14 +310,16 @@ button.link-button {text-decoration: underline;}
     color: hsl(45, 100%, 50%); 
 }
 
+
+/*
 .bladerunner .top-links li {position: relative;}
 .bladerunner .top-links button:hover::after, .bladerunner .top-links a:hover::after {
-    /* Neon-style halo: layered cyan + magenta radial glows */
-    content: "X";
+    content: "";
     position: absolute;
-    left: -50%;
-    top: 0;
-    /*transform: translate(-50%, -50%);*/
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    white-space: nowrap;
     width: 200%;
     height: 120%;
     pointer-events: none;
@@ -328,7 +330,7 @@ button.link-button {text-decoration: underline;}
             rgba(227, 166, 0, 0.55) 22%,
             rgba(0, 0, 0, 0) 60%);
     filter: blur(20px);
-}
+}*/
 
 /* Blade Runner: add matching glow to SVG icons inside top-links on hover/focus */
 .bladerunner .top-links a:hover .icon,
