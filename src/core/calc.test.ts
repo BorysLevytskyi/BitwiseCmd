@@ -1,6 +1,6 @@
 import calc from './calc';
 import { Integer, asInteger } from './Integer';
-import { INT32_MIN_VALUE, INT64_MAX_VALUE, UINT64_MAX_VALUE } from './const';
+import { INT32_MIN_VALUE, INT32_MAX_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE, UINT64_MAX_VALUE } from './const';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
@@ -86,7 +86,37 @@ describe('calc.xor', () => {
     it('positive and negative nubmer', () => {
         expect(calc.xor(Integer.int(-1), Integer.int(10)).num()).toBe(-11);
     });
-})
+});
+
+describe('calc.add', () => {
+    it('adds positives', () => {
+        expect(calc.add(Integer.int(2), Integer.int(3)).num()).toBe(5);
+    });
+
+    it('adds negative and positive', () => {
+        expect(calc.add(Integer.int(-2), Integer.int(3)).num()).toBe(1);
+    });
+
+    it('adds negatives', () => {
+        expect(calc.add(Integer.int(-2), Integer.int(-3)).num()).toBe(-5);
+    });
+
+    it('wraps on 32-bit overflow', () => {
+        expect(calc.add(Integer.int(INT32_MAX_VALUE), Integer.int(1)).num()).toBe(INT32_MIN_VALUE);
+        expect(calc.add(Integer.int(INT32_MAX_VALUE), Integer.int(2)).num()).toBe(-2147483647);
+    });
+
+    it('wraps on 64-bit overflow', () => {
+        const r = calc.add(new Integer(INT64_MAX_VALUE, 64), Integer.long(1));
+        expect(r.value.toString()).toBe(INT64_MIN_VALUE.toString());
+    });
+
+    it('promotes to larger operand size', () => {
+        const r = calc.add(Integer.int(-1), Integer.long(2));
+        expect(r.maxBitSize).toBe(64);
+        expect(r.num()).toBe(1);
+    });
+});
 
 describe('calc.lshift', () => {
 
@@ -200,14 +230,6 @@ describe("calc misc", () => {
     })
 });
 
-describe('calc.operation', () => {
-    it('supports additions', () => {
-
-        expect((calc.operation(Integer.int(1), "+", Integer.int(2)) as Integer).num()).toBe(3);
-        expect((calc.operation(Integer.int(-1), "+", Integer.int(2)) as Integer).num()).toBe(1);
-        expect((calc.operation(Integer.int(-10), "+", Integer.int(2)) as Integer).num()).toBe(-8);
-    });
-});
 
 describe("calc.engine.", () => {
     it("not", () => {
@@ -234,6 +256,34 @@ describe("calc.engine.", () => {
         expect(calc.engine.xor("1", "0")).toBe("1");
         expect(calc.engine.xor("0", "0")).toBe("0");
         expect(calc.engine.xor("10101", "11011")).toBe("01110");
+    });
+
+    it("add", () => {
+        // 1-bit
+        expect(calc.engine.add("1", "1")).toBe("0"); // 1 + 1 = 2 -> 0 (wrap)
+        expect(calc.engine.add("1", "0")).toBe("1");
+        expect(calc.engine.add("0", "0")).toBe("0");
+
+        // 4-bit
+        expect(calc.engine.add("0001", "0001")).toBe("0010"); // 1+1=2
+        expect(calc.engine.add("0111", "0001")).toBe("1000"); // 7+1=8
+        expect(calc.engine.add("1111", "0001")).toBe("0000"); // 15+1=16 -> 0 (wrap)
+        expect(calc.engine.add("1111", "1111")).toBe("1110"); // 15+15=30 -> 14
+    });
+
+    it("mul", () => {
+        // 4-bit unsigned-style values
+        expect(calc.engine.mul("0001", "0011")).toBe("0011"); // 1*3=3
+        expect(calc.engine.mul("0010", "0011")).toBe("0110"); // 2*3=6
+        expect(calc.engine.mul("1111", "0010")).toBe("1110"); // 15*2=30 -> 14
+
+        // two's complement semantics for negatives
+        expect(calc.engine.mul("1111", "0011")).toBe("1101"); // (-1)*3 = -3
+        expect(calc.engine.mul("1111", "1111")).toBe("0001"); // (-1)*(-1) = 1
+        expect(calc.engine.mul("1000", "0010")).toBe("0000"); // (-8)*2 = -16 -> 0
+
+        // 8-bit example
+        expect(calc.engine.mul("11111111", "00000010")).toBe("11111110"); // (-1)*2 = -2
     });
 
     it("lshift", () => {

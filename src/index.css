@@ -32,6 +32,9 @@ html { height: 100% }
 /* Theme-scoped code styling to avoid cross-theme overrides */
 .light code, .dark code, .midnight code, .bladerunner code { font-size: 1.2em; font-weight: bold; }
 
+h1 { font-family: Impact, Verdana; 
+    letter-spacing: 0.05em;
+    text-transform: uppercase;}
 .icon { margin-right: 5px; vertical-align: middle; }
 .header-cmd { color: #c5c5c5 }
 
@@ -219,7 +222,7 @@ button.link-button {text-decoration: underline;}
 .bladerunner .lights-on .header-cmd {  color: #ff7fb0 !important; }
 /* Rule for element when it has both .header and .on  */
 .bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
-.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; font-family: Impact, Verdana, sans-serif; cursor: pointer; position: relative; z-index: 1; letter-spacing: 0.02em; }
+.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; cursor: pointer; position: relative; z-index: 1;  }
 .bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); }
 .bladerunner .header h1.lights-on::after {
     /* Neon-style halo: layered cyan + magenta radial glows */

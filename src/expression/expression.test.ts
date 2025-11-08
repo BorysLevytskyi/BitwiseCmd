@@ -18,6 +18,7 @@ describe("expression parser", () => {
         expect(parser.parse("~1")).toBeInstanceOf(BitwiseOperation);
         expect(parser.parse("1^2")).toBeInstanceOf(BitwiseOperation);
         expect(parser.parse("1|2")).toBeInstanceOf(BitwiseOperation);
+        expect(parser.parse("1*2")).toBeInstanceOf(BitwiseOperation);
     });
 
     it("parses big binary bitwise expression", () => {
@@ -36,6 +37,16 @@ describe("expression parser", () => {
         
         expect(expr.children[1]).toBeInstanceOf(Operator);
         expect((expr.children[1] as Operator).operator).toBe("+");
+        expect(expr.children[0].getUnderlyingOperand().value.toString()).toBe('23');
+        expect(expr.children[1].getUnderlyingOperand().value.toString()).toBe('34')
+    });
+
+    it("parses multiplication operation", () => {
+        const expr = parser.parse("23 * 34") as BitwiseOperation;
+        expect(expr.children.length).toBe(2);
+
+        expect(expr.children[1]).toBeInstanceOf(Operator);
+        expect((expr.children[1] as Operator).operator).toBe("*");
         expect(expr.children[0].getUnderlyingOperand().value.toString()).toBe('23');
         expect(expr.children[1].getUnderlyingOperand().value.toString()).toBe('34')
     });
@@ -71,6 +82,30 @@ describe("expression parser", () => {
     })
 });
 
+describe("multiplication", () => {
+    it("evaluates simple products", () => {
+        const expr = parser.parse("2*3") as BitwiseOperation;
+        const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand);
+        expect(res.value.toString()).toBe('6');
+
+        const expr2 = parser.parse("-2*3") as BitwiseOperation;
+        const res2 = (expr2.children[1] as Operator).evaluate(expr2.children[0] as Operand);
+        expect(res2.value.toString()).toBe('-6');
+    });
+
+    it("wraps on 32-bit overflow", () => {
+        const expr = parser.parse("2147483647*2") as BitwiseOperation;
+        const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand);
+        expect(res.value.toString()).toBe('-2');
+    });
+
+    it("wraps on 64-bit overflow", () => {
+        const expr = parser.parse("9223372036854775807l*2l") as BitwiseOperation;
+        const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand);
+        expect(res.value.toString()).toBe('-2');
+    });
+});
+
 describe("comparison with nodejs engine", () => {
     
     it('set 32-bit', () => {
@@ -91,7 +126,7 @@ describe("comparison with nodejs engine", () => {
 
     it('random: two inbary strings 64-bit', () => {
         
-        const signs = ["|", "&", "^", "<<", ">>", ">>>"]
+        const signs = ["|", "&", "^", "<<", ">>", ">>>", "*"]
 
         for(var i =0; i<1000; i++){
 
@@ -102,7 +137,17 @@ describe("comparison with nodejs engine", () => {
             
             const input = op1.toString() + sign + op2.toString();
             
-            testBinary(input, input);
+            if (sign === "*") {
+                // For multiplication, compare against wrapped 32-bit two's complement
+                const modulo = 2 ** 32;
+                const expectedNum = ((op1 * op2) % modulo + modulo) % modulo;
+                const expectedSigned = expectedNum >= 2 ** 31 ? expectedNum - modulo : expectedNum;
+                const expr = parser.parse(input) as BitwiseOperation;
+                const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand).value.toString();
+                expect(res).toBe(expectedSigned.toString());
+            } else {
+                testBinary(input, input);
+            }
         }
     });
 

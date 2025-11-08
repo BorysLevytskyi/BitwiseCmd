@@ -81,8 +81,8 @@ class BitwiseOperationExpressionFactory implements IExpressionParserFactory {
     regex: RegExp;
 
     constructor() {
-        this.fullRegex = /^[-,~,<,>,&,^|,b,x,l,s,u,a-f,0-9,+\s]+$/i;
-        this.regex = /(<<|>>|>>>|\||&|\^|\+)?(~?-?(?:[b,x,l,s,u,,a-f,0-9]+))/gi;
+        this.fullRegex = /^[-,~,<,>,&,^|,\*,b,x,l,s,u,a-f,0-9,+\s]+$/i;
+        this.regex = /(<<|>>|>>>|\||&|\^|\+|\*)?(~?-?(?:[b,x,l,s,u,,a-f,0-9]+))/gi;
     }
 
     canCreate (input: string) : boolean {
