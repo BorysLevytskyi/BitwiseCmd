@@ -30,6 +30,16 @@ describe("expression parser", () => {
         expect(expr.children[1].getUnderlyingOperand().value.toString()).toBe('2863311360');
     })
 
+    it("parses addition operation", () => {
+        const expr = parser.parse("23 + 34") as BitwiseOperation;
+        expect(expr.children.length).toBe(2);
+        
+        expect(expr.children[1]).toBeInstanceOf(Operator);
+        expect((expr.children[1] as Operator).operator).toBe("+");
+        expect(expr.children[0].getUnderlyingOperand().value.toString()).toBe('23');
+        expect(expr.children[1].getUnderlyingOperand().value.toString()).toBe('34')
+    });
+
     it("pares multiple operand expression", () => {       
         const result = parser.parse("1^2") as BitwiseOperation;
         expect(result.children.length).toBe(2);

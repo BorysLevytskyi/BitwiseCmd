@@ -200,6 +200,15 @@ describe("calc misc", () => {
     })
 });
 
+describe('calc.operation', () => {
+    it('supports additions', () => {
+
+        expect((calc.operation(Integer.int(1), "+", Integer.int(2)) as Integer).num()).toBe(3);
+        expect((calc.operation(Integer.int(-1), "+", Integer.int(2)) as Integer).num()).toBe(1);
+        expect((calc.operation(Integer.int(-10), "+", Integer.int(2)) as Integer).num()).toBe(-8);
+    });
+});
+
 describe("calc.engine.", () => {
     it("not", () => {
         expect(calc.engine.not("0101")).toBe("1010");
