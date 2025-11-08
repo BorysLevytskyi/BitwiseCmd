@@ -19,6 +19,7 @@ describe("expression parser", () => {
         expect(parser.parse("1^2")).toBeInstanceOf(BitwiseOperation);
         expect(parser.parse("1|2")).toBeInstanceOf(BitwiseOperation);
         expect(parser.parse("1*2")).toBeInstanceOf(BitwiseOperation);
+        expect(parser.parse("1/2")).toBeInstanceOf(BitwiseOperation);
     });
 
     it("parses big binary bitwise expression", () => {
@@ -47,6 +48,16 @@ describe("expression parser", () => {
 
         expect(expr.children[1]).toBeInstanceOf(Operator);
         expect((expr.children[1] as Operator).operator).toBe("*");
+        expect(expr.children[0].getUnderlyingOperand().value.toString()).toBe('23');
+        expect(expr.children[1].getUnderlyingOperand().value.toString()).toBe('34')
+    });
+
+    it("parses division operation", () => {
+        const expr = parser.parse("23 / 34") as BitwiseOperation;
+        expect(expr.children.length).toBe(2);
+
+        expect(expr.children[1]).toBeInstanceOf(Operator);
+        expect((expr.children[1] as Operator).operator).toBe("/");
         expect(expr.children[0].getUnderlyingOperand().value.toString()).toBe('23');
         expect(expr.children[1].getUnderlyingOperand().value.toString()).toBe('34')
     });
@@ -106,6 +117,36 @@ describe("multiplication", () => {
     });
 });
 
+describe("division", () => {
+    it("evaluates simple quotients with truncation", () => {
+        const expr1 = parser.parse("7/2") as BitwiseOperation; // -> 3
+        const res1 = (expr1.children[1] as Operator).evaluate(expr1.children[0] as Operand);
+        expect(res1.value.toString()).toBe('3');
+
+        const expr2 = parser.parse("-7/2") as BitwiseOperation; // -> -3
+        const res2 = (expr2.children[1] as Operator).evaluate(expr2.children[0] as Operand);
+        expect(res2.value.toString()).toBe('-3');
+
+        const expr3 = parser.parse("1/2") as BitwiseOperation; // -> 0
+        const res3 = (expr3.children[1] as Operator).evaluate(expr3.children[0] as Operand);
+        expect(res3.value.toString()).toBe('0');
+    });
+
+    it("handles INT_MIN/-1 based on parsed width", () => {
+        // Parser promotes -2147483648 to 64-bit (abs value exceeds INT32_MAX),
+        // so the result is a positive 64-bit 2147483648.
+        const expr = parser.parse("-2147483648/-1") as BitwiseOperation;
+        const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand);
+        expect(res.value.toString()).toBe('2147483648');
+    });
+
+    it("64-bit division", () => {
+        const expr = parser.parse("9223372036854775807l/2l") as BitwiseOperation;
+        const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand);
+        expect(res.value.toString()).toBe('4611686018427387903');
+    });
+});
+
 describe("comparison with nodejs engine", () => {
     
     it('set 32-bit', () => {
@@ -126,7 +167,7 @@ describe("comparison with nodejs engine", () => {
 
     it('random: two inbary strings 64-bit', () => {
         
-        const signs = ["|", "&", "^", "<<", ">>", ">>>", "*"]
+        const signs = ["|", "&", "^", "<<", ">>", ">>>", "*", "/"]
 
         for(var i =0; i<1000; i++){
 
@@ -138,11 +179,20 @@ describe("comparison with nodejs engine", () => {
             const input = op1.toString() + sign + op2.toString();
             
             if (sign === "*") {
-                // For multiplication, compare against wrapped 32-bit two's complement
-                const modulo = 2 ** 32;
-                const expectedNum = ((op1 * op2) % modulo + modulo) % modulo;
-                const expectedSigned = expectedNum >= 2 ** 31 ? expectedNum - modulo : expectedNum;
+                // Use BigInt to avoid precision issues and wrap to 32-bit two's complement
+                const modulo = (BigInt(1) << BigInt(32));
+                const expectedNum = ((BigInt(op1) * BigInt(op2)) % modulo + modulo) % modulo;
+                const expectedSigned = expectedNum >= (BigInt(1) << BigInt(31)) ? expectedNum - modulo : expectedNum;
                 const expr = parser.parse(input) as BitwiseOperation;
+                const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand).value.toString();
+                expect(res).toBe(expectedSigned.toString());
+            } else if (sign === "/") {
+                const denom = op2 === 0 ? 1 : op2;
+                const q = BigInt(op1) / BigInt(denom); // trunc toward zero
+                const modulo = (BigInt(1) << BigInt(32));
+                const expectedNum = ((q % modulo) + modulo) % modulo;
+                const expectedSigned = expectedNum >= (BigInt(1) << BigInt(31)) ? expectedNum - modulo : expectedNum;
+                const expr = parser.parse(op1.toString() + '/' + denom.toString()) as BitwiseOperation;
                 const res = (expr.children[1] as Operator).evaluate(expr.children[0] as Operand).value.toString();
                 expect(res).toBe(expectedSigned.toString());
             } else {

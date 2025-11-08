@@ -38,6 +38,7 @@ const calc = {
             case "^": return this.xor(op1,op2);
             case "+": return this.add(op1,op2);
             case "*": return this.mul(op1, op2);
+            case "/": return this.div(op1, op2);
             default: throw new Error(operator + " operator is not supported");
         }
     },
@@ -110,6 +111,10 @@ const calc = {
     
     mul (num1: Integer, num2: Integer) : Integer {
         return this._executeForTwoOperands(num1, num2, this.engine.mul);
+    },
+    
+    div (num1: Integer, num2: Integer) : Integer {
+        return this._executeForTwoOperands(num1, num2, this.engine.div);
     },
 
     add(num1: Integer, num2: Integer) : Integer {
@@ -254,6 +259,29 @@ const calc = {
 
             const modulo = (BigInt(1) << BigInt(len));
             const wrapped = ((product % modulo) + modulo) % modulo;
+            return wrapped.toString(2).padStart(len, '0');
+        },
+        div (bin1: string, bin2: string) : string {
+            checkSameLength(bin1, bin2);
+            const len = bin1.length;
+
+            const toSignedBigInt = (bin: string) => {
+                if (bin[0] === '1') {
+                    const mag = BigInt('0b' + calc.engine.applyTwosComplement(bin));
+                    return -mag;
+                }
+                return BigInt('0b' + bin);
+            };
+
+            const a = toSignedBigInt(bin1);
+            const b = toSignedBigInt(bin2);
+            if (b === BigInt(0))
+                throw new Error('Division by zero');
+
+            const quotient = a / b; // BigInt division truncates toward zero
+
+            const modulo = (BigInt(1) << BigInt(len));
+            const wrapped = (((quotient % modulo) + modulo) % modulo);
             return wrapped.toString(2).padStart(len, '0');
         },
         flipBit(bin: string, bitIndex : number) : string {
