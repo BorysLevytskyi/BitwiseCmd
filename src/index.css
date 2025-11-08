@@ -33,8 +33,9 @@ html { height: 100% }
 .light code, .dark code, .midnight code, .bladerunner code { font-size: 1.2em; font-weight: bold; }
 
 h1 { font-family: Impact, Verdana; 
-    letter-spacing: 0.05em;
-    text-transform: uppercase;}
+    text-transform: uppercase;
+    font-weight: lighter;
+}
 .icon { margin-right: 5px; vertical-align: middle; }
 .header-cmd { color: #c5c5c5 }
 
@@ -221,11 +222,15 @@ button.link-button {text-decoration: underline;}
 .bladerunner .header-cmd {  color: #ff7fb0a8 !important; }
 .bladerunner .lights-on .header-cmd {  color: #ff7fb0 !important; }
 .bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
-.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; cursor: pointer; position: relative; z-index: 1;  }
-.bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); }
+.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; cursor: pointer; position: relative; z-index: 1; font-weight: bold; user-select: none;}
+
+
+
+.bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22);    }
 .bladerunner .header h1.lights-on::after {
     /* Neon-style halo: layered cyan + magenta radial glows */
     content: "";
+    animation: flicker 1s forwards;
     position: absolute;
     left: 0;
     top: 50%;
@@ -244,6 +249,21 @@ button.link-button {text-decoration: underline;}
             rgba(255, 127, 176, 0.35) 35%,
             rgba(0, 0, 0, 0) 72%);
     filter: blur(35px);
+}
+
+@keyframes flicker {   
+    20%, 24%, 55% {
+        opacity: 0; 
+    }
+    40% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 .bladerunner {color: #e6f0ff;}
 .bladerunner .expression { color: white; }
