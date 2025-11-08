@@ -280,18 +280,20 @@ button.link-button {text-decoration: underline;}
 .bladerunner .expression {color: #e6f0ff;}
 .bladerunner .settings-button button {color: #b9cfe2;}
 .bladerunner button.hashLink, .bladerunner a.hashLink, .bladerunner a.hashLink:visited { color: #52687b; }
-.bladerunner button.hashLink:hover, .bladerunner a.hashLink:hover {
+.bladerunner button.hashLink:hover, .bladerunner .undo button:hover, .bladerunner a.hashLink:hover {
     /* subtle glow derived from current hover color */
     --text-shadow: 0 0 2px currentColor;
     text-shadow:0  0 2px rgb(229, 33, 0.5);
     color: #5fc2e9;
 }
+.bladerunner .undo button:hover { opacity: 1; }
 .bladerunner .cur { color: #6c8497; }
 
 /* Blade Runner: subtle glow for SVG icons inside hash links on hover/focus */
 .bladerunner .hashLink:hover .icon,
 .bladerunner .hashLink:focus .icon,
 .bladerunner .hashLink:hover svg,
+.bladerunner .undo:hover svg,
 .bladerunner .hashLink:focus svg {
     filter: drop-shadow(0 0 2px currentColor);
 }
