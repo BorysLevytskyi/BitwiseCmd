@@ -224,8 +224,6 @@ button.link-button {text-decoration: underline;}
 .bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
 .bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; cursor: pointer; position: relative; z-index: 1; font-weight: bold; user-select: none;}
 
-
-
 .bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22);    }
 .bladerunner .header h1.lights-on::after {
     /* Neon-style halo: layered cyan + magenta radial glows */
