@@ -118,6 +118,33 @@ describe('calc.add', () => {
     });
 });
 
+describe('calc.sub', () => {
+    it('subtracts positives', () => {
+        expect(calc.sub(Integer.int(7), Integer.int(2)).num()).toBe(5);
+    });
+
+    it('subtracts negative and positive', () => {
+        expect(calc.sub(Integer.int(-2), Integer.int(3)).num()).toBe(-5);
+    });
+
+    it('subtracts negatives', () => {
+        expect(calc.sub(Integer.int(-2), Integer.int(-3)).num()).toBe(1);
+    });
+
+    it('wraps on 32-bit overflow', () => {
+        // 2147483647 - (-1) = 2147483648 -> -2147483648
+        expect(calc.sub(Integer.int(2147483647), Integer.int(-1)).num()).toBe(-2147483648);
+        // -2147483648 - 1 = -2147483649 -> 2147483647
+        expect(calc.sub(Integer.int(-2147483648), Integer.int(1)).num()).toBe(2147483647);
+    });
+
+    it('promotes to larger operand size', () => {
+        const r = calc.sub(Integer.int(-1), Integer.long(2));
+        expect(r.maxBitSize).toBe(64);
+        expect(r.num()).toBe(-3);
+    });
+});
+
 describe('calc.div', () => {
     it('divides positives with truncation', () => {
         expect(calc.div(Integer.int(7), Integer.int(2)).num()).toBe(3);
@@ -318,6 +345,13 @@ describe("calc.engine.", () => {
 
         // 8-bit example
         expect(calc.engine.mul("11111111", "00000010")).toBe("11111110"); // (-1)*2 = -2
+    });
+
+    it("sub", () => {
+        // 4-bit examples
+        expect(calc.engine.sub("0011", "0001")).toBe("0010"); // 3-1=2
+        expect(calc.engine.sub("0000", "0001")).toBe("1111"); // 0-1 -> -1
+        expect(calc.engine.sub("1000", "0001")).toBe("0111"); // -8-1 -> 7 (wrap)
     });
 
     it("div", () => {

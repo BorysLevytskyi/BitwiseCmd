@@ -60,6 +60,7 @@ function HelpResultView() {
                     </ul>                    
                     <ul>
                         <li><code>+</code> — addition</li>
+                        <li><code>-</code> — subtraction</li>
                         <li><code>*</code> — multiplication</li>
                         <li><code>/</code> — division (truncates toward zero*)</li>
                     </ul>
@@ -98,3 +99,4 @@ function HelpResultView() {
 }
 
 export default HelpResultView;
+

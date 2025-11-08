@@ -220,7 +220,6 @@ button.link-button {text-decoration: underline;}
 .bladerunner .solid-background { background: #0b0f14; }
 .bladerunner .header-cmd {  color: #ff7fb0a8 !important; }
 .bladerunner .lights-on .header-cmd {  color: #ff7fb0 !important; }
-/* Rule for element when it has both .header and .on  */
 .bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
 .bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; cursor: pointer; position: relative; z-index: 1;  }
 .bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); }
@@ -263,17 +262,16 @@ button.link-button {text-decoration: underline;}
 .bladerunner button.btn { color: #00eaff }
 .bladerunner button.btn:hover { background: #11222c }
 .bladerunner button.btn:disabled { color: #0e6e7e; background-color: inherit; }
-.bladerunner .accent1 { color: mediumseagreen }
-.bladerunner .accent1-border { border-color: mediumseagreen }
+.bladerunner .accent1 { color: #e3a600 }
+.bladerunner .accent1 button:hover { text-shadow: 0 0 2px #e3a600 }
+.bladerunner .accent1-border { border-color: #e3a600 }
 .bladerunner .button { border-color: #00eaff }
 .bladerunner code { color: #e3a600 }
 .bladerunner code a, .bladerunner code a:visited { color: #e3a600 }
 .bladerunner .command-link { color: #5fc2e9 }
 .bladerunner .command-link:hover,
-.bladerunner .command-link:focus {
-    /* very dim magenta glow */
-    text-shadow: 0 0 2px rgba(255, 127, 176, 0.5);
-}
+.bladerunner .command-link:focus { text-shadow: 0 0 2px rgba(69, 243, 255, 0.949); }
+
 .bladerunner .soft { color: #aebed0 }
 .bladerunner .solid-border { background-color: #0e161d; border-color: #1f3b4a;}
 .bladerunner .expressionInput {border-color: #1f3b4a;}

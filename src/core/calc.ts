@@ -113,6 +113,10 @@ const calc = {
         return this._executeForTwoOperands(num1, num2, this.engine.mul);
     },
     
+    sub (num1: Integer, num2: Integer) : Integer {
+        return this._executeForTwoOperands(num1, num2, this.engine.sub);
+    },
+    
     div (num1: Integer, num2: Integer) : Integer {
         return this._executeForTwoOperands(num1, num2, this.engine.div);
     },
@@ -260,6 +264,12 @@ const calc = {
             const modulo = (BigInt(1) << BigInt(len));
             const wrapped = ((product % modulo) + modulo) % modulo;
             return wrapped.toString(2).padStart(len, '0');
+        },
+        sub (bin1: string, bin2: string) : string {
+            checkSameLength(bin1, bin2);
+            // Two's complement subtraction: a - b == a + (-b)
+            const negB = calc.engine.applyTwosComplement(bin2);
+            return calc.engine.add(bin1, negB);
         },
         div (bin1: string, bin2: string) : string {
             checkSameLength(bin1, bin2);
