@@ -48,7 +48,7 @@ function HelpResultView() {
             </div>
             <div className="right-panel">
                 <div className="section">
-                    <div className="section-title soft">Supported Bitwise Operations</div>
+                    <div className="section-title soft">Supported Operations</div>
                     <ul>
                         <li><code>&amp;</code> — bitwise AND</li>
                         <li><code>|</code> — bitwise inclusive OR</li>
@@ -57,10 +57,22 @@ function HelpResultView() {
                         <li><code>&lt;&lt;</code> — left shift</li>
                         <li><code>&gt;&gt;</code> — sign propagating right shift</li>
                         <li><code>&gt;&gt;&gt;</code> — zero-fill right shift</li>
+                    </ul>                    
+                    <ul>
+                        <li><code>+</code> — addition</li>
+                        <li><code>*</code> — multiplication</li>
+                        <li><code>/</code> — division (truncates toward zero*)</li>
                     </ul>
                     <div className='important-note'>
                         <FontAwesomeIcon icon={faCircleExclamation} size='lg'/> <a target='_blank' href='https://en.cppreference.com/w/c/language/operator_precedence' rel="noreferrer">Operator precedence</a> is IGNORED. Operators are executed <strong>left-to-right</strong>.
                     </div>
+                    <p className='description'>
+                        * “Truncates toward zero” means the fractional part is discarded and the quotient is rounded toward 0.
+                        For example: <code>7/2 = 3</code>, <code>-7/2 = -3</code>.
+                        Learn more:
+                        <a target='_blank' rel='noreferrer' href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Division#bigint_division'> JS BigInt division</a>,
+                        <a target='_blank' rel='noreferrer' href='https://en.cppreference.com/w/c/language/operator_arithmetic#Integer_arithmetic'> C integer division</a>.
+                    </p>
                 </div>
                 <div className="section soft-border">
                     <div className="section-title soft">Supported Number Types</div>
