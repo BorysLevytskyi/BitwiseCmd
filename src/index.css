@@ -115,6 +115,14 @@ button.link-button {text-decoration: underline;}
     margin-left: -20px;
 }
 
+/* When Settings is active (no .soft), remove any button border/outline */
+.settings-button button,
+.settings-button .command-link {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
 .undo button { 
     opacity: 0.4;
     padding: 0;
