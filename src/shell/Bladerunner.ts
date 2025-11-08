@@ -54,11 +54,11 @@ const addStateListener = (appState: AppState) => {
 
         log.info("App state changed, checking for lights theme. Current theme: " + appState.uiTheme + ", old theme: " + oldTheme);
         
-        if(appState.uiTheme == 'bladerunner' && oldTheme != 'bladerunner') {
+        if(appState.uiTheme === 'bladerunner' && oldTheme !== 'bladerunner') {
             log.info("Starting lights because bladerunner theme is active");
             startLightsIfWereOnAfterDelay();
         }
-        else if(oldTheme === "bladerunner" && appState.uiTheme != 'bladerunner') {
+        else if(oldTheme === "bladerunner" && appState.uiTheme !== 'bladerunner') {
             turnLightsOff();
         }
 
@@ -68,7 +68,7 @@ const addStateListener = (appState: AppState) => {
 
 const start = (appState: AppState): void => {
 
-    if(appState.uiTheme == 'bladerunner')
+    if(appState.uiTheme === 'bladerunner')
         startLightsIfWereOnAfterDelay();
     else 
         turnLightsOff();
@@ -76,7 +76,5 @@ const start = (appState: AppState): void => {
     addStateListener(appState);    
 };
 
-export default {
-    start,
-    toggleLights,
-};
+const BladerunnerApi = { start, toggleLights };
+export default BladerunnerApi;

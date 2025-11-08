@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import InputBox from './InputBox';
 import DisplayResultView from './DisplayResultView';
 import AppState, { CommandResultView } from '../AppState';
@@ -8,7 +8,7 @@ import hash from '../../core/hash';
 import TopLinks from './TopLinks';
 import SettingsPane from './SettingsPane';
 import CommandLink from '../../core/components/CommandLink';
-import { faGear, faL, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
 import CookieDisclaimerFooter from './CookieDisclaimerFooter';
 import bladerunner from '../Bladerunner';
 
