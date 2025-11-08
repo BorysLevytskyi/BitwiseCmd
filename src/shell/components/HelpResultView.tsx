@@ -31,7 +31,7 @@ function HelpResultView() {
                     <ul>
                         <li><code><CommandLink text="light" /></code> — set the Light color theme</li>
                         <li><code><CommandLink text="dark" /></code> — set the Dark color theme</li>
-                        <li><code><CommandLink text="midnight" /></code> — set the Midnight color theme</li>
+                        <li><code><CommandLink text="midnight" /></code> — set the Midnight color theme</li>                        
                     </ul>
                 </div>
                 <div className="section">
@@ -63,7 +63,7 @@ function HelpResultView() {
                     </div>
                 </div>
                 <div className="section soft-border">
-                    <div className="section-title soft">Supported Number Types <sup className='accent1'>NEW</sup></div>
+                    <div className="section-title soft">Supported Number Types</div>
                     <p>
                     BitiwseCmd no longer uses the browser's JavaScript engine for the execution of bitwise operations. It has its own calculator implementation which brings supports bitwise operations on the following <i>signed</i> and <i>unsigned</i> data types:
                     </p>

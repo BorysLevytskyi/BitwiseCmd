@@ -11,7 +11,26 @@ html { height: 100% }
     position: relative;
 }
 
-code { font-size: 1.2em; font-weight: bold; }
+/* Centered vs stretched layout */
+.app-root.layout-centered { }
+
+/* Constrain and center top-level sections while keeping full-width theme background */
+.app-root.layout-centered > * {
+    max-width: clamp(70rem, 92vw, 100rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Blade Runner theme overrides for Settings pane (centralized here per AGENTS.md) */
+.app-root.bladerunner #settings button { color: #ffbf69 }
+
+.app-root.layout-stretched {
+    max-width: none;
+    margin: 0;
+}
+
+/* Theme-scoped code styling to avoid cross-theme overrides */
+.light code, .dark code, .midnight code, .bladerunner code { font-size: 1.2em; font-weight: bold; }
 
 .icon { margin-right: 5px; vertical-align: middle; }
 .header-cmd { color: #c5c5c5 }
@@ -29,8 +48,6 @@ code { font-size: 1.2em; font-weight: bold; }
 .button { padding: 5px;}
 .button svg { margin: 0; margin-right: 5px; }
 .button-large { padding: 10px; }
-
-.button:hover { background: rgba(255, 255, 255, 0.2);}
 
 .expressionInput { 
     padding: 3px; 
@@ -98,6 +115,14 @@ button.link-button {text-decoration: underline;}
     margin-left: -20px;
 }
 
+/* When Settings is active (no .soft), remove any button border/outline */
+.settings-button button,
+.settings-button .command-link {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
 .undo button { 
     opacity: 0.4;
     padding: 0;
@@ -123,7 +148,7 @@ button.link-button {text-decoration: underline;}
 .light .hashLink, .light .hashLink:visited { color: #aaa; }
 .light .hashLink:hover { color: #888 }
 .light ul.top-links li:hover { background: #ddd }
-.light .error { color: #da586d }
+.light .error { color: #d83e8f }
 .light button.btn { color: black}
 .light button.btn:hover { background: #ddd}
 .light button.btn:disabled { color: #888; background-color: inherit; }
@@ -133,6 +158,8 @@ button.link-button {text-decoration: underline;}
 .light .button:hover { background: rgba(0, 0, 0, 0.2);}
 .light .solid-border { border: solid 1px gray;}
 .light .accent1-border { border-color:green}
+.light .help code, .light .help code a { color:green}
+.light .button:hover { background: rgba(255, 255, 255, 0.2);}
 
 /* Dark */
 .dark { background: #121212; color: white;}
@@ -147,12 +174,14 @@ button.link-button {text-decoration: underline;}
 .dark .hashLink, .dark .hashLink:visited { color: #555 }
 .dark .hashLink:hover { color: #999 }
 .dark ul.top-links li:hover { background: #333 }
-.dark .error { color: #da586d}
+.dark .error { color: #d83e8f}
 .dark button.btn { color: white}
 .dark button.btn:hover { background: #333}
 .dark button.btn:disabled { color: #999; background-color: inherit; }
 .dark .accent1 { color:mediumseagreen}
 .dark .accent1-border { border-color:mediumseagreen}
+.dark .help code, .dark .help code a { color:mediumseagreen}
+.dark .button:hover { background: rgba(255, 255, 255, 0.2);}
 
 /*
     Midnight Theme
@@ -171,13 +200,139 @@ button.link-button {text-decoration: underline;}
 .midnight .hashLink, .midnight .hashLink:visited { color: #85a0ad }
 .midnight .hashLink:hover { color: #9FBAC7 }
 .midnight ul.top-links li:hover { background: #132537 }
-.midnight .error { color:#da586d}
+.midnight .error { color:#d83e8f}
 .midnight .changelog .item-new .date { font-weight: bold }
 .midnight button.btn { color: white}
 .midnight button.btn:hover { background: #132537}
 .midnight button.btn:disabled { color: #85a0ad; background-color: inherit; }
 .midnight .accent1 { color:mediumseagreen}
 .midnight .accent1-border { border-color:mediumseagreen}
+.midnight .help code, .midnight .help code a { color:mediumseagreen}
+.midnight .button:hover { background: rgba(255, 255, 255, 0.2);}
+
+/*
+    Blade Runner Theme
+*/
+.bladerunner { background: #0b0f14; color: white }
+.bladerunner .solid-background { background: #0b0f14; }
+.bladerunner .header-cmd {  color: #ff7fb0a8 !important; }
+.bladerunner .lights-on .header-cmd {  color: #ff7fb0 !important; }
+/* Rule for element when it has both .header and .on  */
+.bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
+.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; font-family: Impact, Verdana, sans-serif; cursor: pointer; position: relative; z-index: 1; letter-spacing: 0.02em; }
+.bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); }
+.bladerunner .header h1.lights-on::after {
+    /* Neon-style halo: layered cyan + magenta radial glows */
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-30%, -50%);
+    width: 20%;
+    height: 120%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(102, 217, 232, 0.70) 0%,
+            rgba(102, 217, 232, 0.45) 22%,
+            rgba(0, 0, 0, 0) 60%),
+        radial-gradient(ellipse at center,
+            rgba(255, 127, 176, 0.55) 0%,
+            rgba(255, 127, 176, 0.35) 35%,
+            rgba(0, 0, 0, 0) 72%);
+    filter: blur(35px);
+}
+.bladerunner {color: #e6f0ff;}
+.bladerunner .expression { color: white; }
+.bladerunner .expressionInput { color: white; }
+.bladerunner a, .bladerunner a:visited { color: #00d1f2; }
+.bladerunner button { color: #00eaff; }
+.bladerunner .indicator { color: #0e6e7e; }
+.bladerunner .on { color: white; }
+.bladerunner .prefix { color: #00d1f2 }
+.bladerunner .other { color:  #6c8497}
+.bladerunner .label { color: #7ac9d6 }
+.bladerunner .accent-background { background-color: #131a22; }
+.bladerunner .hashLink:hover { color: #33e1ff }
+.bladerunner .error { color:#d83e8f }
+.bladerunner .changelog .item-new .date { font-weight: bold }
+.bladerunner button.btn { color: #00eaff }
+.bladerunner button.btn:hover { background: #11222c }
+.bladerunner button.btn:disabled { color: #0e6e7e; background-color: inherit; }
+.bladerunner .accent1 { color: mediumseagreen }
+.bladerunner .accent1-border { border-color: mediumseagreen }
+.bladerunner .button { border-color: #00eaff }
+.bladerunner code { color: #e3a600 }
+.bladerunner code a, .bladerunner code a:visited { color: #e3a600 }
+.bladerunner .command-link { color: #5fc2e9 }
+.bladerunner .command-link:hover,
+.bladerunner .command-link:focus {
+    /* very dim magenta glow */
+    text-shadow: 0 0 2px rgba(255, 127, 176, 0.5);
+}
+.bladerunner .soft { color: #aebed0 }
+.bladerunner .solid-border { background-color: #0e161d; border-color: #1f3b4a;}
+.bladerunner .expressionInput {border-color: #1f3b4a;}
+.bladerunner .expressionInput::placeholder {color: #7e95a7;}
+.bladerunner .zero {color: #b9cfe2; }
+.bladerunner .expression {color: #e6f0ff;}
+.bladerunner .settings-button button {color: #b9cfe2;}
+.bladerunner button.hashLink, .bladerunner a.hashLink, .bladerunner a.hashLink:visited { color: #52687b; }
+.bladerunner button.hashLink:hover, .bladerunner a.hashLink:hover {
+    /* subtle glow derived from current hover color */
+    --text-shadow: 0 0 2px currentColor;
+    text-shadow:0  0 2px rgb(229, 33, 0.5);
+    color: #5fc2e9;
+}
+.bladerunner .cur { color: #6c8497; }
+
+/* Blade Runner: subtle glow for SVG icons inside hash links on hover/focus */
+.bladerunner .hashLink:hover .icon,
+.bladerunner .hashLink:focus .icon,
+.bladerunner .hashLink:hover svg,
+.bladerunner .hashLink:focus svg {
+    filter: drop-shadow(0 0 2px currentColor);
+}
+/* Blade Runner: neon hover glow for top-links controls */
+.bladerunner .top-links a, .bladerunner .top-links a:visited { color: #dce7f5 }
+.bladerunner .top-links button { color: #dce7f5 }
+
+.bladerunner .top-links a:hover,
+.bladerunner .top-links a:focus,
+.bladerunner .top-links button:hover,
+.bladerunner .top-links button:focus {
+    /* very dim magenta glow */
+    text-shadow:0  0 2px rgb(229, 33, 0.5);  
+    color: #FFBF00; 
+}
+
+/* Blade Runner: add matching glow to SVG icons inside top-links on hover/focus */
+.bladerunner .top-links a:hover .icon,
+.bladerunner .top-links a:focus .icon,
+.bladerunner .top-links button:hover .icon,
+.bladerunner .top-links button:focus .icon,
+.bladerunner .top-links a:hover svg,
+.bladerunner .top-links a:focus svg,
+.bladerunner .top-links button:hover svg,
+.bladerunner .top-links button:focus svg {
+    color: amber !important;
+    filter: drop-shadow(0 0 2px rgba(255, 127, 176, 0.5));
+}
+
+.bladerunner .bladerunner-easter-egg {display: none;}
+
+.bladerunner-easter-egg {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+    opacity: 0.3;
+}
+
+.bladerunner-easter-egg:hover { 
+    opacity: 1;
+}
+
 
 button { 
     border: none;
@@ -185,7 +340,24 @@ button {
     cursor: pointer;
 }
 
+
+
 button:focus {outline:0;}
+
+/* Remove blue focus ring from the Blade Runner easter egg button */
+.bladerunner-easter-egg button:focus,
+.bladerunner-easter-egg button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Anchor the Blade Runner easter egg to bottom-right regardless of scrolling */
+.bladerunner-easter-egg {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+}
 
 /* Top Links Shrink */
 @media (max-width: 800px) {

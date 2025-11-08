@@ -5,14 +5,14 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
-function CookieDisclaimerFooter(props: { appSate: AppState }): JSX.Element {
+function CookieDisclaimerFooter(props: { appState: AppState }): JSX.Element {
 
     const [expanded, setShowMore] = useState(false);
     const longCss = expanded ? " expanded" : " collapsed";
     const shortCss = expanded ? " collapsed" : " expanded";
     const buttonText = expanded ? "Read Less" : "Read More";
 
-    if (props.appSate.cookieDisclaimerHidden)
+    if (props.appState.cookieDisclaimerHidden)
         return <React.Fragment></React.Fragment>;
 
     return <div className="cookie-disclaimer">
@@ -34,7 +34,7 @@ function CookieDisclaimerFooter(props: { appSate: AppState }): JSX.Element {
         </div>
         <div>
             <p>
-                <button className="button" onClick={() => setShowMore(!expanded)}><FontAwesomeIcon icon={expanded ? faCaretDown : faCaretUp} />{buttonText}</button> <button className="button" onClick={() => props.appSate.setCookieDisclaimerHidden(true)}><FontAwesomeIcon icon={faCircleXmark} />Hide</button>
+                <button className="button" onClick={() => setShowMore(!expanded)}><FontAwesomeIcon icon={expanded ? faCaretDown : faCaretUp} />{buttonText}</button> <button className="button" onClick={() => props.appState.setCookieDisclaimerHidden(true)}><FontAwesomeIcon icon={faCircleXmark} />Hide</button>
             </p>
         </div>
     </div>

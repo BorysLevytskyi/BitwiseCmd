@@ -24,6 +24,16 @@ const shellModule = {
         cmd.command("dark", () => appState.setUiTheme('dark'));
         cmd.command("light", () => appState.setUiTheme('light'));
         cmd.command("midnight", () => appState.setUiTheme('midnight'));
+        cmd.command("settings", () => appState.toggleShowSettings());
+        cmd.command("bladerunner", () => {            
+            appState.setUiTheme('bladerunner');
+            sendAnalyticsEvent({eventCategory: "UI", eventAction: "ThemeChanged", eventLabel: "bladerunner"});            
+        });
+        cmd.command("bladerunner-easter", (c: CommandInput) => { 
+            document.querySelector('.app-root')!.scrollTo(0, 0);
+            cmd.execute("bladerunner");
+            appState.addCommandResult(c.input, () => <TextResultView text="You've discovered the hidden Blade Runner theme. Next time, to activate this theme, use the command 'bladerunner'." />);            
+        });
         cmd.command("about", (c: CommandInput) => appState.addCommandResult(c.input, () => <AboutResultView />));
         cmd.command("whatsnew", (c: CommandInput) => appState.addCommandResult(c.input, () => <WhatsnewResultView />));
         cmd.command("guid", (c: CommandInput) => appState.addCommandResult(c.input, () => <TextResultView text={uuid()} />));
@@ -93,3 +103,5 @@ const shellModule = {
 }
 
 export default shellModule;
+
+
