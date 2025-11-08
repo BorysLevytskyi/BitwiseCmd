@@ -32,6 +32,10 @@ html { height: 100% }
 /* Theme-scoped code styling to avoid cross-theme overrides */
 .light code, .dark code, .midnight code, .bladerunner code { font-size: 1.2em; font-weight: bold; }
 
+h1 { font-family: Impact, Verdana; 
+    text-transform: uppercase;
+    font-weight: lighter;
+}
 .icon { margin-right: 5px; vertical-align: middle; }
 .header-cmd { color: #c5c5c5 }
 
@@ -217,13 +221,14 @@ button.link-button {text-decoration: underline;}
 .bladerunner .solid-background { background: #0b0f14; }
 .bladerunner .header-cmd {  color: #ff7fb0a8 !important; }
 .bladerunner .lights-on .header-cmd {  color: #ff7fb0 !important; }
-/* Rule for element when it has both .header and .on  */
 .bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
-.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; font-family: Impact, Verdana, sans-serif; cursor: pointer; position: relative; z-index: 1; letter-spacing: 0.02em; }
-.bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); }
+.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; cursor: pointer; position: relative; z-index: 1; font-weight: bold; user-select: none;}
+
+.bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22);    }
 .bladerunner .header h1.lights-on::after {
     /* Neon-style halo: layered cyan + magenta radial glows */
     content: "";
+    animation: flicker 1s forwards;
     position: absolute;
     left: 0;
     top: 50%;
@@ -243,6 +248,21 @@ button.link-button {text-decoration: underline;}
             rgba(0, 0, 0, 0) 72%);
     filter: blur(35px);
 }
+
+@keyframes flicker {   
+    20%, 24%, 55% {
+        opacity: 0; 
+    }
+    40% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 .bladerunner {color: #e6f0ff;}
 .bladerunner .expression { color: white; }
 .bladerunner .expressionInput { color: white; }
@@ -260,17 +280,16 @@ button.link-button {text-decoration: underline;}
 .bladerunner button.btn { color: #00eaff }
 .bladerunner button.btn:hover { background: #11222c }
 .bladerunner button.btn:disabled { color: #0e6e7e; background-color: inherit; }
-.bladerunner .accent1 { color: mediumseagreen }
-.bladerunner .accent1-border { border-color: mediumseagreen }
+.bladerunner .accent1 { color: #e3a600 }
+.bladerunner .accent1 button:hover { text-shadow: 0 0 2px #e3a600 }
+.bladerunner .accent1-border { border-color: #e3a600 }
 .bladerunner .button { border-color: #00eaff }
 .bladerunner code { color: #e3a600 }
 .bladerunner code a, .bladerunner code a:visited { color: #e3a600 }
 .bladerunner .command-link { color: #5fc2e9 }
 .bladerunner .command-link:hover,
-.bladerunner .command-link:focus {
-    /* very dim magenta glow */
-    text-shadow: 0 0 2px rgba(255, 127, 176, 0.5);
-}
+.bladerunner .command-link:focus { text-shadow: 0 0 2px rgba(69, 243, 255, 0.949); }
+
 .bladerunner .soft { color: #aebed0 }
 .bladerunner .solid-border { background-color: #0e161d; border-color: #1f3b4a;}
 .bladerunner .expressionInput {border-color: #1f3b4a;}
@@ -279,18 +298,20 @@ button.link-button {text-decoration: underline;}
 .bladerunner .expression {color: #e6f0ff;}
 .bladerunner .settings-button button {color: #b9cfe2;}
 .bladerunner button.hashLink, .bladerunner a.hashLink, .bladerunner a.hashLink:visited { color: #52687b; }
-.bladerunner button.hashLink:hover, .bladerunner a.hashLink:hover {
+.bladerunner button.hashLink:hover, .bladerunner .undo button:hover, .bladerunner a.hashLink:hover {
     /* subtle glow derived from current hover color */
     --text-shadow: 0 0 2px currentColor;
     text-shadow:0  0 2px rgb(229, 33, 0.5);
     color: #5fc2e9;
 }
+.bladerunner .undo button:hover { opacity: 1; }
 .bladerunner .cur { color: #6c8497; }
 
 /* Blade Runner: subtle glow for SVG icons inside hash links on hover/focus */
 .bladerunner .hashLink:hover .icon,
 .bladerunner .hashLink:focus .icon,
 .bladerunner .hashLink:hover svg,
+.bladerunner .undo:hover svg,
 .bladerunner .hashLink:focus svg {
     filter: drop-shadow(0 0 2px currentColor);
 }
@@ -304,8 +325,30 @@ button.link-button {text-decoration: underline;}
 .bladerunner .top-links button:focus {
     /* very dim magenta glow */
     text-shadow:0  0 2px rgb(229, 33, 0.5);  
-    color: #FFBF00; 
+    color: hsl(45, 100%, 50%); 
 }
+
+
+/*
+.bladerunner .top-links li {position: relative;}
+.bladerunner .top-links button:hover::after, .bladerunner .top-links a:hover::after {
+    content: "";
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    white-space: nowrap;
+    width: 200%;
+    height: 120%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(227, 166, 0, 0.85) 0%,
+            rgba(227, 166, 0, 0.55) 22%,
+            rgba(0, 0, 0, 0) 60%);
+    filter: blur(20px);
+}*/
 
 /* Blade Runner: add matching glow to SVG icons inside top-links on hover/focus */
 .bladerunner .top-links a:hover .icon,

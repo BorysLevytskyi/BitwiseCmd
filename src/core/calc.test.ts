@@ -1,6 +1,6 @@
 import calc from './calc';
 import { Integer, asInteger } from './Integer';
-import { INT32_MIN_VALUE, INT64_MAX_VALUE, UINT64_MAX_VALUE } from './const';
+import { INT32_MIN_VALUE, INT32_MAX_VALUE, INT64_MAX_VALUE, INT64_MIN_VALUE, UINT64_MAX_VALUE } from './const';
 
 describe('calc.flipBit', () => {
     it('calculates flipped bit 32-bit number', () => {
@@ -86,7 +86,98 @@ describe('calc.xor', () => {
     it('positive and negative nubmer', () => {
         expect(calc.xor(Integer.int(-1), Integer.int(10)).num()).toBe(-11);
     });
-})
+});
+
+describe('calc.add', () => {
+    it('adds positives', () => {
+        expect(calc.add(Integer.int(2), Integer.int(3)).num()).toBe(5);
+    });
+
+    it('adds negative and positive', () => {
+        expect(calc.add(Integer.int(-2), Integer.int(3)).num()).toBe(1);
+    });
+
+    it('adds negatives', () => {
+        expect(calc.add(Integer.int(-2), Integer.int(-3)).num()).toBe(-5);
+    });
+
+    it('wraps on 32-bit overflow', () => {
+        expect(calc.add(Integer.int(INT32_MAX_VALUE), Integer.int(1)).num()).toBe(INT32_MIN_VALUE);
+        expect(calc.add(Integer.int(INT32_MAX_VALUE), Integer.int(2)).num()).toBe(-2147483647);
+    });
+
+    it('wraps on 64-bit overflow', () => {
+        const r = calc.add(new Integer(INT64_MAX_VALUE, 64), Integer.long(1));
+        expect(r.value.toString()).toBe(INT64_MIN_VALUE.toString());
+    });
+
+    it('promotes to larger operand size', () => {
+        const r = calc.add(Integer.int(-1), Integer.long(2));
+        expect(r.maxBitSize).toBe(64);
+        expect(r.num()).toBe(1);
+    });
+});
+
+describe('calc.sub', () => {
+    it('subtracts positives', () => {
+        expect(calc.sub(Integer.int(7), Integer.int(2)).num()).toBe(5);
+    });
+
+    it('subtracts negative and positive', () => {
+        expect(calc.sub(Integer.int(-2), Integer.int(3)).num()).toBe(-5);
+    });
+
+    it('subtracts negatives', () => {
+        expect(calc.sub(Integer.int(-2), Integer.int(-3)).num()).toBe(1);
+    });
+
+    it('wraps on 32-bit overflow', () => {
+        // 2147483647 - (-1) = 2147483648 -> -2147483648
+        expect(calc.sub(Integer.int(2147483647), Integer.int(-1)).num()).toBe(-2147483648);
+        // -2147483648 - 1 = -2147483649 -> 2147483647
+        expect(calc.sub(Integer.int(-2147483648), Integer.int(1)).num()).toBe(2147483647);
+    });
+
+    it('promotes to larger operand size', () => {
+        const r = calc.sub(Integer.int(-1), Integer.long(2));
+        expect(r.maxBitSize).toBe(64);
+        expect(r.num()).toBe(-3);
+    });
+});
+
+describe('calc.div', () => {
+    it('divides positives with truncation', () => {
+        expect(calc.div(Integer.int(7), Integer.int(2)).num()).toBe(3);
+    });
+
+    it('divides negative and positive with truncation', () => {
+        expect(calc.div(Integer.int(-7), Integer.int(2)).num()).toBe(-3);
+        expect(calc.div(Integer.int(7), Integer.int(-2)).num()).toBe(-3);
+    });
+
+    it('divides negatives', () => {
+        expect(calc.div(Integer.int(-8), Integer.int(-2)).num()).toBe(4);
+    });
+
+    it('wraps INT_MIN / -1 to INT_MIN for 32-bit', () => {
+        expect(calc.div(Integer.int(-2147483648), Integer.int(-1)).num()).toBe(-2147483648);
+    });
+
+    it('64-bit division', () => {
+        const r = calc.div(new Integer(INT64_MAX_VALUE, 64), Integer.long(2));
+        expect(r.value.toString()).toBe('4611686018427387903');
+    });
+
+    it('promotes to larger operand size', () => {
+        const r = calc.div(Integer.int(-8), Integer.long(2));
+        expect(r.maxBitSize).toBe(64);
+        expect(r.num()).toBe(-4);
+    });
+
+    it('division by zero throws', () => {
+        expect(() => calc.div(Integer.int(1), Integer.int(0))).toThrow();
+    });
+});
 
 describe('calc.lshift', () => {
 
@@ -200,6 +291,7 @@ describe("calc misc", () => {
     })
 });
 
+
 describe("calc.engine.", () => {
     it("not", () => {
         expect(calc.engine.not("0101")).toBe("1010");
@@ -225,6 +317,82 @@ describe("calc.engine.", () => {
         expect(calc.engine.xor("1", "0")).toBe("1");
         expect(calc.engine.xor("0", "0")).toBe("0");
         expect(calc.engine.xor("10101", "11011")).toBe("01110");
+    });
+
+    it("add", () => {
+        // 1-bit
+        expect(calc.engine.add("1", "1")).toBe("0"); // 1 + 1 = 2 -> 0 (wrap)
+        expect(calc.engine.add("1", "0")).toBe("1");
+        expect(calc.engine.add("0", "0")).toBe("0");
+
+        // 4-bit
+        expect(calc.engine.add("0001", "0001")).toBe("0010"); // 1+1=2
+        expect(calc.engine.add("0111", "0001")).toBe("1000"); // 7+1=8
+        expect(calc.engine.add("1111", "0001")).toBe("0000"); // 15+1=16 -> 0 (wrap)
+        expect(calc.engine.add("1111", "1111")).toBe("1110"); // 15+15=30 -> 14
+    });
+
+    it("mul", () => {
+        // 4-bit unsigned-style values
+        expect(calc.engine.mul("0001", "0011")).toBe("0011"); // 1*3=3
+        expect(calc.engine.mul("0010", "0011")).toBe("0110"); // 2*3=6
+        expect(calc.engine.mul("1111", "0010")).toBe("1110"); // 15*2=30 -> 14
+
+        // two's complement semantics for negatives
+        expect(calc.engine.mul("1111", "0011")).toBe("1101"); // (-1)*3 = -3
+        expect(calc.engine.mul("1111", "1111")).toBe("0001"); // (-1)*(-1) = 1
+        expect(calc.engine.mul("1000", "0010")).toBe("0000"); // (-8)*2 = -16 -> 0
+
+        // 8-bit example
+        expect(calc.engine.mul("11111111", "00000010")).toBe("11111110"); // (-1)*2 = -2
+    });
+
+    it("sub", () => {
+        // 4-bit examples
+        expect(calc.engine.sub("0011", "0001")).toBe("0010"); // 3-1=2
+        expect(calc.engine.sub("0000", "0001")).toBe("1111"); // 0-1 -> -1
+        expect(calc.engine.sub("1000", "0001")).toBe("0111"); // -8-1 -> 7 (wrap)
+    });
+
+    it("div", () => {
+        // 4-bit unsigned-style values
+        expect(calc.engine.div("0110", "0011")).toBe("0010"); // 6/3=2
+        expect(calc.engine.div("0111", "0010")).toBe("0011"); // 7/2=3
+
+        // two's complement negatives
+        expect(calc.engine.div("1111", "0010")).toBe("0000"); // (-1)/2 = 0 (trunc toward zero)
+        expect(calc.engine.div("1000", "0010")).toBe("1100"); // (-8)/2 = -4 -> 1100
+
+        // division by zero
+        expect(() => calc.engine.div("0001", "0000")).toThrow();
+    });
+
+    it("add", () => {
+        // 1-bit
+        expect(calc.engine.add("1", "1")).toBe("0"); // 1 + 1 = 2 -> 0 (wrap)
+        expect(calc.engine.add("1", "0")).toBe("1");
+        expect(calc.engine.add("0", "0")).toBe("0");
+
+        // 4-bit
+        expect(calc.engine.add("0001", "0001")).toBe("0010"); // 1+1=2
+        expect(calc.engine.add("0111", "0001")).toBe("1000"); // 7+1=8
+        expect(calc.engine.add("1111", "0001")).toBe("0000"); // 15+1=16 -> 0 (wrap)
+        expect(calc.engine.add("1111", "1111")).toBe("1110"); // 15+15=30 -> 14
+    });
+
+    it("mul", () => {
+        // 4-bit unsigned-style values
+        expect(calc.engine.mul("0001", "0011")).toBe("0011"); // 1*3=3
+        expect(calc.engine.mul("0010", "0011")).toBe("0110"); // 2*3=6
+        expect(calc.engine.mul("1111", "0010")).toBe("1110"); // 15*2=30 -> 14
+
+        // two's complement semantics for negatives
+        expect(calc.engine.mul("1111", "0011")).toBe("1101"); // (-1)*3 = -3
+        expect(calc.engine.mul("1111", "1111")).toBe("0001"); // (-1)*(-1) = 1
+        expect(calc.engine.mul("1000", "0010")).toBe("0000"); // (-8)*2 = -16 -> 0
+
+        // 8-bit example
+        expect(calc.engine.mul("11111111", "00000010")).toBe("11111110"); // (-1)*2 = -2
     });
 
     it("lshift", () => {

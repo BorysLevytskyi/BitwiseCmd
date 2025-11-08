@@ -8,6 +8,15 @@ function WhatsNewResultView() {
         <h3>Changelog</h3>
         <div className='item item-new'>
             <p>
+                <span className="soft date">Nov 8th, 2025</span> <br />
+            </p>
+            <ul>
+                <li>Expressions now support arithmetic operators alongside bitwise ones: <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>.</li>
+                <li>Try examples: <code><CommandLink text="15 + 3" /></code>, <code><CommandLink text="10 - 4" /></code>, <code><CommandLink text="3 * -5" /></code>, <code><CommandLink text="7 / 2 + 3" /></code>.</li>
+            </ul>
+        </div>
+        <div className='item'>
+            <p>
                 <span className="soft date">Nov 6th, 2025</span> <br />
             </p>
             <ul>                

@@ -26,12 +26,12 @@ function SettingsPane(props : SettingsPaneProps) {
             </div>
             <div className='setting'>
                 <button type="button" onClick={() => appState.toggleDimExtrBits()}>
-                    <FontAwesomeIcon size='xl' icon={appState.dimExtraBits ? faToggleOn : faToggleOff} /> Dim Extra Bits
+                    <FontAwesomeIcon size='xl' icon={appState.dimExtraBits ? faToggleOn : faToggleOff} /> Dim Padding Bits
                 </button>
                 <p className='description'>
                     {appState.dimExtraBits 
-                        ? "Extra bits used for padding are now dimmed." 
-                        : "No bits are dimmed."} 
+                        ? "Extra bits, used for padding to align numbers of different sizes, are dimmed." 
+                        : "Extra bits used for padding are not dimmed."} 
                 </p>
             </div>
             <div className='setting'>

@@ -19,29 +19,18 @@ const toggleLights = (): void => {
     if (lightIsOn)
         turnLightsOff();           
     else
-        turnLightsOnWithFlickering();
+        turnLightsOn();
         
 };
 
-const turnLightsOnWithFlickering = (): void => {
+const turnLightsOn = (): void => {
     const header = getHeader();
-    const flickers = [true, false, true, false, true, false, true];
-
-    log.info("Turning lights on with flickering");
-
-    flickers.forEach((flicker, index) => {
-        setTimeout(() => {
-            if (flicker)
-                header.classList.add(LIGHTS_ON_CLASS);
-            else
-                header.classList.remove(LIGHTS_ON_CLASS);
-        }, index * 100);
-    });
-};
+    header.classList.add(LIGHTS_ON_CLASS);
+}
 
 const startLightsIfWereOnAfterDelay = (): void => {
     if (getLightIsOn())
-        setTimeout(turnLightsOnWithFlickering, 500);
+        setTimeout(turnLightsOn, 500);
     else
         log.info("Lights are off by user preference");
 };

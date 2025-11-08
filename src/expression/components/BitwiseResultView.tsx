@@ -7,7 +7,8 @@ import { Operator, Operand, ListOfNumbers } from '../expression';
 import calc from '../../core/calc';
 import { Integer } from '../../core/Integer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRotateLeft as iconUndo } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion as iconTip } from '@fortawesome/free-regular-svg-icons';
 import loglevel from 'loglevel';
 import IconWithToolTip from '../../shell/components/IconWithTooltip';
 
@@ -150,7 +151,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         const buttons = [];
 
         if (this.scalar.value.value < 0)
-            buttons.push(<IconWithToolTip icon={faInfoCircle}>
+            buttons.push(<IconWithToolTip icon={iconTip}>
                <div className='accent1 tooltip-header'>Two's Complement</div>
                     <p>
                         This is a negative number. It's binary representation is <u>inverted</u> using <strong>Two's Complement</strong> operation.
@@ -159,7 +160,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
             </IconWithToolTip>)
 
         if (!this.originalValue.isTheSame(this.scalar.value))
-            buttons.push(<button title='Undo all changes' className='undo' data-control="undo" onClick={() => this.undo()}><FontAwesomeIcon icon={faUndo} /></button>);
+            buttons.push(<button title='Undo all changes' className='undo' data-control="undo" onClick={() => this.undo()}><FontAwesomeIcon icon={iconUndo} /></button>);
 
         return <React.Fragment>{buttons}</React.Fragment>
     }

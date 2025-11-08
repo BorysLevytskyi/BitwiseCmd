@@ -10,7 +10,7 @@ const calc = {
     },
 
     flipBit: function(num: Integer | JsNumber, bitIndex: number): Integer  {
-        return this._applySingle(asInteger(num), (bin) => this.engine.flipBit(bin, bitIndex));
+        return this._executeForSingleOperand(asInteger(num), (bin) => this.engine.flipBit(bin, bitIndex));
     },
 
     promoteTo64Bit(number: Integer) : Integer {
@@ -33,9 +33,13 @@ const calc = {
             case ">>": return this.rshift(op1, op2.value);
             case ">>>": return this.urshift(op1, op2.value);
             case "<<": return this.lshift(op1, op2.value);
-            case "&": return this.and(op1,op2);
-            case "|": return this.or(op1,op2);
-            case "^": return this.xor(op1,op2);
+            case "&": return this.and(op1, op2);
+            case "|": return this.or(op1, op2);
+            case "^": return this.xor(op1, op2);
+            case "+": return this.add(op1, op2);
+            case "-": return this.sub(op1, op2);
+            case "*": return this.mul(op1, op2);
+            case "/": return this.div(op1, op2);
             default: throw new Error(operator + " operator is not supported");
         }
     },
@@ -63,7 +67,7 @@ const calc = {
         
         while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
 
-        return this._applySingle(num, bin => this.engine.lshift(bin, bytes));
+        return this._executeForSingleOperand(num, bin => this.engine.lshift(bin, bytes));
     },
 
     rshift (num : Integer, numBytes : JsNumber) : Integer {
@@ -75,7 +79,7 @@ const calc = {
         
         while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
 
-        return this._applySingle(num, bin => this.engine.rshift(bin, bytes));
+        return this._executeForSingleOperand(num, bin => this.engine.rshift(bin, bytes));
     },
 
     urshift (num : Integer, numBytes : JsNumber) : Integer {
@@ -87,26 +91,42 @@ const calc = {
         
         while(bytes > num.maxBitSize) bytes -= num.maxBitSize;
 
-        return this._applySingle(num, bin => this.engine.urshift(bin, bytes));
+        return this._executeForSingleOperand(num, bin => this.engine.urshift(bin, bytes));
     },
 
     not(num:Integer) : Integer { 
-        return this._applySingle(num, this.engine.not);
+        return this._executeForSingleOperand(num, this.engine.not);
     },
 
     and (num1 : Integer, num2 : Integer) : Integer {
-        return this._applyTwo(num1, num2, this.engine.and);
+        return this._executeForTwoOperands(num1, num2, this.engine.and);
     },
 
     or (num1 : Integer, num2 : Integer) : Integer {
-        return this._applyTwo(num1, num2, this.engine.or);
+        return this._executeForTwoOperands(num1, num2, this.engine.or);
     },
 
     xor (num1 : Integer, num2 : Integer) : Integer {
-        return this._applyTwo(num1, num2, this.engine.xor);
+        return this._executeForTwoOperands(num1, num2, this.engine.xor);
+    },
+    
+    mul (num1: Integer, num2: Integer) : Integer {
+        return this._executeForTwoOperands(num1, num2, this.engine.mul);
+    },
+    
+    sub (num1: Integer, num2: Integer) : Integer {
+        return this._executeForTwoOperands(num1, num2, this.engine.sub);
+    },
+    
+    div (num1: Integer, num2: Integer) : Integer {
+        return this._executeForTwoOperands(num1, num2, this.engine.div);
     },
 
-    _applySingle(num: Integer, operation: (bin:string) => string) : Integer {
+    add(num1: Integer, num2: Integer) : Integer {
+       return this._executeForTwoOperands(num1, num2, this.engine.add);
+    },
+
+    _executeForSingleOperand(num: Integer, operation: (bin:string) => string) : Integer {
 
         let bin = this.toBinaryString(num).padStart(num.maxBitSize, num.value < 0 ? '1' : '0');
 
@@ -123,7 +143,7 @@ const calc = {
         return new Integer(typeof num.value === "bigint" ? result : asIntN(result), num.maxBitSize, num.signed);
     },
 
-    _applyTwo(op1: Integer, op2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {
+    _executeForTwoOperands(op1: Integer, op2: Integer,  operation: (bin1:string, bin2:string) => string) : Integer {
         
         if(op1.maxBitSize === op2.maxBitSize && op1.signed !== op2.signed)
             throw new Error("This operation cannot be applied to signed and unsigned operands of the same size");
@@ -209,6 +229,72 @@ const calc = {
 
             return result.join('');
         },
+        add (bin1: string, bin2:string) : string {
+            checkSameLength(bin1, bin2);
+            const len = bin1.length;
+            let carry = 0;
+            const out: string[] = new Array(len);
+
+            for (let i = len - 1; i >= 0; i--) {
+                const b1 = bin1[i] === '1' ? 1 : 0;
+                const b2 = bin2[i] === '1' ? 1 : 0;
+                const sum = b1 + b2 + carry;
+                out[i] = (sum % 2) === 1 ? '1' : '0';
+                carry = sum >= 2 ? 1 : 0;
+            }
+
+            // Overflow carry is discarded to keep fixed width
+            return out.join('');
+        },
+        mul (bin1: string, bin2: string) : string {
+            checkSameLength(bin1, bin2);
+            const len = bin1.length;
+
+            const toSignedBigInt = (bin: string) => {
+                if (bin[0] === '1') {
+                    const mag = BigInt('0b' + calc.engine.applyTwosComplement(bin));
+                    return -mag;
+                }
+                return BigInt('0b' + bin);
+            };
+
+            const a = toSignedBigInt(bin1);
+            const b = toSignedBigInt(bin2);
+            const product = a * b;
+
+            const modulo = (BigInt(1) << BigInt(len));
+            const wrapped = ((product % modulo) + modulo) % modulo;
+            return wrapped.toString(2).padStart(len, '0');
+        },
+        sub (bin1: string, bin2: string) : string {
+            checkSameLength(bin1, bin2);
+            // Two's complement subtraction: a - b == a + (-b)
+            const negB = calc.engine.applyTwosComplement(bin2);
+            return calc.engine.add(bin1, negB);
+        },
+        div (bin1: string, bin2: string) : string {
+            checkSameLength(bin1, bin2);
+            const len = bin1.length;
+
+            const toSignedBigInt = (bin: string) => {
+                if (bin[0] === '1') {
+                    const mag = BigInt('0b' + calc.engine.applyTwosComplement(bin));
+                    return -mag;
+                }
+                return BigInt('0b' + bin);
+            };
+
+            const a = toSignedBigInt(bin1);
+            const b = toSignedBigInt(bin2);
+            if (b === BigInt(0))
+                throw new Error('Division by zero');
+
+            const quotient = a / b; // BigInt division truncates toward zero
+
+            const modulo = (BigInt(1) << BigInt(len));
+            const wrapped = (((quotient % modulo) + modulo) % modulo);
+            return wrapped.toString(2).padStart(len, '0');
+        },
         flipBit(bin: string, bitIndex : number) : string {
             return bin.substring(0, bitIndex) + flip(bin[bitIndex]) + bin.substring(bitIndex+1)
         },
@@ -252,12 +338,13 @@ function nextPowOfTwo(num: number) : number {
     return p;
 }
 
+// Promotes both numbers to the same size using the size of the bigger one
 function equalizeSize(n1: Integer, n2: Integer) : [Integer, Integer] {
     if(n1.maxBitSize === n2.maxBitSize)
     {
         if(n1.signed === n2.signed) return [n1,n2];
 
-        // Example int and usinged int. Poromoted both yo 64 bit
+        // Example int and usinged int. Poromoted both to 64 bit
         return [n1.resize(n1.maxBitSize*2).toSigned(), n2.resize(n2.maxBitSize*2).toSigned()];
     }
     
