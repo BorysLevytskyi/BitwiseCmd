@@ -21,7 +21,8 @@ export type CommandResultView = {
     view: ViewFactory
 };
 
-export type AppStateChangeHandler = (state: AppState) => void;
+export type AppStateAttribute = keyof AppState;
+export type AppStateChangeHandler = (state: AppState, attribute : AppStateAttribute) => void;
 
 type ViewFactory = () => JSX.Element;
 
@@ -65,12 +66,12 @@ export default class AppState {
         const key = generateKey();
         this.commandResults.unshift({ key, input, view });
         log.debug(`command result added: ${input}`);
-        this.triggerChanged();
+        this.triggerChanged('commandResults');
     }
 
     clearCommandResults() {
         this.commandResults = [];
-        this.triggerChanged();
+        this.triggerChanged('commandResults');
     }
 
     removeResult(index: number) {
@@ -78,68 +79,72 @@ export default class AppState {
             return;
 
         this.commandResults.splice(index, 1);
-        this.triggerChanged();
+        this.triggerChanged('commandResults');
     }
 
     toggleEmphasizeBytes(value?: boolean) {
         this.emphasizeBytes = value !== null && value !== undefined ? value : !this.emphasizeBytes;
-        this.triggerChanged();
+        this.triggerChanged('emphasizeBytes');
     }
 
     onChange(handler: AppStateChangeHandler) {
         this.changeHandlers.push(handler);
     }
 
-    triggerChanged() {
-        this.changeHandlers.forEach(h => h(this));
+    triggerChanged(attribute: AppStateAttribute) {
+        this.changeHandlers.forEach(h => h(this, attribute));
     }
 
     setUiTheme(theme: string) {
+        
+        if(this.uiTheme === theme) 
+            return;
+
         this.uiTheme = theme;
-        this.triggerChanged();        
+        this.triggerChanged('uiTheme');
     }
 
     toggleDebugMode() {
         this.debugMode = !this.debugMode;
-        this.triggerChanged();
+        this.triggerChanged('debugMode');
     }
 
     toggleShowSettings() {
         this.showSettings = !this.showSettings;
-        this.triggerChanged();
+        this.triggerChanged('showSettings');
     }
 
     toggleAnnotateTypes(value?: boolean) {
         this.annotateTypes = value !== null && value !== undefined ? value : !this.annotateTypes;
-        this.triggerChanged();
+        this.triggerChanged('annotateTypes');
     }
 
     toggleDimExtrBits() {
         this.dimExtraBits = !this.dimExtraBits;
-        this.triggerChanged();
+        this.triggerChanged('dimExtraBits');
     }
 
     toggleCenteredLayout(value?: boolean) {
         this.centeredLayout = value !== null && value !== undefined ? value : !this.centeredLayout;
-        this.triggerChanged();
+        this.triggerChanged('centeredLayout');
     }
 
     registerVisit() {
         this.pageVisitsCount++;
-        this.triggerChanged();
+        this.triggerChanged('pageVisitsCount');
     }
 
     onDonationClicked(): boolean {
         if (this.donationClicked === true) return false;
 
         this.donationClicked = true;
-        this.triggerChanged();
+        this.triggerChanged('donationClicked');
         return true;
     }
 
     setCookieDisclaimerHidden(value: boolean) {
         this.cookieDisclaimerHidden = value;
-        this.triggerChanged();
+        this.triggerChanged('cookieDisclaimerHidden');
     }
 
     getPersistData(): PersistedAppData {

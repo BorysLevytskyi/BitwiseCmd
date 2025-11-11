@@ -25,10 +25,7 @@ const shellModule = {
         cmd.command("light", () => appState.setUiTheme('light'));
         cmd.command("midnight", () => appState.setUiTheme('midnight'));
         cmd.command("settings", () => appState.toggleShowSettings());
-        cmd.command("bladerunner", () => {            
-            appState.setUiTheme('bladerunner');
-            sendAnalyticsEvent({eventCategory: "UI", eventAction: "ThemeChanged", eventLabel: "bladerunner"});            
-        });
+        cmd.command("bladerunner", () => appState.setUiTheme('bladerunner'));
         cmd.command("bladerunner-easter", (c: CommandInput) => { 
             document.querySelector('.app-root')!.scrollTo(0, 0);
             cmd.execute("bladerunner");
@@ -70,38 +67,51 @@ const shellModule = {
             });
         });
 
-        if(appState.env !== 'prod') {
-            
+        if(appState.env !== 'prod') {            
             // Default command for development purposes
-            cmd.command({
-                canHandle: (s: string) => s.indexOf('default') === 0,
-                handle: (s: CommandInput) => {
-
-                    const executeCommand = (c: string) => {
-
-                        if(c.length === 0) {
-                            return "Default comand: " + localStorage.getItem(STARTUP_COMMAND_KEY);
-                        }
-                        else if(c === 'clear') {
-                            localStorage.removeItem(STARTUP_COMMAND_KEY);
-                            return "Default startup command cleared";
-                        }
-                        
-                        localStorage.setItem(STARTUP_COMMAND_KEY, c);
-                        return `Default startup command saved: ${c}`;
-                    };
-
-                    const command = s.input.substring(7).trim();
-                    const result = executeCommand(command);
-                    appState.addCommandResult(s.input, () => <TextResultView text={result} />);
-                } 
-            });
+            registerDefaultCommand(cmd, appState);
         };
 
         cmd.onError((input: string, err: Error) => appState.addCommandResult(input, () => <ErrorResultView errorMessage={err.toString()} />));
+
+        registerStateChangeHandlers(appState);
     }
 }
 
 export default shellModule;
 
+
+function registerStateChangeHandlers(appState: AppState) {
+    appState.onChange((state: AppState, attribute: keyof AppState) => {
+        if (attribute === 'uiTheme') {
+            sendAnalyticsEvent({ eventCategory: "UI", eventAction: `set_theme_${state.uiTheme}` });
+        }
+    });
+}
+
+function registerDefaultCommand(cmd: CmdShell, appState: AppState) {
+    cmd.command({
+        canHandle: (s: string) => s.indexOf('default') === 0,
+        handle: (s: CommandInput) => {
+
+            const executeCommand = (c: string) => {
+
+                if (c.length === 0) {
+                    return "Default comand: " + localStorage.getItem(STARTUP_COMMAND_KEY);
+                }
+                else if (c === 'clear') {
+                    localStorage.removeItem(STARTUP_COMMAND_KEY);
+                    return "Default startup command cleared";
+                }
+
+                localStorage.setItem(STARTUP_COMMAND_KEY, c);
+                return `Default startup command saved: ${c}`;
+            };
+
+            const command = s.input.substring(7).trim();
+            const result = executeCommand(command);
+            appState.addCommandResult(s.input, () => <TextResultView text={result} />);
+        }
+    });
+}
 
