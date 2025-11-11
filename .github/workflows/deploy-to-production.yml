@@ -40,7 +40,7 @@ jobs:
             echo "Expected $index_path to exist after build" >&2
             exit 1
           fi
-          printf '<!-- Howdy! So you like looking at other people\'s html sources, huh? I do it too. Anyway, the commit hash is %s -->\n' "$commit_hash" | cat - "$index_path" > "${index_path}.with-hash"
+          printf '<!-- Howdy! So you like looking at other peoples html sources eh? I do it too. Anyway, the commit hash is %s -->\n' "$commit_hash" | cat - "$index_path" > "${index_path}.with-hash"
           mv "${index_path}.with-hash" "$index_path"
           echo "commit_hash=$commit_hash" >> "$GITHUB_ENV"
 
