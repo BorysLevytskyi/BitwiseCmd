@@ -1,0 +1,31 @@
+/* Light theme tokens */
+.app-root.light {
+    --bg-color: #fafafa;
+    --text-color: #121212;
+    --solid-bg-color: var(--bg-color);
+    --font-family: Verdana, sans-serif;
+    --header-cmd-color: #919191;
+    --anchor-color: #222;
+    --button-color: #222;
+    --indicator-color: #ddd;
+    --on-color: #121212;
+    --prefix-color: #888;
+    --other-color: #bbb;
+    --hashlink-color: #aaa;
+    --hashlink-hover-color: #888;
+    --top-links-li-hover-bg: #ddd;
+    --error-color: #d83e8f;
+    --btn-color: black;
+    --btn-hover-bg: #ddd;
+    --btn-disabled-color: #888;
+    --accent1-color: green;
+    --accent-background: transparent;
+    --button-border-color: gray;
+    --solid-border-color: gray;
+    --help-code-color: green;
+    --input-border-color: rgba(0, 0, 0, 0.5);
+    --input-text-color: inherit;
+    --expression-color: var(--text-color);
+    --button-hover-bg: rgba(255, 255, 255, 0.2);
+    --cur-color: lightgray;
+}

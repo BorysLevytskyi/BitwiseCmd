@@ -1,0 +1,42 @@
+/* Graphite theme tokens */
+.app-root.graphite {
+    --bg-color: #151617;
+    --solid-bg-color: #151617;
+    --text-color: #ececec;
+    --font-family: Verdana, sans-serif;
+    --header-cmd-color: #5f9ea0;
+    --anchor-color: #5f9ea0;
+    --button-color: #5f9ea0;
+    --indicator-color: #9aa0a3;
+    --on-color: #ececec;
+    --prefix-color: #5f9ea0;
+    --other-color: #7a8286;
+    --hashlink-color: #9aa0a3;
+    --hashlink-hover-color: #b4c6c9;
+    --top-links-li-hover-bg: #191c1d;
+    --error-color: #d83e8f;
+    --btn-color: #ececec;
+    --btn-hover-bg: #1f2324;
+    --btn-disabled-color: #9aa0a3;
+    --accent1-color: #5f9ea0;
+    --accent-background: #191c1d;
+    --button-border-color: #313639;
+    --solid-border-color: #313639;
+    --help-code-color: #b4c6c9;
+    --input-border-color: #313639;
+    --input-text-color: #ececec;
+    --expression-color: #ececec;
+    --button-hover-bg: #1f2324;
+    --cur-color: #5f9ea0;
+    --panel-bg-color: #1f2324;
+    --label-color: #b4c6c9;
+    --command-link-color: #5f9ea0;
+    --top-links-color: #ececec;
+    --top-links-hover-color: #5f9ea0;
+    --soft-color: #9aa0a3;
+    --zero-color: #b4c6c9;
+    --placeholder-color: #9aa0a3;
+    --settings-button-color: #b4c6c9;
+    --settings-accent-color: #5f9ea0;
+    --lights-on-header-color: #b4c6c9;
+}

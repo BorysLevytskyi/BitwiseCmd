@@ -1,0 +1,110 @@
+/* Shared theme surface rules driven by CSS variables */
+.app-root {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.app-root .solid-background {
+    background: var(--solid-bg-color);
+}
+
+.app-root .header-cmd {
+    color: var(--header-cmd-color);
+}
+
+.app-root .lights-on .header-cmd,
+.app-root .header-cmd.lights-on {
+    color: var(--lights-on-header-color, var(--header-cmd-color));
+}
+
+.app-root a,
+.app-root a:visited,
+.app-root button {
+    color: var(--anchor-color);
+}
+
+.app-root .indicator { color: var(--indicator-color); }
+.app-root .on { color: var(--on-color); }
+.app-root .prefix { color: var(--prefix-color); }
+.app-root .other { color: var(--other-color); }
+.app-root .expression { color: var(--expression-color); }
+.app-root .accent-background { background-color: var(--accent-background, transparent); }
+
+.app-root .hashLink,
+.app-root .hashLink:visited {
+    color: var(--hashlink-color);
+}
+
+.app-root .hashLink:hover {
+    color: var(--hashlink-hover-color);
+}
+
+.app-root ul.top-links li:hover {
+    background: var(--top-links-li-hover-bg);
+    border-radius: 10px;
+}
+
+.app-root .error { color: var(--error-color); }
+
+.app-root button.btn { color: var(--btn-color); }
+.app-root button.btn:hover { background: var(--btn-hover-bg); }
+.app-root button.btn:disabled {
+    color: var(--btn-disabled-color);
+    background-color: inherit;
+}
+
+.app-root .accent1 { color: var(--accent1-color); }
+.app-root .accent1-border { border-color: var(--accent1-color); }
+
+.app-root .expressionInput {
+    border-bottom: solid 1px var(--input-border-color);
+    color: var(--input-text-color);
+}
+
+.app-root .button {
+    border: solid 1px var(--button-border-color, var(--solid-border-color, currentColor));
+}
+
+.app-root .button:hover {
+    background: var(--button-hover-bg);
+}
+
+.app-root .solid-border {
+    border: solid 1px var(--solid-border-color, var(--button-border-color, currentColor));
+    background-color: var(--panel-bg-color, transparent);
+}
+
+.app-root .help code,
+.app-root .help code a {
+    color: var(--help-code-color);
+}
+
+.app-root .cur { color: var(--cur-color, inherit); }
+.app-root .soft { color: var(--soft-color, inherit); }
+.app-root .label { color: var(--label-color, inherit); }
+.app-root .zero { color: var(--zero-color, inherit); }
+
+.app-root .command-link {
+    color: var(--command-link-color, var(--anchor-color));
+}
+
+.app-root .expressionInput::placeholder {
+    color: var(--placeholder-color, inherit);
+}
+
+.app-root .top-links a,
+.app-root .top-links a:visited,
+.app-root .top-links button {
+    color: var(--top-links-color, var(--anchor-color));
+}
+
+.app-root .top-links a:hover,
+.app-root .top-links a:focus,
+.app-root .top-links button:hover,
+.app-root .top-links button:focus {
+    color: var(--top-links-hover-color, var(--anchor-color));
+}
+
+.app-root #settings button {
+    color: var(--settings-accent-color, inherit);
+}

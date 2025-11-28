@@ -1,0 +1,27 @@
+/* Dark theme tokens */
+.app-root.dark {
+    --bg-color: #121212;
+    --text-color: white;
+    --solid-bg-color: #121212;
+    --font-family: Verdana, sans-serif;
+    --header-cmd-color: #c5c5c5; /* default fallback used for header-cmd unless overridden */
+    --anchor-color: white;
+    --button-color: white;
+    --indicator-color: #555;
+    --on-color: white;
+    --prefix-color: #999;
+    --other-color: #777;
+    --hashlink-color: #555;
+    --hashlink-hover-color: #999;
+    --top-links-li-hover-bg: #333;
+    --error-color: #d83e8f;
+    --btn-color: white;
+    --btn-hover-bg: #333;
+    --btn-disabled-color: #999;
+    --accent1-color: mediumseagreen;
+    --help-code-color: mediumseagreen;
+    --input-border-color: rgba(255, 255, 255, 0.5);
+    --input-text-color: white;
+    --expression-color: white;
+    --button-hover-bg: rgba(255, 255, 255, 0.2);
+}

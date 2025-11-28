@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import cmd, { CommandInput } from './shell/cmd';
 import AppRoot from './shell/components/AppRoot';
 import log from 'loglevel';
-import './index.css';
+import './css/index.css';
 import networkingAppModule from './networking/module';
 import expressionAppModule from './expression/module';
 import shellModule from './shell/module';

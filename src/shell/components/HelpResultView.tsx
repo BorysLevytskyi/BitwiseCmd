@@ -31,7 +31,8 @@ function HelpResultView() {
                     <ul>
                         <li><code><CommandLink text="light" /></code> — set the Light color theme</li>
                         <li><code><CommandLink text="dark" /></code> — set the Dark color theme</li>
-                        <li><code><CommandLink text="midnight" /></code> — set the Midnight color theme</li>                        
+                        <li><code><CommandLink text="midnight" /></code> — set the Midnight color theme</li>
+                        <li><code><CommandLink text="graphite" /></code> — set the Graphite color theme</li>                        
                     </ul>
                 </div>
                 <div className="section">

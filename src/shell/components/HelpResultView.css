@@ -1,6 +1,6 @@
 .help ul { list-style-type: none; margin: 0; margin-left: 10px; margin-top: 0.2em; padding: 0;  }
 .help li { padding: 1px; margin-bottom: 5px;}
-.light .help code, .light .help code a { color:green}
+/* Theme-specific styling moved to src/index.css via CSS variables */
 .help p { margin-top: 0.5em }
 .help .section {padding: 1em;}
 .help .panel-container {overflow: hidden;}

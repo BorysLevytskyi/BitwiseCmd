@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-export const APP_VERSION = 10;
+export const APP_VERSION = 11;
 
 export type PersistedAppData = {
     emphasizeBytes: boolean;
@@ -49,7 +49,7 @@ export default class AppState {
 
         this.env = env;
 
-        this.uiTheme = persistData.uiTheme;
+        this.uiTheme = normalizeTheme(persistData.uiTheme);
         this.emphasizeBytes = !!persistData.emphasizeBytes;
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version !== null && persistData.version !== undefined && this.version > this.persistedVersion;
@@ -97,10 +97,12 @@ export default class AppState {
 
     setUiTheme(theme: string) {
         
-        if(this.uiTheme === theme) 
+        const normalized = normalizeTheme(theme);
+
+        if(this.uiTheme === normalized) 
             return;
 
-        this.uiTheme = theme;
+        this.uiTheme = normalized;
         this.triggerChanged('uiTheme');
     }
 
@@ -165,4 +167,9 @@ export default class AppState {
 
 function generateKey(): number {
     return Math.ceil(Math.random() * 10000000) ^ Date.now(); // Because why the hell not...
+}
+
+function normalizeTheme(theme: string): string {
+    if (theme === 'iron') return 'graphite';
+    return theme;
 }

@@ -1,0 +1,28 @@
+/* Midnight theme tokens */
+.app-root.midnight {
+    --bg-color: #2c3e50;
+    --text-color: white;
+    --solid-bg-color: #2c3e50;
+    --font-family: Verdana, sans-serif;
+    --header-cmd-color: #7ea3b5;
+    --anchor-color: white;
+    --button-color: white;
+    --indicator-color: #85a0ad;
+    --on-color: white;
+    --prefix-color: #85a0ad;
+    --other-color: #9FBAC7;
+    --hashlink-color: #85a0ad;
+    --hashlink-hover-color: #9FBAC7;
+    --top-links-li-hover-bg: #132537;
+    --error-color: #d83e8f;
+    --btn-color: white;
+    --btn-hover-bg: #132537;
+    --btn-disabled-color: #85a0ad;
+    --accent1-color: mediumseagreen;
+    --accent-background: #3b5268;
+    --help-code-color: mediumseagreen;
+    --input-border-color: rgba(255, 255, 255, 0.5);
+    --input-text-color: white;
+    --expression-color: white;
+    --button-hover-bg: rgba(255, 255, 255, 0.2);
+}

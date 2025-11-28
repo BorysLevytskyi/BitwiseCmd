@@ -1,0 +1,235 @@
+body { padding:0; margin:0; height: 100%; overflow: hidden; }
+html { height: 100% }
+
+/* Theme bundles */
+@import './theme-light.css';
+@import './theme-dark.css';
+@import './theme-midnight.css';
+@import './theme-bladerunner.css';
+@import './theme-graphite.css';
+@import './theme.css';
+
+.app-root { 
+    font-family: var(--font-family, Verdana); 
+    font-size: 0.8em; 
+    margin: 0; 
+    padding: 0px 30px; 
+    height: 100%; 
+    overflow: auto; 
+    position: relative;
+}
+
+/* Centered vs stretched layout */
+.app-root.layout-centered { }
+
+/* Constrain and center top-level sections while keeping full-width theme background */
+.app-root.layout-centered > * {
+    max-width: clamp(70rem, 92vw, 100rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Theme-specific overrides are moved into their theme-*.css files */
+
+.app-root.layout-stretched {
+    max-width: none;
+    margin: 0;
+}
+
+/* Theme-scoped code styling to avoid cross-theme overrides */
+.light code, .dark code, .midnight code, .bladerunner code, .graphite code { font-size: 1.2em; font-weight: bold; }
+
+h1 { font-family: Impact, Verdana; 
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+.icon { margin-right: 5px; vertical-align: middle; }
+.header-cmd { color: #c5c5c5 }
+
+.mono { font-family: monospace; font-size: 1.3em }
+
+.button {
+    padding: 10px;
+    border: solid 1px white;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button { padding: 5px;}
+.button svg { margin: 0; margin-right: 5px; }
+.button-large { padding: 10px; }
+
+.expressionInput { 
+    padding: 3px; 
+    outline: none;
+    border: none;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    z-index: 100;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    width: 600px; 
+    background: rgba(0, 0, 0, 0);
+}
+
+.hidden { display: none;}
+
+.result { margin: 10px 10px 30px; }
+.result .input { margin-bottom: 10px; }
+.result .content { padding-left: 10px}
+.result .cur { margin-right: 5px; }
+
+.input-string { margin-right: 10px;}
+.hashLink { text-decoration: none; margin-left: 8px; visibility: hidden; margin-right: 0; padding: 0; text-decoration: none; }
+a.hashLink { font-size: 1.1em;}
+.hashLink .icon { margin: 0;}
+.hashLink:hover { text-decoration: underline; background: none; }
+.result:hover .hashLink { visibility: visible }
+
+.expression { font-size: 1.7em; font-family: monospace }
+.expression button { font-family: monospace; font-size: 0.9em;}
+.expression .label { font-weight:  bold; padding-right: 5px; text-align: right; }
+.expression .bin { letter-spacing: 3px; }
+.expression .info { font-size: 0.9em; color: teal; }
+.expression .byte { margin: 0 3px; }
+.expression-result td { border-top: dotted 1px gray; }
+.expression .prefix { font-weight: normal; display: none; font-size: 0.9em }
+.expression .other { font-size: 0.9em}
+.expression .sign { text-align: right; padding-right: 5px;}
+
+.flipable { cursor: pointer; opacity: 1 }
+.flipable { cursor: pointer; opacity: 1 }
+.flipable:hover { opacity: 0.8 }
+
+.hex .prefix { display: inline; }
+
+.indicator { padding: 0px 5px; background: transparent; border: none; cursor: pointer; vertical-align: middle; color:rgba(0, 0, 0, 0.25) }
+
+.expanded { display: block;}
+.collapsed { display: none;}
+
+.error { color: maroon; }
+
+.soft { opacity: 0.7 }
+
+.small-text { font-size: 0.8em;}
+
+#view { padding: 10px}
+
+.cur { color: var(--cur-color, lightgray); }
+
+
+button { border: none; }
+button.link-button {text-decoration: underline;}
+
+.settings-button {
+    margin-left: -20px;
+}
+
+/* When Settings is active (no .soft), remove any button border/outline */
+.settings-button button,
+.settings-button .command-link {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.undo button { 
+    opacity: 0.4;
+    padding: 0;
+    margin-left: 5px;
+}
+
+.solid-border { border: solid 1px rgba(255, 255, 255, 0.8); border-radius: 5px;}
+.solid-border-soft { border: solid 1px rgba(255, 255, 255, 0.5); border-radius: 5px;}
+
+
+.zero { opacity: 0.5}
+.dim-extra-bits .extra-bit { opacity: 0.1;}
+
+/* Light theme moved to theme-light.css */
+
+/* Dark theme moved to theme-dark.css */
+
+/* Midnight theme moved to theme-midnight.css */
+
+/* Blade Runner theme moved to theme-bladerunner.css */
+
+.bladerunner .bladerunner-easter-egg {display: none;}
+
+.bladerunner-easter-egg {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+    opacity: 0.3;
+}
+
+.bladerunner-easter-egg:hover { 
+    opacity: 1;
+}
+
+
+button { 
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+
+
+button:focus {outline:0;}
+
+/* Remove blue focus ring from the Blade Runner easter egg button */
+.bladerunner-easter-egg button:focus,
+.bladerunner-easter-egg button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Anchor the Blade Runner easter egg to bottom-right regardless of scrolling */
+.bladerunner-easter-egg {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+}
+
+/* Top Links Shrink */
+@media (max-width: 800px) {
+    .top-links .link-text { display: none }
+    .debug-indicators { display: none;}
+    .app-root {padding: 10px; }
+}
+
+.social-container{ position:fixed; bottom:20px; right:20px }
+
+/* Remove margin space on body. Inline top links with header */
+@media (max-width: 700px) {
+    /*.expressionInput { width: 450px; }   */
+}
+
+/* Further shrink */
+@media (max-width: 500px) {
+    .expressionInput { width: 400px; }
+    .top-links a { display: inline-block; padding: 5px 10px}
+}
+
+@media (max-width: 450px) {
+
+    .expressionInput { width: 350px; }
+}
+
+
+#output {
+    padding: 30px 30px;
+}
+
+.input-p {
+    display:inline;
+    z-index: 101;
+    position: absolute;
+    margin-right: -10px;
+    margin-top: 3px;
+    opacity: 0.5;
+}
+

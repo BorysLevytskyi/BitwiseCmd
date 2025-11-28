@@ -1,0 +1,140 @@
+/* Blade Runner theme tokens */
+.app-root.bladerunner {
+    --bg-color: #0b0f14;
+    --text-color: #e6f0ff;
+    --solid-bg-color: #0b0f14;
+    --font-family: Verdana, sans-serif;
+    --header-cmd-color: #ff7fb0a8; /* lights-on override remains below */
+    --anchor-color: #00d1f2;
+    --button-color: #00eaff;
+    --indicator-color: #0e6e7e;
+    --on-color: white;
+    --prefix-color: #00d1f2;
+    --other-color: #6c8497;
+    --hashlink-color: #52687b;
+    --hashlink-hover-color: #5fc2e9;
+    --top-links-li-hover-bg: transparent;
+    --error-color: #d83e8f;
+    --btn-color: #00eaff;
+    --btn-hover-bg: #11222c;
+    --btn-disabled-color: #0e6e7e;
+    --accent1-color: #e3a600;
+    --accent-background: #131a22;
+    --button-border-color: #00eaff;
+    --solid-border-color: #1f3b4a;
+    --help-code-color: #e3a600;
+    --input-border-color: #1f3b4a;
+    --input-text-color: white;
+    --expression-color: #e6f0ff;
+    --button-hover-bg: var(--top-links-li-hover-bg);
+    --cur-color: #6c8497;
+    --panel-bg-color: #0e161d;
+    --label-color: #7ac9d6;
+    --command-link-color: #5fc2e9;
+    --top-links-color: #dce7f5;
+    --top-links-hover-color: hsl(45, 100%, 50%);
+    --soft-color: #aebed0;
+    --zero-color: #b9cfe2;
+    --placeholder-color: #7e95a7;
+    --settings-button-color: #b9cfe2;
+    --lights-on-header-color: #ff7fb0;
+    --settings-accent-color: #ffbf69;
+}
+
+/* Blade Runner header effects */
+.bladerunner .header-cmd {  color: var(--header-cmd-color) !important; }
+.bladerunner .lights-on .header-cmd {  color: var(--lights-on-header-color) !important; }
+.bladerunner .header.lights-on { text-shadow: 0 0 4px rgba(255, 127, 176, 0.35), 0 0 9px rgba(255, 127, 176, 0.22); }
+.bladerunner .header h1 { text-transform: uppercase; color: #66d9e8a8; cursor: pointer; position: relative; z-index: 1; font-weight: bold; user-select: none;}
+.bladerunner .header h1.lights-on { color: #66d9e8; text-shadow: 0 0 4px rgba(102, 217, 232, 0.35), 0 0 9px rgba(102, 217, 232, 0.22); }
+.bladerunner .header h1.lights-on::after {
+    content: "";
+    animation: flicker 1s forwards;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-30%, -50%);
+    width: 20%;
+    height: 120%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(102, 217, 232, 0.70) 0%,
+            rgba(102, 217, 232, 0.45) 22%,
+            rgba(0, 0, 0, 0) 60%),
+        radial-gradient(ellipse at center,
+            rgba(255, 127, 176, 0.55) 0%,
+            rgba(255, 127, 176, 0.35) 35%,
+            rgba(0, 0, 0, 0) 72%);
+    filter: blur(35px);
+}
+
+@keyframes flicker {   
+    20%, 24%, 55% { opacity: 0; }
+    40% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+/* Blade Runner-specific component tweaks */
+.bladerunner .accent1 button:hover { text-shadow: 0 0 2px #e3a600 }
+.bladerunner .command-link:hover,
+.bladerunner .command-link:focus { text-shadow: 0 0 2px rgba(69, 243, 255, 0.949); }
+.bladerunner button.hashLink:hover, .bladerunner .undo button:hover, .bladerunner a.hashLink:hover {
+    --text-shadow: 0 0 2px currentColor;
+    text-shadow: 0 0 2px rgb(229, 33, 0.5);
+    color: var(--hashlink-hover-color);
+}
+.bladerunner .undo button:hover { opacity: 1; }
+
+/* Blade Runner: subtle glow for SVG icons inside hash links on hover/focus */
+.bladerunner .hashLink:hover .icon,
+.bladerunner .hashLink:focus .icon,
+.bladerunner .hashLink:hover svg,
+.bladerunner .undo:hover svg,
+.bladerunner .hashLink:focus svg {
+    filter: drop-shadow(0 0 2px currentColor);
+}
+
+/* Blade Runner: neon hover glow for top-links controls */
+.bladerunner .top-links a, .bladerunner .top-links a:visited { color: var(--top-links-color); }
+.bladerunner .top-links button { color: var(--top-links-color); }
+.bladerunner .top-links a:hover,
+.bladerunner .top-links a:focus,
+.bladerunner .top-links button:hover,
+.bladerunner .top-links button:focus {
+    text-shadow: 0 0 2px rgb(229, 33, 0.5);
+    color: var(--top-links-hover-color);
+}
+
+/* Optional: prototype radial glow kept commented
+.bladerunner .top-links li {position: relative;}
+.bladerunner .top-links button:hover::after, .bladerunner .top-links a:hover::after {
+    content: "";
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    white-space: nowrap;
+    width: 200%;
+    height: 120%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at center, rgba(227, 166, 0, 0.85) 0%, rgba(227, 166, 0, 0.55) 22%, rgba(0, 0, 0, 0) 60%);
+    filter: blur(20px);
+}
+*/
+
+/* Blade Runner: add matching glow to SVG icons inside top-links on hover/focus */
+.bladerunner .top-links a:hover .icon,
+.bladerunner .top-links a:focus .icon,
+.bladerunner .top-links button:hover .icon,
+.bladerunner .top-links button:focus .icon,
+.bladerunner .top-links a:hover svg,
+.bladerunner .top-links a:focus svg,
+.bladerunner .top-links button:hover svg,
+.bladerunner .top-links button:focus svg {
+    color: amber !important;
+    filter: drop-shadow(0 0 2px rgba(255, 127, 176, 0.5));
+}
