@@ -74,11 +74,11 @@ describe('calc.addSpace', () => {
 describe('calc.numberOfBitsDisplayed', () => {
     it('calculates number of bits', () => {
         expect(calc.numberOfBitsDisplayed(1)).toBe(1);
-        expect(calc.numberOfBitsDisplayed(BigInt(-1))).toBe(1);
+        expect(calc.numberOfBitsDisplayed(BigInt(-1))).toBe(32);
         expect(calc.numberOfBitsDisplayed(2)).toBe(2);
         expect(calc.numberOfBitsDisplayed(3)).toBe(2);
         expect(calc.numberOfBitsDisplayed(68719476735)).toBe(36);
-        expect(calc.numberOfBitsDisplayed(INT32_MIN_VALUE-1)).toBe(32);
+        expect(calc.numberOfBitsDisplayed(INT32_MIN_VALUE-1)).toBe(64);
     });
 });
 
@@ -264,12 +264,12 @@ describe("calc misc", () => {
 
     it('promoteTo64Bit', () => {
         const n = asInteger(-1);
-        expect(calc.toBinaryString(calc.promoteTo64Bit(n))).toBe("1");
+        expect(calc.toBinaryString(calc.promoteTo64Bit(n))).toBe("11111111111111111111111111111111");
     });
 
     it('binaryRepresentation', () => {
         
-        expect(calc.toBinaryString(Integer.int(-2147483647))).toBe("0000000000000000000000000000001");       
+        expect(calc.toBinaryString(Integer.int(-2147483647))).toBe("10000000000000000000000000000001");
         expect(calc.toBinaryString(asInteger(2147483647))).toBe("1111111111111111111111111111111");
     });
 
@@ -282,7 +282,7 @@ describe("calc misc", () => {
         const byte = Integer.byte(-127);
         const int = Integer.int(-127);
 
-        expect(calc.numberOfBitsDisplayed(int)).toBe(7);
+        expect(calc.numberOfBitsDisplayed(int)).toBe(32);
         expect(calc.numberOfBitsDisplayed(int.abs())).toBe(7);
 
         // If there is only sign bit left, might as well show it
@@ -350,6 +350,8 @@ describe("calc.engine.", () => {
     it("sub", () => {
         // 4-bit examples
         expect(calc.engine.sub("0011", "0001")).toBe("0010"); // 3-1=2
+        expect(calc.engine.sub("0100", "0000")).toBe("0100"); // 4-0=4
+        expect(calc.engine.sub("0100", "0000")).toBe("0100"); // -4-0=-4 (wrap)
         expect(calc.engine.sub("0000", "0001")).toBe("1111"); // 0-1 -> -1
         expect(calc.engine.sub("1000", "0001")).toBe("0111"); // -8-1 -> 7 (wrap)
     });
@@ -427,7 +429,7 @@ describe("calc.engine.", () => {
         expect(calc.engine.applyTwosComplement("010")).toBe("110");
         expect(calc.engine.applyTwosComplement("110")).toBe("010"); // reverse
         expect(calc.engine.applyTwosComplement("110")).toBe("010");
-        expect(calc.engine.applyTwosComplement("0")).toBe("10");
+        expect(calc.engine.applyTwosComplement("0")).toBe("0");
         expect(calc.engine.applyTwosComplement("10101100")).toBe("01010100");
         expect(calc.engine.applyTwosComplement("01010100")).toBe("10101100"); // reverse
     });
