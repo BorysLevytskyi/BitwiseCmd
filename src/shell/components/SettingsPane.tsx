@@ -25,7 +25,7 @@ function SettingsPane(props : SettingsPaneProps) {
                 </p>
             </div>
             <div className='setting'>
-                <button type="button" onClick={() => appState.toggleDimExtrBits()}>
+                <button type="button" onClick={() => appState.toggleDimExtraBits()}>
                     <FontAwesomeIcon size='xl' icon={appState.dimExtraBits ? faToggleOn : faToggleOff} /> Dim Padding Bits
                 </button>
                 <p className='description'>

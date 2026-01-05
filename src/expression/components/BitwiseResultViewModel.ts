@@ -58,7 +58,7 @@ export default class BitwiseResultViewModel {
 
             const eo = ex as Operator;
 
-            // If it a single NOT expression
+            // If it is a single NOT expression
             if(eo.isNotExpression) {
                 m.addOperatorRow(eo);
                 const notResult = eo.evaluate();

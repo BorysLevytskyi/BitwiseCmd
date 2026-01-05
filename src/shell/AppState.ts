@@ -7,10 +7,10 @@ export type PersistedAppData = {
     uiTheme: string;
     version: number | null;
     debugMode: boolean | null;
-    pageVisistsCount: number;
+    pageVisitsCount: number;
     donationClicked: boolean;
     annotateTypes: boolean;
-    dimExtrBits: boolean;
+    dimExtraBits: boolean;
     cookieDisclaimerHidden: boolean,
     centeredLayout?: boolean
 }
@@ -54,10 +54,10 @@ export default class AppState {
         this.persistedVersion = persistData.version || 0.1;
         this.wasOldVersion = persistData.version !== null && persistData.version !== undefined && this.version > this.persistedVersion;
         this.debugMode = persistData.debugMode === true;
-        this.pageVisitsCount = persistData.pageVisistsCount || 0;
+        this.pageVisitsCount = persistData.pageVisitsCount || 0;
         this.donationClicked = persistData.donationClicked;
         this.annotateTypes = !!persistData.annotateTypes;
-        this.dimExtraBits = !!persistData.dimExtrBits;
+        this.dimExtraBits = !!persistData.dimExtraBits;
         this.cookieDisclaimerHidden = !!persistData.cookieDisclaimerHidden
         this.centeredLayout = (persistData.centeredLayout === undefined) ? true : !!persistData.centeredLayout;
     }
@@ -121,7 +121,7 @@ export default class AppState {
         this.triggerChanged('annotateTypes');
     }
 
-    toggleDimExtrBits() {
+    toggleDimExtraBits() {
         this.dimExtraBits = !this.dimExtraBits;
         this.triggerChanged('dimExtraBits');
     }
@@ -155,10 +155,10 @@ export default class AppState {
             uiTheme: this.uiTheme,
             version: this.version,
             debugMode: this.debugMode,
-            pageVisistsCount: this.pageVisitsCount,
+            pageVisitsCount: this.pageVisitsCount,
             donationClicked: this.donationClicked,
             annotateTypes: this.annotateTypes,
-            dimExtrBits: this.dimExtraBits,
+            dimExtraBits: this.dimExtraBits,
             cookieDisclaimerHidden: this.cookieDisclaimerHidden,
             centeredLayout: this.centeredLayout
         }

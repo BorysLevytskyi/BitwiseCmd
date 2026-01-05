@@ -7,10 +7,10 @@ const DEFAULT_DATA : PersistedAppData = {
     emphasizeBytes: false,
     version: APP_VERSION,
     debugMode: false,
-    pageVisistsCount: 0,
+    pageVisitsCount: 0,
     donationClicked: false,
     annotateTypes: false,
-    dimExtrBits: false,
+    dimExtraBits: false,
     cookieDisclaimerHidden: false,
     centeredLayout: true
 }
