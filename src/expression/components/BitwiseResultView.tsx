@@ -16,7 +16,7 @@ type BitwiseResultViewProps = {
     expression: Expression;
     emphasizeBytes: boolean;
     annotateTypes: boolean,
-    dimExtrBits: boolean
+    dimExtraBits: boolean
 }
 
 type BitwiseResultViewState = {
@@ -50,7 +50,7 @@ export default class BitwiseResultView extends React.Component<BitwiseResultView
 
         let css = "expression";
 
-        if(this.props.dimExtrBits)
+        if(this.props.dimExtraBits)
             css += " dim-extra-bits";
 
         return <React.Fragment>
@@ -122,7 +122,7 @@ class ExpressionElementTableRow extends React.Component<ExpressionElementRowProp
         const scalar = this.props.expressionItem.evaluate();
         const bin = formatter.numberToString(scalar.value, 'bin', maxNumberOfBits);
         const signBitIndex = scalar.value.signed && bin.length >= scalar.value.maxBitSize ? bin.length - scalar.value.maxBitSize : -1;
-        const valueSize = annotateTypes ? scalar.value.maxBitSize : calc.numberOfBitsDisplayed(scalar.value);
+        const valueSize = calc.numberOfBitsDisplayed(scalar.value);
 
         return <tr className={"row-with-bits " + css}>
             <td className="sign">{sign}</td>
