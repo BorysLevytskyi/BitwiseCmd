@@ -51,11 +51,9 @@ const calc = {
         if(bin.length > bitSize!)
             throw new Error(`Binary represenation '${bin}' is bigger than the given bit size ${bitSize}`)
 
-        const r = num.value < 0
-            ? this.engine.applyTwosComplement(bin)
+        return num.value < 0
+            ? this.engine.applyTwosComplement(bin.padStart(bitSize, '0'))  // Pad BEFORE twos complement
             : bin;
-
-        return bin.length !== bitSize ? r.substring(r.length-bin.length) : r;
     },
 
     lshift (num: Integer, numBytes : JsNumber) : Integer {
@@ -304,7 +302,7 @@ const calc = {
             // If there exists no '1' concat 1 at the
             // starting of string
             if (lastIndex === -1)
-                return "1" + bin;
+                return bin;
         
             // Continue traversal backward after the position of
             // first '1'
